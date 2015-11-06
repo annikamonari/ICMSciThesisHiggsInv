@@ -3,7 +3,6 @@
 
 #include <TStyle.h>
 #include "TROOT.h"
-#include <stdio.h>
 
 // Set style for 1D histogram
 void Set1DHistoStyle();

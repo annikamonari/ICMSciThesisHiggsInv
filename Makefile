@@ -8,7 +8,8 @@ SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT)) # dynamic, includes any file with .cpp extension
 # OBJECTS - build object list based on available sources
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o)) 
-CFLAGS := -g -Wall -pedantic
+CFLAGS := -g -Wall -pedantic `root-config --cflags`
+LDFLAGS := `root-config --glibs`
 INC := -I include # ensures all header files are acessible
 
 
@@ -16,7 +17,7 @@ INC := -I include # ensures all header files are acessible
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) "; $(CC) $^ -o $(TARGET)
+	@echo " $(CC) $(LDFLAGS) $^ -o $(TARGET) "; $(CC) $^ -o $(TARGET)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)

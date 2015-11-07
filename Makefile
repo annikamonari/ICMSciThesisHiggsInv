@@ -19,7 +19,6 @@ $(TARGET): $(OBJECTS)
 	@echo "Linking..."
 	$(CC) $(LDFLAGS) $^ -o $(TARGET)
 
-
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@echo "Compiling..."
 	@mkdir -p $(BUILDDIR)

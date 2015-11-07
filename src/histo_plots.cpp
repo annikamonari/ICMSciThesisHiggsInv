@@ -9,6 +9,7 @@ class Plot {
   TTree* tree;
   Long64_t nentries;
 
+public:
   Plot(TTree* data) {
     tree = data;
     nentries = tree->GetEntries();
@@ -35,7 +36,7 @@ class Plot {
 };
 
 int main(void) {
-  TFile* f = new TFile("../docs/PARKED_VBF-Parked-2012B-22Jan2013-v1-1.root");
+  TFile* f = new TFile("docs/PARKED_VBF-Parked-2012B-22Jan2013-v1-1.root");
   TTree* t = (TTree*) f->Get("LightTree");
-  Plot plot = new Plot(t);
+  Plot* plot = new Plot(t);
 };

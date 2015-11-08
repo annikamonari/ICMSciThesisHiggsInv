@@ -1,5 +1,6 @@
 #include "plotting_style.h"
 #include "standard_headers.h"
+#include "variables_and_branches.h"
 #include <TCanvas.h>
 #include <TChain.h>
 #include <TFile.h>
@@ -31,7 +32,7 @@ public:
     }
 
     TCanvas *c2 = new TCanvas("c2","lumi plot");
-    Set1DHistoStyle(histo2D, 2, 3);
+    Set1DHistoStyle(histo2D, 2, 3, 2);
     histo2D->Draw();
     c2->Update();
   }

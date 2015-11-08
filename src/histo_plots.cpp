@@ -7,7 +7,7 @@
 #include <TApplication.h>
 
 class Plot {
-  TTree* tree;
+  TTree* tree; //
   Long64_t nentries;
 
 public:
@@ -39,7 +39,7 @@ public:
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  TFile* f = new TFile("docs/PARKED_VBF-Parked-2012B-22Jan2013-v1-0.root");
+  TFile* f = new TFile("docs/MC_DY1JetsToLL_iglep.root");
   TTree* t = (TTree*) f->Get("LightTree");
   Plot* plot = new Plot(t);
   

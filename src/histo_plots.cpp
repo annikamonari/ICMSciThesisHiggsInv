@@ -16,8 +16,8 @@ public:
   }
 
   void plot_lumi_vs_events() {
-    Double_t lumi;
-    Double_t event;
+    UInt_t lumi;
+    UInt_t event;
 
     tree->SetBranchAddress("lumi", &lumi);
     tree->SetBranchAddress("event", &event);
@@ -39,4 +39,6 @@ int main(void) {
   TFile* f = new TFile("docs/PARKED_VBF-Parked-2012B-22Jan2013-v1-1.root");
   TTree* t = (TTree*) f->Get("LightTree");
   Plot* plot = new Plot(t);
+
+  plot->plot_lumi_vs_events();
 };

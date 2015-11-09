@@ -6,9 +6,8 @@
 #include <TH2.h>
 
 // Set style for 1D histogram
-void Set1DHistoStyle(TH2D* histo1d, int lineColour = 1, int lineWidth = 1, int fillColour = 0);
 
-void Set1DHistoStyle(TH2D* histo1d, int lineColour, int lineWidth, int fillColour) {
+void Set1DHistoStyle(TH2D* histo1d, int lineColour = 1, int lineWidth = 1, int fillColour = 0) {
   histo1d->SetLineColor(lineColour);
   histo1d->SetLineWidth(lineWidth);
   histo1d->SetFillColor(fillColour);

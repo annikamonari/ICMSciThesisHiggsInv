@@ -1,11 +1,9 @@
+#include "data_tree.h"
 #include "plotting_style.h"
-#include "standard_headers.h"
-#include "variables_and_branches.h"
-#include <TCanvas.h>
-#include <TChain.h>
-#include <TFile.h>
-#include <TH2.h>
-#include <TApplication.h>
+
+class Histo1D {
+
+};
 
 class Plot {
   TTree* tree;

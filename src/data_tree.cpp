@@ -1,40 +1,44 @@
 #include "data_tree.h"
 
-class DataTree {
-public:
-  TFile* file;
-  char* label;
-  TTree* tree;
-  LeafVariables* vars;
-
-  void get_data() {
-    UInt_t nentries = tree->GetEntries();
-
-    for(int i = 0; i < nentries; i++) {
-      tree -> GetEntry(i);
-    }
-  }
-
-  DataTree(TFile* data_file, char* tree_name) {
+DataTree::DataTree(TFile* data_file, char* tree_name) {
     file = data_file;
     label = tree_name;
     tree = (TTree*) file -> Get("LightTree");
     vars = new LeafVariables();
 
-    vars->set_branch_addresses(tree);
-    get_data();
+    //vars->set_branch_addresses(tree);
+    //get_data();
+}
+
+void DataTree::get_data() {
+    UInt_t nentries = tree->GetEntries();
+
+    for(int i = 0; i < nentries; i++) {
+      tree -> GetEntry(i);
   }
+}
 
-  void create_histo_for_stack(int fill_color, char* variable_name) {
+TH1F* DataTree::create_histo_for_stack(int fill_color, char* variable_name, TCut* cut) {
+    tree->SetLineColor(1);
+    tree->SetFillColor(fill_color);
+    
+    std::string draw_histo(variable_name);
+    draw_histo.append(">>");
+    draw_histo.append(label);
 
-  }
+    // draw histogram and fill histo with it
+    const char* draw_histo_str = draw_histo.c_str();
+
+    if(cut == NULL) {
+        tree->Draw(draw_histo_str);
+    } 
+    else {
+        tree->Draw(draw_histo_str, *cut);
+    }
+    // get histo from current directory
+    TH1F* histo = (TH1F*)gDirectory->Get(label);
+    return histo;
+    
+}
 
 
-  // pass in &var_name e.g. &n_vertices - TODO: make same method for UInt_t
-  void create_1d_plot(Double_t* var_name, int bins, int x_min, int x_max) {
-    TH1D* histo1 = new TH1D(label, label, bins, x_min, x_max);
-  }
-
-
-
-};

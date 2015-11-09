@@ -2,11 +2,11 @@
 #define Data_Tree_h
 
 #include "standard_headers.h"
-#include <stdio.h>
 #include <TCanvas.h>
 #include <TFile.h>
 #include <TApplication.h>
 #include <TChain.h>
+#include <TCut.h>
 
 class LeafVariables {
 public:
@@ -223,6 +223,19 @@ public:
     tree->SetBranchAddress("lep_mt", &lep_mt);
     tree->SetBranchAddress("n_vertices", &n_vertices);
   }
+};
+
+class DataTree {
+public:
+  TFile* file;
+  char* label;
+  TTree* tree;
+  LeafVariables* vars;
+
+  DataTree(TFile* data_file, char* tree_name);
+  void get_data();
+  TH1F* create_histo_for_stack(int fill_color, char* variable_name, TCut* cut);
+  void create_1d_plot(Double_t* var_name, int bins, int x_min, int x_max);
 };
 
 #endif

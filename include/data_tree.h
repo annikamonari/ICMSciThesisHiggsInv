@@ -141,14 +141,14 @@ public:
     tree->SetBranchAddress("jet1_phi", &jet1_phi);
     tree->SetBranchAddress("jet2_phi", &jet2_phi);
     tree->SetBranchAddress("jet3_phi", &jet3_phi);
-    tree->SetBranchAddress("jet_csv1", &jet_csv1);
+    tree->SetBranchAddress("jet_csv1", &jet_csv1); //combined secondary vertex = csv - check if b quark
     tree->SetBranchAddress("jet_csv2", &jet_csv2);
     tree->SetBranchAddress("jet_csv3", &jet_csv3);
     tree->SetBranchAddress("dijet_M", &dijet_M);
     tree->SetBranchAddress("dijet_deta", &dijet_deta);
     tree->SetBranchAddress("dijet_sumeta", &dijet_sumeta);
     tree->SetBranchAddress("dijet_dphi", &dijet_dphi);
-    tree->SetBranchAddress("met", &met);
+    tree->SetBranchAddress("met", &met); //missing transverse energy
     tree->SetBranchAddress("met_x", &met_x);
     tree->SetBranchAddress("met_y", &met_y);
     tree->SetBranchAddress("metnomu_x", &metnomu_x);
@@ -156,7 +156,7 @@ public:
     tree->SetBranchAddress("met_significance", &met_significance);
     tree->SetBranchAddress("metnomu_significance", &metnomu_significance);
     tree->SetBranchAddress("sumet", &sumet);
-    tree->SetBranchAddress("ht", &ht);
+    tree->SetBranchAddress("ht", &ht); //hadron transverse energy - scalar sum of transverse energy of all - uses only callorimeter info other than muons and that
     tree->SetBranchAddress("ht30", &ht30);
     tree->SetBranchAddress("mht", &mht);
     tree->SetBranchAddress("sqrt_ht", &sqrt_ht);
@@ -165,9 +165,9 @@ public:
     tree->SetBranchAddress("jet2met_dphi", &jet2met_dphi);
     tree->SetBranchAddress("jet1metnomu_dphi", &jet1metnomu_dphi);
     tree->SetBranchAddress("jet2metnomu_dphi", &jet2metnomu_dphi);
-    tree->SetBranchAddress("jetmet_mindphi", &jetmet_mindphi);
+    tree->SetBranchAddress("jetmet_mindphi", &jetmet_mindphi); //minimum of delta phi between jet one and jet two and the MET - just leading two jets
     tree->SetBranchAddress("jetmetnomu_mindphi", &jetmetnomu_mindphi);
-    tree->SetBranchAddress("alljetsmet_mindphi", &alljetsmet_mindphi);
+    tree->SetBranchAddress("alljetsmet_mindphi", &alljetsmet_mindphi); //minimum dphi between all jets and missing transverse energy
     tree->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
     tree->SetBranchAddress("jetunclet_mindphi", &jetunclet_mindphi);
     tree->SetBranchAddress("metunclet_dphi", &metunclet_dphi);

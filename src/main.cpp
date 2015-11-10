@@ -7,9 +7,9 @@ int main(int argc, char** argv) {
   DataTree* tree1 = new DataTree(new TFile("docs/MC_DY1JetsToLL_iglep.root"), "MC_DY1JetsToLL_iglep.root");
   DataTree* tree2 = new DataTree(new TFile("docs/MC_EWK-W2jminus_enu.root"), "MC_EWK-W2jminus-enu");
   DataTree* tree3 = new DataTree(new TFile("docs/MC_QCD-Pt-1000to1400-pythia6.root"), "MC_QCD-Pt-1000to1400-pythia6");
-  TCut cut = NULL;
+  TCut cut = "5*jets1_eta";
 
-  draw_stacked_histoplots({tree1, tree2, tree3}, "jet1_eta", &cut);
+  draw_stacked_histoplots({tree1, tree2, tree3}, "jet1_eta", "5*jets1_eta");
 
   theApp.Run();
   

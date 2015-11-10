@@ -16,6 +16,7 @@ void draw_stacked_histoplots(std::vector<DataTree*> data_trees, char* variable_n
   TLegend* legend = new TLegend(0.2,0.2,0.5,0.4);
   legend->SetTextSize(0.04);
 
+
   for(int i = 0; i < data_trees.size(); i++) {
     TH1F* single_histo = data_trees[i]->create_histo_for_stack(i + 2, variable_name, cut);
 

@@ -9,7 +9,9 @@ int main(int argc, char** argv) {
   DataTree* tree3 = new DataTree(new TFile("docs/MC_QCD-Pt-1000to1400-pythia6.root"), "MC_QCD-Pt-1000to1400-pythia6");
   TCut cut = "5*jets1_eta";
 
-  draw_stacked_histoplots({tree1, tree2, tree3}, "total_weight_lepveto", "");
+  std::vector<DataTree*> trees = {tree1, tree2, tree3}
+
+  draw_stacked_histoplots(trees, "total_weight_lepveto", "");
 
   theApp.Run();
   

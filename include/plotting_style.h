@@ -1,18 +1,37 @@
-#ifndef Plotting_Style_h
-#define Plotting_Style_h
+#ifndef Plotting_h
+#define Plotting_h
 
 #include <TROOT.h>
 #include <TStyle.h>
+#include <THStack.h>
+#include <TLegend.h>
 #include <TH2.h>
+#include <vector>
+#include "data_tree.h"
 
-// Set style for 1D histogram
-void Set1DHistoStyle(TH2D* histo1d, int lineColour = 1, int lineWidth = 1, int fillColour = 0);
 
-void Set1DHistoStyle(TH2D* histo1d, int lineColour, int lineWidth, int fillColour) {
-  histo1d->SetLineColor(lineColour);
-  histo1d->SetLineWidth(lineWidth);
-  histo1d->SetFillColor(fillColour);
-  gROOT->ForceStyle();
+void draw_stacked_histoplots(std::vector<DataTree*> data_trees, char* variable_name, TCut* cut = NULL) {
+  TCanvas* c1 = new TCanvas("c1", "stacked hists");
+  THStack hs("Stacked Histogram", variable_name);
+  TLegend* legend = new TLegend(0.2,0.2,0.5,0.4);
+  legend->SetTextSize(0.04);
+
+  for(int i = 0; i < data_trees.size(); i++) {
+    TH1F* single_histo = data_trees[i]->create_histo_for_stack(i + 2, variable_name, cut);
+
+    hs.Add(single_histo);
+    legend->AddEntry(single_histo, data_trees[i]->label, "f");
+  }
+  //create filename
+  string s1
+  s1=variable_name*
+  s1.append(".png");
+  
+  hs.Draw();
+  c1->Update();
+  legend->Draw();
+  c1->Update();
+  c1->SavesAs(s1);
 }
 
 #endif

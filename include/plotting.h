@@ -9,7 +9,7 @@
 #include "data_chain.h"
 
 
-void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, char* variable_name, char* selection, float x_min, float x_max) {
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, char* variable_name, char* selection, float x_min, float x_max) {
   char* plot_title = build_title({variable_name, " Plot"});
   TCanvas* c1      = new TCanvas("c1", plot_title);
   TLegend* legend  = new TLegend(0.6,0.4,0.88,0.88);
@@ -19,12 +19,18 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, char* variable_n
   legend->SetTextSize(0.04);
   legend->SetBorderSize(0);
 
-  int colours[11] = {41, 43, 30, 40, 38, 11, 16, 32, 22, 24, 13};
+  int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
   for(int i = 0; i < bg_chains.size(); i++) {
-    TH1F* single_histo = data_trees[i]->histo_for_stack(colours[i], variable_name, selection);
-    hs.Add(single_histo);
-    legend->AddEntry(single_histo, data_trees[i]->label, "f");
+    TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
+    hs.Add(single_bg_histo);
+    legend->AddEntry(single_bg_histo, bg_chains[i]->label, "f");
+  }
+
+  if(signal_chain != NULL) {
+    TH1F* signal_histo = signal_chain->histo_for_stack(false, variable_name, selection, x_min, x_max, 0);
+    hs.Add(signal_histo);
+    legend->AddEntry(signal_histo, signal_chain->label, "l");
   }
 
   char* file_name = build_string({variable_name, "_", selection, ".png"});
@@ -42,12 +48,6 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, char* variable_n
   c1->Update();
   c1->SaveAs(file_name);
   c1->Close();
-}
-
-char* build_title(std::vector<char*> words) {
-  char* title = build_string(words);
-  title[0] = toupper(title[0]);
-  return title;
 }
 
 #endif

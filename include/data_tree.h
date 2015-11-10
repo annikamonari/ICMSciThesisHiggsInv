@@ -234,7 +234,7 @@ public:
 
   DataTree(TFile* data_file, char* tree_name);
   void get_data();
-  TH1F* create_histo_for_stack(int fill_color, char* variable_name, TCut* cut);
+  TH1F* create_histo_for_stack(int fill_color, char* variable_name, char* selection);
   void create_1d_plot(Double_t* var_name, int bins, int x_min, int x_max);
 };
 

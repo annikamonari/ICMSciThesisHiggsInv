@@ -19,7 +19,7 @@ void DataTree::get_data() {
   }
 }
 
-TH1F* DataTree::create_histo_for_stack(int fill_color, char* variable_name, TCut* cut) {
+TH1F* DataTree::create_histo_for_stack(int fill_color, char* variable_name, char* selection) {
     tree->SetLineColor(1);
     tree->SetFillColor(fill_color);
     
@@ -30,11 +30,11 @@ TH1F* DataTree::create_histo_for_stack(int fill_color, char* variable_name, TCut
     // draw histogram and fill histo with it
     const char* draw_histo_str = draw_histo.c_str();
 
-    if(cut == NULL) {
+    if(selection == NULL) {
         tree->Draw(draw_histo_str);
     } 
     else {
-        tree->Draw(draw_histo_str, *cut);
+        tree->Draw(draw_histo_str, selection);
     }
     // get histo from current directory
     TH1F* histo = (TH1F*)gDirectory->Get(label);

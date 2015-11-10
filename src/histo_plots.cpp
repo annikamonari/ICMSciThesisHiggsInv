@@ -39,7 +39,7 @@ public:
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  TFile* f = new TFile("docs/MC_DY1JetsToLL_iglep.root");
+  TFile* f = new TFile("docs/MC_VBF_HToZZTo4Nu_M-200.root");
   TTree* t = (TTree*) f->Get("LightTree");
   Plot* plot = new Plot(t);
   

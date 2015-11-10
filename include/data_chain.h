@@ -1,13 +1,19 @@
 #ifndef Data_Chain_h
 #define Data_Chain_h
 
-#include "helpers.h"
 #include <TCanvas.h>
 #include <TFile.h>
 #include <TApplication.h>
 #include <TChain.h>
 #include <TCut.h>
+
+#include <string>
 #include <vector>
+#include <stdio.h>
+
+extern const char* build_string(std::vector<char*> pchars);
+
+extern const char* build_title(std::vector<char*> words);
 
 class LeafVariables {
 public:
@@ -235,7 +241,7 @@ public:
   DataChain(std::vector<char*> file_paths, char* data_label);
   void get_data();
   TH1F* histo_for_stack(bool is_signal, char* variable_name, char* selection, float x_min, float x_max, int fill_colour = 0);
-  set_histo_style(bool is_signal, int fill_colour = 0);
+  void set_histo_style(bool is_signal, int fill_colour = 0);
 };
 
 #endif

@@ -10,9 +10,9 @@
 
 
 void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, char* variable_name, char* selection, float x_min, float x_max) {
-  char* plot_title = build_title({variable_name, " Plot"});
-  TCanvas* c1      = new TCanvas("c1", plot_title);
-  TLegend* legend  = new TLegend(0.6,0.4,0.88,0.88);
+  const char* plot_title = build_title({variable_name, " Plot"});
+  TCanvas* c1            = new TCanvas("c1", plot_title);
+  TLegend* legend        = new TLegend(0.6,0.4,0.88,0.88);
 
   THStack hs(plot_title, plot_title);
   
@@ -33,7 +33,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
     legend->AddEntry(signal_histo, signal_chain->label, "l");
   }
 
-  char* file_name = build_string({variable_name, "_", selection, ".png"});
+  const char* file_name = build_string({variable_name, "_", selection, ".png"});
 
   hs.Draw();
   hs.GetYaxis()->SetTitle("Events");

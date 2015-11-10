@@ -23,10 +23,14 @@ void draw_stacked_histoplots(std::vector<DataTree*> data_trees, char* variable_n
     legend->AddEntry(single_histo, data_trees[i]->label, "f");
   }
 
+  std::string s1;
+  s1=variable_name*;
+  s1.append(".png");
+  
   hs.Draw();
   c1->Update();
   legend->Draw();
   c1->Update();
-}
+  c1->SavesAs(s1);}
 
 #endif

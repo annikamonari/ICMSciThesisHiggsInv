@@ -6,41 +6,48 @@
 #include <THStack.h>
 #include <TLegend.h>
 #include <TH2.h>
-#include <vector>
-#include "data_tree.h"
+#include "data_chain.h"
 
 
-void draw_stacked_histoplots(std::vector<DataTree*> data_trees, char* variable_name, char* selection) {
-  TCanvas* c1 = new TCanvas("c1", "stacked hists");
-  THStack hs("Stacked Histogram", variable_name);
-  TLegend* legend = new TLegend(0.6,0.4,0.9,0.9);
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, char* variable_name, char* selection, float x_min, float x_max) {
+  char* plot_title = build_title({variable_name, " Plot"});
+  TCanvas* c1      = new TCanvas("c1", plot_title);
+  TLegend* legend  = new TLegend(0.6,0.4,0.88,0.88);
+
+  THStack hs(plot_title, plot_title);
+  
   legend->SetTextSize(0.04);
   legend->SetBorderSize(0);
 
   int colours[11] = {41, 43, 30, 40, 38, 11, 16, 32, 22, 24, 13};
 
-  for(int i = 0; i < data_trees.size(); i++) {
-    TH1F* single_histo = data_trees[i]->create_histo_for_stack(colours[i], variable_name, selection);
-
+  for(int i = 0; i < bg_chains.size(); i++) {
+    TH1F* single_histo = data_trees[i]->histo_for_stack(colours[i], variable_name, selection);
     hs.Add(single_histo);
     legend->AddEntry(single_histo, data_trees[i]->label, "f");
   }
 
-  std::string file_name(variable_name);
-  file_name.append("_");
-  file_name.append(selection);
-  file_name.append(".png");
+  char* file_name = build_string({variable_name, "_", selection, ".png"});
 
   hs.Draw();
-  //hs.GetYaxis()->SetTitle("Frequency");
-  hs.GetXaxis()->SetTitle(variable_name);
-  hs.GetXaxis()->SetRangeUser(6, 12);
-  c1->Update();
-  legend->Draw();
-  c1->Update();
+  hs.GetYaxis()->SetTitle("Events");
+  hs.GetYaxis()->SetLabelSize(0.05);
 
-  c1->SaveAs(file_name.c_str());
+  hs.GetXaxis()->SetTitle(build_title({variable_name}));
+  hs.GetXaxis()->SetLabelSize(0.05);
+  hs.GetXaxis()->SetRangeUser(x_min, x_max);
+
+  legend->Draw();
+
+  c1->Update();
+  c1->SaveAs(file_name);
   c1->Close();
+}
+
+char* build_title(std::vector<char*> words) {
+  char* title = build_string(words);
+  title[0] = toupper(title[0]);
+  return title;
 }
 
 #endif

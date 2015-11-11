@@ -1,5 +1,5 @@
 #include "plotting.h"
-//#include <initializer_list>
+#include <initializer_list>
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
@@ -9,3 +9,6 @@ int main(int argc, char** argv) {
   
   return 0;
 };
+
+
+

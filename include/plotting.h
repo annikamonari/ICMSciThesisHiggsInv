@@ -8,9 +8,13 @@
 #include <TH2.h>
 #include "data_chain.h"
 
+//TODO : add data chain to plot
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection, float x_min, float x_max) {
+  //const char* plot_title = build_string({variable_name, " Plot"});
+  std::string title_parts(variable_name);
+  title_parts.append(" Plot");
+  const char* plot_title = title_parts.c_str();
 
-void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, char* variable_name, char* selection, float x_min, float x_max) {
-  const char* plot_title = build_title({variable_name, " Plot"});
   TCanvas* c1            = new TCanvas("c1", plot_title);
   TLegend* legend        = new TLegend(0.6,0.4,0.88,0.88);
 
@@ -21,25 +25,33 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
 
   int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
+  std::cout << "setup canvas, legen and plot" << std::endl;
   for(int i = 0; i < bg_chains.size(); i++) {
     TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
     hs.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->label, "f");
+    std::cout << "histograms added to stack fine" << std::endl;
   }
 
   if(signal_chain != NULL) {
     TH1F* signal_histo = signal_chain->histo_for_stack(false, variable_name, selection, x_min, x_max, 0);
     hs.Add(signal_histo);
     legend->AddEntry(signal_histo, signal_chain->label, "l");
+    std::cout << "signal added to stack fine" << std::endl;
   }
 
-  const char* file_name = build_string({variable_name, "_", selection, ".png"});
+  std::string file_parts(variable_name);
+  file_parts.append("_");
+  file_parts.append(selection);
+  file_parts.append(".png");
+  const char* file_name = file_parts.c_str();
+  //const char* file_name = build_string({variable_name, "_", selection, ".png"});
 
   hs.Draw();
   hs.GetYaxis()->SetTitle("Events");
   hs.GetYaxis()->SetLabelSize(0.05);
 
-  hs.GetXaxis()->SetTitle(build_title({variable_name}));
+  hs.GetXaxis()->SetTitle(variable_name);
   hs.GetXaxis()->SetLabelSize(0.05);
   hs.GetXaxis()->SetRangeUser(x_min, x_max);
 

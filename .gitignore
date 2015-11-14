@@ -1,6 +1,9 @@
 # Ignore the build dir
 build
 
+# Ignore the data dir
+data/*
+
 # Ignore any executables
 bin/*
 

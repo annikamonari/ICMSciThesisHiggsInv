@@ -1,57 +1,76 @@
 #ifndef Plotting_h
 #define Plotting_h
 
-#include <TROOT.h>
 #include <TStyle.h>
 #include <THStack.h>
 #include <TLegend.h>
 #include <TH2.h>
-#include <vector>
-#include "data_tree.h"
+#include "data_chain.h"
 
+//TODO : add data chain to plot
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection,const char* x_min, const char* x_max, const char* leg_pos) {
+  //const char* plot_title = build_string({variable_name, " Plot"});
+  std::string title_parts(variable_name);
+  title_parts.append(" Plot");
+  const char* plot_title = title_parts.c_str();
 
-void draw_stacked_histoplots(std::vector<DataTree*> data_trees, char* variable_name, char* selection) {
-  TCanvas* c1 = new TCanvas("c1", "stacked hists");
-  THStack hs("Stacked Histogram", variable_name);
-  TLegend* legend = new TLegend(0.6,0.4,0.9,0.9);
-  legend->SetTextSize(0.04);
+  TCanvas* c1 = new TCanvas("c1", plot_title);
+  TLegend* legend;
+  if(strcmp(leg_pos, "right") == 0) {
+    legend = new TLegend(0.7,0.5,0.88,0.88);
+  }
+  else {
+    legend = new TLegend(0.12,0.5,0.3,0.88);
+  }
+  
+
+  THStack hs(plot_title, plot_title);
+  
+  legend->SetTextSize(0.035);
   legend->SetBorderSize(0);
 
-  int colours[11] = {41, 43, 30, 40, 38, 11, 16, 32, 22, 24, 13};
+  int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
-  for(int i = 0; i < data_trees.size(); i++) {
-    TH1F* single_histo = data_trees[i]->create_histo_for_stack(colours[i], variable_name, selection);
-
-    hs.Add(single_histo);
-    legend->AddEntry(single_histo, data_trees[i]->label, "f");
+  std::cout << "setup canvas, legend and plot" << std::endl;
+  for(int i = 0; i < bg_chains.size(); i++) {
+    TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
+    hs.Add(single_bg_histo);
+    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+    std::cout << "histograms added to stack fine" << std::endl;
   }
 
-<<<<<<< HEAD
-  //std::string s1;
-  //s1=variable_name*;
-  //s1.append(".png");
-  
-=======
-  std::string file_name(variable_name);
-  file_name.append("_");
-  file_name.append(selection);
-  file_name.append(".png");
+  if(signal_chain != NULL) {
+    TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, x_min, x_max, 0);
+    hs.Add(signal_histo);
+    legend->AddEntry(signal_histo, signal_chain->legend, "l");
+    std::cout << "signal added to stack fine" << std::endl;
+  }
 
->>>>>>> 02ba25d491f619608a6de7cddce01a4a9012a01b
+  TH1F* data_histo = data->draw_data(variable_name, selection, x_min, x_max);
+  hs.Add(data_histo);
+  legend->AddEntry(data_histo, data->legend, "lep");
+  std::cout << "data added to stack fine" << std::endl;
+
+  std::string file_parts(variable_name);
+  file_parts.append("_");
+  file_parts.append(selection);
+  file_parts.append(".png");
+  const char* file_name = file_parts.c_str();
+  //const char* file_name = build_string({variable_name, "_", selection, ".png"});
+
   hs.Draw();
-  //hs.GetYaxis()->SetTitle("Frequency");
+  hs.GetYaxis()->SetTitle("Events");
+  hs.GetYaxis()->SetLabelSize(0.035);
+  hs.GetYaxis()->SetTitleOffset(1.35);
   hs.GetXaxis()->SetTitle(variable_name);
-  hs.GetXaxis()->SetRangeUser(6, 12);
-  c1->Update();
-  legend->Draw();
-  c1->Update();
-<<<<<<< HEAD
-  //c1->SavesAs(s1);}
-=======
+  hs.GetXaxis()->SetLabelSize(0.035);
+  hs.GetXaxis()->SetTitleOffset(1.35);
+  //hs.GetXaxis()->SetRangeUser(x_min, x_max);
 
-  c1->SaveAs(file_name.c_str());
+  legend->Draw();
+
+  c1->SaveAs(file_name);
   c1->Close();
 }
->>>>>>> 02ba25d491f619608a6de7cddce01a4a9012a01b
 
 #endif

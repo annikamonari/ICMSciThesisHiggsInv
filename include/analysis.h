@@ -1,3 +1,4 @@
+
 #ifndef Analysis_h
 #define Analysis_h
 
@@ -9,12 +10,24 @@
 //Backgrounds:
 
 //(DY) Z -> ll
-std::vector<const char*> z_ll = {"Data/background/MC_DY1JetsToLL.root", 
-                            "Data/background/MC_DY2JetsToLL.root", 
-                            "Data/background/MC_DY3JetsToLL.root", 
-                            "Data/background/MC_DY4JetsToLL.root", 
-                            "Data/background/MC_DYJetsToLL_PtZ-100-madgraph.root", 
-                            "Data/background/MC_DYJetsToLL.root"};
+
+std::vector<int*> stuff
+stuff.reserve(10);
+for( int i = 0; i < 10; ++i )
+    stuff.push_back(new int(i));
+
+
+
+
+
+std::vector<const char*> z_ll;
+z_ll.reserve(6);
+z_ll.emplace_back(new const char("Data/background/MC_DY1JetsToLL.root"));
+z_ll.emplace_back(new const char("Data/background/MC_DY2JetsToLL.root"));
+z_ll.emplace_back(new const char("Data/background/MC_DY3JetsToLL.root"));
+z_ll.emplace_back(new const char("Data/background/MC_DY4JetsToLL.root"));
+z_ll.emplace_back(new const char("Data/background/MC_DYJetsToLL_PtZ-100-madgraph.root"));
+z_ll.emplace_back(new const char("Data/background/MC_DYJetsToLL.root"));
 
 const char* z_ll_label = "Z_rightarrow_ell_ell";
 const char* z_ll_legend = "Z #rightarrow ll";

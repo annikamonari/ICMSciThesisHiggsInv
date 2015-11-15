@@ -8,6 +8,13 @@
 /////////////////////////////////////////////////////////////////////////////////
 
 //Backgrounds:
+// QCD
+const char* qcd_arr[] = {"MC_QCD-Pt-1000to1400-pythia6.root","MC_QCD-Pt-120to170-pythia6.root","MC_QCD-Pt-120to170_VBF-MET40.root","MC_QCD-Pt-1400to1800-pythia6.root","MC_QCD-Pt-170to300-pythia6.root","MC_QCD-Pt-170to300_VBF-MET40.root","MC_QCD-Pt-1800-pythia6.root","MC_QCD-Pt-300to470-pythia6.root","MC_QCD-Pt-300to470_VBF-MET40.root","MC_QCD-Pt-30to50-pythia6.root","MC_QCD-Pt-470to600-pythia6.root","MC_QCD-Pt-470to600_VBF-MET40.root","MC_QCD-Pt-50to80-pythia6.root","MC_QCD-Pt-600to800-pythia6.root","MC_QCD-Pt-800to1000-pythia6.root","MC_QCD-Pt-80to120-pythia6.root","MC_QCD-Pt-80to120_VBF-MET40.root"};
+std::vector<const char*> qcd (qcd_arr, qcd_arr+ sizeof(qcd_arr)/sizeof(const char*));						
+
+const char* qcd_label = "QCD";
+const char* qcd_legend = "QCD";
+
 
 //(DY) Z -> ll
 

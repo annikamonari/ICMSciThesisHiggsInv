@@ -32,13 +32,14 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
   std::cout << "setup canvas, legend and plot" << std::endl;
+   if( bg_chains[0] != NULL) { // checks for background input
   for(int i = 0; i < bg_chains.size(); i++) {
     TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
     hs.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
     std::cout << "histograms added to stack fine" << std::endl;
   }
-
+  }
   if(signal_chain != NULL) {
     TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, x_min, x_max, 0);
     hs.Add(signal_histo);
@@ -46,11 +47,12 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
     std::cout << "signal added to stack fine" << std::endl;
   }
 
+  if(data != NULL) {
   TH1F* data_histo = data->draw_data(variable_name, selection, x_min, x_max);
-  hs.Add(data_histo);
   legend->AddEntry(data_histo, data->legend, "lep");
+  data_histo->Draw("SAME");
   std::cout << "data added to stack fine" << std::endl;
-
+  }
   std::string file_parts(variable_name);
   file_parts.append("_");
   file_parts.append(selection);

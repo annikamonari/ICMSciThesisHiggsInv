@@ -3,7 +3,7 @@
 #include "analysis.h"
 #include <initializer_list>
 
-void produce_graphs(bool plot_signal, bool plot_background, bool plot_data) {
+void produce_graphs() {
   DataChain* bg_zll = new DataChain(z_ll, z_ll_label, z_ll_legend);
   DataChain* bg_wjets_ev = new DataChain(wjets_ev, wjets_ev_label, wjets_ev_legend);
   DataChain* bg_wjets_muv = new DataChain(wjets_muv, wjets_muv_label, wjets_muv_legend);
@@ -17,12 +17,8 @@ void produce_graphs(bool plot_signal, bool plot_background, bool plot_data) {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* vars[5][4] = { 
-                        {"dijet_deta", "3.0", "8.5", "right"},
-                        {"ht", "0.0", "400.0", "left"}, 
-                        {"met", "0.0", "500.0", "right"}, 
-                        {"alljetsmet_mindphi", "0.0", "3.5", "left"}, 
-                        {"dijet_M", "0.0", "3000.0", "right"} 
+  const char* vars[1][4] = { 
+                        {"alljetsmet_mindphi", "2.2", "3.2", "right"}
                       };
 
   for(int i = 0; i < 5; i++) {
@@ -35,15 +31,15 @@ void produce_graphs(bool plot_signal, bool plot_background, bool plot_data) {
     const char* x_min = vars[i][1];
     const char* x_max = vars[i][2];
 	//create vector of datachain pointers
-  DataChain* bg_arr[] ={bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv,bg_qcd, bg_top, bg_vv, bg_zjets_vv}; // create array of pointers
+  DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
   std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
-  draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, x_min, x_max, vars[i][3],plot_signal,plot_background,plot_data);
+  draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, x_min, x_max, vars[i][3]);
   }
 }
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  produce_graphs(true,true,true);
+  produce_graphs();
 
   theApp.Run();
   

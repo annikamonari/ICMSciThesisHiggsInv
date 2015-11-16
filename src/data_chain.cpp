@@ -39,7 +39,7 @@ TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, cons
 
   set_histo_style(is_signal, fill_colour);
 
-  chain->Draw(histo_id, selection); 
+  chain->Draw(histo_id, selection, "goff"); 
 
   TH1F* histo = (TH1F*)gDirectory->Get(label); // get histo from current directory
   //histo->GetXaxis()->SetRange(x_min, x_max);
@@ -65,11 +65,13 @@ TH1F* DataChain::draw_data(const char* variable_name, const char* selection, con
   const char* histo_id = draw_histo.c_str();
 
   chain->Draw(histo_id, selection, "E1"); 
-  chain->SetMarkerStyle(20);
+  chain->SetMarkerStyle(7);
   chain->SetMarkerColor(1);
+  chain->SetLineColor(1);
   gROOT->ForceStyle();
 
   TH1F* histo = (TH1F*)gDirectory->Get(label);
+  set_error_bars(histo);
 
   if (histo) {
     std::cout << "histo generated fine" << std::endl;
@@ -77,13 +79,14 @@ TH1F* DataChain::draw_data(const char* variable_name, const char* selection, con
   else {
     std::cout << "error in adding data signal" << std::endl;
   }
+
   return histo;
 }
 
 void DataChain::set_histo_style(bool is_signal, int fill_colour) {
   if(is_signal) {
     chain->SetLineColor(2);
-    chain->SetLineWidth(2);
+    chain->SetLineWidth(3);
     //chain->SetFillColorAlpha(0, 0);
   }
   else {
@@ -93,8 +96,18 @@ void DataChain::set_histo_style(bool is_signal, int fill_colour) {
 
 }
 
-double DataChain::get_data_error(TH1F* hist, binmin) {
-  double integral = hist->Integral(int binmin, hist->GetNbinsX()+1);
+TH1F* DataChain::set_error_bars(TH1F* hist) {
+  int nbins = hist->GetNbinsX();
+  
+  for(int i = 0; i < nbins; i++) {
+    double error_val = get_data_error(hist, i);
+    hist->SetBinError(i, error_val);
+  }
+  return hist;
+}
+
+double DataChain::get_data_error(TH1F* hist, int bin) {
+  double integral = hist->Integral(bin, bin + 1);
   return sqrt(integral);
 }
 

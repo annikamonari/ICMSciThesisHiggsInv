@@ -150,7 +150,7 @@ const char* data_legend = "data";
 
 //total_weight_lepveto
 
-const char* varsss[][4] = {
+const char* vars[][4] = {
                               {"jet1_pt", "0.0", "600.0", "right"},
                               {"jet2_pt", "0.0", "600.0", "right"},
                               {"jet3_pt", "0.0", "600.0", "right"},
@@ -191,7 +191,7 @@ const char* varsss[][4] = {
                               {"jet2metnomu_dphi", "0.0", "3.5", "right"},
                               {"jetmet_mindphi", "0.0", "3.5", "right"},
                               {"jetmetnomu_mindphi", "0.0", "3.5", "right"},
-                              {"alljetsmet_mindphi", "2.2", "3.2", "right"},
+                              {"alljetsmet_mindphi", "0", "3.2", "right"},
                               {"alljetsmetnomu_mindphi", "0.0", "3.5", "right"},
                               {"jetunclet_mindphi", "0.0", "3.5", "right"},
                               {"metunclet_dphi", "0.0", "3.5", "right"},

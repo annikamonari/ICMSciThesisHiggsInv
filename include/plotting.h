@@ -1,4 +1,4 @@
-#ifndef Plotting_h
+  #ifndef Plotting_h
 #define Plotting_h
 
 #include <TStyle.h>
@@ -7,7 +7,6 @@
 #include <TH2.h>
 #include "data_chain.h"
 
-//TODO : add data chain to plot
 void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection,const char* x_min, const char* x_max, const char* leg_pos) {
   //const char* plot_title = build_string({variable_name, " Plot"});
   std::string title_parts(variable_name);
@@ -22,7 +21,6 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   else {
     legend = new TLegend(0.12,0.5,0.3,0.88);
   }
-  
 
   THStack hs(plot_title, plot_title);
   

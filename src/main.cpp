@@ -4,9 +4,6 @@
 #include <initializer_list>
 
 void produce_graphs(bool plot_signal, bool plot_background, bool plot_data) {
-  /* if(plot_signal == false){
-  std::vector<const char*> mc_signal_data();
-  }*/
   DataChain* bg_zll = new DataChain(z_ll, z_ll_label, z_ll_legend);
   DataChain* bg_wjets_ev = new DataChain(wjets_ev, wjets_ev_label, wjets_ev_legend);
   DataChain* bg_wjets_muv = new DataChain(wjets_muv, wjets_muv_label, wjets_muv_legend);
@@ -16,12 +13,7 @@ void produce_graphs(bool plot_signal, bool plot_background, bool plot_data) {
   DataChain* bg_zjets_vv = new DataChain(zjets_vv, zjets_vv_label, zjets_vv_legend);
   DataChain* bg_qcd = new DataChain(qcd, qcd_label, qcd_legend);
   DataChain* mc_signal = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend);
-  /*if(plot_data == false){
-  const char* data_arr={};
-  //std::vector<const char*> data (data_arr, data_arr+ sizeof(data_arr)/sizeof(const char*));
-  DataChain* data_chain = new DataChain(data, data_label, data_legend);
-  }*/
-  
+   
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
@@ -44,12 +36,8 @@ void produce_graphs(bool plot_signal, bool plot_background, bool plot_data) {
     const char* x_max = vars[i][2];
 	//create vector of datachain pointers
   DataChain* bg_arr[] ={bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv,bg_qcd, bg_top, bg_vv, bg_zjets_vv}; // create array of pointers
-  /*if(plot_background == false){
-  bg_arr={};
-  }*/
   std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
-
-draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, x_min, x_max, vars[i][3],plot_signal,plot_background,plot_data);
+  draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, x_min, x_max, vars[i][3],plot_signal,plot_background,plot_data);
   }
 }
 

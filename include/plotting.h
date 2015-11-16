@@ -8,6 +8,14 @@
 #include "data_chain.h"
 
 //TODO : add data chain to plot
+double Integral(TH1F const* hist) {
+	if (hist) {
+	
+
+double Error(TH1F const* hist) {
+	double err =0.0;
+}
+
 void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection,const char* x_min, const char* x_max, const char* leg_pos, bool plot_signal, bool plot_background, bool plot_data) {
   //const char* plot_title = build_string({variable_name, " Plot"});
   std::string title_parts(variable_name);
@@ -29,16 +37,16 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   legend->SetTextSize(0.035);
   legend->SetBorderSize(0);
 
-  int colours[9] = {40, 41, 42, 30, 38, 28, 15, 49, 2};
+  int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
   std::cout << "setup canvas, legend and plot" << std::endl;
    if(plot_background) { // checks for background input
-  for(int i = 0; i < bg_chains.size(); i++) {
-    TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
-    hs.Add(single_bg_histo);
-    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
-    std::cout << "histograms added to stack fine" << std::endl;
-  }
+  	for(int i = 0; i < bg_chains.size(); i++) {
+  	  TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
+  	  hs.Add(single_bg_histo);
+  	  legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+  	  std::cout << "histograms added to stack fine" << std::endl;
+ 	 }
   }
   if(plot_signal) {
     TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, x_min, x_max, 0);
@@ -49,9 +57,10 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   TH1F* data_histo = data->draw_data(variable_name, selection, x_min, x_max);
   if(plot_data) {
     legend->AddEntry(data_histo, data->legend, "lep");
-  if(!(plot_signal&plot_background)){
-  hs.Add(data_histo);
-  }
+    
+  	if(!(plot_signal&plot_background)){
+ 		hs.Add(data_histo);
+  	}
     }
   std::string file_parts(variable_name);
   file_parts.append("_");

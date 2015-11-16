@@ -1,6 +1,12 @@
 # Ignore the build dir
 build
 
+# Ignore the data dir
+data/*
+
+# Ignore Dan's swp files
+*.swp
+
 # Ignore any executables
 bin/*
 

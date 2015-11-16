@@ -18,8 +18,8 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* varss[1][4] = { 
-                        {"alljetsmet_mindphi", "0", "3.2", "right"}
+  const char* vars[1][6] = { 
+                        {"alljetsmet_mindphi", "0", "3.2", "right", "2.2", "3.2"}
                       };
 
   for(int i = 0; i < 70; i++) {
@@ -27,10 +27,20 @@ void produce_graphs() {
     weight_str.append("*");
     weight_str.append(vars[i][0]);
 
-    //std::string cut_min_str(cut_min);
-    //std::string cut_max_str(cut_max);
+    //min: x>4.5, max: x<4.5
+    std::string cut_max_str(weight_str);
+    cut_max_str.append("<");
+    cut_max_str.append(vars[i][5]);
 
-    const char* selection = weight_str.c_str();
+    std::string cut_min_str(weight_str);
+    cut_min_str.append(">");
+    cut_min_str.append(vars[i][4]);
+
+    std::string selection_str(cut_max_str);
+    selection_str.append("&&");
+    selection_str.append(cut_min_str);
+
+    const char* selection = selection_str.c_str();
 
     //const char* selection = "total_weight_lepveto*ht";build_string({weight,"*", vars[i][0]});
     const char* x_min = vars[i][1];

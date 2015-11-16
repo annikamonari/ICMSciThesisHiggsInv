@@ -1,5 +1,5 @@
 #include "data_chain.h"
-
+#include <cmath>
 
 
 DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend) {
@@ -109,7 +109,7 @@ TH1F* DataChain::set_error_bars(TH1F* hist) {
 
 double DataChain::get_data_error(TH1F* hist, int bin) {
   double integral = hist->Integral(bin, bin + 1);
-  return sqrt(integral);
+  return std::pow(integral,0.5);
 }
 
 const char* build_string(std::vector<const char*> pchars) {

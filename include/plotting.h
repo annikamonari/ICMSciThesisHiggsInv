@@ -69,7 +69,6 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   legend_bg->Draw();
 
   sig->cd();
-  legend->~TLegend();
   signal_histo->Draw();
   signal_histo->SetTitle("");
   signal_histo->GetYaxis()->SetTitle("Events");
@@ -79,11 +78,6 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   signal_histo->GetXaxis()->SetLabelSize(0.035);
   signal_histo->GetXaxis()->SetTitleOffset(1.35);
 
-  TLegend* legend2 = new TLegend(0.7,0.5,0.88,0.88);
-  legend2->SetTextSize(0.035);
-  legend2->SetBorderSize(0);
-  legend2->AddEntry(signal_histo, signal_chain->legend, "l");
-  legend2->Draw();
   c1->SaveAs(file_name);
   c1->Close();
 }

@@ -2,6 +2,7 @@
 #include "plotting.h"
 #include "analysis.h"
 #include <initializer_list>
+#include <cmath>
 
 void produce_graphs() {
   DataChain* bg_zll = new DataChain(z_ll, z_ll_label, z_ll_legend);

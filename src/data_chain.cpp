@@ -25,7 +25,6 @@ void DataChain::get_data() {
 }
 
 TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const char* x_min, const char* x_max, int fill_colour) {
-  //const char* histo_id = build_string({variable_name, ">>hnew"});
 
   std::string draw_histo(variable_name);
   draw_histo.append(">>");

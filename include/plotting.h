@@ -12,19 +12,25 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   title_parts.append(" Plot");
   const char* plot_title = title_parts.c_str();
 
-  TCanvas* c1 = new TCanvas("c1", plot_title);
-  TLegend* legend;
+  TCanvas* c1 = new TCanvas("c1", plot_title, 800, 1000);
+  TPad* bg = new TPad("bg", "", 0.0, 0.3, 1.0, 1.0);
+  TPad* sig = new TPad("sig", "", 0.0, 0.0, 1.0, 0.3);
+  bg->Draw();
+  sig->Draw();
+
+  bg->cd();
+  TLegend* legend_bg;
   if(strcmp(leg_pos, "right") == 0) {
-    legend = new TLegend(0.7,0.5,0.88,0.88);
+    legend_bg = new TLegend(0.7,0.5,0.88,0.88);
   }
   else {
-    legend = new TLegend(0.12,0.5,0.3,0.88);
+    legend_bg = new TLegend(0.12,0.5,0.3,0.88);
   }
 
   THStack hs(plot_title, plot_title);
   
-  legend->SetTextSize(0.035);
-  legend->SetBorderSize(0);
+  legend_bg->SetTextSize(0.035);
+  legend_bg->SetBorderSize(0);
 
   int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
@@ -32,15 +38,15 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   for(int i = 0; i < bg_chains.size(); i++) {
   	TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
   	hs.Add(single_bg_histo);
-  	legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+  	legend_bg->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   	std::cout << "histograms added to stack fine" << std::endl;
  	}
 
   TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, x_min, x_max, 0);
-  legend->AddEntry(signal_histo, signal_chain->legend, "l");
+  legend_bg->AddEntry(signal_histo, signal_chain->legend, "l");
 
   TH1F* data_histo = data->draw_data(variable_name, selection, x_min, x_max);
-  legend->AddEntry(data_histo, data->legend, "lep");
+  legend_bg->AddEntry(data_histo, data->legend, "lep");
     
   std::string file_parts(variable_name);
   file_parts.append("_");
@@ -51,7 +57,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
 
   hs.Draw();
   data_histo->Draw("SAME");
-  signal_histo->Draw("SAME");
+
   std::cout << "data added to plot fine" << std::endl;
   hs.GetYaxis()->SetTitle("Events");
   hs.GetYaxis()->SetLabelSize(0.035);
@@ -60,11 +66,24 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   hs.GetXaxis()->SetLabelSize(0.035);
   hs.GetXaxis()->SetTitleOffset(1.35);
   
-  
-  //hs.GetXaxis()->SetRangeUser(x_min, x_max);
+  legend_bg->Draw();
 
-  legend->Draw();
+  sig->cd();
+  legend->~TLegend();
+  signal_histo->Draw();
+  signal_histo->SetTitle("");
+  signal_histo->GetYaxis()->SetTitle("Events");
+  signal_histo->GetYaxis()->SetLabelSize(0.035);
+  signal_histo->GetYaxis()->SetTitleOffset(1.35);
+  signal_histo->GetXaxis()->SetTitle(variable_name);
+  signal_histo->GetXaxis()->SetLabelSize(0.035);
+  signal_histo->GetXaxis()->SetTitleOffset(1.35);
 
+  TLegend* legend2 = new TLegend(0.7,0.5,0.88,0.88);
+  legend2->SetTextSize(0.035);
+  legend2->SetBorderSize(0);
+  legend2->AddEntry(signal_histo, signal_chain->legend, "l");
+  legend2->Draw();
   c1->SaveAs(file_name);
   c1->Close();
 }

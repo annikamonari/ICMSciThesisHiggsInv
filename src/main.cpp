@@ -23,10 +23,14 @@ void produce_graphs() {
                       };
 
   for(int i = 0; i < 5; i++) {
-    std::string selection_str(weight);
-    selection_str.append("*");
-    selection_str.append(vars[i][0]);
-    const char* selection = selection_str.c_str();
+    std::string weight_str(weight);
+    weight_str.append("*");
+    weight_str.append(vars[i][0]);
+
+    //std::string cut_min_str(cut_min);
+    //std::string cut_max_str(cut_max);
+
+    const char* selection = weight_str.c_str();
 
     //const char* selection = "total_weight_lepveto*ht";build_string({weight,"*", vars[i][0]});
     const char* x_min = vars[i][1];

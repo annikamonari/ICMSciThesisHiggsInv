@@ -17,8 +17,11 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
+  const char* vars[1][4] = { 
+                        {"alljetsmet_mindphi", "0", "3.2", "right"}
+                      };
 
-  for(int i = 0; i < 70; i++) {
+  for(int i = 0; i < 5; i++) {
     std::string selection_str(weight);
     selection_str.append("*");
     selection_str.append(vars[i][0]);

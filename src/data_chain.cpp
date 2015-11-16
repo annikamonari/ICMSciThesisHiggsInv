@@ -93,6 +93,11 @@ void DataChain::set_histo_style(bool is_signal, int fill_colour) {
 
 }
 
+double DataChain::get_data_error(TH1F* hist, binmin) {
+  double integral = hist->Integral(int binmin, hist->GetNbinsX()+1);
+  return sqrt(integral);
+}
+
 const char* build_string(std::vector<const char*> pchars) {
   std::string str_from_pchars;
 

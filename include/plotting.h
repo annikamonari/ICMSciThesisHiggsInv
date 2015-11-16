@@ -1,4 +1,4 @@
-  #ifndef Plotting_h
+#ifndef Plotting_h
 #define Plotting_h
 
 #include <TStyle.h>
@@ -6,15 +6,6 @@
 #include <TLegend.h>
 #include <TH2.h>
 #include "data_chain.h"
-
-//TODO : add data chain to plot
-/*double Integral(TH1F const* hist) {
-	if (hist) {
-	
-
-double Error(TH1F const* hist) {
-	double err =0.0;
-}*/
 
 void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection,const char* x_min, const char* x_max, const char* leg_pos, bool plot_signal, bool plot_background, bool plot_data) {
   //const char* plot_title = build_string({variable_name, " Plot"});

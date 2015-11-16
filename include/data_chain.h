@@ -247,6 +247,7 @@ public:
   TH1F* histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const char* x_min, const char* x_max, int fill_colour = 0);
   void set_histo_style(bool is_signal, int fill_colour = 0);
   TH1F* draw_data(const char* variable_name, const char* selection, const char* x_min, const char* x_max);
+  double get_data_error(TH1F* hist, binmin = 0);
 };
 
 #endif

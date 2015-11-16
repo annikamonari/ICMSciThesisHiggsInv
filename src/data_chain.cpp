@@ -39,7 +39,7 @@ TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, cons
 
   set_histo_style(is_signal, fill_colour);
 
-  chain->Draw(histo_id, selection); 
+  chain->Draw(histo_id, selection, "goff"); 
 
   TH1F* histo = (TH1F*)gDirectory->Get(label); // get histo from current directory
  

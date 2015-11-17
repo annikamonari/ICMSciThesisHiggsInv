@@ -18,7 +18,7 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* vars[1][6] = { 
+  const char* varss[1][6] = { 
                         {"met_y", "-400.0", "400.0", "left", "180.0", "400.0"}
                       };
 
@@ -43,8 +43,8 @@ void produce_graphs() {
     const char* selection = selection_str.c_str();
 
     //const char* selection = "total_weight_lepveto*ht";build_string({weight,"*", vars[i][0]});
-    const char* x_min = vars[i][1];
-    const char* x_max = vars[i][2];
+    const char* x_min = vars[i][4];
+    const char* x_max = vars[i][5];
 	//create vector of datachain pointers
   DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
   std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));

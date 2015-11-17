@@ -150,6 +150,46 @@ const char* data_legend = "data";
 
 //total_weight_lepveto
 
+const char* vars_with_cuts[][6] = {
+                              {"jet1_pt", "0.0", "600.0", "right", "420.0", "440.0"},
+                              {"jet3_pt", "0.0", "600.0", "right", "195.0", "320.0"},
+                              {"jet2_E", "0.0", "5000.0", "right", "2400.0", "2700.0"},
+                              {"jet1_eta", "-5.0", "5.0", "left", "0.6", "1.0"},
+                              {"forward_tag_eta", "-5.0", "5.0", "left", "4.1", "4.3"},
+                              {"dijet_deta", "3.0", "8.0", "right", "6.4", "6.7"},
+                              {"dijet_sumeta", "-6.0", "6.0", "left", "3.5", "4.0"},
+                              {"dijet_dphi", "0.0", "4.0", "left", "1.3", "1.5"},
+                              {"met", "0.0", "400.0", "right", "2500.0", "2700.0"},
+                              {"metnomu_x", "-400.0", "400.0", "left", "340.0", "400.0"},
+                              {"metnomu_y", "-400.0", "400.0", "left", "200.0", "400.0"},
+                              {"met_significance", "0.0", "12.0", "right", "7.2", "10.0"},
+                              {"metnomu_significance", "2.0", "12.0", "right", "6.8", "10.2"},
+                              {"sumet", "0.0", "2400.0", "right", "1900.0", "2400.0"},
+                              {"ht", "0.0", "1200.0", "right", "125.0", "175.0"},
+                              {"ht30", "0.0", "1200.0", "right", "100.0", "150.0"},                    
+                              {"sqrt_ht", "0.0", "35.0", "right", "10.0", "13.0"},
+                              {"unclustered_et", "0.0", "2000.0", "right", "1400.0", "1600.0"},
+                              {"jet1met_dphi", "0.0", "3.5", "left", "2.1", "2.4"},
+                              {"jet2met_dphi", "0.0", "3.5", "right", "1.4", "1.7"},
+                              {"jet1metnomu_dphi", "0.0", "3.5", "left", "2.1", "2.5"},
+                              {"jet2metnomu_dphi", "0.0", "3.5", "right", "1.4", "1.7"},
+                              {"jetmetnomu_mindphi", "0.0", "3.5", "right", "2.9", "3.1"},
+                              {"alljetsmet_mindphi", "0", "3.2", "left", "2.2", "3.0"},
+                              {"alljetsmetnomu_mindphi", "0.0", "3.5", "left", "2.2", "3.0"},
+                              {"jetunclet_mindphi", "0.0", "3.5", "right", "2.8", "2.9"},
+                              {"metnomuunclet_dphi", "0.0", "3.5", "right", "2.8", "2.9"},
+                              {"dijetmet_scalarSum_pt", "0.0", "1200.0", "right", "800.0", "900.0"},
+                              {"dijetmet_vectorialSum_pt", "0.0", "400.0", "right", "240.0", "250.0"},
+                              {"dijetmet_ptfraction", "0.0", "1.0", "right", "0.76", "0.82"},
+                              {"jet2met_scalarprod", "-400.0", "400.0", "left", "20.0", "50.0"},
+                              {"dijetmetnomu_scalarSum_pt", "0.0", "1200.0", "right", "800.0", "950.0"},
+                              {"jet2metnomu_scalarprod", "-2000.0", "2000.0", "left", "400.0", "500.0"},
+                              {"l1met", "0.0", "400.0", "right", "250.0", "400.0"},
+                              {"metnomuons", "0.0", "400.0", "right", "320.0", "400.0"},  
+                              {"nvetomuons", "0.0", "3.0", "right", "0.9", "1.1"},
+                              {"nvetoelectrons", "0.0", "3.0", "right", "0.9", "1.1"},
+                              {"ntaus", "0.0", "3.0", "right", "0.9", "1.1"}
+                             };
 const char* varss[][4] = {
                               {"jet1_pt", "0.0", "600.0", "right"},
                               {"jet2_pt", "0.0", "600.0", "right"},
@@ -191,8 +231,8 @@ const char* varss[][4] = {
                               {"jet2metnomu_dphi", "0.0", "3.5", "right"},
                               {"jetmet_mindphi", "0.0", "3.5", "right"},
                               {"jetmetnomu_mindphi", "0.0", "3.5", "right"},
-                              {"alljetsmet_mindphi", "0", "3.2", "right"},
-                              {"alljetsmetnomu_mindphi", "0.0", "3.5", "right"},
+                              {"alljetsmet_mindphi", "0", "3.2", "left"},
+                              {"alljetsmetnomu_mindphi", "0.0", "3.5", "left"},
                               {"jetunclet_mindphi", "0.0", "3.5", "right"},
                               {"metunclet_dphi", "0.0", "3.5", "right"},
                               {"metnomuunclet_dphi", "0.0", "3.5", "right"},
@@ -223,6 +263,7 @@ const char* varss[][4] = {
                               {"m_mumu_gen", "-20.0", "20.0", "right"},
                               {"n_vertices", "0.0", "30.0", "right"}
                              };
+
 
 #endif
 

@@ -57,6 +57,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
 
   hs.Draw();
   data_histo->Draw("SAME");
+  signal_histo->Draw("SAME");
 
   std::cout << "data added to plot fine" << std::endl;
   hs.GetYaxis()->SetTitle("Events");

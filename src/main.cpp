@@ -18,8 +18,8 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* varss[1][6] = { 
-                        {"met_y", "-400.0", "400.0", "left", "180.0", "400.0"}
+  const char* vars[1][6] = { 
+                        {"met", "0.0", "400.0", "right", "270.0", "320.0"}
                       };
 
   for(int i = 0; i < 37; i++) {

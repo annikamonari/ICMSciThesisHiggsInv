@@ -19,7 +19,7 @@ void produce_graphs() {
 
   const char* weight = "total_weight_lepveto";
   const char* vars[1][6] = { 
-                        {"mht", "0.0", "3000.0", "right", "2400.0", "2800.0"}
+                        {"met_y", "-400.0", "400.0", "left", "180.0", "400.0"}
                       };
 
   for(int i = 0; i < 37; i++) {

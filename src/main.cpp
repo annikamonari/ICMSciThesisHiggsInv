@@ -22,7 +22,7 @@ void produce_graphs() {
                         {"alljetsmet_mindphi", "0", "3.2", "right", "2.2", "3.2"}
                       };
 
-  for(int i = 0; i < 70; i++) {
+  for(int i = 0; i < 37; i++) {
     std::string weight_str(weight);
     weight_str.append("*");
     weight_str.append(vars[i][0]);

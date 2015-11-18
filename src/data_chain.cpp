@@ -24,12 +24,14 @@ void DataChain::get_data() {
   }
 }
 
-TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const char* x_min, const char* x_max, int fill_colour) {
+TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max, int fill_colour, bool is_cut) {
 
   std::string draw_histo(variable_name);
   draw_histo.append(">>");
   draw_histo.append(label);
-  draw_histo.append("(100,");
+  draw_histo.append("(");
+  draw_histo.append(bins);
+  draw_histo.append(",");
   draw_histo.append(x_min);
   draw_histo.append(",");
   draw_histo.append(x_max);
@@ -38,8 +40,11 @@ TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, cons
 
   set_histo_style(is_signal, fill_colour);
 
-  chain->Draw(histo_id, selection, "goff"); 
 
+  double x_minn = atof(x_min);
+  double x_maxx = atof(x_max);
+
+  chain->Draw(histo_id, selection, "goff"); 
   TH1F* histo = (TH1F*)gDirectory->Get(label); // get histo from current directory
  
  //histo->GetXaxis()->SetRange(x_min, x_max);
@@ -52,12 +57,14 @@ TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, cons
   return histo;
 }
 
-TH1F* DataChain::draw_data(const char* variable_name, const char* selection, const char* x_min, const char* x_max) {
-  //const char* histo_id = build_string({variable_name, ">>", label});
+TH1F* DataChain::draw_data(const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max) {
+  
   std::string draw_histo(variable_name);
   draw_histo.append(">>");
   draw_histo.append(label);
-  draw_histo.append("(100,");
+  draw_histo.append("(");
+  draw_histo.append(bins);
+  draw_histo.append(",");
   draw_histo.append(x_min);
   draw_histo.append(",");
   draw_histo.append(x_max);
@@ -96,6 +103,12 @@ void DataChain::set_histo_style(bool is_signal, int fill_colour) {
 
 }
 
+int DataChain::scale_bins_for_cut(TH1F* hist, const char* x_min_ch, const char* x_max_ch) {
+  double x_min = atof(x_min_ch);
+  double x_max = atof(x_max_ch);
+  return hist->GetXaxis()->FindBin(x_max) - hist->GetXaxis()->FindBin(x_min);
+}
+
 TH1F* DataChain::set_error_bars(TH1F* hist) {
   int nbins = hist->GetNbinsX();
   
@@ -108,15 +121,17 @@ TH1F* DataChain::set_error_bars(TH1F* hist) {
 
 double DataChain::get_data_error(TH1F* hist, int bin) {
   double integral = hist->Integral(bin, bin + 1);
-  return std::pow(integral,0.5);
+  return std::pow(integral, 0.5);
 }
 
-const char* build_string(std::vector<const char*> pchars) {
-  std::string str_from_pchars;
-
-  for(int i = 0; i < pchars.size(); i++) {
-    str_from_pchars.append(pchars[i]);
-  }
-  std::cout << "word parsed fine:" << str_from_pchars << std::endl;
-  return str_from_pchars.c_str();
+const char* DataChain::build_var_string(const char* variable_name, const char* x_min, 
+                                        const char* x_max) {
+  std::string var_string(variable_name);
+  var_string += ">>";
+  var_string.append(label);
+  var_string += "(";
+  
+  return var_string.c_str();
 }
+
+

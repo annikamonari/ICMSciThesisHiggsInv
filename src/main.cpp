@@ -18,16 +18,15 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* vars[1][6] = { 
-                        {"met", "0.0", "400.0", "right", "270.0", "320.0"}
+  const char* vars[][5] = { 
+                        // {varaible to plot, bins, xmin, xmax, legend position}
+                        {"met", "100", "0.0", "400.0", "right"}
                       };
 
   for(int i = 0; i < 37; i++) {
-    std::string weight_str(weight);
-    weight_str.append("*");
-    weight_str.append(vars[i][0]);
 
     //min: x>4.5, max: x<4.5
+    /*
     std::string cut_max_str(weight_str);
     cut_max_str.append("<");
     cut_max_str.append(vars[i][5]);
@@ -35,20 +34,18 @@ void produce_graphs() {
     std::string cut_min_str(weight_str);
     cut_min_str.append(">");
     cut_min_str.append(vars[i][4]);
+    */
 
-    std::string selection_str(cut_max_str);
-    selection_str.append("&&");
-    selection_str.append(cut_min_str);
-
+    std::string selection_str(weight);
     const char* selection = selection_str.c_str();
 
-    //const char* selection = "total_weight_lepveto*ht";build_string({weight,"*", vars[i][0]});
-    const char* x_min = vars[i][4];
-    const char* x_max = vars[i][5];
+    const char* bins = vars[i][1];
+    const char* x_min = vars[i][2];
+    const char* x_max = vars[i][3];
 	//create vector of datachain pointers
   DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
   std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
-  draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, x_min, x_max, vars[i][3]);
+  draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, bins, x_min, x_max, vars[i][3], true);
   }
 }
 

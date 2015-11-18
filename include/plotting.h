@@ -6,7 +6,7 @@
 #include <TLegend.h>
 #include "data_chain.h"
 
-void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection,const char* x_min, const char* x_max, const char* leg_pos) {
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max, const char* leg_pos, bool is_cut) {
   //const char* plot_title = build_string({variable_name, " Plot"});
   std::string title_parts(variable_name);
   title_parts.append(" Plot");
@@ -36,21 +36,21 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
 
   std::cout << "setup canvas, legend and plot" << std::endl;
   for(int i = 0; i < bg_chains.size(); i++) {
-  	TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, x_min, x_max, colours[i]);
+  	TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, bins, x_min, x_max, colours[i], is_cut);
   	hs.Add(single_bg_histo);
   	legend_bg->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   	std::cout << "histograms added to stack fine" << std::endl;
  	}
 
-  TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, x_min, x_max, 0);
+  TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, bins, x_min, x_max, 0, is_cut);
   legend_bg->AddEntry(signal_histo, signal_chain->legend, "l");
 
-  TH1F* data_histo = data->draw_data(variable_name, selection, x_min, x_max);
+  TH1F* data_histo = data->draw_data(variable_name, selection, bins, x_min, x_max);
   legend_bg->AddEntry(data_histo, data->legend, "lep");
     
   std::string file_parts(variable_name);
   file_parts.append("_");
-  file_parts.append(selection);
+  file_parts.append(bins);
   file_parts.append(".png");
   const char* file_name = file_parts.c_str();
   //const char* file_name = build_string({variable_name, "_", selection, ".png"});

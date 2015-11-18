@@ -6,19 +6,14 @@
 #include <TLegend.h>
 #include "data_chain.h"
 
-void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max, const char* leg_pos, bool is_cut) {
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection, const char* signal_multiplier, const char* bins, const char* x_min, const char* x_max, const char* leg_pos, bool is_cut) {
   //const char* plot_title = build_string({variable_name, " Plot"});
   std::string title_parts(variable_name);
   title_parts.append(" Plot");
   const char* plot_title = title_parts.c_str();
 
-  TCanvas* c1 = new TCanvas("c1", plot_title, 800, 1000);
-  TPad* bg = new TPad("bg", "", 0.0, 0.3, 1.0, 1.0);
-  TPad* sig = new TPad("sig", "", 0.0, 0.0, 1.0, 0.3);
-  bg->Draw();
-  sig->Draw();
+  TCanvas* c1 = new TCanvas("c1", plot_title);
 
-  bg->cd();
   TLegend* legend_bg;
   if(strcmp(leg_pos, "right") == 0) {
     legend_bg = new TLegend(0.7,0.5,0.88,0.88);
@@ -42,7 +37,11 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   	std::cout << "histograms added to stack fine" << std::endl;
  	}
 
-  TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, selection, bins, x_min, x_max, 0, is_cut);
+  std::string signal_sel(selection);
+  signal_sel += "*";
+  signal_sel.append(signal_multiplier);
+
+  TH1F* signal_histo = signal_chain->histo_for_stack(true, variable_name, signal_sel.c_str(), bins, x_min, x_max, 0, is_cut);
   legend_bg->AddEntry(signal_histo, signal_chain->legend, "l");
 
   TH1F* data_histo = data->draw_data(variable_name, selection, bins, x_min, x_max);
@@ -68,16 +67,6 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   hs.GetXaxis()->SetTitleOffset(1.35);
   
   legend_bg->Draw();
-
-  sig->cd();
-  signal_histo->Draw();
-  signal_histo->SetTitle("");
-  signal_histo->GetYaxis()->SetTitle("Events");
-  signal_histo->GetYaxis()->SetLabelSize(0.035);
-  signal_histo->GetYaxis()->SetTitleOffset(1.35);
-  signal_histo->GetXaxis()->SetTitle(variable_name);
-  signal_histo->GetXaxis()->SetLabelSize(0.035);
-  signal_histo->GetXaxis()->SetTitleOffset(1.35);
 
   c1->SaveAs(file_name);
   c1->Close();

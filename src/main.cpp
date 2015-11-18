@@ -19,7 +19,7 @@ void produce_graphs() {
 
   const char* weight = "total_weight_lepveto";
   const char* vars[][6] = { 
-                        // {varaible to plot, bins, xmin, xmax, legend position}
+                        // {varaible to plot, bins, xmin, xmax, legend position, signal_multiplier}
                         {"met", "100", "0.0", "400.0", "right", "100"}
                       };
 
@@ -44,9 +44,10 @@ void produce_graphs() {
     const char* x_min = vars[i][2];
     const char* x_max = vars[i][3];
 	//create vector of datachain pointers
-  DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
-  std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
-  draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, bins, x_min, x_max, vars[i][3], true);
+    DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
+    std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
+    //draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, bins, x_min, x_max, vars[i][3], true);
+    bg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
   }
 }
 

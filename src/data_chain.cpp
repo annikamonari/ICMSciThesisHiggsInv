@@ -103,10 +103,20 @@ void DataChain::set_histo_style(bool is_signal, int fill_colour) {
 
 }
 
-int DataChain::scale_bins_for_cut(TH1F* hist, const char* x_min_ch, const char* x_max_ch) {
-  double x_min = atof(x_min_ch);
-  double x_max = atof(x_max_ch);
-  return hist->GetXaxis()->FindBin(x_max) - hist->GetXaxis()->FindBin(x_min);
+char* DataChain::scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
+  double x_min_nocut = atof(x_minc_nocut);
+  double x_max_nocut = atof(x_maxc_nocut);
+  double x_min_cut = atof(x_minc_cut);
+  double x_max_cut = atof(x_maxc_cut);
+  double fraction = (x_max_cut - x_min_cut)/(x_max_nocut - x_min_nocut);
+  double bins = atof(binsc);
+  double nbins = bins * fraction;
+  nbins = nbins + 0.5;
+  int nbins_int = (int) nbins;
+
+  char scaled_bins[10];
+  sprintf(scaled_bins, "%d", nbins_int);
+  return scaled_bins;
 }
 
 TH1F* DataChain::set_error_bars(TH1F* hist) {
@@ -124,8 +134,7 @@ double DataChain::get_data_error(TH1F* hist, int bin) {
   return std::pow(integral, 0.5);
 }
 
-const char* DataChain::build_var_string(const char* variable_name, const char* x_min, 
-                                        const char* x_max) {
+const char* DataChain::build_var_string(const char* variable_name, const char* x_min, const char* x_max) {
   std::string var_string(variable_name);
   var_string += ">>";
   var_string.append(label);

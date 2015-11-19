@@ -25,15 +25,15 @@ void produce_graphs(int bin_number) {
    
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
   
-  char* bin_num_str={int_to_char(bin_number)};
-  std::cout << bin_num_str <<".\n";
+  char* bin_num_str=int_to_char(bin_number);
   const char* weight = "total_weight_lepveto";
   const char* vars[][6] = { 
                         // {varaible to plot, bins, xmin, xmax, legend position, signal_multiplier}
                         {"met", bin_num_str, "0.0", "400.0", "right", "100"}
                       };
+ std::cout << vars[0][1] <<"\n";
 
-  for(int i = 0; i < 37; i++) {
+  for(int i = 0; i < 1; i++) {
 
     //min: x>4.5, max: x<4.5
     /*
@@ -50,7 +50,8 @@ void produce_graphs(int bin_number) {
     const char* selection = selection_str.c_str();
 
     const char* signal_multiplier = vars[i][5];
-    const char* bins = vars[i][1];
+    const char* bins = int_to_char(bin_number);
+    std::cout << bins <<"\n";
     const char* x_min = vars[i][2];
     const char* x_max = vars[i][3];
 	//create vector of datachain pointers
@@ -63,11 +64,11 @@ void produce_graphs(int bin_number) {
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-    int i;
+    int in;
     std::cout << "Please enter a bin number:";
-    std::cin >> i;
+    std::cin >> in;
 
-produce_graphs(i);
+produce_graphs(in);
 
   theApp.Run();
   

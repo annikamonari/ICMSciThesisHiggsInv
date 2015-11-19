@@ -28,7 +28,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   legend_bg->SetBorderSize(0);
 
   int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
-
+  std::cout << bins <<"\n";
   std::cout << "setup canvas, legend and plot" << std::endl;
   for(int i = 0; i < bg_chains.size(); i++) {
   	TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, bins, x_min, x_max, colours[i], is_cut);

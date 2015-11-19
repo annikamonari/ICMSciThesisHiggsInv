@@ -27,10 +27,10 @@ void produce_graphs(int bin_number) {
   
   char* bin_num_str=int_to_char(bin_number);
   const char* weight = "total_weight_lepveto";
-  const char* vars[][6] = { 
+  const char* vars[][6] = 
                         // {varaible to plot, bins, xmin, xmax, legend position, signal_multiplier}
                         {"met", bin_num_str, "0.0", "400.0", "right", "100"}
-                      };
+                      ;
  std::cout << vars[0][1] <<"\n";
 
   for(int i = 0; i < 1; i++) {
@@ -64,13 +64,14 @@ void produce_graphs(int bin_number) {
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
+
     int in;
     std::cout << "Please enter a bin number:";
     std::cin >> in;
 
-produce_graphs(in);
+  produce_graphs(in);
 
   theApp.Run();
-  
+
   return 0;
 }

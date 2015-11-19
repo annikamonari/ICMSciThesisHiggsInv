@@ -69,7 +69,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   legend_bg->Draw();
 
   c1->SaveAs(file_name);
-  //c1->Close();
+  c1->Close();
 }
 
 #endif

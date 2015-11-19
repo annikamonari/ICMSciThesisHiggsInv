@@ -46,7 +46,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
 
   TH1F* data_histo = data->draw_data(variable_name, selection, bins, x_min, x_max);
   legend_bg->AddEntry(data_histo, data->legend, "lep");
-    
+
   std::string file_parts(variable_name);
   file_parts.append("_");
   file_parts.append(bins);
@@ -69,7 +69,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   legend_bg->Draw();
 
   c1->SaveAs(file_name);
-  c1->Close();
+  //c1->Close();
 }
 
 #endif

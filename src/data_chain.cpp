@@ -119,6 +119,13 @@ char* DataChain::scale_bins_for_cut(const char* binsc, const char* x_minc_nocut,
   return scaled_bins;
 }
 
+/*char* DataChain::int_to_char(int int_to_convert){
+	char char_of_int[20];
+	sprintf(char_of_int, "%d", int_to_convert);
+	return char_of_int;
+}
+*/
+
 TH1F* DataChain::set_error_bars(TH1F* hist) {
   int nbins = hist->GetNbinsX();
   

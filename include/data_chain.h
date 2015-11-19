@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <stdio.h>
+#include <stdlib.h>
 
 extern const char* build_string(std::vector<const char*> pchars);
 
@@ -252,6 +253,7 @@ public:
   TH1F* set_error_bars(TH1F* hist);
   char* scale_bins_for_cut(const char* bins, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut);
   const char* build_var_string(const char* variable_name, const char* x_min, const char* x_max);
+  //char* int_to_char(int int_to_convert);
 };
 
 #endif

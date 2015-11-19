@@ -4,7 +4,15 @@
 #include <initializer_list>
 #include <cmath>
 
-void produce_graphs() {
+
+  char* int_to_char(int int_to_convert){
+	char char_of_int[5];
+	sprintf(char_of_int, "%d", int_to_convert);
+	return char_of_int;
+}
+
+
+void produce_graphs(int bin_number) {
   DataChain* bg_zll = new DataChain(z_ll, z_ll_label, z_ll_legend);
   DataChain* bg_wjets_ev = new DataChain(wjets_ev, wjets_ev_label, wjets_ev_legend);
   DataChain* bg_wjets_muv = new DataChain(wjets_muv, wjets_muv_label, wjets_muv_legend);
@@ -16,11 +24,13 @@ void produce_graphs() {
   DataChain* mc_signal = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend);
    
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
-
+  
+  char* bin_num_str={int_to_char(bin_number)};
+  std::cout << bin_num_str <<".\n";
   const char* weight = "total_weight_lepveto";
   const char* vars[][6] = { 
                         // {varaible to plot, bins, xmin, xmax, legend position, signal_multiplier}
-                        {"met", "100", "0.0", "400.0", "right", "100"}
+                        {"met", bin_num_str, "0.0", "400.0", "right", "100"}
                       };
 
   for(int i = 0; i < 37; i++) {
@@ -46,14 +56,18 @@ void produce_graphs() {
 	//create vector of datachain pointers
     DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
     std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
-    //draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, bins, x_min, x_max, vars[i][3], true);
-    bg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
+    draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, bins, x_min, x_max, vars[i][3], true);
+    //bg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
   }
 }
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  produce_graphs();
+    int i;
+    std::cout << "Please enter a bin number:";
+    std::cin >> i;
+
+produce_graphs(i);
 
   theApp.Run();
   

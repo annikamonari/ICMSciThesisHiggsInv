@@ -49,7 +49,7 @@ TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, cons
  
  //histo->GetXaxis()->SetRange(x_min, x_max);
   if (histo) {
-    std::cout << "histo generated fine" << std::endl;
+    //std::cout << "histo generated fine" << std::endl;
   }
   else {
     std::cout << "error in histoplot" << std::endl;
@@ -81,7 +81,7 @@ TH1F* DataChain::draw_data(const char* variable_name, const char* selection, con
   set_error_bars(histo);
 
   if (histo) {
-    std::cout << "histo generated fine" << std::endl;
+    //std::cout << "histo generated fine" << std::endl;
   }
   else {
     std::cout << "error in adding data signal" << std::endl;

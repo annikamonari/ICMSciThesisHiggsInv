@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <stdio.h>
+#include <stdlib.h>
 
 extern const char* build_string(std::vector<const char*> pchars);
 

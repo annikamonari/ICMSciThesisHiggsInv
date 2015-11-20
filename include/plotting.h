@@ -29,12 +29,12 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
 
   int colours[8] = {40, 41, 42, 30, 38, 28, 15, 49};
 
-  std::cout << "setup canvas, legend and plot" << std::endl;
+  //std::cout << "setup canvas, legend and plot" << std::endl;
   for(int i = 0; i < bg_chains.size(); i++) {
   	TH1F* single_bg_histo = bg_chains[i]->histo_for_stack(false, variable_name, selection, bins, x_min, x_max, colours[i], is_cut);
   	hs.Add(single_bg_histo);
   	legend_bg->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
-  	std::cout << "histograms added to stack fine" << std::endl;
+  	//std::cout << "histograms added to stack fine" << std::endl;
  	}
 
   std::string signal_sel(selection);
@@ -47,7 +47,8 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   TH1F* data_histo = data->draw_data(variable_name, selection, bins, x_min, x_max);
   legend_bg->AddEntry(data_histo, data->legend, "lep");
     
-  std::string file_parts(variable_name);
+  std::string file_parts("graphs_multibins/");
+   file_parts.append(variable_name);
   file_parts.append("_");
   file_parts.append(bins);
   file_parts.append(".png");
@@ -58,7 +59,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
 
-  std::cout << "data added to plot fine" << std::endl;
+  //std::cout << "data added to plot fine" << std::endl;
   hs.GetYaxis()->SetTitle("Events");
   hs.GetYaxis()->SetLabelSize(0.035);
   hs.GetYaxis()->SetTitleOffset(1.35);

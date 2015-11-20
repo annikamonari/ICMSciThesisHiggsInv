@@ -8,14 +8,14 @@
 #include <typeinfo>
 #include <sstream>
 
-const char* scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
+const int* scale_bins_for_cut(const int* bins, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
   double x_min_nocut = atof(x_minc_nocut);
   double x_max_nocut = atof(x_maxc_nocut);
   double x_min_cut = atof(x_minc_cut);
   double x_max_cut = atof(x_maxc_cut);
   double fraction = (x_max_cut - x_min_cut)/(x_max_nocut - x_min_nocut);
-  double bins = atof(binsc);
-  double nbins = bins * fraction;
+  double bins1 = *bins;//atof(binsc);
+  double nbins = (bins1) * fraction;
   nbins = nbins + 0.5;
   int nbins_int = (int) nbins;
   if (nbins_int==0){
@@ -28,13 +28,13 @@ std::ostringstream convert;
 convert << nbins_int;
 scaled_bins_str = convert.str();
 const char* scaled_bins = scaled_bins_str.c_str();
-std::cout << "*scaled_bins=" << *scaled_bins << "\n";
-
-  //std::cout << *scaled_bins << "\n";
-  return scaled_bins;
+//std::cout << "*scaled_bins=" << *scaled_bins << "\n";
+std::cout << "scaled bins=" << nbins_int << "\n";
+int* bin_ptr = &nbins_int;
+return bin_ptr;//scaled_bins;
 }
 
-void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection, const char* signal_multiplier, const char* bins, const char* x_min, const char* x_max, const char* leg_pos, bool is_cut) {
+void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data, const char* variable_name, const char* selection, const char* signal_multiplier, const int* bins, const char* x_min, const char* x_max, const char* leg_pos, bool is_cut) {
   //const char* plot_title = build_string({variable_name, " Plot"});
   std::string title_parts(variable_name);
   title_parts.append(" Plot");
@@ -76,12 +76,10 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   legend_bg->AddEntry(data_histo, data->legend, "lep");
     
   std::string file_parts("graph_bin_cut_adjust/");
-   file_parts.append(variable_name);
+  file_parts.append(variable_name);
   file_parts.append("_");
-  std::string str = bins;
-  std::cout << "*bins: ";
-  std::cout << bins[0] << "\n";
-  file_parts.append(str);
+  //std::string str = bins;
+  //file_parts.append(str);
   file_parts.append(".png");
   const char* file_name = file_parts.c_str();
   //const char* file_name = build_string({variable_name, "_", selection, ".png"});

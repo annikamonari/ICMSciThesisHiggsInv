@@ -1,5 +1,6 @@
 #include "data_chain.h"
 #include <cmath>
+#include <sstream>
 
 
 DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend) {
@@ -24,13 +25,20 @@ void DataChain::get_data() {
   }
 }
 
-TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max, int fill_colour, bool is_cut) {
+TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const int* bins, const char* x_min, const char* x_max, int fill_colour, bool is_cut) {
 
   std::string draw_histo(variable_name);
   draw_histo.append(">>");
   draw_histo.append(label);
   draw_histo.append("(");
-  draw_histo.append(bins);
+
+	std::string scaled_bins_str;
+	std::ostringstream convert;
+	int bin_int = *bins;
+        convert << bin_int;
+	scaled_bins_str = convert.str();
+
+  draw_histo.append(scaled_bins_str);
   draw_histo.append(",");
   draw_histo.append(x_min);
   draw_histo.append(",");
@@ -57,13 +65,20 @@ TH1F* DataChain::histo_for_stack(bool is_signal, const char* variable_name, cons
   return histo;
 }
 
-TH1F* DataChain::draw_data(const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max) {
+TH1F* DataChain::draw_data(const char* variable_name, const char* selection, const int* bins, const char* x_min, const char* x_max) {
   
   std::string draw_histo(variable_name);
   draw_histo.append(">>");
   draw_histo.append(label);
   draw_histo.append("(");
-  draw_histo.append(bins);
+
+	std::string scaled_bins_str;
+	std::ostringstream convert;
+	int bin_int = *bins;
+        convert << bin_int;
+	scaled_bins_str = convert.str();
+
+  draw_histo.append(scaled_bins_str);
   draw_histo.append(",");
   draw_histo.append(x_min);
   draw_histo.append(",");

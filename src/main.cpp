@@ -20,7 +20,7 @@ void produce_graphs() {
   const char* weight = "total_weight_lepveto";
   const char* vars[][7] = { 
                         // {varaible to plot, xmin, xmax, legend position,min_x_cut,max_x_cut,bins}
-			{"jet1_pt", "0.0", "600.0", "right","420.0", "440.0","100"}
+			{"jet1_pt", "0.0", "600.0", "right","420.0", "440.0","1000"}
                       };
  // const char* bin_arr[]= {"10","25","50","75","100"};
 
@@ -49,9 +49,11 @@ void produce_graphs() {
     std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
 
     const char* signal_multiplier = "100";
-    const char* bins = vars[i][6];
-    const char* scaled_bins = scale_bins_for_cut(bins, x_min,x_max, min_x_cut, max_x_cut);
-
+    const int bin_int = atoi(vars[i][6]);
+    const int* bins = &bin_int;
+    const int* scaled_bins = scale_bins_for_cut(bins, x_min,x_max, min_x_cut, max_x_cut);
+    std::cout << "bins:" <<*bins<<"+"<< *bins << "\n";
+    std::cout << "scaled bins:" << scaled_bins <<"+"<<*scaled_bins<< "\n";
    draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, scaled_bins, min_x_cut, max_x_cut, vars[i][3], true);
     
   //scaled_binsbg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");

@@ -19,12 +19,15 @@ void produce_graphs() {
 
   const char* weight = "total_weight_lepveto";
   const char* vars[][5] = { 
-                        // {varaible to plot, xmin, xmax, legend position, signal_multiplier}
-                        {"met", "0.0", "400.0", "right", "100"}
+                        // {varaible to plot, xmin, xmax, legend position,min_x_cut,max_x_cut,bins}
+			{"ntaus", "0.9", "1.1", "right"},
+                        
                       };
-  const char* bin_arr[]= {"10","25","50","75","100"};
-  for(int i = 0; i < 70; i++) {
-  //int i =2;
+ // const char* bin_arr[]= {"10","25","50","75","100"};
+
+  for(int i = 0; i < 1; i++) {
+
+    
     //min: x>4.5, max: x<4.5
     /*
     std::string cut_max_str(weight_str);
@@ -39,10 +42,9 @@ void produce_graphs() {
 
     std::string selection_str(weight);
     const char* selection = selection_str.c_str();
-    const char* x_min = vars_no_cuts[i][1];
-    //std::cout << vars_no_cuts[2][1] << "\n";
-
-    const char* x_max = vars_no_cuts[i][2];
+    const char* x_min = vars_w_cuts[i][1];
+ 
+    const char* x_max = vars_w_cuts[i][2];
  //std::cout << x_max << "\n";
 
     	//create vector of datachain pointers
@@ -50,11 +52,12 @@ void produce_graphs() {
     std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
 
     const char* signal_multiplier = "100";
-    for(int j =0;j<5;j++){
-    	const char* bins = bin_arr[j];
-    	draw_stacked_histoplots(bg, mc_signal, data_chain, vars_no_cuts[i][0], selection, signal_multiplier, bins, x_min, x_max, vars_no_cuts[i][3], true);
-    }
-//bg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
+    
+    	const char* bins = vars_w_cuts[i][6];
+    draw_stacked_histoplots(bg, mc_signal, data_chain, vars_w_cuts[i][0], selection, signal_multiplier, bins, x_min, x_max, vars_w_cuts[i][3], true);
+    
+  //bg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
+
   }
 }
 

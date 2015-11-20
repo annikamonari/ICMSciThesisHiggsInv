@@ -103,7 +103,7 @@ void DataChain::set_histo_style(bool is_signal, int fill_colour) {
 
 }
 
-char* DataChain::scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
+/*char* DataChain::scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
   double x_min_nocut = atof(x_minc_nocut);
   double x_max_nocut = atof(x_maxc_nocut);
   double x_min_cut = atof(x_minc_cut);
@@ -117,7 +117,7 @@ char* DataChain::scale_bins_for_cut(const char* binsc, const char* x_minc_nocut,
   char scaled_bins[10];
   sprintf(scaled_bins, "%d", nbins_int);
   return scaled_bins;
-}
+}*/
 
 TH1F* DataChain::set_error_bars(TH1F* hist) {
   int nbins = hist->GetNbinsX();

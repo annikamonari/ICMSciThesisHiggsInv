@@ -18,33 +18,31 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* vars[][5] = { 
+  const char* vars[][7] = { 
                         // {varaible to plot, xmin, xmax, legend position,min_x_cut,max_x_cut,bins}
-			{"ntaus", "0.9", "1.1", "right"},
-                        
+			{"jet1_pt", "0.0", "600.0", "right","420.0", "440.0","3"}
                       };
  // const char* bin_arr[]= {"10","25","50","75","100"};
 
-  for(int i = 0; i < 1; i++) {
-
+  //for(int i = 0; i < 1; i++) {
+    int i =0;
     
     //min: x>4.5, max: x<4.5
-    /*
-    std::string cut_max_str(weight_str);
-    cut_max_str.append("<");
-    cut_max_str.append(vars[i][5]);
+    
+    std::string cut_max_str(vars[0][0]);
+    cut_max_str=cut_max_str+"<"+ vars[i][5] +")";
 
-    std::string cut_min_str(weight_str);
-    cut_min_str.append(">");
-    cut_min_str.append(vars[i][4]);
-    */
+    std::string cut_min_str(vars[0][0]);
+    cut_min_str = "(" + cut_min_str + ">" +vars[i][4];
 
+    cut_max_str = cut_min_str + "&&" + cut_max_str;
 
-    std::string selection_str(weight);
+    std::string selection_str(cut_max_str);
     const char* selection = selection_str.c_str();
-    const char* x_min = vars_w_cuts[i][1];
- 
-    const char* x_max = vars_w_cuts[i][2];
+    const char* x_min = vars[i][1];
+    const char* x_max = vars[i][2];
+    const char* min_x_cut=vars[i][4];
+    const char* max_x_cut=vars[i][5];
  //std::cout << x_max << "\n";
 
     	//create vector of datachain pointers
@@ -52,13 +50,14 @@ void produce_graphs() {
     std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
 
     const char* signal_multiplier = "100";
+    const char* bins = vars[i][6];
+    char* scaled_bins = scale_bins_for_cut(bins, x_min,x_max, min_x_cut, max_x_cut);
+    std::cout << *scaled_bins <<"\n";
+   draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, bins, min_x_cut, max_x_cut, vars[i][3], true);
     
-    	const char* bins = vars_w_cuts[i][6];
-    draw_stacked_histoplots(bg, mc_signal, data_chain, vars_w_cuts[i][0], selection, signal_multiplier, bins, x_min, x_max, vars_w_cuts[i][3], true);
-    
-  //bg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
-
-  }
+  //scaled_binsbg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
+  //std::cout<< scaled_bins<<"\n";
+  //}
 }
 
 int main(int argc, char** argv) {

@@ -5,8 +5,10 @@
 #include <THStack.h>
 #include <TLegend.h>
 #include "data_chain.h"
+#include <typeinfo>
+#include <sstream>
 
-char* scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
+const char* scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut) {
   double x_min_nocut = atof(x_minc_nocut);
   double x_max_nocut = atof(x_maxc_nocut);
   double x_min_cut = atof(x_minc_cut);
@@ -16,9 +18,19 @@ char* scale_bins_for_cut(const char* binsc, const char* x_minc_nocut, const char
   double nbins = bins * fraction;
   nbins = nbins + 0.5;
   int nbins_int = (int) nbins;
+  if (nbins_int==0){
+	nbins_int=1;
+  }
+  //char scaled_bins[10];
+  //sprintf(scaled_bins, "%d", nbins_int);
+std::string scaled_bins_str;
+std::ostringstream convert;
+convert << nbins_int;
+scaled_bins_str = convert.str();
+const char* scaled_bins = scaled_bins_str.c_str();
+std::cout << "*scaled_bins=" << *scaled_bins << "\n";
 
-  char scaled_bins[10];
-  sprintf(scaled_bins, "%d", nbins_int);
+  //std::cout << *scaled_bins << "\n";
   return scaled_bins;
 }
 
@@ -66,7 +78,10 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   std::string file_parts("graph_bin_cut_adjust/");
    file_parts.append(variable_name);
   file_parts.append("_");
-  file_parts.append(bins);
+  std::string str = bins;
+  std::cout << "*bins: ";
+  std::cout << bins[0] << "\n";
+  file_parts.append(str);
   file_parts.append(".png");
   const char* file_name = file_parts.c_str();
   //const char* file_name = build_string({variable_name, "_", selection, ".png"});

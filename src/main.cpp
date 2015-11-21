@@ -18,47 +18,47 @@ void produce_graphs() {
   DataChain* data_chain = new DataChain(data, data_label, data_legend);
 
   const char* weight = "total_weight_lepveto";
-  const char* vars[][7] = { 
+  const char* vars[][8] = { 
                         // {varaible to plot, xmin, xmax, legend position,min_x_cut,max_x_cut,bins}
-			{"jet1_pt", "0.0", "600.0", "right","420.0", "440.0","100"}
+			{"jet1_pt", "0.0", "600.0", "right","420.0", "440.0","10","100"}
                       };
  // const char* bin_arr[]= {"10","25","50","75","100"};
 
-  //for(int i = 0; i < 1; i++) {
-    int i =0;
-    
-    //min: x>4.5, max: x<4.5
-    
-    std::string cut_max_str(vars[0][0]);
-    cut_max_str=cut_max_str+"<"+ vars[i][5] +")";
+  for(int i = 1; i < 5; i++) {
+       
+    std::string cut_max_str(vars_w_cuts[i][0]);
+    cut_max_str=cut_max_str+"<"+ vars_w_cuts[i][5] +")";
 
-    std::string cut_min_str(vars[0][0]);
-    cut_min_str = "(" + cut_min_str + ">" +vars[i][4];
+    std::string cut_min_str(vars_w_cuts[i][0]);
+    cut_min_str = "(" + cut_min_str + ">" +vars_w_cuts[i][4];
 
     cut_max_str = cut_min_str + "&&" + cut_max_str;
+    cut_max_str +="*";
+    cut_max_str.append(weight);
+    
 
     std::string selection_str(cut_max_str);
     const char* selection = selection_str.c_str();
-    const char* x_min = vars[i][1];
-    const char* x_max = vars[i][2];
-    const char* min_x_cut=vars[i][4];
-    const char* max_x_cut=vars[i][5];
- 
+    const char* x_min = vars_w_cuts[i][1];
+    const char* x_max = vars_w_cuts[i][2];
+    const char* min_x_cut=vars_w_cuts[i][4];
+    const char* max_x_cut=vars_w_cuts[i][5];
+    std::cout << "variable = " << vars_w_cuts[i][0] << "\n";
     	//create vector of datachain pointers
     DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, bg_top, bg_vv, bg_zjets_vv, bg_qcd}; // create array of pointers
     std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
 
-    const char* signal_multiplier = "100";
+    const char* signal_multiplier = vars_w_cuts[i][7];
     //const int bin_int = atoi();
-    const char* bins =vars[i][6];// &bin_int;
+    const char* bins =vars_w_cuts[i][6];// &bin_int;
    // const int* scaled_bins = scale_bins_for_cut(bins, x_min,x_max, min_x_cut, max_x_cut);
-    std::cout << "bins:" << *bins <<"+"<<bins<< "\n";
+    //std::cout << "bins:" << *bins <<"+"<<bins<< "\n";
     //std::cout << "scaled bins out put in  main.cpp:" << scaled_bins << "+" <<  *scaled_bins << "\n";
-   draw_stacked_histoplots(bg, mc_signal, data_chain, vars[i][0], selection, signal_multiplier, bins, min_x_cut, max_x_cut, vars[i][3], true, x_min, x_max);
-    
+   draw_stacked_histoplots(bg, mc_signal, data_chain, vars_w_cuts[i][0], selection, signal_multiplier, bins, min_x_cut, max_x_cut, vars_w_cuts[i][3], true, x_min, x_max);
+   std::cout << "var with cuts number = " << i << "\n";
   //scaled_binsbg_zll->scale_bins_for_cut("100", "0", "100", "50", "100");
   //std::cout<< scaled_bins<<"\n";
-  //}
+  }
 }
 
 int main(int argc, char** argv) {
@@ -69,3 +69,4 @@ int main(int argc, char** argv) {
   
   return 0;
 }
+

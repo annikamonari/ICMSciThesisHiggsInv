@@ -49,7 +49,7 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   title_parts.append(" Plot");
   const char* plot_title = title_parts.c_str();
   //const char *scaled_bins= scale_bins_for_cut(bins, x_minc_nocut, x_maxc_nocut, x_min, x_max);
-  //std::cout << "scaled bins in draw_stacked histoplots = " << *scaled_bins<<"+"<<scaled_bins <<"+"<<&scaled_bins<<"\n";
+  std::cout << "bins in draw_stacked histoplots = " << *bins<<"+"<<bins <<"+"<<&bins<<"\n";
   TCanvas* c1 = new TCanvas("c1", plot_title);
 
   TLegend* legend_bg;
@@ -61,7 +61,6 @@ void draw_stacked_histoplots(std::vector<DataChain*> bg_chains, DataChain* signa
   }
 
   THStack hs(plot_title, plot_title);
-  
   legend_bg->SetTextSize(0.035);
   legend_bg->SetBorderSize(0);
 

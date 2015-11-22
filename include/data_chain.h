@@ -13,12 +13,9 @@
 #include <iostream>
 #include <vector>
 #include <stdio.h>
+#include <sstream>
 
-extern const char* build_string(std::vector<const char*> pchars);
-
-//extern const char* build_title(std::vector<char*> words);
-
-class LeafVariables {
+class TreeLeaves {
 public:
   UInt_t run;
   UInt_t lumi;
@@ -240,18 +237,12 @@ class DataChain {
 public:
   const char* label;
   const char* legend;
-  LeafVariables* vars;
+  TreeLeaves* leaves;
   TChain* chain;
 
   DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend);
+  
   void get_data();
-  TH1F* histo_for_stack(bool is_signal, const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max, int fill_colour, bool is_cut);
-  void set_histo_style(bool is_signal, int fill_colour = 0);
-  TH1F* draw_data(const char* variable_name, const char* selection, const char* bins, const char* x_min, const char* x_max);
-  double get_data_error(TH1F* hist, int bin);
-  TH1F* set_error_bars(TH1F* hist);
-  char* scale_bins_for_cut(const char* bins, const char* x_minc_nocut, const char* x_maxc_nocut, const char* x_minc_cut, const char* x_maxc_cut);
-  const char* build_var_string(const char* variable_name, const char* x_min, const char* x_max);
 };
 
 #endif

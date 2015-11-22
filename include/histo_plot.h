@@ -22,7 +22,7 @@ public:
 
   static double* legend_coords(TH1F* histo, Variable* var, bool with_cut);
 
-  static int get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end_bin);
+  static int get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end_bin, double y1_gc);
 
   static float get_x_from_x1(float x1, double dx);
   

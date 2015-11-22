@@ -15,8 +15,8 @@ void produce_graphs() {
   DataChain* signal_chain  = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend);
   DataChain* data_chain    = new DataChain(data, data_label, data_legend);
 
-  Variable* variable = new Variable("jet1_pt", "Jet 1 pT", "10", "0.0", "600.0", 
-                                    "420.0", "440.0", "20.0");
+  Variable* variable = new Variable("jet1_pt", "Jet 1 pT", "20", "0.0", "600.0", 
+                                    "420.0", "440.0", "100");
   std::vector<DataChain*> bg_chains = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, 
                                        bg_top, bg_vv, bg_zjets_vv, bg_qcd};
 

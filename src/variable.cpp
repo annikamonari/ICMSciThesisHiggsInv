@@ -61,7 +61,6 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
     var_string.append(x_max_nocut);
     var_string += ")";
   } 
-  
   return var_string;
 }
 

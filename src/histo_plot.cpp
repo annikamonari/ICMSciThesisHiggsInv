@@ -28,27 +28,45 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   style_stacked_histo(&stack, var_name);
 
   TH1F* last_stacked  = (TH1F*)(stack.GetStack()->Last());
-  std::list<double> leg_coords   = legend_coords(last_stacked, var, with_cut);
+  std::list<double> y_max_list = get_y_max(data_histo, last_stacked);
+  double y_max = y_max_list.front();
+  TH1F* which_histo;
+  if (y_max_list.back() == 1.0)
+  {
+    which_histo = last_stacked;
+  }
+  else
+  {
+	which_histo = data_histo;
+  }
+  std::list<double> leg_coords = legend_coords(which_histo, var, with_cut, y_max);
+  stack.SetMaximum(y_max);
   legend->SetX1(leg_coords.front());
   legend->SetX2(leg_coords.back());
   legend->Draw();
-  stack.SetMaximum(set_y_max(data_histo,last_stacked));
   
+
   c1->SaveAs(file_name.c_str());
   c1->Close();
 }
-double HistoPlot::set_y_max(TH1F* data, TH1F* background){
-  double data_max = data->GetBinContent(data->GetMaximumBin());
-  double bg_max = background->GetBinContent(background->GetMaximumBin());
-  return std::max(data_max,bg_max)*1.1;
-}
 
-void HistoPlot::set_y_max(TH1F* data, TH1F* background, THStack* hs)
+std::list<double> HistoPlot::get_y_max(TH1F* data, TH1F* background)
 {
   double data_max = data->GetBinContent(data->GetMaximumBin());
   double bg_max = background->GetBinContent(background->GetMaximumBin());
-  double y_max = std::max(data_max, bg_max)*1.1;
-  hs->SetMaximum(y_max);
+  std::list<double> y_max_list;
+  if (data_max > bg_max)
+  {
+	y_max_list.push_back(data_max*1.1);
+    y_max_list.push_back(0.0);
+  }
+  else
+  {
+	y_max_list.push_back(bg_max*1.1);
+	y_max_list.push_back(1.0);
+  }
+  std::cout << y_max_list.back() << "\n";
+  return y_max_list;
 }
 
 std::list<TH1F*> HistoPlot::get_histos_from_stack(THStack* hs)
@@ -79,7 +97,7 @@ void HistoPlot::style_legend(TLegend* legend)
   legend->SetBorderSize(0);
 }
 
-std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with_cut)
+std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with_cut, double y_max)
 {
   // x1(in legend) = x/dx * 0.8 + 0.1
   double x_min;
@@ -97,15 +115,15 @@ std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with
   }
 
   double dx            = x_max - x_min;
-  double dy            = gPad->GetUymax();
-  double x_width        = 0.18;
-  float y1             = 0.1;
+  double dy            = y_max;
+  double x_width       = 0.18;
+  float y1             = 0.5;
   double y1_gc         = get_x_from_x1(y1, dy);
   float y2             = 0.88;
   int start_bin        = histo->FindBin(get_x_from_x1(0.12, dx));
-  int stop_bin         = histo->FindBin(get_x_from_x1(0.7, dx));
+  int stop_bin         = histo->FindBin(get_x_from_x1(0.67, dx));
 
-  double x1_best        = 0.0;
+  double x1_best       = 0.0;
   int min_data_overlap = 100;
   std::cout << "ymax" << dy << std::endl;
   std::cout << "y1gc" << y1_gc << std::endl;
@@ -114,9 +132,8 @@ std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with
     float x1         = get_x1_from_x(histo->GetXaxis()->GetBinCenter(i), dx);
     int end_bin      = histo->FindBin(get_x_from_x1(x1 + x_width, dx));
     TLegend* leg     = new TLegend(x1, y1, x1 + x_width, y2);
-    std::cout << i << "," << end_bin << std::endl;
     int data_overlap = get_leg_overlap(histo, leg, i, end_bin, y1_gc);
-    if (data_overlap < min_data_overlap) 
+    if (data_overlap <= min_data_overlap)
     {
       min_data_overlap = data_overlap;
       x1_best          = x1;
@@ -127,7 +144,6 @@ std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with
   std::list<double> leg_coords;
   leg_coords.push_front(x2);
   leg_coords.push_front(x1_best);
-
   return leg_coords;
 }
 
@@ -140,7 +156,6 @@ int HistoPlot::get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end
   {
     double x = histo->GetXaxis()->GetBinCenter(i);
     double y = histo->GetBinContent(i);
-    std::cout << x << "," << y << std::endl;
     if (y > y1_gc)
     {
       data_overlap += 1;

@@ -1,0 +1,118 @@
+#ifndef TREE_LEAVES_H_
+#define TREE_LEAVES_H_
+
+#include <TChain.h>
+
+class TreeLeaves {
+public:
+  UInt_t run;
+  UInt_t lumi;
+  UInt_t event;
+  UInt_t weight_nolep;
+  UInt_t total_weight_lepveto;
+  UInt_t total_weight_leptight;
+  UInt_t puweight_up_scale;
+  UInt_t puweight_down_scale;
+  UInt_t topweight_up_scale;
+  UInt_t topweight_down_scale;
+  Double_t jet1_pt;
+  Double_t jet2_pt;
+  Double_t jet3_pt;
+  Double_t jet1_E;
+  Double_t jet2_E;
+  Double_t jet3_E;
+  Double_t jet1_eta;
+  Double_t jet2_eta;
+  Double_t jet3_eta;
+  Double_t forward_tag_eta;
+  Double_t central_tag_eta;
+  Double_t jet1_phi;
+  Double_t jet2_phi;
+  Double_t jet3_phi;
+  Double_t jet_csv1;
+  Double_t jet_csv2;
+  Double_t jet_csv3;
+  Double_t dijet_M;
+  Double_t dijet_deta;
+  Double_t dijet_sumeta;
+  Double_t dijet_dphi;
+  Double_t met;
+  Double_t met_x;
+  Double_t met_y;
+  Double_t metnomu_x;
+  Double_t metnomu_y;
+  Double_t met_significance;
+  Double_t metnomu_significance;
+  Double_t sumet;
+  Double_t ht;
+  Double_t ht30;
+  Double_t mht;
+  Double_t sqrt_ht;
+  Double_t unclustered_et;
+  Double_t jet1met_dphi;
+  Double_t jet2met_dphi;
+  Double_t jet1metnomu_dphi;
+  Double_t jet2metnomu_dphi;
+  Double_t jetmet_mindphi;
+  Double_t jetmetnomu_mindphi;
+  Double_t alljetsmet_mindphi;
+  Double_t alljetsmetnomu_mindphi;
+  Double_t jetunclet_mindphi;
+  Double_t metunclet_dphi;
+  Double_t metnomuunclet_dphi;
+  Double_t dijetmet_scalarSum_pt;
+  Double_t dijetmet_vectorialSum_pt;
+  Double_t dijetmet_ptfraction;
+  Double_t jet1met_scalarprod;
+  Double_t jet2met_scalarprod;
+  Double_t dijetmetnomu_scalarSum_pt;
+  Double_t dijetmetnomu_vectorialSum_pt;
+  Double_t dijetmetnomu_ptfraction;
+  Double_t jet1metnomu_scalarprod;
+  Double_t jet2metnomu_scalarprod;
+  UInt_t n_jets_cjv_30;
+  UInt_t n_jets_cjv_20EB_30EE;
+  UInt_t n_jets_15;
+  Double_t n_jets_30;
+  Double_t cjvjetpt;
+  UInt_t passtrigger;
+  UInt_t passparkedtrigger1;
+  UInt_t passparkedtrigger2;
+  UInt_t l1met;
+  Double_t metnomuons;
+  UInt_t nvetomuons;
+  UInt_t nselmuons;
+  UInt_t nvetoelectrons;
+  UInt_t nselelectrons;
+  UInt_t ntaus;
+  UInt_t m_mumu;
+  UInt_t m_ee;
+  UInt_t m_mumu_gen;
+  UInt_t genlep1_pt;
+  UInt_t genlep1_eta;
+  UInt_t genlep1_phi;
+  UInt_t genlep1_id;
+  UInt_t genlep2_pt;
+  UInt_t genlep2_eta;
+  UInt_t genlep2_phi;
+  UInt_t genlep2_id;
+  UInt_t mu1_pt;
+  Double_t mu1_eta;
+  Double_t mu1_phi;
+  Double_t mu2_pt;
+  Double_t mu2_eta;
+  Double_t mu2_phi;
+  Double_t ele1_pt;
+  Double_t ele1_eta;
+  Double_t ele1_phi;
+  Double_t tau1_pt;
+  Double_t tau1_eta;
+  Double_t tau1_phi;
+  Double_t lep_mt;
+  UInt_t n_vertices;
+
+  void set_branch_addresses(TChain* chain);
+};
+
+
+#endif

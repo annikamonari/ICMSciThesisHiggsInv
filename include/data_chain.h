@@ -10,14 +10,13 @@
 #include <TH2.h>
 #include "tree_leaves.h"
 
+#include <cmath>
 #include <string>
 #include <iostream>
 #include <vector>
 #include <stdio.h>
 #include <sstream>
 #include <stdlib.h>
-
-
 
 
 class DataChain {
@@ -28,7 +27,7 @@ public:
   TChain* chain;
 
   DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend);
-  
+
   void get_data();
 };
 

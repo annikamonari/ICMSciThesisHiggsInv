@@ -5,6 +5,7 @@
 #include <THStack.h>
 #include <TLegend.h>
 #include "variable.h"
+#include <list>
 #include <algorithm>
 
 class HistoPlot {
@@ -17,13 +18,17 @@ public:
   static void draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_chains, 
                                  DataChain* signal_chain, DataChain* data, bool with_cut);
 
+  static double set_y_max(TH1F* data, TH1F* background);
+
+  static std::list<TH1F*> get_histos_from_stack(THStack* hs);
+
   static void style_stacked_histo(THStack* hs, const char* x_label);
 
   static double set_y_max(TH1F* data, TH1F* background);
 
   static void style_legend(TLegend* legend);
 
-  static double* legend_coords(TH1F* histo, Variable* var, bool with_cut);
+  static std::list<double> legend_coords(TH1F* histo, Variable* var, bool with_cut);
 
   static int get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end_bin, double y1_gc);
 

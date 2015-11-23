@@ -11,7 +11,7 @@ public:
   const char* bins_nocut;
   const char* x_min_nocut;
   const char* x_max_nocut;
-  const char* bins_cut;
+  std::string bins_cut;
   const char* x_min_cut;
   const char* x_max_cut;
   
@@ -20,7 +20,7 @@ public:
 		   const char* x_max, const char* x_min_c, const char* x_max_c,
 		   const char* nbins, const char* xsignal);
   
-  const char* scale_bins_for_cut();
+  std::string scale_bins_for_cut();
 
   std::string build_var_string(const char* label, bool with_cut);
 

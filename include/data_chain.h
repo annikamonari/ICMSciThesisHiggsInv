@@ -16,6 +16,8 @@
 #include <vector>
 #include <stdio.h>
 #include <sstream>
+#include <stdlib.h>
+
 
 class DataChain {
 public:

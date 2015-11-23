@@ -24,6 +24,8 @@ public:
 
   static void style_stacked_histo(THStack* hs, const char* x_label);
 
+  static double set_y_max(TH1F* data, TH1F* background);
+
   static void style_legend(TLegend* legend);
 
   static std::list<double> legend_coords(TH1F* histo, Variable* var, bool with_cut);
@@ -48,7 +50,7 @@ public:
   
   static TH1F* set_error_bars(TH1F* histo);
 
-  static double get_data_error(TH1F* histo, int bin);
+  static float get_data_error(TH1F* histo, int bin);
 
   static std::string build_file_name(Variable* variable, bool with_cut);
 };

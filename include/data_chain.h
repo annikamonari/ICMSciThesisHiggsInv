@@ -8,12 +8,14 @@
 #include <TChain.h>
 #include <TCut.h>
 #include <TH2.h>
+#include <cmath>
 
 #include <string>
 #include <iostream>
 #include <vector>
 #include <stdio.h>
 #include <sstream>
+#include <stdlib.h>
 
 class TreeLeaves {
 public:

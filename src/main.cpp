@@ -17,10 +17,12 @@ void produce_graphs() {
 
   Variable* variable = new Variable("jet1_pt", "Jet 1 pT", "20", "0.0", "600.0", 
                                     "420.0", "440.0", "100");
-  std::vector<DataChain*> bg_chains = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, 
+  DataChain* bg_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, 
                                        bg_top, bg_vv, bg_zjets_vv, bg_qcd};
+  std::vector<DataChain*> bg (bg_arr, bg_arr+ sizeof(bg_arr)/sizeof(DataChain*));
 
-  HistoPlot::draw_stacked_histo(variable, bg_chains, signal_chain, data_chain, false);
+
+  HistoPlot::draw_stacked_histo(variable, bg, signal_chain, data_chain, false);
 }
 
 int main(int argc, char** argv) {

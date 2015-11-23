@@ -37,11 +37,12 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   c1->Close();
 }
 
-double HistoPlot::set_y_max(TH1F* data, TH1F* background, THStack* hs)
+void HistoPlot::set_y_max(TH1F* data, TH1F* background, THStack* hs)
 {
   double data_max = data->GetBinContent(data->GetMaximumBin());
   double bg_max = background->GetBinContent(background->GetMaximumBin());
-  return std::max(data_max, bg_max)*1.1;
+  double y_max = std::max(data_max, bg_max)*1.1;
+  hs->SetMaximum(y_max);
 }
 
 std::list<TH1F*> HistoPlot::get_histos_from_stack(THStack* hs)

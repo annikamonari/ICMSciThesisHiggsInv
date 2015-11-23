@@ -16,9 +16,9 @@ public:
   const char* x_max_cut;
   
 
-  Variable(const char* var_name, const char* var_name_styled, const char* nbins, 
-           const char* x_min, const char* x_max, const char* x_min_c, 
-           const char* x_max_c, const char* xsignal);
+  Variable(const char* var_name, const char* var_name_styled, const char* x_min,
+		   const char* x_max, const char* x_min_c, const char* x_max_c,
+		   const char* nbins, const char* xsignal)
   
   const char* scale_bins_for_cut();
 

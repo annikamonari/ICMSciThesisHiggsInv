@@ -1,8 +1,8 @@
 #include "../include/variable.h"
 
-Variable::Variable(const char* var_name, const char* var_name_styled, const char* nbins, 
-                   const char* x_min, const char* x_max, const char* x_min_c, 
-                   const char* x_max_c, const char* xsignal)
+Variable::Variable(const char* var_name, const char* var_name_styled, const char* x_min,
+				   const char* x_max, const char* x_min_c, const char* x_max_c,
+				   const char* nbins, const char* xsignal)
 {
   name              = var_name;
   name_styled       = var_name_styled;

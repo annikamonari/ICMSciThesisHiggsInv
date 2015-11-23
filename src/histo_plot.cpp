@@ -1,4 +1,4 @@
-#include "histo_plot.h"
+#include "../include/histo_plot.h"
 
 void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_chains, 
                                    DataChain* signal_chain, DataChain* data, bool with_cut)
@@ -6,7 +6,7 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   const char* var_name   = var->name_styled;
   std::string file_name  = build_file_name(var, with_cut);
   TCanvas* c1            = new TCanvas("c1", var_name);
-  TLegend* legend        = new TLegend(0.7, 0.5, 0.88, 0.88);
+  TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
   style_legend(legend);
   THStack stack(var_name, var_name);
 
@@ -15,27 +15,38 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
-  std::cout << "bg stack" << std::endl;
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut);
   TH1F* data_histo   = draw_data(data, var, with_cut);
 
   legend->AddEntry(signal_histo, signal_chain->legend, "l");
   legend->AddEntry(data_histo, data->legend, "lep");
 
-  stack.Draw("SAME");
+  stack.Draw();
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
 
   style_stacked_histo(&stack, var_name);
 
   TH1F* last_stacked  = (TH1F*)(stack.GetStack()->Last());
-  double* leg_coords   = legend_coords(last_stacked, var, with_cut);
-  //legend->SetX1(leg_coords[0]);
-  //legend->SetX2(leg_coords[1]);
+  std::list<double> leg_coords   = legend_coords(last_stacked, var, with_cut);
+  legend->SetX1(leg_coords.front());
+  legend->SetX2(leg_coords.back());
   legend->Draw();
   
   c1->SaveAs(file_name.c_str());
   c1->Close();
+}
+
+std::list<TH1F*> HistoPlot::get_histos_from_stack(THStack* hs)
+{
+  TList* histos = hs->GetHists();
+  std::list<TH1F*> histo_list;
+  TIter next(histos);
+  TH1F* histo;
+  while ((histo =(TH1F*)next())) {
+    histo_list.push_back(histo);
+  }
+  return histo_list;
 }
 
 void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
@@ -43,6 +54,7 @@ void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
   hs->GetYaxis()->SetTitle("Events");
   hs->GetYaxis()->SetLabelSize(0.035);
   hs->GetYaxis()->SetTitleOffset(1.35);
+  hs->SetMaximum(80000);
   hs->GetXaxis()->SetTitle(x_label);
   hs->GetXaxis()->SetLabelSize(0.035);
   hs->GetXaxis()->SetTitleOffset(1.35);
@@ -54,7 +66,7 @@ void HistoPlot::style_legend(TLegend* legend)
   legend->SetBorderSize(0);
 }
 
-double* HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with_cut)
+std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with_cut)
 {
   // x1(in legend) = x/dx * 0.8 + 0.1
   double x_min;
@@ -73,30 +85,36 @@ double* HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with_cut)
 
   double dx            = x_max - x_min;
   double dy            = gPad->GetUymax();
-  float x_width        = 0.18;
+  double x_width        = 0.18;
   float y1             = 0.1;
   double y1_gc         = get_x_from_x1(y1, dy);
   float y2             = 0.88;
   int start_bin        = histo->FindBin(get_x_from_x1(0.12, dx));
   int stop_bin         = histo->FindBin(get_x_from_x1(0.7, dx));
 
-  float x1_best        = 0.0;
+  double x1_best        = 0.0;
   int min_data_overlap = 100;
-
+  std::cout << "ymax" << dy << std::endl;
+  std::cout << "y1gc" << y1_gc << std::endl;
   for (int i = start_bin; i <= stop_bin; i++) 
   {
     float x1         = get_x1_from_x(histo->GetXaxis()->GetBinCenter(i), dx);
     int end_bin      = histo->FindBin(get_x_from_x1(x1 + x_width, dx));
     TLegend* leg     = new TLegend(x1, y1, x1 + x_width, y2);
+    std::cout << i << "," << end_bin << std::endl;
     int data_overlap = get_leg_overlap(histo, leg, i, end_bin, y1_gc);
-  
     if (data_overlap < min_data_overlap) 
     {
       min_data_overlap = data_overlap;
       x1_best          = x1;
     }
   }
-  double leg_coords[2] = {x1_best, x1_best + x_width};
+  double x2 = x1_best + x_width;
+
+  std::list<double> leg_coords;
+  leg_coords.push_front(x2);
+  leg_coords.push_front(x1_best);
+
   return leg_coords;
 }
 
@@ -109,7 +127,7 @@ int HistoPlot::get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end
   {
     double x = histo->GetXaxis()->GetBinCenter(i);
     double y = histo->GetBinContent(i);
-
+    std::cout << x << "," << y << std::endl;
     if (y > y1_gc)
     {
       data_overlap += 1;

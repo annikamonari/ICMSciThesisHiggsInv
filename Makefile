@@ -1,4 +1,6 @@
 CC := g++ # Main compiler
+ROOTSYS := /Applications/root_v5.34.34/
+DYLD_LIBRARY_PATH := $ROOTSYS/lib
 
 SRCDIR := src
 BUILDDIR := build

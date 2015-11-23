@@ -1,5 +1,5 @@
-#include "histo_plot.h"
-#include "analysis.h"
+#include "../include/histo_plot.h"
+#include "../include/analysis.h"
 #include <initializer_list>
 #include <cmath>
 
@@ -17,8 +17,10 @@ void produce_graphs() {
 
   Variable* variable = new Variable("jet1_pt", "Jet 1 pT", "20", "0.0", "600.0", 
                                     "420.0", "440.0", "100");
-  std::vector<DataChain*> bg_chains = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv, 
-                                       bg_top, bg_vv, bg_zjets_vv, bg_qcd};
+  DataChain* myDataChain[8] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv,
+          bg_top, bg_vv, bg_zjets_vv, bg_qcd};
+
+  std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
 
   HistoPlot::draw_stacked_histo(variable, bg_chains, signal_chain, data_chain, false);
 }

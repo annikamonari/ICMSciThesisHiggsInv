@@ -1,4 +1,4 @@
-#include "variable.h"
+#include "../include/variable.h"
 
 Variable::Variable(const char* var_name, const char* var_name_styled, const char* nbins, 
                    const char* x_min, const char* x_max, const char* x_min_c, 

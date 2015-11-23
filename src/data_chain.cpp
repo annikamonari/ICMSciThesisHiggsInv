@@ -1,6 +1,5 @@
-#include "data_chain.h"
+#include "../include/data_chain.h"
 #include <cmath>
-
 
 DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend) {
   label = data_label;

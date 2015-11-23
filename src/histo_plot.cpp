@@ -65,7 +65,6 @@ std::list<double> HistoPlot::get_y_max(TH1F* data, TH1F* background)
 	y_max_list.push_back(bg_max*1.1);
 	y_max_list.push_back(1.0);
   }
-  std::cout << y_max_list.back() << "\n";
   return y_max_list;
 }
 
@@ -125,8 +124,6 @@ std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with
 
   double x1_best       = 0.0;
   int min_data_overlap = 100;
-  std::cout << "ymax" << dy << std::endl;
-  std::cout << "y1gc" << y1_gc << std::endl;
   for (int i = start_bin; i <= stop_bin; i++) 
   {
     float x1         = get_x1_from_x(histo->GetXaxis()->GetBinCenter(i), dx);
@@ -161,7 +158,7 @@ int HistoPlot::get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end
       data_overlap += 1;
     }
   }
-  std::cout << data_overlap << std::endl;
+
   return data_overlap;
 }
 

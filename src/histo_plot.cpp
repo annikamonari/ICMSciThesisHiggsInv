@@ -32,9 +32,15 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   legend->SetX1(leg_coords.front());
   legend->SetX2(leg_coords.back());
   legend->Draw();
+  stack.SetMaximum(set_y_max(data_histo,last_stacked));
   
   c1->SaveAs(file_name.c_str());
   c1->Close();
+}
+double HistoPlot::set_y_max(TH1F* data, TH1F* background){
+  double data_max = data->GetBinContent(data->GetMaximumBin());
+  double bg_max = background->GetBinContent(background->GetMaximumBin());
+  return std::max(data_max,bg_max)*1.1;
 }
 
 void HistoPlot::set_y_max(TH1F* data, TH1F* background, THStack* hs)
@@ -207,7 +213,7 @@ TH1F* HistoPlot::set_error_bars(TH1F* histo)
   return histo;
 }
 
-double HistoPlot::get_data_error(TH1F* histo, int bin) 
+float HistoPlot::get_data_error(TH1F* histo, int bin) 
 {
   double integral = histo->Integral(bin, bin + 1);
 

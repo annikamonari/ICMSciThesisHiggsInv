@@ -10,6 +10,7 @@
 #include <TH2.h>
 #include "tree_leaves.h"
 
+#include <cmath>
 #include <string>
 #include <iostream>
 #include <vector>

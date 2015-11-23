@@ -6,6 +6,7 @@
 #include <TLegend.h>
 #include "variable.h"
 #include <list>
+#include <algorithm>
 
 class HistoPlot {
 public:
@@ -16,6 +17,8 @@ public:
 
   static void draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_chains, 
                                  DataChain* signal_chain, DataChain* data, bool with_cut);
+
+  static double set_y_max(TH1F* data, TH1F* background);
 
   static std::list<TH1F*> get_histos_from_stack(THStack* hs);
 

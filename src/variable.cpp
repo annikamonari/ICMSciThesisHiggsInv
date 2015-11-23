@@ -13,10 +13,9 @@ Variable::Variable(const char* var_name, const char* var_name_styled, const char
   x_min_cut         = x_min_c;
   x_max_cut         = x_max_c;
   bins_cut          = scale_bins_for_cut();
-  std::cout << "binscut"<< bins_cut << std::endl;
 }
 
-const char* Variable::scale_bins_for_cut() 
+std::string Variable::scale_bins_for_cut()
 {
   const double x_min_nocut_d = atof(x_min_nocut);
   const double x_max_nocut_d = atof(x_max_nocut);
@@ -27,17 +26,16 @@ const char* Variable::scale_bins_for_cut()
   double bins_cut      		 = bins * fraction;
   bins_cut           		 = bins_cut + 0.5;
   int bins_cut_int   = (int) bins_cut;
-
   if (bins_cut_int == 0)
   {
-	  bins_cut_int = 1;
+	  bins_cut_int += 1;
   }
   std::stringstream scaled_bins_ss;
   scaled_bins_ss << bins_cut_int;
 
   std::string scaled_bins_str = scaled_bins_ss.str();
 
-  return scaled_bins_str.c_str();
+  return scaled_bins_str;
 }
 
 std::string Variable::build_var_string(const char* label, bool with_cut) 
@@ -48,7 +46,7 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   var_string += "(";
 
   if (with_cut) {
-    var_string.append(bins_cut);
+    var_string += bins_cut;
     var_string += ",";
     var_string.append(x_min_cut);
     var_string += ",";

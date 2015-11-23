@@ -239,7 +239,7 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
   if (with_cut)
   {
     file_name += "_cut_";
-    file_name.append(variable->bins_cut);
+    file_name.append((variable->bins_cut).c_str());
     file_name += "_";
     file_name.append(variable->x_min_cut);
     file_name += "_";

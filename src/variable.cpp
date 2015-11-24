@@ -21,7 +21,7 @@ std::string Variable::scale_bins_for_cut()
   const double x_max_nocut_d = atof(x_max_nocut);
   const double x_min_cut_d   = atof(x_min_cut);
   const double x_max_cut_d   = atof(x_max_cut);
-  double fraction      		 = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
+  double  fraction      		 = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
   const double bins          = atof(bins_nocut);
   double bins_cut      		 = bins * fraction;
   bins_cut           		 = bins_cut + 0.5;
@@ -77,6 +77,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string.append(name);
     sel_string += "<";
     sel_string.append(x_max_cut);
+    sel_string += ")&&(alljetsmetnomu_mindphi>1.7)&&(alljetsmetnomu_mindphi<3.0)&&(metnomu_significance>5.2)&&(metnomu_significance<12.0";
     sel_string += "))*";
   } 
 

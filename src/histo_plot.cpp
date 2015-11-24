@@ -24,11 +24,13 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   stack.Draw();
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
-
+  std::cout << "Stack, data, and signal histograms drawn..." << std::endl;
   style_stacked_histo(&stack, var_name);
 
   TH1F* last_stacked  = (TH1F*)(stack.GetStack()->Last());
+  std::cout << "Largest BG in stack obtained..." << std::endl;
   std::list<double> y_max_list = get_y_max(data_histo, last_stacked);
+  std::cout << "Maximum y value of plot area obtained..." << std::endl;
   double y_max = y_max_list.front();
   TH1F* which_histo;
   if (y_max_list.back() == 1.0)
@@ -39,10 +41,14 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   {
 	which_histo = data_histo;
   }
+  std::cout << which_histo << std::endl;
+  std::cout << "Larger valued histogram selected..." << std::endl;
   std::list<double> leg_coords = legend_coords(which_histo, var, with_cut, y_max);
+  std::cout << "Legend coordinates obtained..." << std::endl;
   stack.SetMaximum(y_max);
   legend->SetX1(leg_coords.front());
   legend->SetX2(leg_coords.back());
+  std::cout << "x1:" << legend->GetX1() << "x2:" << legend->GetX2() << std::endl;
   legend->Draw();
   
 
@@ -121,7 +127,8 @@ std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with
   float y2             = 0.88;
   int start_bin        = histo->FindBin(get_x_from_x1(0.12, dx));
   int stop_bin         = histo->FindBin(get_x_from_x1(0.67, dx));
-
+  std::cout << "start bin:" << start_bin << std::endl;
+  std::cout << "stop bin:" << stop_bin << std::endl;
   double x1_best       = 0.0;
   int min_data_overlap = 100;
   for (int i = start_bin; i <= stop_bin; i++) 
@@ -142,6 +149,7 @@ std::list<double> HistoPlot::legend_coords(TH1F* histo, Variable* var, bool with
   leg_coords.push_front(x2);
   leg_coords.push_front(x1_best);
   return leg_coords;
+  std::cout << leg_coords.front() << std::endl;
 }
 
 int HistoPlot::get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end_bin, double y1_gc) 

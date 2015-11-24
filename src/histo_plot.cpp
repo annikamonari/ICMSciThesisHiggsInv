@@ -6,21 +6,21 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   const char* var_name   = var->name_styled;
   std::string file_name  = build_file_name(var, with_cut);
   TCanvas* c1            = new TCanvas("c1", var_name);
-  TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
-  style_legend(legend);
+  /*TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
+  style_legend(legend);*/
   THStack stack(var_name, var_name);
 
   for(int i = 0; i < bg_chains.size(); i++) {
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut);
     stack.Add(single_bg_histo);
-    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+    //legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut);
   TH1F* data_histo   = draw_data(data, var, with_cut);
 
-  legend->AddEntry(signal_histo, signal_chain->legend, "l");
+  /*legend->AddEntry(signal_histo, signal_chain->legend, "l");
   legend->AddEntry(data_histo, data->legend, "lep");
-
+  */
   stack.Draw();
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
@@ -41,13 +41,14 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
   }
   std::list<double> leg_coords = legend_coords(which_histo, var, with_cut, y_max);
   stack.SetMaximum(y_max);
-  legend->SetX1(leg_coords.front());
+ /* legend->SetX1(leg_coords.front());
   legend->SetX2(leg_coords.back());
-  legend->Draw();
+  legend->Draw();*/
   
 
   c1->SaveAs(file_name.c_str());
   c1->Close();
+  std::cout << file_name << "plotted fine" << "\n";
 }
 
 std::list<double> HistoPlot::get_y_max(TH1F* data, TH1F* background)
@@ -155,7 +156,7 @@ int HistoPlot::get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end
     double y = histo->GetBinContent(i);
     if (y > y1_gc)
     {
-      data_overlap += 1;
+     data_overlap += 1;
     }
   }
 
@@ -234,7 +235,8 @@ float HistoPlot::get_data_error(TH1F* histo, int bin)
 
 std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) 
 {
-  std::string file_name(variable->name);
+  std::string file_name("metxc/");
+  file_name.append(variable->name);
 
   if (with_cut)
   {
@@ -244,6 +246,9 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
     file_name.append(variable->x_min_cut);
     file_name += "_";
     file_name.append(variable->x_max_cut);
+    //file_name += "+";
+    file_name.append("alljets+sig");
+
   }
   else
   {

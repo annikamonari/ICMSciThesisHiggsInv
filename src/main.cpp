@@ -50,7 +50,7 @@ void produce_graphs() {
   std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
 
   for (int i = 0; i < variables.size(); i++) {
-	  HistoPlot::draw_stacked_histo(variables[i], bg_chains, signal_chain, data_chain, true);
+	  HistoPlot::draw_stacked_histo(variables[i], bg_chains, signal_chain, data_chain, false);
   }
 }
 

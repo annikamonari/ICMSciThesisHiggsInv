@@ -7,13 +7,13 @@ void produce_graphs() {
 	
 	Variable* jet1_pt = new Variable("jet1_pt","Jet 1 pT", "0.0", "600.0", "40.0", "500.0","50","100");
 	Variable* jet2_eta = new Variable("jet2_eta","Jet 2 Eta", "-5.0", "5.0", "0.2", "5.0","60","20");
-	Variable* forward_tag_eta = new Variable("forward_tag_eta","Forward Tag Eta", "1.8", "5.0", "-5.0", "-3.8","60","50");
+	Variable* forward_tag_eta = new Variable("forward_tag_eta","Forward Tag Eta", "-5.0", "5.0", "1.8", "5.0","60","50");
 	Variable* central_tag_eta = new Variable("central_tag_eta","Central Tag Eta", "-5.0", "5.0", "0.0", "5.0","50","50");
-	Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "3.6", "8.0", "0", "8.0","25","100");
+	Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "0.0", "8.0", "0", "8.0","25","100");
 	Variable* dijet_dphi = new Variable("dijet_dphi","Dijet dphi", "0.0", "3.2", "0.0", "2.2","35","40");
 	Variable* metnomu_x = new Variable("metnomu_x","MET-X Excluding Muons", "-400.0", "400.0","0.0", "400.0","60","70");
 	Variable* metnomu_y = new Variable("metnomu_y","MET-Y Excluding Muons", "-400.0", "400.0","0.0", "300.0","70","70");
-	Variable* metnomu_significance = new Variable("metnomu_significance","MET Excluding Muons Significance", "2.0", "12.0","3.0", "12.0","50","70");
+	Variable* metnomu_significance = new Variable("metnomu_significance","MET Excluding Muons Significance", "2.0", "12.0","3.5", "12.0","50","70");
 	Variable* ht = new Variable("ht", "HCAL Scalar Sum of Energy","0.0", "1200.0","50", "600","60","50");
 	Variable* ht30 = new Variable("ht30","HCAL Scalar Sum of Energy over 30GeV", "0.0", "1200.0","50.0", "1100.0","75","30");
 	Variable* sqrt_ht = new Variable("sqrt_ht","Square Root HCAL Scalar Sum of Energy", "0.0", "35.0","9.0", "18.0","75","50");
@@ -26,10 +26,7 @@ void produce_graphs() {
 	Variable* dijet_M = new Variable("dijet_M","Dijet Mass", "0.0", "2000.0","800.0", "2000.0","50","100");
 	Variable* jet2met_scalarprod = new Variable("jet2met_scalarprod","Jet-2 Scalar Product with MET", "-400.0", "400.0","0.0", "100.0","100","100");
 	Variable* l1met = new Variable("l1met","Level 1 trigger MET", "0.0", "400.0","0.0", "250.0","50","40");
-	Variable* metnomuons = new Variable("metnomuons","MET Excluding Muons", "0.0", "400.0","100.0", "400.0","50","80");
-
-
-
+	Variable* metnomuons = new Variable("metnomuons","MET Excluding Muons", "0.0", "400.0","120.0", "400.0","50","80");
 
 Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dijet_deta, dijet_dphi, metnomu_x, metnomu_y,
 						   metnomu_significance, ht, ht30, sqrt_ht, unclustered_et, jet1metnomu_dphi, jet1metnomu_scalarprod,
@@ -53,8 +50,8 @@ Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dije
 
   std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
    int j;
-   int tv_arr[6]={2,4,8,9,17,18,21};
-  for (int i = 0; i < 6/*variables.size()*/; i++) {
+   int tv_arr[7]={2,4,8,9,17,18,21};
+  for (int i = 0; i < 7/*variables.size()*/; i++) {
           j=tv_arr[i];
 	  HistoPlot::draw_stacked_histo(variables[j], bg_chains, signal_chain, data_chain, true);
   }

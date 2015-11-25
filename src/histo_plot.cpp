@@ -4,7 +4,6 @@ void HistoPlot::draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_cha
                                    DataChain* signal_chain, DataChain* data, bool with_cut)
 {
   std::string var_str = var->build_title_string(with_cut);
-  std::cout <<"var str =" <<var_str <<"\n";
   const char* var_name   = var_str.c_str();
   std::string file_name  = build_file_name(var, with_cut);
   TCanvas* c1            = new TCanvas("c1", var_name);

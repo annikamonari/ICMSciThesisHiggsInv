@@ -52,11 +52,11 @@ Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dije
   DataChain* myDataChain[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv,bg_top, bg_vv, bg_zjets_vv, bg_qcd};
 
   std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
-   /*int j;
-   int tv_arr[6]={2,6,7,8,9,17};*/
-  for (int i = 21; i < 22/*variables.size()*/; i++) {
-          //j=tv_arr[i];
-	  HistoPlot::draw_stacked_histo(variables[i], bg_chains, signal_chain, data_chain, true);
+   int j;
+   int tv_arr[6]={2,4,8,9,17,18,21};
+  for (int i = 0; i < 6/*variables.size()*/; i++) {
+          j=tv_arr[i];
+	  HistoPlot::draw_stacked_histo(variables[j], bg_chains, signal_chain, data_chain, true);
   }
 }
 

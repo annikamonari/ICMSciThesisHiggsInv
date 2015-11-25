@@ -64,6 +64,24 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   return var_string;
 }
 
+std::string Variable::build_title_string(bool with_cut)
+{
+  std::string ti_string("");
+  if (with_cut) {
+  ti_string += "(";
+  ti_string.append(x_min_cut);
+  ti_string += "<";
+  ti_string.append(name);
+  ti_string += "<";
+  ti_string.append(x_max_cut);
+  ti_string += ")";
+  }
+  else
+  {
+    ti_string.append(name);
+  }
+  return ti_string;
+}
 std::string Variable::build_selection_string(bool with_cut, bool is_signal) 
 {
   std::string sel_string("");
@@ -80,40 +98,38 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += ")";
     
     /*sel_string +="&&(";
-    sel_string += "metnomu_y>140";
+    sel_string += "metnomu_y>";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "metnomu_y<300";
+    sel_string += "metnomu_y<";
     sel_string += ")";*/
 
     /*sel_string +="&&(";
-    sel_string += "metnomu_x>-400";
+    sel_string += "metnomu_x>";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "metnomu_x<-180";
+    sel_string += "metnomu_x<";
     sel_string += ")";*/
-
 
     /*sel_string +="&&(";
-    sel_string += "sqrt_ht>9";
+    sel_string += "sqrt_ht>";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "sqrt_ht<13";
+    sel_string += "sqrt_ht<";
     sel_string += ")";*/
-
 
     /*sel_string +="&&(";
-    sel_string += "forward_tag_eta>-5.0";
+    sel_string += "forward_tag_eta>";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "forward_tag_eta<-3.8";
+    sel_string += "forward_tag_eta<";
     sel_string += ")";*/
 
-    sel_string +="&&(";
-    sel_string += "metnomu_significance>5.2";
+    /*sel_string +="&&(";
+    sel_string += "metnomu_significance>100";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "metnomu_significance<12.0";
+    sel_string += "metnomu_significance<400";
     sel_string += ")";
 
     sel_string +="&&(";
@@ -121,17 +137,22 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += ")";
     sel_string +="&&(";
     sel_string += "alljetsmetnomu_mindphi <3.0";
-    sel_string += ")";
+    sel_string += ")";*/
 
-    sel_string += ")*";
-  } 
+    sel_string += ")*";  
 
-  sel_string += "total_weight_lepveto";
-
-  if(is_signal) {
-    sel_string += "*";
-    sel_string.append(signal_multiplier);
-  }
+      } 
   
+  else{
+         sel_string += "(";
+	 sel_string.append(name);
+         sel_string += ")*"; 
+      }
+    sel_string += "total_weight_lepveto";
+
+    if(is_signal) {
+      sel_string += "*";
+      sel_string.append(signal_multiplier);
+    }
   return sel_string;
 }

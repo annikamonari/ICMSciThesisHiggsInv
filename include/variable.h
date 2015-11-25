@@ -24,6 +24,8 @@ public:
 
   std::string build_var_string(const char* label, bool with_cut);
 
+  std::string build_title_string(bool with_cut);
+
   std::string build_selection_string(bool with_cut, bool is_signal);
 };
 

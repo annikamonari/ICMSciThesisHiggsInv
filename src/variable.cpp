@@ -90,3 +90,44 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   
   return sel_string;
 }
+
+double Variable::get_graph_dx(bool with_cut)
+{
+  return (get_x_max(with_cut) - get_x_min(with_cut));
+}
+
+double Variable::get_x_min(bool with_cut)
+{
+  if (with_cut)
+  {
+    return atof(x_min_cut);
+  }
+  else
+  {
+    return atof(x_min_nocut);
+  }
+}
+
+double Variable::get_x_max(bool with_cut)
+{
+  if (with_cut)
+  {
+    return atof(x_max_cut);
+  }
+  else
+  {
+    return atof(x_max_nocut);
+  }
+}
+
+double Variable::get_bins(bool with_cut)
+{
+  if (with_cut)
+  {
+    return atof(bins_cut.c_str());
+  }
+  else
+  {
+    return atof(bins_nocut);
+  }
+}

@@ -15,24 +15,27 @@ public:
     return ret;
   }
 
-  static void draw_stacked_histo(Variable* var, std::vector<DataChain*> bg_chains, 
-                                 DataChain* signal_chain, DataChain* data, bool with_cut);
+  static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
+                        DataChain* signal_chain, DataChain* data, bool with_cut);
 
-  static std::list<double> get_y_max(TH1F* data, TH1F* background);
+  static void draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
+		  	  	  	  	  	  	 bool with_cut);
+
+  static TH1F* get_max_histo(TH1F** plot_histos);
+
+  static double get_histo_y_max(TH1F* histo);
 
   static std::list<TH1F*> get_histos_from_stack(THStack* hs);
+
+  static void build_legend(TLegend* legend, TH1F* max_histo, Variable* var, bool with_cut);
+
+  static double position_legend_x1(TH1F* max_histo, Variable* var, bool with_cut);
 
   static void style_stacked_histo(THStack* hs, const char* x_label);
 
   static void style_legend(TLegend* legend);
-
-  static std::list<double> legend_coords(TH1F* histo, Variable* var, bool with_cut, double y_max);
-
-  static int get_leg_overlap(TH1F* histo, TLegend* leg, int start_bin, int end_bin, double y1_gc);
-
-  static float get_x_from_x1(float x1, double dx);
   
-  static float get_x1_from_x(float x, double dx);
+  static double get_x1_from_bin(double max_bin, double nbins);
 
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
                               bool is_signal, const char* option);
@@ -51,6 +54,8 @@ public:
   static float get_data_error(TH1F* histo, int bin);
 
   static std::string build_file_name(Variable* variable, bool with_cut);
+
+  static std::string build_signal_leg_entry(Variable* var, DataChain* signal_chain);
 };
 
 #endif

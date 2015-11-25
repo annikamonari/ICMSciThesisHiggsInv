@@ -18,8 +18,8 @@ public:
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                         DataChain* signal_chain, DataChain* data, bool with_cut);
 
-  static void draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-		  	  	  	  	  	  	 bool with_cut);
+  static THStack draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
+		  	  	  	  	  	  	 	bool with_cut);
 
   static TH1F* get_max_histo(TH1F** plot_histos);
 

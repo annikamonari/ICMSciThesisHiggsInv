@@ -3,14 +3,14 @@
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                                    DataChain* signal_chain, DataChain* data, bool with_cut)
 {
-  std::string file_name  = build_file_name(var, with_cut);
+  const char* var_name 	 = var->name_styled;
   TCanvas* c1            = new TCanvas("c1", var_name);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
   THStack stack 	 	 = draw_stacked_histo(legend, var, bg_chains, with_cut);
   TH1F* signal_histo 	 = draw_signal(signal_chain, var, with_cut);
   TH1F* data_histo   	 = draw_data(data, var, with_cut);
 
-  legend->AddEntry(build_signal_leg_entry(var, signal_chain).c_str(), signal_chain->legend, "l");
+  legend->AddEntry(signal_histo, (build_signal_leg_entry(var, signal_chain)).c_str(), "l");
   legend->AddEntry(data_histo, data->legend, "lep");
 
   stack.Draw();
@@ -27,17 +27,14 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
   build_legend(legend, max_histo, var, with_cut);
 
-  legend->Draw();
-
-  c1->SaveAs(file_name.c_str());
+  c1->SaveAs((build_file_name(var, with_cut)).c_str());
   c1->Close();
 }
 
-void HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-								   bool with_cut)
+THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
+									  bool with_cut)
 {
   const char* var_name = var->name_styled;
-
   THStack stack(var_name, var_name);
 
   for(int i = 0; i < bg_chains.size(); i++) {
@@ -45,6 +42,7 @@ void HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<D
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
+  return stack;
 }
 
 TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
@@ -74,9 +72,11 @@ void HistoPlot::build_legend(TLegend* legend, TH1F* max_histo, Variable* var, bo
   double x1 	  = position_legend_x1(max_histo, var, with_cut);
   double x2 	  = x1 + 0.18;
 
+  style_legend(legend);
+
   legend->SetX1(x1);
   legend->SetX2(x2);
-  style_legend(legend);
+  legend->Draw();
 }
 
 double HistoPlot::position_legend_x1(TH1F* max_histo, Variable* var, bool with_cut)
@@ -97,7 +97,7 @@ double HistoPlot::position_legend_x1(TH1F* max_histo, Variable* var, bool with_c
 
 double HistoPlot::get_x1_from_bin(double max_bin, double nbins)
 {
-  return x * 0.8 / dx + 0.1;
+  return max_bin * 0.8 / nbins + 0.1;
 }
 
 void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)

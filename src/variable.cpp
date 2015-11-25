@@ -71,13 +71,13 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   if (with_cut) {
     sel_string += "((";
     sel_string.append(name);
-    sel_string += ">";
+    sel_string += ">abs(";
     sel_string.append(x_min_cut);
-    sel_string += ")&&(";
+    sel_string += "))&&(";
     sel_string.append(name);
-    sel_string += "<";
+    sel_string += "<abs(";
     sel_string.append(x_max_cut);
-    sel_string += "))*";
+    sel_string += ")))*";
   } 
 
   sel_string += "total_weight_lepveto";

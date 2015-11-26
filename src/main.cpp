@@ -50,8 +50,8 @@ Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dije
 
   std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
    int j;
-   int tv_arr[7]={2,4,8,11,17,18,21};  //forward tag eta, dijet deta, met significance,sqrt ht, all jets met min dphi, dijet M,met
-  for (int i = 0; i < 1/*variables.size()*/; i++) {
+   int tv_arr[7]={2,4,8,11,17,18/*,21*/};  //forward tag eta, dijet deta, met significance,sqrt ht, all jets met min dphi, dijet M,met
+  for (int i = 0; i < 7/*variables.size()*/; i++) {
           j=tv_arr[i];
 	  HistoPlot::draw_plot(variables[j], bg_chains, signal_chain, data_chain, true);
   }

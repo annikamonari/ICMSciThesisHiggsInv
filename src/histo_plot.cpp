@@ -341,7 +341,7 @@ float HistoPlot::get_data_error(TH1F* histo, int bin)
 
 std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) 
 {
-  std::string file_name("loose_cuts/");
+  std::string file_name("metc/");
   file_name.append(variable->name);
 
   if (with_cut)
@@ -352,8 +352,8 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
     file_name.append(variable->x_min_cut);
     file_name += "_";
     file_name.append(variable->x_max_cut);
-    //file_name += "+";
-    //file_name.append("alljets+sig");
+    file_name += "+";
+    file_name.append("met");
 
   }
   else

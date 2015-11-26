@@ -9,6 +9,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
   THStack stack 	 	 = draw_stacked_histo(legend, var, bg_chains, with_cut);
   TH1F* signal_histo 	 = draw_signal(signal_chain, var, with_cut);
+
   TH1F* data_histo   	 = draw_data(data, var, with_cut);
 
   legend->AddEntry(signal_histo, (build_signal_leg_entry(var, signal_chain)).c_str(), "l");

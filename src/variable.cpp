@@ -45,7 +45,7 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   var_string.append(label);
   var_string += "(";
 
-  if (with_cut) {
+  /*if (with_cut) {
     var_string += bins_cut;
     var_string += ",";
     var_string.append(x_min_cut);
@@ -53,14 +53,14 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
     var_string.append(x_max_cut);
     var_string += ")";
   }
-  else {
+  else {*/
     var_string.append(bins_nocut);
     var_string += ",";
     var_string.append(x_min_nocut);
     var_string += ",";
     var_string.append(x_max_nocut);
     var_string += ")";
-  } 
+  //} 
   return var_string;
 }
 
@@ -92,7 +92,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   std::string sel_string("");
 
   if (with_cut) {
-    sel_string += "(";/*
+    /*sel_string += "(abs(";
     sel_string.append(name);
     sel_string += ">";
     sel_string.append(x_min_cut);
@@ -101,15 +101,15 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += "<";
     sel_string.append(x_max_cut);*/
 
-    sel_string += "(-";//)||
+    sel_string += "((";//)||
     sel_string.append(name);
-    sel_string += ">";
+    sel_string += ">abs(";
     sel_string.append(x_max_cut);
-    sel_string += ")&&(-";
+    sel_string += "))&&(";
     sel_string.append(name);
-    sel_string += "<";
+    sel_string += "<abs(";
     sel_string.append(x_min_cut);
-    sel_string.append(")");
+    sel_string.append("))");
 
     
     /*sel_string +="&&(";
@@ -151,11 +151,6 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
 
       } 
   
-  else{
-         sel_string += "(abs(";
-	 sel_string.append(name);
-         sel_string += "))*"; 
-      }
     sel_string += "total_weight_lepveto";
 
     if(is_signal) {

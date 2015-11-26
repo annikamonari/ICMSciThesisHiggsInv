@@ -8,7 +8,7 @@ void produce_graphs() {
 	Variable* jet2_eta = new Variable("jet2_eta","Jet 2 Eta", "-5.0", "5.0", "-5.0", "-3.7","60","50");
 	Variable* forward_tag_eta = new Variable("forward_tag_eta","Forward Tag Eta", "-5.0", "5.0", "-5.0", "-3.8","60","50");
 	Variable* central_tag_eta = new Variable("central_tag_eta","Central Tag Eta", "-5.0", "5.0", "-4.0", "-3.0","50","50");
-	Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "3.6", "8.0", "5.5", "8.0","25","10");
+	Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "3.6", "8.0", "5.5", "8.0","25","30");
 	Variable* dijet_dphi = new Variable("dijet_dphi","Dijet dphi", "0.0", "3.2", "0.0", "2.2","35","100");
 	Variable* metnomu_x = new Variable("metnomu_x","MET-X Excluding Muons", "-400.0", "400.0","-400.0", "-180.0","60","50");
 	Variable* metnomu_y = new Variable("metnomu_y","MET-Y Excluding Muons", "-400.0", "400.0","140.0", "300.0","70","50");
@@ -50,7 +50,7 @@ void produce_graphs() {
   std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
 
   for (int i = 0; i < variables.size(); i++) {
-	  HistoPlot::draw_plot(variables[i], bg_chains, signal_chain, data_chain, true);
+	  HistoPlot::draw_plot(variables[i], bg_chains, signal_chain, data_chain, false);
   }
 }
 

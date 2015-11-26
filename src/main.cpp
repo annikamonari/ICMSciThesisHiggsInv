@@ -9,11 +9,11 @@ void produce_graphs() {
 	Variable* jet2_eta = new Variable("jet2_eta","Jet 2 Eta", "-5.0", "5.0", "0.2", "5.0","60","20");
 	Variable* forward_tag_eta = new Variable("forward_tag_eta","Forward Tag Eta", "-5.0", "5.0", "1.8", "5.0","60","50");
 	Variable* central_tag_eta = new Variable("central_tag_eta","Central Tag Eta", "-5.0", "5.0", "0.0", "5.0","50","50");
-	Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "0.0", "8.0", "0", "8.0","25","100");
+	Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "3.5", "8.0", "4.2", "8.0","25","100");
 	Variable* dijet_dphi = new Variable("dijet_dphi","Dijet dphi", "0.0", "3.2", "0.0", "2.2","35","40");
 	Variable* metnomu_x = new Variable("metnomu_x","MET-X Excluding Muons", "-400.0", "400.0","0.0", "400.0","60","70");
 	Variable* metnomu_y = new Variable("metnomu_y","MET-Y Excluding Muons", "-400.0", "400.0","0.0", "300.0","70","70");
-	Variable* metnomu_significance = new Variable("metnomu_significance","MET Excluding Muons Significance", "2.0", "12.0","3.5", "12.0","50","70");
+	Variable* metnomu_significance = new Variable("metnomu_significance","MET Excluding Muons Significance", "3.0", "12.0","3.5", "12.0","50","70");
 	Variable* ht = new Variable("ht", "HCAL Scalar Sum of Energy","0.0", "1200.0","50", "600","60","50");
 	Variable* ht30 = new Variable("ht30","HCAL Scalar Sum of Energy over 30GeV", "0.0", "1200.0","50.0", "1100.0","75","30");
 	Variable* sqrt_ht = new Variable("sqrt_ht","Square Root HCAL Scalar Sum of Energy", "0.0", "35.0","9.0", "18.0","75","50");
@@ -50,10 +50,10 @@ Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dije
 
   std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
    int j;
-   int tv_arr[7]={2,4,8,9,17,18,21};
+   int tv_arr[7]={2,4,8,11,17,18,21};  //forward tag eta, dijet deta, met significance,sqrt ht, all jets met min dphi, dijet M,met
   for (int i = 0; i < 7/*variables.size()*/; i++) {
           j=tv_arr[i];
-	  HistoPlot::draw_stacked_histo(variables[j], bg_chains, signal_chain, data_chain, true);
+	  HistoPlot::draw_plot(variables[j], bg_chains, signal_chain, data_chain, true);
   }
 }
 

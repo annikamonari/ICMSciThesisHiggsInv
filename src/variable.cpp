@@ -75,6 +75,11 @@ std::string Variable::build_title_string(bool with_cut)
   ti_string += "<";
   ti_string.append(x_max_cut);
   ti_string += ")";
+
+  /*ti_string +="&&(";
+  ti_string += "100<MET<400";
+  ti_string += ")";*/
+
   }
   else
   {
@@ -87,28 +92,31 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   std::string sel_string("");
 
   if (with_cut) {
-    sel_string += "((";
+    sel_string += "(";/*
     sel_string.append(name);
     sel_string += ">";
     sel_string.append(x_min_cut);
     sel_string += ")&&(";
     sel_string.append(name);
     sel_string += "<";
+    sel_string.append(x_max_cut);*/
+
+    sel_string += "(-";//)||
+    sel_string.append(name);
+    sel_string += ">";
     sel_string.append(x_max_cut);
-    sel_string += ")";
+    sel_string += ")&&(-";
+    sel_string.append(name);
+    sel_string += "<";
+    sel_string.append(x_min_cut);
+    sel_string.append(")");
+
     
     /*sel_string +="&&(";
-    sel_string += "metnomu_y>";
+    sel_string += "abs(metnomuons)>100";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "metnomu_y<";
-    sel_string += ")";*/
-
-    /*sel_string +="&&(";
-    sel_string += "metnomu_x>";
-    sel_string += ")";
-    sel_string +="&&(";
-    sel_string += "metnomu_x<";
+    sel_string += "abs(metnomuons)<400";
     sel_string += ")";*/
 
     /*sel_string +="&&(";
@@ -119,10 +127,10 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += ")";*/
 
     /*sel_string +="&&(";
-    sel_string += "forward_tag_eta>";
+    sel_string += "abs(forward_tag_eta)>";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "forward_tag_eta<";
+    sel_string += "abs(forward_tag_eta)<";
     sel_string += ")";*/
 
     /*sel_string +="&&(";
@@ -130,13 +138,13 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += ")";
     sel_string +="&&(";
     sel_string += "metnomu_significance<400";
-    sel_string += ")";
+    sel_string += ")";*/
 
-    sel_string +="&&(";
-    sel_string += "alljetsmetnomu_mindphi >1.7";
+    /*sel_string +="&&(";
+    sel_string += "abs(alljetsmetnomu_mindphi) >1.7";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "alljetsmetnomu_mindphi <3.0";
+    sel_string += "abs(alljetsmetnomu_mindphi) <3.0";
     sel_string += ")";*/
 
     sel_string += ")*";  
@@ -144,9 +152,9 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
       } 
   
   else{
-         sel_string += "(";
+         sel_string += "(abs(";
 	 sel_string.append(name);
-         sel_string += ")*"; 
+         sel_string += "))*"; 
       }
     sel_string += "total_weight_lepveto";
 
@@ -156,3 +164,45 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     }
   return sel_string;
 }
+
+double Variable::get_graph_dx(bool with_cut)
+{
+  return (get_x_max(with_cut) - get_x_min(with_cut));
+}
+
+double Variable::get_x_min(bool with_cut)
+{
+  if (with_cut)
+  {
+    return atof(x_min_cut);
+  }
+  else
+  {
+    return atof(x_min_nocut);
+  }
+}
+
+double Variable::get_x_max(bool with_cut)
+{
+  if (with_cut)
+  {
+    return atof(x_max_cut);
+  }
+  else
+  {
+    return atof(x_max_nocut);
+  }
+}
+
+double Variable::get_bins(bool with_cut)
+{
+  if (with_cut)
+  {
+    return atof(bins_cut.c_str());
+  }
+  else
+  {
+    return atof(bins_nocut);
+  }
+}
+

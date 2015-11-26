@@ -27,6 +27,14 @@ public:
   std::string build_title_string(bool with_cut);
 
   std::string build_selection_string(bool with_cut, bool is_signal);
+
+  double get_graph_dx(bool with_cut);
+
+  double get_x_min(bool with_cut);
+
+  double get_x_max(bool with_cut);
+
+  double get_bins(bool with_cut);
 };
 
 

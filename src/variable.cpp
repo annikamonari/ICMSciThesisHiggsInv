@@ -78,7 +78,7 @@ std::string Variable::build_title_string(bool with_cut)
   ti_string += ")";
 
   ti_string +="&&(";
-  ti_string += "800.0<dijet_M<2000.0";
+  ti_string += "(0.5<allj<3.0) &(120<MET<400)&(3.5<MET significance<12)";
   ti_string += ")";
 
   }
@@ -94,11 +94,11 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
 
   if (with_cut) {
 
-    /*sel_string += "((abs(metnomuons)>120";
+    sel_string += "((metnomuons>120";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "abs(metnomuons)<400";
-    sel_string += ")";*/
+    sel_string += "metnomuons<400";
+    sel_string += ")";
 
     /*sel_string += "((sqrt_ht>9.0";
     sel_string += ")";
@@ -106,11 +106,11 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += "sqrt_ht<18.0";
     sel_string += ")";*/
 
-    sel_string += "((dijet_M>800.0";
+    /*sel_string += "((dijet_M>800.0";
     sel_string += ")";
     sel_string +="&&(";
     sel_string += "dijet_M<2000.0";
-    sel_string += ")";
+    sel_string += ")";*/
 
     /*sel_string += "((dijet_deta>4.2";
     sel_string += ")";
@@ -124,17 +124,17 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
     sel_string += "abs(forward_tag_eta)<5.0";
     sel_string += ")";*/
 
-    /*sel_string += "((metnomu_significance>3.5";
+    sel_string += "&&(metnomu_significance>3.5";
     sel_string += ")";
     sel_string +="&&(";
     sel_string += "metnomu_significance<12.0";
-    sel_string += ")";*/
+    sel_string += ")";
 
-    /*sel_string += "((abs(alljetsmetnomu_mindphi) >0.5";
+    sel_string += "&&(alljetsmetnomu_mindphi >0.5";
     sel_string += ")";
     sel_string +="&&(";
-    sel_string += "abs(alljetsmetnomu_mindphi) <3.0";
-    sel_string += ")";*/
+    sel_string += "alljetsmetnomu_mindphi <3.0";
+    sel_string += ")";
 
     sel_string += ")*";  
  

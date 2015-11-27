@@ -342,7 +342,7 @@ float HistoPlot::get_data_error(TH1F* histo, int bin)
 
 std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) 
 {
-  std::string file_name("dijm/");
+  std::string file_name("allj/met/mts/");
   file_name.append(variable->name);
 
   if (with_cut)
@@ -354,7 +354,7 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
     file_name += "_";
     file_name.append(variable->x_max_cut);
     file_name += "+";
-    file_name.append("dijm");
+    file_name.append("allj+met+met_sig");
 
   }
   else

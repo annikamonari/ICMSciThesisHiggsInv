@@ -20,6 +20,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   signal_histo->Draw("SAME");
 
   const char* x_axis_label =var->name_styled;
+
   style_stacked_histo(&stack, x_axis_label);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
@@ -36,9 +37,9 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains, bool with_cut)
 {
-  const char* var_name = var->name_styled;
+  std::string var_str = var->build_title_string(with_cut);
+  const char* var_name   = var_str.c_str();
   THStack stack(var_name, var_name);
-
   for(int i = 0; i < bg_chains.size(); i++) {
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut);
     stack.Add(single_bg_histo);
@@ -341,7 +342,7 @@ float HistoPlot::get_data_error(TH1F* histo, int bin)
 
 std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) 
 {
-  std::string file_name("metc/");
+  std::string file_name("dijm/");
   file_name.append(variable->name);
 
   if (with_cut)
@@ -353,7 +354,7 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
     file_name += "_";
     file_name.append(variable->x_max_cut);
     file_name += "+";
-    file_name.append("met");
+    file_name.append("dijm");
 
   }
   else

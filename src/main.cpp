@@ -3,34 +3,47 @@
 #include <initializer_list>
 #include <cmath>
 
+std::vector<DataChain*> get_bg_chains(Chains chains)
+{
+		DataChain* bg_chain_arr[] = {chains.bg_zll, chains.bg_wjets_ev, chains.bg_wjets_muv,
+																															chains.bg_wjets_tauv, chains.bg_top, chains.bg_vv,
+																															chains.bg_zjets_vv, chains.bg_qcd};
+
+		std::vector<DataChain*> bg_chains (bg_chain_arr, bg_chain_arr + sizeof(bg_chain_arr) / sizeof(bg_chain_arr[0]));
+
+		return bg_chains;
+}
+
+std::vector<Variable*> get_var_vector(Variables variables)
+{
+		Variable* var_arr[] = {/*variables.jet1_pt, variables.jet2_eta, */variables.forward_tag_eta,
+																									/*variables.central_tag_eta, variables.dijet_deta, variables.dijet_dphi,
+																									variables.metnomu_x, variables.metnomu_y, */variables.metnomu_significance,/*
+																									variables.ht, variables.ht30, variables.sqrt_ht, variables.unclustered_et,
+																									variables.jet1metnomu_dphi, variables.jet1metnomu_scalarprod,
+																									variables.jet2metnomu_dphi, variables.jetmetnomu_mindphi,
+																									variables.alljetsmetnomu_mindphi,*/ variables.dijet_M/*,
+																									variables.jet2met_scalarprod, variables.l1met, variables.metnomuons*/};
+
+		std::vector<Variable*> vars (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
+
+		return vars;
+}
+
 void produce_graphs() {
-	Variables variables;
-	Chains chains;
+		Variables variables;
+		std::vector<Variable*> vars 						= get_var_vector(variables);
 
-	Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta/*, central_tag_eta, dijet_deta/*, dijet_dphi, metnomu_x, metnomu_y,
-						   metnomu_significance, ht, ht30, sqrt_ht, unclustered_et, jet1metnomu_dphi, jet1metnomu_scalarprod,
-						   jet2metnomu_dphi, jetmetnomu_mindphi, alljetsmetnomu_mindphi, dijet_M, jet2met_scalarprod, l1met,
-						   metnomuons*/};
-
-	std::vector<Variable*> variables (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
-
-  DataChain* bg_zll        = new DataChain(z_ll, z_ll_label, z_ll_legend);
-  DataChain* bg_wjets_ev   = new DataChain(wjets_ev, wjets_ev_label, wjets_ev_legend);
-  DataChain* bg_wjets_muv  = new DataChain(wjets_muv, wjets_muv_label, wjets_muv_legend);
-  DataChain* bg_wjets_tauv = new DataChain(wjets_tauv, wjets_tauv_label, wjets_tauv_legend);
-  DataChain* bg_top        = new DataChain(top, top_label, top_legend);
-  DataChain* bg_vv         = new DataChain(vv, vv_label, vv_legend);
-  DataChain* bg_zjets_vv   = new DataChain(zjets_vv, zjets_vv_label, zjets_vv_legend);
-  DataChain* bg_qcd        = new DataChain(qcd, qcd_label, qcd_legend);
-  DataChain* signal_chain  = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend);
-  DataChain* data_chain    = new DataChain(data, data_label, data_legend);
-
-  DataChain* myDataChain[] = {bg_zll, bg_wjets_ev, bg_wjets_muv, bg_wjets_tauv,bg_top, bg_vv, bg_zjets_vv, bg_qcd};
-
-  std::vector<DataChain*> bg_chains (myDataChain, myDataChain + sizeof(myDataChain) / sizeof(myDataChain[0]));
+		Chains chains;
+		std::vector<DataChain*> bg_chains = get_bg_chains(chains);
+		DataChain* signal_chain 										= chains.signal_chain;
+		DataChain* data_chain 												= chains.data_chain;
 
   for (int i = 0; i < 1; i++) {
-	  HistoPlot::draw_plot(variables[i], bg_chains, signal_chain, data_chain, false);
+  	std::vector<Variable*> tmp_vars = vars;
+  	tmp_vars.erase(tmp_vars.begin() + i);
+  	std::cout << tmp_vars.size() << tmp_vars[0]->name << "," << tmp_vars[1]->name << "," << tmp_vars[2]->name << std::endl;
+	  HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, tmp_vars);
   }
 }
 

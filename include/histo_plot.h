@@ -16,10 +16,12 @@ public:
   }
 
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
-                        DataChain* signal_chain, DataChain* data, bool with_cut);
+                        DataChain* signal_chain, DataChain* data, bool with_cut,
+																								std::vector<Variable*> variables = std::vector<Variable*>());
 
-  static THStack draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-		  	  	  	  	  	  	 	bool with_cut);
+  static THStack draw_stacked_histo(TLegend* legend, Variable* var,
+																																				std::vector<DataChain*> bg_chains, bool with_cut,
+																																				std::vector<Variable*> variables = std::vector<Variable*>());
 
   static TH1F* get_max_histo(TH1F** plot_histos);
 
@@ -38,14 +40,17 @@ public:
   static double get_x1_from_bin(double max_bin, double nbins);
 
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                              bool is_signal, const char* option);
+                              bool is_signal, const char* option,
+																														std::vector<Variable*> variables = std::vector<Variable*>());
 
-  static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend);
+  static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
+																									std::vector<Variable*> variables = std::vector<Variable*>());
 
-  static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend);
+  static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
+																											std::vector<Variable*> variables = std::vector<Variable*>());
 
-  static TH1F* draw_background(DataChain* data_chain, Variable* variable, 
-                                 int fill_colour, bool with_cut);
+  static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
+																															std::vector<Variable*> variables = std::vector<Variable*>());
 
   static void set_histo_style(bool is_signal, int fill_colour = 0);
   

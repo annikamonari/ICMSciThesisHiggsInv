@@ -6,12 +6,9 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   const char* var_name 	 = var->name_styled;
   TCanvas* c1            = new TCanvas("c1", var_name);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
-  THStack stack 	 	 = draw_stacked_histo(legend, var, bg_chains, with_cut);
-  TH1F* signal_histo 	 = draw_signal(signal_chain, var, with_cut);
-  TH1F* data_histo   	 = draw_data(data, var, with_cut);
-
-  legend->AddEntry(signal_histo, (build_signal_leg_entry(var, signal_chain)).c_str(), "l");
-  legend->AddEntry(data_histo, data->legend, "lep");
+  THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut);
+  TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend);
+  TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend);
 
   stack.Draw();
   data_histo->Draw("SAME");
@@ -20,11 +17,9 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   style_stacked_histo(&stack, var_name);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
-  TH1F* max_histo 	   = get_max_histo(plot_histos);
-  double y_max 		   = get_histo_y_max(max_histo);
+  TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
-  stack.SetMaximum(y_max);
-
+  stack.SetMaximum(get_histo_y_max(max_histo));
   build_legend(legend, max_histo, var, with_cut);
 
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
@@ -104,7 +99,7 @@ void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
 {
   hs->GetYaxis()->SetTitle("Events");
   hs->GetYaxis()->SetLabelSize(0.035);
-  hs->GetYaxis()->SetTitleOffset(1.35);
+  hs->GetYaxis()->SetTitleOffset(1.45);
   hs->GetXaxis()->SetTitle(x_label);
   hs->GetXaxis()->SetLabelSize(0.035);
   hs->GetXaxis()->SetTitleOffset(1.35);
@@ -127,24 +122,26 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   return (TH1F*)gDirectory->Get(data_chain->label);
 }
 
-TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut)
+TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend)
 {
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
   data_chain->chain->SetLineColor(1);
+  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1"));
+  legend->AddEntry(data_histo, data_chain->legend, "lep");
 
-  TH1F* histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1"));
-
-  return histo;
+  return data_histo;
 }
 
-TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut)
+TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend)
 {
   data_chain->chain->SetLineColor(2);
   data_chain->chain->SetLineWidth(3);
   data_chain->chain->SetFillColor(0);
+  TH1F* signal_histo = build_1d_histo(data_chain, variable, with_cut, true, "goff");
+  legend->AddEntry(signal_histo, (build_signal_leg_entry(variable, data_chain)).c_str(), "l");
 
-  return build_1d_histo(data_chain, variable, with_cut, true, "goff");
+  return signal_histo;
 }
 
 TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, 

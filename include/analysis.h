@@ -152,8 +152,7 @@ std::vector<const char*> zjets_vv (zjets_vv_arr, zjets_vv_arr +
 const char* zjets_vv_label = "Z_jets_rightarrow_nu_nu";
 const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
 
-
-///////////////////////////          Signal:         //////////////////////////////////////
+///////////////////////////          Signal:          //////////////////////////////////////
 
 const char* mc_signal_data_arr[] = {"data/signal/MC_Powheg-ggHtoinv-mH125.root", 
                                     "data/signal/MC_Powheg-Htoinv-mH125.root"};
@@ -196,6 +195,22 @@ std::vector<const char*> data (data_arr, data_arr+ sizeof(data_arr)/sizeof(const
 const char* data_label = "data";
 const char* data_legend = "data";
 
+/////////////////           DATACHAIN STRUCT              /////////////////////////////////
+
+struct Chains
+{
+		DataChain* bg_zll        = new DataChain(z_ll, z_ll_label, z_ll_legend);
+		DataChain* bg_wjets_ev   = new DataChain(wjets_ev, wjets_ev_label, wjets_ev_legend);
+		DataChain* bg_wjets_muv  = new DataChain(wjets_muv, wjets_muv_label, wjets_muv_legend);
+		DataChain* bg_wjets_tauv = new DataChain(wjets_tauv, wjets_tauv_label, wjets_tauv_legend);
+		DataChain* bg_top        = new DataChain(top, top_label, top_legend);
+		DataChain* bg_vv         = new DataChain(vv, vv_label, vv_legend);
+		DataChain* bg_zjets_vv   = new DataChain(zjets_vv, zjets_vv_label, zjets_vv_legend);
+		DataChain* bg_qcd        = new DataChain(qcd, qcd_label, qcd_legend);
+		DataChain* signal_chain  = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend);
+		DataChain* data_chain    = new DataChain(data, data_label, data_legend);
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////            PLOTTING VARIABLES            /////////////////////////////////
@@ -204,76 +219,58 @@ const char* data_legend = "data";
 // weight = total_weight_lepveto
 
 
-///////////////////////////      Variables w/ cuts       ///////////////////////////////////
+///////////////////////////            Variables              //////////////////////////////
 
-const char* vars[][8] = {
-                              //{"jet1_pt", "Jet 1 pT", "10" "0.0", "600.0", "420.0", "440.0", "10"},
-			      {"jet1_pt","Jet 1 pT", "0.0", "600.0", 
-                               "420.0", "440.0","10","100"},
-                              {"jet2_E","Jet 2 Energy", "0.0", "5000.0", 
-                               "2400.0", "2700.0","50","30"},
-                              {"jet1_eta","Jet 1 Eta", "-5.0", "5.0", 
-                               "0.6", "1.0","50","50"},
-                              {"forward_tag_eta","Forward Tag Eta", "-5.0", "5.0", 
-                               "4.1", "4.3","25","30"},
-                              {"dijet_deta","Dijet Delta", "3.0", "8.0", 
-                               "6.4", "6.7","25","10"},
-                              {"dijet_sumeta","Dijet Sum of Eta", "-6.0", "6.0", 
-                               "3.5", "4.0","50","1"},
-                              {"met","MET", "0.0", "400.0", 
-                               "270.0", "320.0","25","1"},
-                              {"metnomu_x","MET-X Excluding Muons", "-400.0", "400.0",
-                                "340.0", "400.0","25","10"},
-                              {"metnomu_y","MET-Y Excluding Muons", "-400.0", "400.0", 
-                               "200.0", "400.0","50","10"},
-                              {"met_significance","MET Significance", "0.0", "12.0", 
-                               "7.2", "10.0","25","10"},
-                              {"metnomu_significance","MET Excluding Muons Significance", "2.0", "12.0", 
-                               "6.8", "10.2","10","20"},
-                              {"sumet","Sum of Transverse Energy", "0.0", "2400.0", 
-                               "1900.0", "2400.0","50","100"},
-                              {"ht", "HCAL Scalar Sum of Energy","0.0", "1200.0", 
-                               "125.0", "175.0","100","10"},
-                              {"ht30","HCAL Scalar Sum of Energy over 30GeV", "0.0", "1200.0", 
-                               "100.0", "150.0","100","100"},
-                              {"sqrt_ht","Square Root HCAL Scalar Sum of Energy", "0.0", "35.0", 
-                               "10.0", "13.0","50","30"},
-                              {"unclustered_et","Unclustered Transverse Energy", "0.0", "2000.0", 
-                               "1400.0", "1600.0","50","50"},
-                              {"jet1met_dphi","(Jet-1,MET) dphi", "0.0", "3.5", 
-                               "2.1", "2.4","50","50"},
-                              {"jet2met_dphi","(Jet-2,MET) dphi", "0.0", "3.5", 
-                               "1.4", "1.7","30","30"},
-                              {"jet1metnomu_dphi","(Jet-1,MET) dphi Excluding Muons", "0.0", "3.5", 
-                               "2.1", "2.5","50","50"},
-                              {"jet2metnomu_dphi","(Jet-2,MET) dphi Excluding Muons", "0.0", "3.5", 
-                               "1.4", "1.7","30","30"},
-                              {"jetmetnomu_mindphi","(Two leading jets, MET) min dphi", "0.0", "3.5", 
-                               "2.9", "3.1","25","10"},
-                              {"alljetsmet_mindphi","(All jets, MET) min dphi", "0", "3.2", 
-                               "2.2", "3.0","25","10"},
-                              {"alljetsmetnomu_mindphi","(All jets, MET) min dphi excluding muons", "0.0", "3.5", 
-                               "2.2", "3.0","25","10"},
-                              {"jetunclet_mindphi","(Two Leading Jets, Unclustered Transverse Energy) min dphi", "0.0", "3.5", 
-                               "2.8", "2.9","25","10"},
-			      {"dijetmet_scalarSum_pt","Scalar Sum of Transverse Momentum of Two Leading Jets and MET", "0.0", "1200.0", 
-                               "800.0", "900.0","25","30"},
-                              {"dijetmet_vectorialSum_pt","Vectorial Sum of Transverse Momentum of Two Leading Jets and MET", "0.0", "400.0", 
-                               "240.0", "250.0","100","100"},
-                              {"jet2met_scalarprod","Jet-2 Scalar Product with MET", "-400.0", "400.0", 
-                               "20.0", "50.0","100","100"},
-                              {"dijetmetnomu_scalarSum_pt","The Scalar Sum of MET and Two Leading Jets Excluding Muons", "0.0", "1200.0", 
-                               "800.0", "950.0","20","30"},
-                              {"l1met","Level 1 trigger MET", "0.0", "400.0", 
-                               "250.0", "400.0","10","40"},
-                              {"metnomuons","MET Excluding Muons", "0.0", "400.0", 
-                               "320.0", "400.0","25","15"},
-                              {"mht","Missing HCAL Scalar Sum of Energy", "0.0", "3000.0", 
-                               "2400.0", "2800.0","25","1"},
-                              {"met_x","MET-X", "-400.0", "400.0", 
-                               "370.0", "400.0","25","1"},
-                              {"met_y","MET-Y", "-400.0", "400.0", 
-                               "180.0", "400.0","25","10"}};
+struct Variables
+{
+		Variable* jet1_pt = new Variable("jet1_pt","Jet 1 pT", "0.0", "600.0", "40.0", "500.0",
+																																			"50","100");
+		Variable* jet2_eta = new Variable("jet2_eta","Jet 2 Eta", "-5.0", "5.0", "0.2", "5.0",
+																																				"60","20");
+		Variable* forward_tag_eta = new Variable("forward_tag_eta","Forward Tag Eta", "-5.0", "5.0",
+																																											"1.8", "5.0","60","50");
+		Variable* central_tag_eta = new Variable("central_tag_eta","Central Tag Eta", "-5.0", "5.0",
+																																											"0.0", "5.0","50","50");
+		Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "3.5", "8.0", "4.2", "8.0",
+																																						"25","100");
+		Variable* dijet_dphi = new Variable("dijet_dphi","Dijet dphi", "0.0", "3.2", "0.0", "2.2",
+																																						"35","40");
+		Variable* metnomu_x = new Variable("metnomu_x","MET-X Excluding Muons", "-400.0", "400.0",
+																																					"0.0", "400.0","60","70");
+		Variable* metnomu_y = new Variable("metnomu_y","MET-Y Excluding Muons", "-400.0", "400.0",
+																																					"0.0", "300.0","70","70");
+		Variable* metnomu_significance = new Variable("metnomu_significance",
+																																																"MET Excluding Muons Significance", "3.0", "12.0",
+																																																"3.5", "12.0","50","70");
+		Variable* ht = new Variable("ht", "HCAL Scalar Sum of Energy","0.0", "1200.0","50", "600",
+																														"60","50");
+		Variable* ht30 = new Variable("ht30","HCAL Scalar Sum of Energy over 30GeV", "0.0", "1200.0",
+																																"50.0", "1100.0","75","30");
+		Variable* sqrt_ht = new Variable("sqrt_ht","Square Root HCAL Scalar Sum of Energy", "0.0",
+																																			"35.0","9.0", "18.0","75","50");
+		Variable* unclustered_et = new Variable("unclustered_et","Unclustered Transverse Energy",
+																																										"0.0", "2000.0","0.0", "1000.0","75","0");
+		Variable* jet1metnomu_dphi = new Variable("jet1metnomu_dphi","Jet-1,MET dphi Excluding Muons",
+																																												"0.0", "3.5","1.5", "2.5","60","100");
+		Variable* jet1metnomu_scalarprod = new Variable("jet1metnomu_scalarprod",
+																																																		"(Jet-1,MET) Scalar Product Excluding Muons",
+																																																		"-2000.0", "2000.0","0.0", "1000.0","90","60");
+		Variable* jet2metnomu_dphi = new Variable("jet2metnomu_dphi","Jet-2,MET dphi Excluding Muons",
+																																												"0.0", "3.5","0.5", "3.2","60","100");
+		Variable* jetmetnomu_mindphi = new Variable("jetmetnomu_mindphi","Two leading jets, MET min dphi",
+																																														"0.0", "3.5","0.5", "3.2","40","70");
+		Variable* alljetsmetnomu_mindphi = new Variable("alljetsmetnomu_mindphi",
+																																																		"All jets, MET min dphi excluding muons",
+																																																		"0.0", "3.5","0.5", "3.0","40","50");
+		Variable* dijet_M = new Variable("dijet_M","Dijet Mass", "0.0", "2000.0","800.0", "2000.0",
+																																			"50","100");
+		Variable* jet2met_scalarprod = new Variable("jet2met_scalarprod","Jet-2 Scalar Product with MET",
+																																														"-400.0", "400.0","0.0", "100.0","100","100");
+		Variable* l1met = new Variable("l1met","Level 1 trigger MET", "0.0", "400.0","0.0", "250.0",
+																																	"50","40");
+		Variable* metnomuons = new Variable("metnomuons","MET Excluding Muons", "0.0", "400.0","120.0",
+																																						"400.0","50","80");
+};
                               
 #endif
 

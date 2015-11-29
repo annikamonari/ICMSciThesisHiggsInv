@@ -45,7 +45,8 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   var_string.append(label);
   var_string += "(";
 
-  if (with_cut) {
+  if (with_cut)
+  {
     var_string += bins_cut;
     var_string += ",";
     var_string.append(x_min_cut);
@@ -53,7 +54,8 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
     var_string.append(x_max_cut);
     var_string += ")";
   }
-  else {
+  else
+  {
     var_string.append(bins_nocut);
     var_string += ",";
     var_string.append(x_min_nocut);
@@ -64,22 +66,30 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   return var_string;
 }
 
+std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*> variables)
+{
+		std::string sel_string = build_selection_string(true, is_signal);
+		int insert_pos 								= sel_string.find("(") + 1;
+
+		for (int i = 0; i < variables.size(); i++)
+		{
+				std::string var_sel = build_selection(variables[i]->name, variables[i]->x_min_cut,
+																																										variables[i]->x_max_cut);
+				sel_string.insert(insert_pos, var_sel);
+		}
+		return sel_string;
+}
+
 std::string Variable::build_selection_string(bool with_cut, bool is_signal) 
 {
-  std::string sel_string("");
+  std::string sel_string;
 
-  if (with_cut) {
-    sel_string += "((";
-    sel_string.append(name);
-    sel_string += ">";
-    sel_string.append(x_min_cut);
-    sel_string += ")&&(";
-    sel_string.append(name);
-    sel_string += "<";
-    sel_string.append(x_max_cut);
-    sel_string += ")&&(alljetsmetnomu_mindphi>1.7)&&(alljetsmetnomu_mindphi<3.0)&&(metnomu_significance>5.2)&&(metnomu_significance<12.0";
-    sel_string += "))*";
-  } 
+  if (with_cut)
+  {
+  		sel_string += "(";
+  		sel_string += build_selection(name, x_min_cut, x_max_nocut);
+  		sel_string += ")*";
+  }
 
   sel_string += "total_weight_lepveto";
 
@@ -89,6 +99,21 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   }
   
   return sel_string;
+}
+
+std::string Variable::build_selection(const char* var_name, const char* x_min_cut, const char* x_max_cut)
+{
+  std::string sel_str("(");
+	 sel_str.append(var_name);
+	 sel_str += ">";
+	 sel_str.append(x_min_cut);
+	 sel_str += ")&&(";
+	 sel_str.append(var_name);
+	 sel_str += "<";
+	 sel_str.append(x_max_cut);
+	 sel_str += ")";
+
+	 return sel_str;
 }
 
 double Variable::get_graph_dx(bool with_cut)

@@ -40,9 +40,9 @@ public:
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
                               bool is_signal, const char* option);
 
-  static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut);
+  static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend);
 
-  static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut);
+  static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend);
 
   static TH1F* draw_background(DataChain* data_chain, Variable* variable, 
                                  int fill_colour, bool with_cut);

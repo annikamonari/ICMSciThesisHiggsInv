@@ -2,14 +2,14 @@
 
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 																										DataChain* signal_chain, DataChain* data, bool with_cut,
-																										std::vector<Variable*> variables)
+																										std::vector<Variable*>* variables)
 {
   const char* var_name 	 = var->name_styled;
   TCanvas* c1            = new TCanvas("c1", var_name);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
-  THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut);
-  TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend);
-  TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend);
+  THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
+  TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
+  TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend, variables);
 
   stack.Draw();
   data_histo->Draw("SAME");
@@ -28,7 +28,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 }
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-																																						bool with_cut, std::vector<Variable*> variables)
+																																						bool with_cut, std::vector<Variable*>* variables)
 {
   const char* var_name = var->name_styled;
   THStack stack(var_name, var_name);
@@ -38,6 +38,7 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
+
   return stack;
 }
 
@@ -113,13 +114,12 @@ void HistoPlot::style_legend(TLegend* legend)
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                                bool is_signal, const char* option, std::vector<Variable*> variables)
+                                bool is_signal, const char* option, std::vector<Variable*>* variables)
 {
-		std::cout << variables.size() << std::endl;
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
   std::string selection;
-  std::cout << variables.size() << std::endl;
-  if ((variables.size() > 0) && (with_cut))
+
+  if ((variables != NULL) && (with_cut))
   {
   		selection = variable->build_multicut_selection(is_signal, variables);
   }
@@ -127,14 +127,14 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   {
   		selection = variable->build_selection_string(with_cut, is_signal);
   }
-  std::cout << selection << std::endl;
+
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
   return (TH1F*)gDirectory->Get(data_chain->label);
 }
 
 TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-																											std::vector<Variable*> variables)
+																											std::vector<Variable*>* variables)
 {
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
@@ -146,7 +146,7 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
 }
 
 TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-																													std::vector<Variable*> variables)
+																													std::vector<Variable*>* variables)
 {
   data_chain->chain->SetLineColor(2);
   data_chain->chain->SetLineWidth(3);
@@ -158,7 +158,7 @@ TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool wit
 }
 
 TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, 
-                                 int fill_colour, bool with_cut, std::vector<Variable*> variables)
+                                 int fill_colour, bool with_cut, std::vector<Variable*>* variables)
 {
   data_chain->chain->SetLineColor(1);
   data_chain->chain->SetFillColor(fill_colour);

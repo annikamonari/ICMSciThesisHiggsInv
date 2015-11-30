@@ -38,12 +38,9 @@ void produce_graphs() {
 		std::vector<DataChain*> bg_chains = get_bg_chains(chains);
 		DataChain* signal_chain 										= chains.signal_chain;
 		DataChain* data_chain 												= chains.data_chain;
-
+		std::cout << vars.size() << std::endl;
   for (int i = 0; i < 1; i++) {
-  	std::vector<Variable*> tmp_vars = vars;
-  	tmp_vars.erase(tmp_vars.begin() + i);
-  	std::cout << tmp_vars.size() << tmp_vars[0]->name << "," << tmp_vars[1]->name << "," << tmp_vars[2]->name << std::endl;
-	  HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, tmp_vars);
+	  HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &vars);
   }
 }
 

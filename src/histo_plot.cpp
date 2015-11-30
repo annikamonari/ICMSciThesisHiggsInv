@@ -39,10 +39,17 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
 void HistoPlot::draw_title(const char* title)
 {
-		TLatex t;
+	TPaveText* pt = new TPaveText(0.1, 0.1, 0.9, 1.0, "blNDC");
+	pt->SetBorderSize(0);
+	pt->SetFillColor(0);
+	pt->AddText(title);
+	pt->SetAllWith(title, "size", 0.5);
+	pt->Draw();
+
+	/*TLatex t;
 		t.SetTextSize(0.5);
 		t.DrawLatexNDC(0.1, 0.5, title);
-		t.Draw();
+		t.Draw();*/
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
@@ -90,43 +97,50 @@ std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* last_stacked,
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																														bool with_cut, TH1F* last_stacked, TH1F* signal_histo)
 {
-		std::string selection = get_selection(variable, variables, with_cut, false);
-		std::string plot_subtitle("#font[12]{");
-		std::string s_bg("signal to background = " + sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut));
+	std::string selection = get_selection(variable, variables, with_cut, false);
+			std::string plot_subtitle("#font[12]{");
+			std::string s_bg("Signal to Background Ratio: " + sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut));
+			std::string first_line;
+			std::string second_line;
+			std::string third_line;
 
-		if (!with_cut)
-		{
-				plot_subtitle += "No cuts implemented. Signal to background ratio: " + s_bg;
-		}
-		else
-		{
-				if (selection.length() > 69)
-				{
-						std::string first_line 			= selection.substr(0, 69);
-						selection.erase(selection.length() - 22, 22);
-						if (selection.length() > 148)
-						{
-								std::string second_line = selection.substr(69, 148);
-								std::string third_line 	= selection.substr(148, selection.length() - 1);
-								plot_subtitle 									+= "#splitline{With cuts:" + first_line + "-}{" + second_line + "-}" + third_line + "}";
-						}
-						else
-						{
-								std::string second_line = selection.substr(69, selection.length() - 1);
-								plot_subtitle 									+= "#splitline{With cuts: " + first_line + "-}{" + second_line + s_bg + "}";
-						}
+			if (!with_cut)
+			{
+					plot_subtitle += "No cuts implemented." + s_bg;
+			}
+			else
+			{
+					if (selection.length() > 69)
+					{
+							std::string first_line 			= selection.substr(0, 69);
+							selection.erase(selection.length() - 22, 22);
+							if (selection.length() > 148)
+							{
+									std::string second_line = selection.substr(69, 148);
+									std::string third_line 	= selection.substr(148, selection.length() - 1) + s_bg;
+									//plot_subtitle 									+= ("#splitline{With cuts:" + first_line + "-}{" + second_line + "-}{" + third_line + s_bg + "}");
+							}
+							else
+							{
+									std::string second_line = selection.substr(69, selection.length() - 1);
+									std::string third_line 	= s_bg;
+									//plot_subtitle 									+= ("#splitline{With cuts: " + first_line + "-}{" + second_line + "}{" + s_bg + "}");
+							}
 
-				}
-				else
-				{
-						plot_subtitle += selection;
-				}
-		}
-		plot_subtitle += "}";
-	 TLatex t;
-	 t.SetTextSize(0.03);
-	 t.DrawLatexNDC(0.1, 0.96, plot_subtitle.c_str());
-		t.Draw();
+					}
+					else
+					{
+							//plot_subtitle += selection;
+					}
+			}
+			//plot_subtitle += "}";
+
+			TPaveText* t = new TPaveText(0.1, 0.92, 0.9, 0.98);
+			t->SetBorderSize(0);
+			t->SetFillColor(0);
+		 t->AddText(selection.c_str());
+			t->SetAllWith(selection.c_str(), "size", 0.05);
+		 t->Draw();
 }
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,

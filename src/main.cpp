@@ -5,15 +5,16 @@
 void produce_graphs() {
 		SuperVars* super_vars = new SuperVars();
 		std::vector<Variable*> vars = super_vars->get_var_vector();
-		std::cout << "vars created" << std::endl;
-		SuperChains* super_chains = new SuperChains();
+		std::vector<Variable*> cut_vars = super_vars->get_cut_vector();
+
+		SuperChains* super_chains 								= new SuperChains();
 		std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
 		DataChain* signal_chain 										= super_chains->signal_chain;
 		DataChain* data_chain 												= super_chains->data_chain;
-		std::cout << "chains created" << std::endl;
+
   for (int i = 0; i < 1; i++)
   {
-  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, false, &vars);
+  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
   }
 }
 

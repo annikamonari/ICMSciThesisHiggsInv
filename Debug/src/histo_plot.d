@@ -45,8 +45,10 @@ src/histo_plot.o: ../src/histo_plot.cpp ../src/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TAttBBox2D.h \
   /Applications/root_v5.34.34/include/GuiTypes.h \
   /Applications/root_v5.34.34/include/TPoint.h \
-  /Applications/root_v5.34.34/include/TLatex.h \
+  /Applications/root_v5.34.34/include/TPaveText.h \
   /Applications/root_v5.34.34/include/TText.h \
+  /Applications/root_v5.34.34/include/TLine.h \
+  /Applications/root_v5.34.34/include/TLatex.h \
   ../src/../include/../include/super_chains.h \
   ../src/../include/../include/super_vars.h \
   ../src/../include/../include/variable.h \
@@ -185,9 +187,13 @@ src/histo_plot.o: ../src/histo_plot.cpp ../src/../include/histo_plot.h \
 
 /Applications/root_v5.34.34/include/TPoint.h:
 
-/Applications/root_v5.34.34/include/TLatex.h:
+/Applications/root_v5.34.34/include/TPaveText.h:
 
 /Applications/root_v5.34.34/include/TText.h:
+
+/Applications/root_v5.34.34/include/TLine.h:
+
+/Applications/root_v5.34.34/include/TLatex.h:
 
 ../src/../include/../include/super_chains.h:
 

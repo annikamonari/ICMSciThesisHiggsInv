@@ -1,7 +1,7 @@
 #ifndef super_vars_h
 #define super_vars_h
 
-#include "../include/analysis.h"
+#include "../include/variable.h"
 
 class SuperVars {
 public:

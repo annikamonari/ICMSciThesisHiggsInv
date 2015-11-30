@@ -1,4 +1,4 @@
-src/main.o: ../src/main.cpp ../src/../include/variables.h \
+src/main.o: ../src/main.cpp ../src/../include/super_vars.h \
   ../src/../include/../include/analysis.h \
   ../src/../include/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TStyle.h \
@@ -87,9 +87,9 @@ src/main.o: ../src/main.cpp ../src/../include/variables.h \
   /Applications/root_v5.34.34/include/TH2.h \
   /Applications/root_v5.34.34/include/TMatrixFBasefwd.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
-  ../src/../include/tree_leaves.h
+  ../src/../include/tree_leaves.h ../src/../include/super_chains.h
 
-../src/../include/variables.h:
+../src/../include/super_vars.h:
 
 ../src/../include/../include/analysis.h:
 
@@ -270,3 +270,5 @@ src/main.o: ../src/main.cpp ../src/../include/variables.h \
 /Applications/root_v5.34.34/include/TMatrixDBasefwd.h:
 
 ../src/../include/tree_leaves.h:
+
+../src/../include/super_chains.h:

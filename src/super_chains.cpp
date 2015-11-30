@@ -24,4 +24,3 @@ std::vector<DataChain*> SuperChains::get_bg_chains()
 
 		return bg_chains;
 }
-

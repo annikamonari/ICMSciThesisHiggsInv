@@ -1,9 +1,9 @@
-#ifndef variables_h
-#define variables_h
+#ifndef super_vars_h
+#define super_vars_h
 
 #include "../include/analysis.h"
 
-class Variables {
+class SuperVars {
 public:
 		Variable* jet1_pt;
 		Variable* jet2_eta;
@@ -28,7 +28,7 @@ public:
 		Variable* l1met;
 		Variable* metnomuons;
 
-  Variables();
+  SuperVars();
 
   std::vector<Variable*> get_var_vector();
 

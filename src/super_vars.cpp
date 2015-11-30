@@ -1,6 +1,6 @@
-#include "../include/variables.h"
+#include "../include/super_vars.h"
 
-Variables::Variables()
+SuperVars::SuperVars()
 {
 		jet1_pt = new Variable("jet1_pt","Jet1pT","0.0","600.0","40.0","500.0","50","100");
 		jet2_eta = new Variable("jet2_eta","Jet2Eta","-5.0","5.0","0.2","5.0","60","20");
@@ -42,7 +42,7 @@ Variables::Variables()
 																												"50","80");
 }
 
-std::vector<Variable*> Variables::get_var_vector()
+std::vector<Variable*> SuperVars::get_var_vector()
 {
 		Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dijet_deta,
 																									dijet_dphi, metnomu_x, metnomu_y, metnomu_significance, ht, ht30, sqrt_ht,

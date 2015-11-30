@@ -198,7 +198,7 @@ const char* data_legend = "data";
 
 /////////////////           DATACHAIN STRUCT              /////////////////////////////////
 
-struct Chains
+/*struct Chains
 {
 		DataChain* bg_zll        = new DataChain(z_ll, z_ll_label, z_ll_legend);
 		DataChain* bg_wjets_ev   = new DataChain(wjets_ev, wjets_ev_label, wjets_ev_legend);
@@ -210,7 +210,7 @@ struct Chains
 		DataChain* bg_qcd        = new DataChain(qcd, qcd_label, qcd_legend);
 		DataChain* signal_chain  = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend);
 		DataChain* data_chain    = new DataChain(data, data_label, data_legend);
-};
+};*/
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////

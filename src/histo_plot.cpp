@@ -22,11 +22,11 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   signal_histo->Draw("SAME");
 
   style_stacked_histo(&stack, var->name_styled);
-  draw_subtitle(var, variables, with_cut);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
+  draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
   stack.SetMaximum(get_histo_y_max(max_histo));
   build_legend(legend, max_histo, var, with_cut);
 
@@ -61,11 +61,38 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 		return selection;
 }
 
+std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* last_stacked,
+																																							TH1F* signal_histo, bool with_cut)
+{
+		int nbins;
+		if (with_cut)
+		{
+				nbins = (int) (atof(var->bins_cut.c_str()) + 0.5);
+		}
+		else
+		{
+				nbins = (int) (atof(var->bins_nocut) + 0.5);
+		}
+
+  double total_bg 				= last_stacked->Integral(1, nbins);
+  double total_signal = signal_histo->Integral(1, nbins);
+
+  float signal_mult 									= atof(var->signal_multiplier);
+  float signal_to_background = total_signal / total_bg / signal_mult;
+
+  std::ostringstream stb;
+  stb << signal_to_background;
+  std::string sig_to_bg(stb.str());
+  std::cout << sig_to_bg << std::endl;
+		return sig_to_bg;
+}
+
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-																														bool with_cut)
+																														bool with_cut, TH1F* last_stacked, TH1F* signal_histo)
 {
 		std::string selection = get_selection(variable, variables, with_cut, false);
 		std::string plot_subtitle("#font[12]{");
+		std::string s_bg("signal to background = " + sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut));
 
 		if (!with_cut)
 		{
@@ -86,7 +113,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 						else
 						{
 								std::string second_line = selection.substr(69, selection.length() - 1);
-								plot_subtitle 									+= "#splitline{With cuts: " + first_line + "-}{" + second_line + "}";
+								plot_subtitle 									+= "#splitline{With cuts: " + first_line + "-}{" + second_line + s_bg + "}";
 						}
 
 				}

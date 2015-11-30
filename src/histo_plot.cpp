@@ -62,7 +62,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 }
 
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-																														bool with_cut)
+																														bool with_cut, std::string sig_to_bg)
 {
 		std::string selection = get_selection(variable, variables, with_cut, false);
 		std::string plot_subtitle("#font[12]{");
@@ -95,6 +95,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 						plot_subtitle += selection;
 				}
 		}
+  plot_subtitle += "signal to background = "+ sig_to_bg;
 		plot_subtitle += "}";
 	 TLatex t;
 	 t.SetTextSize(0.03);
@@ -249,6 +250,19 @@ float HistoPlot::get_data_error(TH1F* histo, int bin)
   double integral = histo->Integral(bin, bin + 1);
 
   return std::pow(integral, 0.5);
+}
+
+std::string signal_to_background(TH1F* background_histo, TH1F* signal_histo, int bin)
+{
+  int nbins = histo->GetNbinsX();
+  double total_bg = background_histo-> Integral (0,nbins+1);
+  double total_singal = signal_histo-> Integral (0,nbins+1);
+  float signal_to_backgrund = total_signal/total_bg;
+  std::ostringstream stb;
+  stb<< signal_to_background;
+  std::string sig_to_bg(stb.str());
+
+		return sig_to_bg;
 }
 
 std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) 

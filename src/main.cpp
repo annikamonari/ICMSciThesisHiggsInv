@@ -40,7 +40,7 @@ void produce_graphs() {
 		DataChain* data_chain 												= chains.data_chain;
 
   for (int i = 0; i < 1; i++) {
-	  HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, false, &vars);
+	  HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &vars);
   }
 }
 

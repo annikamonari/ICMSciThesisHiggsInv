@@ -83,7 +83,7 @@ std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* last_stacked,
   std::ostringstream stb;
   stb << signal_to_background;
   std::string sig_to_bg(stb.str());
-  std::cout << sig_to_bg << std::endl;
+
 		return sig_to_bg;
 }
 
@@ -96,7 +96,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 
 		if (!with_cut)
 		{
-				plot_subtitle += "No cuts implemented.";
+				plot_subtitle += "No cuts implemented. Signal to background ratio: " + s_bg;
 		}
 		else
 		{

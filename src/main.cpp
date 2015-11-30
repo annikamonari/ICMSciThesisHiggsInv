@@ -13,7 +13,7 @@ void produce_graphs() {
 		std::cout << "chains created" << std::endl;
   for (int i = 0; i < 1; i++)
   {
-  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &vars);
+  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, false, &vars);
   }
 }
 

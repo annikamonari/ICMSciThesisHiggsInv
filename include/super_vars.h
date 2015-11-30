@@ -32,6 +32,8 @@ public:
 
   std::vector<Variable*> get_var_vector();
 
+  std::vector<Variable*> get_cut_vector()
+
 
 };
 

@@ -1,7 +1,6 @@
 #include <initializer_list>
 #include <cmath>
-#include "../include/super_vars.h"
-#include "../include/super_chains.h"
+#include "../include/histo_plot.h"
 
 
 

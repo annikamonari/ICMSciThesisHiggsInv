@@ -1,8 +1,8 @@
 #include "../include/variable.h"
 
 Variable::Variable(const char* var_name, const char* var_name_styled, const char* x_min,
-				   const char* x_max, const char* x_min_c, const char* x_max_c,
-				   const char* nbins, const char* xsignal)
+																			const char* x_max, const char* x_min_c, const char* x_max_c,
+																			const char* nbins, const char* xsignal, bool abs_val_for_cuts)
 {
   name              = var_name;
   name_styled       = var_name_styled;
@@ -12,6 +12,7 @@ Variable::Variable(const char* var_name, const char* var_name_styled, const char
   x_max_nocut       = x_max;
   x_min_cut         = x_min_c;
   x_max_cut         = x_max_c;
+  abs_for_cut							= abs_val_for_cuts;
   bins_cut          = scale_bins_for_cut();
 }
 
@@ -45,7 +46,7 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   var_string.append(label);
   var_string += "(";
 
-  if (with_cut)
+  if (with_cut && (!abs_for_cut))
   {
     var_string += bins_cut;
     var_string += ",";
@@ -76,7 +77,7 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 				if (((*variables)[i]->name) != name)
 				{
 						std::string var_sel = build_selection((*variables)[i]->name, (*variables)[i]->x_min_cut,
-																																												(*variables)[i]->x_max_cut);
+																																												(*variables)[i]->x_max_cut, (*variables)[i]->abs_for_cut);
 						sel_string.insert(insert_pos, var_sel + "&&");
 				}
 		}
@@ -91,7 +92,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   if (with_cut)
   {
   		sel_string += "(";
-  		sel_string += build_selection(name, x_min_cut, x_max_nocut);
+  		sel_string += build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
   		sel_string += ")*";
   }
 
@@ -105,15 +106,26 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
   return sel_string;
 }
 
-std::string Variable::build_selection(const char* var_name, const char* x_min_cut, const char* x_max_cut)
+std::string Variable::build_selection(const char* var_name, const char* x_min_cut,
+																																						const char* x_max_cut, bool abs_for_cut)
 {
-  std::string sel_str("(");
-	 sel_str.append(var_name);
-	 sel_str += ">";
+		std::string sel_str("(");
+		std::string var_str;
+
+		if (abs_for_cut)
+		{
+				var_str += "abs(";
+				var_str.append(var_name);
+				var_str += ")";
+		}
+		else
+		{
+				var_str.append(var_name);
+		}
+
+	 sel_str += (var_str + ">");
 	 sel_str.append(x_min_cut);
-	 sel_str += ")&&(";
-	 sel_str.append(var_name);
-	 sel_str += "<";
+	 sel_str += (")&&(" + var_str + "<");
 	 sel_str.append(x_max_cut);
 	 sel_str += ")";
 

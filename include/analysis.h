@@ -228,7 +228,7 @@ struct Variables
 		Variable* jet2_eta = new Variable("jet2_eta","Jet 2 Eta", "-5.0", "5.0", "0.2", "5.0",
 																																				"60","20");
 		Variable* forward_tag_eta = new Variable("forward_tag_eta","Forward Tag Eta", "-5.0", "5.0",
-																																											"1.8", "5.0","60","50");
+																																											"1.8", "5.0","60","50", true);
 		Variable* central_tag_eta = new Variable("central_tag_eta","Central Tag Eta", "-5.0", "5.0",
 																																											"0.0", "5.0","50","50");
 		Variable* dijet_deta = new Variable("dijet_deta","Dijet Deta", "3.5", "8.0", "4.2", "8.0",

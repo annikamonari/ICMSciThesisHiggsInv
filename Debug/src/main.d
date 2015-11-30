@@ -1,6 +1,4 @@
-src/main.o: ../src/main.cpp ../src/../include/super_vars.h \
-  ../src/../include/../include/analysis.h \
-  ../src/../include/../include/histo_plot.h \
+src/main.o: ../src/main.cpp ../src/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TStyle.h \
   /Applications/root_v5.34.34/include/TNamed.h \
   /Applications/root_v5.34.34/include/TObject.h \
@@ -49,7 +47,11 @@ src/main.o: ../src/main.cpp ../src/../include/super_vars.h \
   /Applications/root_v5.34.34/include/TPoint.h \
   /Applications/root_v5.34.34/include/TLatex.h \
   /Applications/root_v5.34.34/include/TText.h \
-  ../src/../include/variable.h ../src/../include/../include/data_chain.h \
+  ../src/../include/../include/super_chains.h \
+  ../src/../include/../include/super_vars.h \
+  ../src/../include/../include/variable.h \
+  ../src/../include/../include/analysis.h \
+  ../src/../include/../include/data_chain.h \
   /Applications/root_v5.34.34/include/TCanvas.h \
   /Applications/root_v5.34.34/include/TPad.h \
   /Applications/root_v5.34.34/include/TVirtualPad.h \
@@ -87,13 +89,9 @@ src/main.o: ../src/main.cpp ../src/../include/super_vars.h \
   /Applications/root_v5.34.34/include/TH2.h \
   /Applications/root_v5.34.34/include/TMatrixFBasefwd.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
-  ../src/../include/tree_leaves.h ../src/../include/super_chains.h
+  ../src/../include/tree_leaves.h
 
-../src/../include/super_vars.h:
-
-../src/../include/../include/analysis.h:
-
-../src/../include/../include/histo_plot.h:
+../src/../include/histo_plot.h:
 
 /Applications/root_v5.34.34/include/TStyle.h:
 
@@ -191,7 +189,13 @@ src/main.o: ../src/main.cpp ../src/../include/super_vars.h \
 
 /Applications/root_v5.34.34/include/TText.h:
 
-../src/../include/variable.h:
+../src/../include/../include/super_chains.h:
+
+../src/../include/../include/super_vars.h:
+
+../src/../include/../include/variable.h:
+
+../src/../include/../include/analysis.h:
 
 ../src/../include/../include/data_chain.h:
 
@@ -270,5 +274,3 @@ src/main.o: ../src/main.cpp ../src/../include/super_vars.h \
 /Applications/root_v5.34.34/include/TMatrixDBasefwd.h:
 
 ../src/../include/tree_leaves.h:
-
-../src/../include/super_chains.h:

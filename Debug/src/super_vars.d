@@ -1,4 +1,5 @@
-src/variable.o: ../src/variable.cpp ../src/../include/variable.h \
+src/super_vars.o: ../src/super_vars.cpp ../src/../include/super_vars.h \
+  ../src/../include/../include/variable.h \
   ../src/../include/../include/analysis.h \
   ../src/../include/../include/data_chain.h \
   /Applications/root_v5.34.34/include/TCanvas.h \
@@ -81,7 +82,9 @@ src/variable.o: ../src/variable.cpp ../src/../include/variable.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
   ../src/../include/tree_leaves.h
 
-../src/../include/variable.h:
+../src/../include/super_vars.h:
+
+../src/../include/../include/variable.h:
 
 ../src/../include/../include/analysis.h:
 

@@ -66,17 +66,21 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   return var_string;
 }
 
-std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*> variables)
+std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*>* variables)
 {
 		std::string sel_string = build_selection_string(true, is_signal);
 		int insert_pos 								= sel_string.find("(") + 1;
 
-		for (int i = 0; i < variables.size(); i++)
+		for (int i = 0; i < variables->size(); i++)
 		{
-				std::string var_sel = build_selection(variables[i]->name, variables[i]->x_min_cut,
-																																										variables[i]->x_max_cut);
-				sel_string.insert(insert_pos, var_sel);
+				if (((*variables)[i]->name) != name)
+				{
+						std::string var_sel = build_selection((*variables)[i]->name, (*variables)[i]->x_min_cut,
+																																												(*variables)[i]->x_max_cut);
+						sel_string.insert(insert_pos, var_sel + "&&");
+				}
 		}
+
 		return sel_string;
 }
 

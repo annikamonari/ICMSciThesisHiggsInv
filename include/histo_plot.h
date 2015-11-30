@@ -4,6 +4,7 @@
 #include <TStyle.h>
 #include <THStack.h>
 #include <TLegend.h>
+#include <TPaveText.h>
 #include <TLatex.h>
 #include "../include/super_chains.h"
 #include <list>

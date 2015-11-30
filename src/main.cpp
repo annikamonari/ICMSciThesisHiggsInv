@@ -2,8 +2,6 @@
 #include <cmath>
 #include "../include/histo_plot.h"
 
-
-
 void produce_graphs() {
 		SuperVars* super_vars = new SuperVars();
 		std::vector<Variable*> vars = super_vars->get_var_vector();

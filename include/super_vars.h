@@ -1,5 +1,5 @@
-#ifndef super_vars_h
-#define super_vars_h
+#ifndef Super_Vars_h
+#define Super_Vars_h
 
 #include "../include/variable.h"
 

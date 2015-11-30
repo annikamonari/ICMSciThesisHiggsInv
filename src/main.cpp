@@ -12,9 +12,9 @@ void produce_graphs() {
 		DataChain* signal_chain 										= super_chains->signal_chain;
 		DataChain* data_chain 												= super_chains->data_chain;
 
-  for (int i = 0; i < 1; i++)
+  for (int i = 0; i < vars.size(); i++)
   {
-  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
+  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, false, &cut_vars);
   }
 }
 

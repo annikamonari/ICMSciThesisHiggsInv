@@ -44,11 +44,11 @@ SuperVars::SuperVars()
 
 std::vector<Variable*> SuperVars::get_var_vector()
 {
-		Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta, central_tag_eta, dijet_deta,
+		Variable* var_arr[] = {jet1_pt, jet2_eta, forward_tag_eta/*, central_tag_eta, dijet_deta,
 																									dijet_dphi, metnomu_x, metnomu_y, metnomu_significance, ht, ht30, sqrt_ht,
 																									unclustered_et, jet1metnomu_dphi, jet1metnomu_scalarprod, jet2metnomu_dphi,
 																									jetmetnomu_mindphi, alljetsmetnomu_mindphi, dijet_M, jet2met_scalarprod,
-																									l1met, metnomuons};
+																									l1met, metnomuons*/};
 
 		std::vector<Variable*> vars (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
 

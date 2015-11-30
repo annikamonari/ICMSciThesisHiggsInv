@@ -1,5 +1,4 @@
-#include "../include/histo_plot.h"
-#include "../include/analysis.h"
+#include "../include/variables.h"
 #include <initializer_list>
 #include <cmath>
 
@@ -14,25 +13,10 @@ std::vector<DataChain*> get_bg_chains(Chains chains)
 		return bg_chains;
 }
 
-std::vector<Variable*> get_var_vector(Variables variables)
-{
-		Variable* var_arr[] = {/*variables.jet1_pt, variables.jet2_eta, */variables.forward_tag_eta,
-																									/*variables.central_tag_eta, variables.dijet_deta, variables.dijet_dphi,
-																									variables.metnomu_x, variables.metnomu_y, */variables.metnomu_significance,/*
-																									variables.ht, variables.ht30, variables.sqrt_ht, variables.unclustered_et,
-																									variables.jet1metnomu_dphi, variables.jet1metnomu_scalarprod,
-																									variables.jet2metnomu_dphi, variables.jetmetnomu_mindphi,
-																									variables.alljetsmetnomu_mindphi,*/ variables.dijet_M/*,
-																									variables.jet2met_scalarprod, variables.l1met, variables.metnomuons*/};
-
-		std::vector<Variable*> vars (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
-
-		return vars;
-}
 
 void produce_graphs() {
-		Variables variables;
-		std::vector<Variable*> vars 						= get_var_vector(variables);
+		Variables* variables 							= new Variables();
+		std::vector<Variable*> vars = variables->get_var_vector();
 
 		Chains chains;
 		std::vector<DataChain*> bg_chains = get_bg_chains(chains);

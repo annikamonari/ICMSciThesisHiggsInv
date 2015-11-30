@@ -1,4 +1,4 @@
-src/main.o: ../src/main.cpp ../src/../include/variables.h \
+src/variables.o: ../src/variables.cpp ../src/../include/variables.h \
   ../src/../include/../include/analysis.h \
   ../src/../include/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TStyle.h \

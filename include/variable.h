@@ -1,7 +1,7 @@
 #ifndef Variable_h
 #define Variable_h
 
-#include "data_chain.h"
+#include "../include/data_chain.h"
 
 class Variable {
 public:

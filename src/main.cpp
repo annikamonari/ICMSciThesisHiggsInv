@@ -39,15 +39,15 @@ void produce_graphs() {
 		DataChain* signal_chain 										= chains.signal_chain;
 		DataChain* data_chain 												= chains.data_chain;
 
-  for (int i = 0; i < 1; i++) {
-	  HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &vars);
+  for (int i = 0; i < 1; i++)
+  {
+  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &vars);
   }
 }
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
   produce_graphs();
-
   theApp.Run();
   return 0;
 }

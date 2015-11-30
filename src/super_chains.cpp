@@ -14,11 +14,11 @@ SuperChains::SuperChains()
 		data_chain    = new DataChain(data, data_label, data_legend);
 }
 
-std::vector<DataChain*> SuperChains::get_bg_chains(Chains chains)
+std::vector<DataChain*> SuperChains::get_bg_chains()
 {
-		DataChain* bg_chain_arr[] = {chains.bg_zll, chains.bg_wjets_ev, chains.bg_wjets_muv,
-																															chains.bg_wjets_tauv, chains.bg_top, chains.bg_vv,
-																															chains.bg_zjets_vv, chains.bg_qcd};
+		DataChain* bg_chain_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv,
+																															bg_wjets_tauv, bg_top, bg_vv,
+																															bg_zjets_vv, bg_qcd};
 
 		std::vector<DataChain*> bg_chains (bg_chain_arr, bg_chain_arr + sizeof(bg_chain_arr) / sizeof(bg_chain_arr[0]));
 

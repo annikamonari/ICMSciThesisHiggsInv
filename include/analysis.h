@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stdlib.h>
+#include "../include/histo_plot.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////      DATA, BACKGROUND, SIGNAL INPUT      /////////////////////////////
@@ -221,9 +222,8 @@ struct Chains
 
 ///////////////////////////            Variables              //////////////////////////////
 
-struct Variables
-{
-		Variable* jet1_pt = new Variable("jet1_pt","Jet 1 pT", "0.0", "600.0", "40.0", "500.0",
+
+		/*Variable* jet1_pt = new Variable("jet1_pt","Jet 1 pT", "0.0", "600.0", "40.0", "500.0",
 																																			"50","100");
 		Variable* jet2_eta = new Variable("jet2_eta","Jet 2 Eta", "-5.0", "5.0", "0.2", "5.0",
 																																				"60","20");
@@ -270,7 +270,7 @@ struct Variables
 																																	"50","40");
 		Variable* metnomuons = new Variable("metnomuons","MET Excluding Muons", "0.0", "400.0","120.0",
 																																						"400.0","50","80");
-};
+*/
                               
 #endif
 

@@ -8,21 +8,24 @@ CPP_SRCS += \
 ../src/histo_plot.cpp \
 ../src/main.cpp \
 ../src/tree_leaves.cpp \
-../src/variable.cpp 
+../src/variable.cpp \
+../src/variables.cpp 
 
 OBJS += \
 ./src/data_chain.o \
 ./src/histo_plot.o \
 ./src/main.o \
 ./src/tree_leaves.o \
-./src/variable.o 
+./src/variable.o \
+./src/variables.o 
 
 CPP_DEPS += \
 ./src/data_chain.d \
 ./src/histo_plot.d \
 ./src/main.d \
 ./src/tree_leaves.d \
-./src/variable.d 
+./src/variable.d \
+./src/variables.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

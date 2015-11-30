@@ -1,6 +1,8 @@
 #ifndef super_chains_h
 #define super_chains_h
 
+#include "../include/super_vars.h"
+
 class SuperChains {
 public:
 		DataChain* bg_zll;

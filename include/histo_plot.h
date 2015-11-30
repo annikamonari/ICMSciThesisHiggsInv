@@ -5,7 +5,7 @@
 #include <THStack.h>
 #include <TLegend.h>
 #include <TLatex.h>
-#include "variable.h"
+#include "../include/super_chains.h"
 #include <list>
 #include <algorithm>
 

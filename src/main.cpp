@@ -6,13 +6,13 @@
 
 
 void produce_graphs() {
-		Variables* variables 							= new Variables();
-		std::vector<Variable*> vars = variables->get_var_vector();
+		SuperVars* super_vars = new SuperVars();
+		std::vector<Variable*> vars = super_vars->get_var_vector();
 
-		Chains chains;
-		std::vector<DataChain*> bg_chains = get_bg_chains(chains);
-		DataChain* signal_chain 										= chains.signal_chain;
-		DataChain* data_chain 												= chains.data_chain;
+		SuperChains* super_chains = new SuperChains();
+		std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
+		DataChain* signal_chain 										= super_chains->signal_chain;
+		DataChain* data_chain 												= super_chains->data_chain;
 
   for (int i = 0; i < 1; i++)
   {

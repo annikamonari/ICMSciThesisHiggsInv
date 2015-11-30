@@ -1,5 +1,5 @@
-#ifndef super_chains_h
-#define super_chains_h
+#ifndef Super_Chains_h
+#define Super_Chains_h
 
 #include "../include/super_vars.h"
 

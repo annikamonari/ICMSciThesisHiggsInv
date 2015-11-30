@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/analysis.cpp \
 ../src/data_chain.cpp \
 ../src/histo_plot.cpp \
 ../src/main.cpp \
@@ -13,6 +14,7 @@ CPP_SRCS += \
 ../src/variable.cpp 
 
 OBJS += \
+./src/analysis.o \
 ./src/data_chain.o \
 ./src/histo_plot.o \
 ./src/main.o \
@@ -22,6 +24,7 @@ OBJS += \
 ./src/variable.o 
 
 CPP_DEPS += \
+./src/analysis.d \
 ./src/data_chain.d \
 ./src/histo_plot.d \
 ./src/main.d \

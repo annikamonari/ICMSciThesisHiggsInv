@@ -22,9 +22,12 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   signal_histo->Draw("SAME");
 
   style_stacked_histo(&stack, var->name_styled);
-  draw_subtitle(var, variables, with_cut);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
+
+  draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
+
+
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
   stack.SetMaximum(get_histo_y_max(max_histo));
@@ -254,7 +257,7 @@ float HistoPlot::get_data_error(TH1F* histo, int bin)
 
 std::string signal_to_background(TH1F* background_histo, TH1F* signal_histo, int bin)
 {
-  int nbins = histo->GetNbinsX();
+  int nbins = signal_histo->GetNbinsX();
   double total_bg = background_histo-> Integral (0,nbins+1);
   double total_singal = signal_histo-> Integral (0,nbins+1);
   float signal_to_backgrund = total_signal/total_bg;

@@ -8,9 +8,11 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TPad* p1															= new TPad("p1", "p1", 0.0, 0.9, 1.0, 1.0);
   TPad* p2															= new TPad("p2", "p2", 0.0, 0.0, 1.0, 0.9);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
+
   p1->Draw();
   p2->Draw();
   p2->cd();
+
   THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
   TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
   TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend, variables);
@@ -65,30 +67,35 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string selection = get_selection(variable, variables, with_cut, false);
 		std::string plot_subtitle("#font[12]{");
 
-		if (selection.length() > 69)
+		if (!with_cut)
 		{
-				std::string first_line 			= selection.substr(0, 69);
-				selection.erase(selection.length() - 22, 22);
-				if (selection.length() > 148)
-				{
-						std::string second_line = selection.substr(69, 148);
-						std::string third_line 	= selection.substr(148, selection.length() - 1);
-						plot_subtitle 									+= "#splitline{With cuts:" + first_line + "-}{" + second_line + "-}" + third_line + "}";
-				}
-				else
-				{
-						std::string second_line = selection.substr(69, selection.length() - 1);
-						plot_subtitle 									+= "#splitline{With cuts: " + first_line + "-}{" + second_line + "}";
-				}
-
+				plot_subtitle += "No cuts implemented.";
 		}
 		else
 		{
-				plot_subtitle += selection;
+				if (selection.length() > 69)
+				{
+						std::string first_line 			= selection.substr(0, 69);
+						selection.erase(selection.length() - 22, 22);
+						if (selection.length() > 148)
+						{
+								std::string second_line = selection.substr(69, 148);
+								std::string third_line 	= selection.substr(148, selection.length() - 1);
+								plot_subtitle 									+= "#splitline{With cuts:" + first_line + "-}{" + second_line + "-}" + third_line + "}";
+						}
+						else
+						{
+								std::string second_line = selection.substr(69, selection.length() - 1);
+								plot_subtitle 									+= "#splitline{With cuts: " + first_line + "-}{" + second_line + "}";
+						}
+
+				}
+				else
+				{
+						plot_subtitle += selection;
+				}
 		}
-
 		plot_subtitle += "}";
-
 	 TLatex t;
 	 t.SetTextSize(0.03);
 	 t.DrawLatexNDC(0.1, 0.96, plot_subtitle.c_str());

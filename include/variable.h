@@ -11,14 +11,15 @@ public:
   const char* bins_nocut;
   const char* x_min_nocut;
   const char* x_max_nocut;
+  bool abs_for_cut;
   std::string bins_cut;
   const char* x_min_cut;
   const char* x_max_cut;
   
 
   Variable(const char* var_name, const char* var_name_styled, const char* x_min,
-		   const char* x_max, const char* x_min_c, const char* x_max_c,
-		   const char* nbins, const char* xsignal);
+											const char* x_max, const char* x_min_c, const char* x_max_c,
+											const char* nbins, const char* xsignal, bool abs_val_for_cuts = false);
   
   std::string scale_bins_for_cut();
 
@@ -28,7 +29,8 @@ public:
 
   std::string build_selection_string(bool with_cut, bool is_signal);
 
-  std::string build_selection(const char* var_name, const char* x_min_cut, const char* x_max_cut);
+  std::string build_selection(const char* var_name, const char* x_min_cut,
+																														const char* x_max_cut, bool abs_for_cut);
 
   double get_graph_dx(bool with_cut);
 

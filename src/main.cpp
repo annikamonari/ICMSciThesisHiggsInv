@@ -1,17 +1,8 @@
-#include "../include/variables.h"
 #include <initializer_list>
 #include <cmath>
+#include "../include/super_vars.h"
 
-std::vector<DataChain*> get_bg_chains(Chains chains)
-{
-		DataChain* bg_chain_arr[] = {chains.bg_zll, chains.bg_wjets_ev, chains.bg_wjets_muv,
-																															chains.bg_wjets_tauv, chains.bg_top, chains.bg_vv,
-																															chains.bg_zjets_vv, chains.bg_qcd};
 
-		std::vector<DataChain*> bg_chains (bg_chain_arr, bg_chain_arr + sizeof(bg_chain_arr) / sizeof(bg_chain_arr[0]));
-
-		return bg_chains;
-}
 
 
 void produce_graphs() {

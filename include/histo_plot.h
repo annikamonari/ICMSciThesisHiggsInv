@@ -23,7 +23,10 @@ public:
   static void draw_title(const char* title);
 
   static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-																												bool with_cut);
+																																							bool with_cut, TH1F* last_stacked, TH1F* signal_histo);
+
+  static std::string sig_to_bg_ratio(Variable* var, TH1F* last_stacked, TH1F* signal_histo,
+																																					bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
 																																			bool with_cut, bool is_signal);

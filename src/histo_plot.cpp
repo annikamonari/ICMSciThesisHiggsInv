@@ -4,9 +4,13 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 																										DataChain* signal_chain, DataChain* data, bool with_cut,
 																										std::vector<Variable*>* variables)
 {
-  const char* var_name 	 = var->name_styled;
-  TCanvas* c1            = new TCanvas("c1", var_name);
+  TCanvas* c1            = new TCanvas("c1", var->name_styled, 800, 700);
+  TPad* p1															= new TPad("p1", "p1", 0.0, 0.9, 1.0, 1.0);
+  TPad* p2															= new TPad("p2", "p2", 0.0, 0.0, 1.0, 0.9);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
+  p1->Draw();
+  p2->Draw();
+  p2->cd();
   THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
   TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
   TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend, variables);
@@ -15,7 +19,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
 
-  style_stacked_histo(&stack, var_name);
+  style_stacked_histo(&stack, var->name_styled);
+  draw_subtitle(var, variables, with_cut);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
@@ -23,15 +28,77 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   stack.SetMaximum(get_histo_y_max(max_histo));
   build_legend(legend, max_histo, var, with_cut);
 
+  p1->cd();
+  draw_title(var->name_styled);
+
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
   c1->Close();
+}
+
+void HistoPlot::draw_title(const char* title)
+{
+		TLatex t;
+		t.SetTextSize(0.5);
+		t.DrawLatexNDC(0.1, 0.5, title);
+		t.Draw();
+}
+
+std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
+																																					bool with_cut, bool is_signal)
+{
+		std::string selection;
+		if ((variables != NULL) && (with_cut))
+	 {
+	  	selection = variable->build_multicut_selection(is_signal, variables);
+	 }
+	 else
+	 {
+	  	selection = variable->build_selection_string(with_cut, is_signal);
+	 }
+
+		return selection;
+}
+
+void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
+																														bool with_cut)
+{
+		std::string selection = get_selection(variable, variables, with_cut, false);
+		std::string plot_subtitle("#font[12]{");
+
+		if (selection.length() > 69)
+		{
+				std::string first_line 			= selection.substr(0, 69);
+				selection.erase(selection.length() - 22, 22);
+				if (selection.length() > 148)
+				{
+						std::string second_line = selection.substr(69, 148);
+						std::string third_line 	= selection.substr(148, selection.length() - 1);
+						plot_subtitle 									+= "#splitline{With cuts:" + first_line + "-}{" + second_line + "-}" + third_line + "}";
+				}
+				else
+				{
+						std::string second_line = selection.substr(69, selection.length() - 1);
+						plot_subtitle 									+= "#splitline{With cuts: " + first_line + "-}{" + second_line + "}";
+				}
+
+		}
+		else
+		{
+				plot_subtitle += selection;
+		}
+
+		plot_subtitle += "}";
+
+	 TLatex t;
+	 t.SetTextSize(0.03);
+	 t.DrawLatexNDC(0.1, 0.96, plot_subtitle.c_str());
+		t.Draw();
 }
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
 																																						bool with_cut, std::vector<Variable*>* variables)
 {
-  const char* var_name = var->name_styled;
-  THStack stack(var_name, var_name);
+  THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
@@ -101,7 +168,7 @@ void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
 {
   hs->GetYaxis()->SetTitle("Events");
   hs->GetYaxis()->SetLabelSize(0.035);
-  hs->GetYaxis()->SetTitleOffset(1.45);
+  hs->GetYaxis()->SetTitleOffset(1.55);
   hs->GetXaxis()->SetTitle(x_label);
   hs->GetXaxis()->SetLabelSize(0.035);
   hs->GetXaxis()->SetTitleOffset(1.35);
@@ -117,16 +184,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
                                 bool is_signal, const char* option, std::vector<Variable*>* variables)
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
-  std::string selection;
-
-  if ((variables != NULL) && (with_cut))
-  {
-  		selection = variable->build_multicut_selection(is_signal, variables);
-  }
-  else
-  {
-  		selection = variable->build_selection_string(with_cut, is_signal);
-  }
+  std::string selection = get_selection(variable, variables, with_cut, is_signal);
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 

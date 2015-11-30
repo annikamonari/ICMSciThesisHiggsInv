@@ -4,6 +4,7 @@
 #include <TStyle.h>
 #include <THStack.h>
 #include <TLegend.h>
+#include <TLatex.h>
 #include "variable.h"
 #include <list>
 #include <algorithm>
@@ -18,6 +19,14 @@ public:
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                         DataChain* signal_chain, DataChain* data, bool with_cut,
 																								std::vector<Variable*>* variables = NULL);
+
+  static void draw_title(const char* title);
+
+  static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
+																												bool with_cut);
+
+  static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
+																																			bool with_cut, bool is_signal);
 
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,
 																																				std::vector<DataChain*> bg_chains, bool with_cut,

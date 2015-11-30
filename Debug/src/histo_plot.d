@@ -45,6 +45,8 @@ src/histo_plot.o: ../src/histo_plot.cpp ../src/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TAttBBox2D.h \
   /Applications/root_v5.34.34/include/GuiTypes.h \
   /Applications/root_v5.34.34/include/TPoint.h \
+  /Applications/root_v5.34.34/include/TLatex.h \
+  /Applications/root_v5.34.34/include/TText.h \
   ../src/../include/variable.h ../src/../include/data_chain.h \
   /Applications/root_v5.34.34/include/TCanvas.h \
   /Applications/root_v5.34.34/include/TPad.h \
@@ -178,6 +180,10 @@ src/histo_plot.o: ../src/histo_plot.cpp ../src/../include/histo_plot.h \
 /Applications/root_v5.34.34/include/GuiTypes.h:
 
 /Applications/root_v5.34.34/include/TPoint.h:
+
+/Applications/root_v5.34.34/include/TLatex.h:
+
+/Applications/root_v5.34.34/include/TText.h:
 
 ../src/../include/variable.h:
 

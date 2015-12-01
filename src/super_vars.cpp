@@ -16,6 +16,8 @@ SuperVars::SuperVars()
 																											"300.0","70","70");
 		metnomu_significance = new Variable("metnomu_significance","METExcludingMuonsSignificance",
 																																						"3.0","12.0","3.5","12.0","50","70");
+		met_significance = new Variable("met_significance","METSignificance",
+																																								"3.0","12.0","3.5","12.0","50","70");
 		ht = new Variable("ht","HCALScalarSumofEnergy","0.0","1200.0","50","600","60","50");
 		ht30 = new Variable("ht30","HCALScalarSumofEnergyover30GeV","0.0","1200.0","50.0",
 																						"1100.0","75","30");
@@ -40,15 +42,19 @@ SuperVars::SuperVars()
 		l1met = new Variable("l1met","Level1triggerMET","0.0","400.0","0.0","250.0","50","40");
 		metnomuons = new Variable("metnomuons","METExcludingMuons","0.0","400.0","120.0","400.0",
 																												"50","80");
+		met = new Variable("met","MET","0.0","400.0","120.0","400.0",
+																														"20","80");
+		m_mumu = new Variable("m_mumu","MMuonMuon","0.0","400.0","60","120",
+																														"50","80");
 }
 
 std::vector<Variable*> SuperVars::get_var_vector()
 {
-		Variable* var_arr[] = {forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M,
-																									alljetsmetnomu_mindphi, metnomuons/*, jet1_pt, jet2_eta, central_tag_eta,
+		Variable* var_arr[] = {met};
+																								/*dijet_deta, sqrt_ht, dijet_M,alljetsmetnomu_mindphi, metnomuons, jet1_pt, jet2_eta, central_tag_eta,
 																									dijet_dphi, metnomu_x, metnomu_y,  ht, ht30, unclustered_et, jet1metnomu_dphi,
 																									jet1metnomu_scalarprod, jet2metnomu_dphi, jetmetnomu_mindphi, jet2met_scalarprod,
-																									l1met*/};
+																									l1met*/
 
 		std::vector<Variable*> vars (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
 
@@ -57,7 +63,7 @@ std::vector<Variable*> SuperVars::get_var_vector()
 
 std::vector<Variable*> SuperVars::get_cut_vector()
 {
-		Variable* var_arr[] =		{alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, metnomuons, sqrt_ht};
+		Variable* var_arr[] =		{dijet_deta, dijet_M, alljetsmetnomu_mindphi, met_significance};
 																									/*{forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M,
 																									alljetsmetnomu_mindphi, metnomuons, jet1_pt, jet2_eta, central_tag_eta,
 																									dijet_dphi, metnomu_x, metnomu_y,  ht, ht30, unclustered_et, jet1metnomu_dphi,

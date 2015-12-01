@@ -33,8 +33,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p1->cd();
   draw_title(var->name_styled);
 
-  //c1->SaveAs((build_file_name(var, with_cut)).c_str());
-  //c1->Close();
+  c1->SaveAs((build_file_name(var, with_cut)).c_str());
+  c1->Close();
 }
 
 void HistoPlot::draw_title(const char* title)

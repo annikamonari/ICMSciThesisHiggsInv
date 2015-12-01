@@ -27,7 +27,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
   draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
-  stack.SetMaximum(get_histo_y_max(max_histo));
+  stack.SetMaximum(get_histo_y_max(max_histo)*3.0);
   build_legend(legend, max_histo, var, with_cut);
 
   p1->cd();

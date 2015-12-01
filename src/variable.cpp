@@ -82,7 +82,7 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 						sel_string.insert(insert_pos, var_sel + "&&");
 				}
 		}
-		sel_string.insert(insert_pos, "(ntaus == 1)&&");
+		sel_string.insert(insert_pos, "(nselmuons == 2)&&");
 		return sel_string;
 }
 

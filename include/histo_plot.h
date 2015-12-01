@@ -23,6 +23,8 @@ public:
 
   static void draw_title(const char* title);
 
+  static std::string get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
+
   static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																																							bool with_cut, TH1F* last_stacked, TH1F* signal_histo);
 

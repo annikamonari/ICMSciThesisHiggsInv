@@ -14,7 +14,7 @@ void produce_graphs() {
 
   for (int i = 0; i < vars.size(); i++)
   {
-  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, false, &cut_vars);
+  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
   }
 }
 

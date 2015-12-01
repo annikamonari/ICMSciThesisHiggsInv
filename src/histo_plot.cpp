@@ -33,8 +33,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p1->cd();
   draw_title(var->name_styled);
 
-  c1->SaveAs((build_file_name(var, with_cut)).c_str());
-  c1->Close();
+  //c1->SaveAs((build_file_name(var, with_cut)).c_str());
+  //c1->Close();
 }
 
 void HistoPlot::draw_title(const char* title)
@@ -71,6 +71,22 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* last_stacked,
 																																							TH1F* signal_histo, bool with_cut)
 {
+
+
+  double bg_integral 				= atof(get_histo_integral(last_stacked, with_cut, var).c_str());
+  double sig_integral 			= atof(get_histo_integral(signal_histo, with_cut, var).c_str());
+  float signal_mult 					= atof(var->signal_multiplier);
+  float sig_to_bg 							= sig_integral / bg_integral / signal_mult;
+
+  std::ostringstream stb;
+  stb << sig_to_bg;
+  std::string sig_to_bg_str(stb.str());
+
+		return sig_to_bg_str;
+}
+
+std::string HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
+{
 		int nbins;
 		if (with_cut)
 		{
@@ -80,18 +96,10 @@ std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* last_stacked,
 		{
 				nbins = (int) (atof(var->bins_nocut) + 0.5);
 		}
+		std::ostringstream sig;
+		sig << histo->Integral(1, nbins);
 
-  double total_bg 				= last_stacked->Integral(1, nbins);
-  double total_signal = signal_histo->Integral(1, nbins);
-
-  float signal_mult 									= atof(var->signal_multiplier);
-  float signal_to_background = total_signal / total_bg / signal_mult;
-
-  std::ostringstream stb;
-  stb << signal_to_background;
-  std::string sig_to_bg(stb.str());
-
-		return sig_to_bg;
+		return sig.str();
 }
 
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
@@ -100,6 +108,8 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string selection = get_selection(variable, variables, with_cut, false);
 		std::string plot_subtitle("#font[12]{");
 		std::string s_bg("Signal to Background Ratio: " + sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut));
+		std::string s_int(" / Signal Integral: " + get_histo_integral(signal_histo, with_cut, variable));
+		std::string plot_subsubtitle = s_bg + s_int;
 
 		if (!with_cut)
 		{
@@ -129,6 +139,11 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 						plot_subtitle += selection;
 				}
 		}
+		std::cout << selection << ":" << std::endl;
+		std::cout << "signal to bg ratio" << std::endl;
+		std::cout <<  sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut) << std::endl;
+		std::cout << "signal integral" << std::endl;
+		std::cout <<  get_histo_integral(signal_histo, with_cut, variable) << std::endl;
 		plot_subtitle += "}";
 	 TLatex t;
 	 t.SetTextSize(0.03);
@@ -137,7 +152,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 
 		TLatex g;
 		g.SetTextSize(0.025);
-		g.DrawLatexNDC(0.1, 0.91, s_bg.c_str());
+		g.DrawLatexNDC(0.1, 0.91, plot_subsubtitle.c_str());
 		g.Draw();
 }
 

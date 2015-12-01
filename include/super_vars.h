@@ -27,6 +27,9 @@ public:
 		Variable* jet2met_scalarprod;
 		Variable* l1met;
 		Variable* metnomuons;
+		Variable* m_mumu;
+		Variable* met;
+		Variable* met_significance;
 
   SuperVars();
 

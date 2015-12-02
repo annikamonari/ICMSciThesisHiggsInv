@@ -27,7 +27,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
   draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
-  stack.SetMaximum(get_histo_y_max(max_histo)*3.0);
+  stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   build_legend(legend, max_histo, var, with_cut);
 
   p1->cd();
@@ -68,12 +68,12 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 		return selection;
 }
 
-std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* last_stacked,
+std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
 																																							TH1F* signal_histo, bool with_cut)
 {
 
 
-  double bg_integral 				= atof(get_histo_integral(last_stacked, with_cut, var).c_str());
+  double bg_integral 				= atof(get_histo_integral(bg, with_cut, var).c_str());
   double sig_integral 			= atof(get_histo_integral(signal_histo, with_cut, var).c_str());
   float signal_mult 					= atof(var->signal_multiplier);
   float sig_to_bg 							= sig_integral / bg_integral / signal_mult;
@@ -97,7 +97,7 @@ std::string HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* 
 				nbins = (int) (atof(var->bins_nocut) + 0.5);
 		}
 		std::ostringstream sig;
-		sig << histo->Integral(1, nbins);
+		sig << histo->Integral(0, nbins + 1);
 
 		return sig.str();
 }
@@ -139,11 +139,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 						plot_subtitle += selection;
 				}
 		}
-		std::cout << selection << ":" << std::endl;
-		std::cout << "signal to bg ratio" << std::endl;
-		std::cout <<  sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut) << std::endl;
-		std::cout << "signal integral" << std::endl;
-		std::cout <<  get_histo_integral(signal_histo, with_cut, variable) << std::endl;
+
 		plot_subtitle += "}";
 	 TLatex t;
 	 t.SetTextSize(0.03);

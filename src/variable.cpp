@@ -18,22 +18,33 @@ Variable::Variable(const char* var_name, const char* var_name_styled, const char
 
 std::string Variable::scale_bins_for_cut()
 {
-  const double x_min_nocut_d = atof(x_min_nocut);
-  const double x_max_nocut_d = atof(x_max_nocut);
-  const double x_min_cut_d   = atof(x_min_cut);
-  const double x_max_cut_d   = atof(x_max_cut);
-  double  fraction      		 = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
-  const double bins          = atof(bins_nocut);
-  double bins_cut      		 = bins * fraction;
-  bins_cut           		 = bins_cut + 0.5;
-  int bins_cut_int   = (int) bins_cut;
+  double x_min_nocut_d = atof(x_min_nocut);
+  double x_max_nocut_d = atof(x_max_nocut);
+  double x_min_cut_d   = atof(x_min_cut);
+  double x_max_cut_d 		= 0.0;
+
+  if (strcmp(x_max_cut, ""))
+  {
+  		x_max_cut_d = atof(x_max_cut);
+  }
+  else
+  {
+  		x_max_cut_d = atof(x_max_nocut);
+  		std::cout << "maxcut=''" << std::endl;
+  }
+  double  fraction  = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
+  const double bins = atof(bins_nocut);
+  double bins_cut   = bins * fraction;
+  bins_cut          = bins_cut + 0.5;
+  int bins_cut_int  = (int) bins_cut;
+
   if (bins_cut_int == 0)
   {
-	  bins_cut_int += 1;
+  		bins_cut_int += 1;
   }
+
   std::stringstream scaled_bins_ss;
   scaled_bins_ss << bins_cut_int;
-
   std::string scaled_bins_str = scaled_bins_ss.str();
 
   return scaled_bins_str;
@@ -52,7 +63,15 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
     var_string += ",";
     var_string.append(x_min_cut);
     var_string += ",";
-    var_string.append(x_max_cut);
+
+    if (strcmp(x_max_cut, ""))
+    {
+    		var_string.append(x_max_cut);
+    }
+    else
+    {
+    		var_string.append(x_max_nocut);
+    }
     var_string += ")";
   }
   else
@@ -63,7 +82,7 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
     var_string += ",";
     var_string.append(x_max_nocut);
     var_string += ")";
-  } 
+  }
 
   return var_string;
 }
@@ -82,7 +101,6 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 						sel_string.insert(insert_pos, var_sel + "&&");
 				}
 		}
-		sel_string.insert(insert_pos, "(nselmuons == 2)&&");
 		return sel_string;
 }
 
@@ -126,8 +144,12 @@ std::string Variable::build_selection(const char* var_name, const char* x_min_cu
 
 	 sel_str += (var_str + ">");
 	 sel_str.append(x_min_cut);
-	 sel_str += (")&&(" + var_str + "<");
-	 sel_str.append(x_max_cut);
+
+	 if (x_max_cut)
+	 {
+	 		sel_str += (")&&(" + var_str + "<");
+	 		sel_str.append(x_max_cut);
+	 }
 	 sel_str += ")";
 
 	 return sel_str;
@@ -152,7 +174,7 @@ double Variable::get_x_min(bool with_cut)
 
 double Variable::get_x_max(bool with_cut)
 {
-  if (with_cut)
+  if (with_cut && strcmp(x_max_cut, ""))
   {
     return atof(x_max_cut);
   }

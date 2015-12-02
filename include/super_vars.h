@@ -28,8 +28,6 @@ public:
 		Variable* l1met;
 		Variable* metnomuons;
 		Variable* m_mumu;
-		Variable* met;
-		Variable* met_significance;
 		Variable* alljetsmet_mindphi;
 
   SuperVars();

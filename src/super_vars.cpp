@@ -15,9 +15,7 @@ SuperVars::SuperVars()
 		metnomu_y = new Variable("metnomu_y","MET-YExcludingMuons","-400.0","400.0","0.0",
 																											"300.0","70","70");
 		metnomu_significance = new Variable("metnomu_significance","METExcludingMuonsSignificance",
-																																						"3.0","12.0","3.5","12.0","50","70");
-		met_significance = new Variable("met_significance","METSignificance",
-																																								"3.0","12.0","3.5","12.0","50","70");
+																																						"3.0","12.0","3.5","","50","70");
 		ht = new Variable("ht","HCALScalarSumofEnergy","0.0","1200.0","50","600","60","50");
 		ht30 = new Variable("ht30","HCALScalarSumofEnergyover30GeV","0.0","1200.0","50.0",
 																						"1100.0","75","30");
@@ -38,21 +36,19 @@ SuperVars::SuperVars()
 																																								"0.0","3.5","0.5","3.0","40","50");
 		alljetsmet_mindphi = new Variable("alljetsmetnomu_mindphi","Alljets,METmindphiexcludingmuons",
 																																										"0.0","3.5","0.5","3.0","40","50");
-		dijet_M = new Variable("dijet_M","DijetMass","0.0","2000.0","800.0","2000.0","50","100");
+		dijet_M = new Variable("dijet_M","DijetMass","0.0","2000.0","800.0","","50","100");
 		jet2met_scalarprod = new Variable("jet2met_scalarprod","Jet-2ScalarProductwithMET","-400.0",
 																																				"400.0","0.0","100.0","100","100");
 		l1met = new Variable("l1met","Level1triggerMET","0.0","400.0","0.0","250.0","50","40");
-		metnomuons = new Variable("metnomuons","METExcludingMuons","0.0","400.0","120.0","400.0",
+		metnomuons = new Variable("metnomuons","METExcludingMuons","0.0","400.0","120.0","",
 																												"50","80");
-		met = new Variable("met","MET","0.0","400.0","120.0","400.0",
-																														"20","80");
 		m_mumu = new Variable("m_mumu","MMuonMuon","0","400.0","60","120",
 																														"50","80");
 }
 
 std::vector<Variable*> SuperVars::get_var_vector()
 {
-		Variable* var_arr[] = {sqrt_ht};
+		Variable* var_arr[] = {metnomu_significance};
 																								/*dijet_deta, sqrt_ht, dijet_M,alljetsmetnomu_mindphi, metnomuons, jet1_pt, jet2_eta, central_tag_eta,
 																									dijet_dphi, metnomu_x, metnomu_y,  ht, ht30, unclustered_et, jet1metnomu_dphi,
 																									jet1metnomu_scalarprod, jet2metnomu_dphi, jetmetnomu_mindphi, jet2met_scalarprod,
@@ -65,8 +61,8 @@ std::vector<Variable*> SuperVars::get_var_vector()
 
 std::vector<Variable*> SuperVars::get_cut_vector()
 {
-		Variable* var_arr[] =		{m_mumu, dijet_deta, dijet_M, alljetsmet_mindphi};
-																									/*{forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M,
+		Variable* var_arr[] =		{metnomu_significance, alljetsmetnomu_mindphi, dijet_deta};
+																									/*{m_mumu, forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M,
 																									alljetsmetnomu_mindphi, metnomuons, jet1_pt, jet2_eta, central_tag_eta,
 																									dijet_dphi, metnomu_x, metnomu_y,  ht, ht30, unclustered_et, jet1metnomu_dphi,
 																									jet1metnomu_scalarprod, jet2metnomu_dphi, jetmetnomu_mindphi, jet2met_scalarprod,

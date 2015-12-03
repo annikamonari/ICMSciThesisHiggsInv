@@ -85,7 +85,7 @@ public:
 
   static std::string build_signal_leg_entry(Variable* var, DataChain* signal_chain);
 
-  static double MC_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut, std::vector<Variable*>* variables);
+  static double get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut, std::vector<Variable*>* variables);
 };
 
 #endif

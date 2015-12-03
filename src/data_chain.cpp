@@ -8,8 +8,7 @@ DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label
   legend = data_legend;
   leaves = new TreeLeaves();
   chain = new TChain("LightTree");
-  control_selection = control_region_selection;
-  mc_normaliser
+  lepton_selection = control_region_selection;
 
   leaves->set_branch_addresses(chain);
   get_data();

@@ -23,22 +23,22 @@ public:
 
   static void draw_title(const char* title);
 
-  static std::string get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
+  static double get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
 
   static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																																							bool with_cut, TH1F* last_stacked, TH1F* signal_histo);
 
-  static std::string sig_to_bg_ratio(Variable* var, TH1F* last_stacked, TH1F* signal_histo,
+  static double integral_ratio(Variable* var, TH1F* denom_histo, TH1F* numerator_histo,
 																																					bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																			bool with_cut, bool is_signal);
+																																			bool with_cut, bool is_signal, std::string control_sel);
 
   static TH1F* get_histogram(const char* histo_name);
 
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,
-																																				std::vector<DataChain*> bg_chains, bool with_cut,
-																																				std::vector<Variable*>* variables = NULL);
+																																				std::vector<DataChain*> bg_chains, DataChain* data_chain,
+																																				bool with_cut, std::vector<Variable*>* variables = NULL);
 
   static TH1F* get_max_histo(TH1F** plot_histos);
 
@@ -58,16 +58,16 @@ public:
 
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
                               bool is_signal, const char* option,
-																														std::vector<Variable*>* variables = NULL);
+																														std::vector<Variable*>* variables = NULL, std::string control_sel);
 
-  static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-																									std::vector<Variable*>* variables = NULL);
+  static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut,
+																									TLegend* legend, std::vector<Variable*>* variables = NULL);
 
   static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																											std::vector<Variable*>* variables = NULL);
 
-  static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
-																															std::vector<Variable*>* variables = NULL);
+  static TH1F* draw_background(DataChain* data_chain, Variable* variable, std::string control_sel, int fill_colour,
+																															bool with_cut, std::vector<Variable*>* variables = NULL);
 
   static void set_histo_style(bool is_signal, int fill_colour = 0);
   
@@ -78,6 +78,8 @@ public:
   static std::string build_file_name(Variable* variable, bool with_cut);
 
   static std::string build_signal_leg_entry(Variable* var, DataChain* signal_chain);
+
+  static double MC_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut, std::vector<Variable*>* variables);
 };
 
 #endif

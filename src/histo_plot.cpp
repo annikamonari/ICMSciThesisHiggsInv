@@ -53,36 +53,30 @@ void HistoPlot::draw_title(const char* title)
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																					bool with_cut, bool is_signal)
+																																					bool with_cut, bool is_signal, std::string control_sel)
 {
 		std::string selection;
 		if ((variables != NULL) && (with_cut))
 	 {
-	  	selection = variable->build_multicut_selection(is_signal, variables);
+	  	selection = variable->build_multicut_selection(is_signal, variables, control_sel);
 	 }
 	 else
 	 {
-	  	selection = variable->build_selection_string(with_cut, is_signal);
+	  	selection = variable->build_selection_string(with_cut, is_signal, control_sel);
 	 }
 
 		return selection;
 }
 
-std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg, TH1F* signal_histo, bool with_cut)
+double HistoPlot::integral_ratio(Variable* var, TH1F* denom_histo, TH1F* numerator_histo, bool with_cut)
 {
-  double bg_integral 				= atof(get_histo_integral(bg, with_cut, var).c_str());
-  double sig_integral 			= atof(get_histo_integral(signal_histo, with_cut, var).c_str());
-  float signal_mult 					= atof(var->signal_multiplier);
-  float sig_to_bg 							= sig_integral / bg_integral / signal_mult;
+  double numerator_integral = get_histo_integral(numerator_histo, with_cut, var);
+  double denom_integral 			 = get_histo_integral(denom_histo, with_cut, var);
 
-  std::ostringstream stb;
-  stb << sig_to_bg;
-  std::string sig_to_bg_str(stb.str());
-
-		return sig_to_bg_str;
+  return numerator_integral / denom_integral;
 }
 
-std::string HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
+double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 {
 		int nbins;
 		if (with_cut)
@@ -93,10 +87,8 @@ std::string HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* 
 		{
 				nbins = (int) (atof(var->bins_nocut) + 0.5);
 		}
-		std::ostringstream sig;
-		sig << histo->Integral(0, nbins + 1);
 
-		return sig.str();
+		return histo->Integral(0, nbins + 1);
 }
 
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
@@ -150,11 +142,12 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 }
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-																																						bool with_cut, std::vector<Variable*>* variables)
+																																						DataChain* data_chain, bool with_cut, std::vector<Variable*>* variables)
 {
   THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
+
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
@@ -240,10 +233,10 @@ void HistoPlot::style_legend(TLegend* legend)
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                                bool is_signal, const char* option, std::vector<Variable*>* variables)
+                                bool is_signal, const char* option, std::vector<Variable*>* variables, std::string control_sel)
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
-  std::string selection = get_selection(variable, variables, with_cut, is_signal);
+  std::string selection = get_selection(variable, variables, with_cut, is_signal, control_sel);
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
@@ -274,13 +267,13 @@ TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool wit
   return signal_histo;
 }
 
-TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, 
+TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, std::string control_sel,
                                  int fill_colour, bool with_cut, std::vector<Variable*>* variables)
 {
   data_chain->chain->SetLineColor(1);
   data_chain->chain->SetFillColor(fill_colour);
 
-  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables);
+  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, control_sel);
 }
 
 
@@ -339,3 +332,14 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
 
   return signal_leg_str;
 }
+
+double HistoPlot::MC_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut,
+																												std::vector<Variable*>* variables)
+{
+		std::string control_str = bg_chain->control_selection;
+	 TH1F* bg_control_histo = HistoPlot::build_1d_histo(bg_chain, var, with_cut, true, "goff", variables, control_str); // builds bg histo
+  TH1F* data_control_histo = HistoPlot::build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, control_str); // builds data histo
+
+  return integral_ratio(var, bg_control_histo, data_control_histo, with_cut);
+}
+

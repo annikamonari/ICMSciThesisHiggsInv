@@ -25,9 +25,9 @@ public:
 
   std::string build_var_string(const char* label, bool with_cut);
 
-  std::string build_multicut_selection(bool is_signal, std::vector<Variable*>* variables);
+  std::string build_multicut_selection(bool is_signal, std::vector<Variable*>* variables, std::string control_sel);
 
-  std::string build_selection_string(bool with_cut, bool is_signal);
+  std::string build_selection_string(bool with_cut, bool is_signal, std::string control_sel);
 
   std::string build_selection(const char* var_name, const char* x_min_cut,
 																														const char* x_max_cut, bool abs_for_cut);

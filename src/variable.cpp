@@ -87,9 +87,9 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
   return var_string;
 }
 
-std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*>* variables)
+std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*>* variables, std::string control_sel)
 {
-		std::string sel_string = build_selection_string(true, is_signal);
+		std::string sel_string = build_selection_string(true, is_signal, control_sel);
 		int insert_pos 								= sel_string.find("(") + 1;
 
 		for (int i = 0; i < variables->size(); i++)
@@ -104,18 +104,17 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 		return sel_string;
 }
 
-std::string Variable::build_selection_string(bool with_cut, bool is_signal) 
+std::string Variable::build_selection_string(bool with_cut, bool is_signal, std::string control_sel)
 {
   std::string sel_string;
+  sel_string += "(" + control_sel;
 
   if (with_cut)
   {
-  		sel_string += "(";
-  		sel_string += build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
-  		sel_string += ")*";
+  		sel_string += "&&" + build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
   }
 
-  sel_string += "total_weight_lepveto";
+  sel_string += ")*total_weight_lepveto";
 
   if(is_signal) {
     sel_string += "*";
@@ -209,3 +208,4 @@ double Variable::get_bins(bool with_cut)
     return atof(bins_nocut);
   }
 }
+

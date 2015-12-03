@@ -1,11 +1,15 @@
 #include "../include/data_chain.h"
 #include <cmath>
 
-DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend) {
+DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend,
+																					const char* control_region_selection)
+{
   label = data_label;
   legend = data_legend;
   leaves = new TreeLeaves();
   chain = new TChain("LightTree");
+  control_selection = control_region_selection;
+  mc_normaliser
 
   leaves->set_branch_addresses(chain);
   get_data();
@@ -22,5 +26,7 @@ void DataChain::get_data() {
     chain -> GetEntry(i);
   }
 }
+
+
 
 

@@ -108,7 +108,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal, std:
 {
   std::string sel_string;
   sel_string += lepton_sel; //lepton_sel syntax must have an open ( at the front, or if MC weight applied between this and the lepton_sel part
-
+  std::cout << "lepton_sel:"<< lepton_sel << std::endl;
   if (with_cut)
   {
   		sel_string += "&&" + build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
@@ -120,7 +120,6 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal, std:
     sel_string += "*";
     sel_string.append(signal_multiplier);
   }
-  
   return sel_string;
 }
 

@@ -158,6 +158,8 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   for(int i = 0; i < bg_chains.size(); i++) {
   		double mc_weight = get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
   		std::string lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+  		std::cout << "for background:::::" << bg_chains[i]->legend << std::endl;
+  		std::cout << "lep sel string w/ mc weight" << lep_sel_w_mc_weight << std::endl;
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");

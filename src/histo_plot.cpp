@@ -156,7 +156,7 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
-  		double mc_weight = get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
+  		double mc_weight = 1; //get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
   		std::string lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
   		std::cout << "for background:::::" << bg_chains[i]->legend << std::endl;
   		std::cout << "lep sel string w/ mc weight" << lep_sel_w_mc_weight << std::endl;
@@ -346,7 +346,6 @@ double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, V
 		std::string control_str = bg_chain->lepton_selection;
 	 TH1F* bg_control_histo = HistoPlot::build_1d_histo(bg_chain, var, with_cut, true, "goff", variables, control_str); // builds bg histo
   TH1F* data_control_histo = HistoPlot::build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, control_str); // builds data histo
-
   return integral_ratio(var, bg_control_histo, data_control_histo, with_cut);
 }
 

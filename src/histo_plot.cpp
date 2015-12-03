@@ -13,7 +13,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p2->Draw();
   p2->cd();
 
-  THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
+  THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, data, variables);
   TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
   TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend, variables);
 
@@ -53,16 +53,16 @@ void HistoPlot::draw_title(const char* title)
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																					bool with_cut, bool is_signal, std::string control_sel)
+																																					bool with_cut, bool is_signal, std::string lepton_sel)
 {
 		std::string selection;
 		if ((variables != NULL) && (with_cut))
 	 {
-	  	selection = variable->build_multicut_selection(is_signal, variables, control_sel);
+	  	selection = variable->build_multicut_selection(is_signal, variables, lepton_sel);
 	 }
 	 else
 	 {
-	  	selection = variable->build_selection_string(with_cut, is_signal, control_sel);
+	  	selection = variable->build_selection_string(with_cut, is_signal, lepton_sel);
 	 }
 
 		return selection;
@@ -142,13 +142,15 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 }
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-																																						DataChain* data_chain, bool with_cut, std::vector<Variable*>* variables)
+																																						bool with_cut, DataChain* data_chain, std::vector<Variable*>* variables)
 {
   THStack stack(var->name_styled, "");
+  const char* lepton_sel = data_chain->lepton_selection;
 
   for(int i = 0; i < bg_chains.size(); i++) {
-
-    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
+  		double MC_weight = MC_weight(bg_chains[i], data_chain, Variable* var, bool with_cut,
+																																	std::vector<Variable*>* variables)
+    TH1F* single_bg_histo = draw_background(bg_chains[i], var, lepton_sel, colours()[i], with_cut, variables);
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
@@ -233,10 +235,10 @@ void HistoPlot::style_legend(TLegend* legend)
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                                bool is_signal, const char* option, std::vector<Variable*>* variables, std::string control_sel)
+                                bool is_signal, const char* option, std::vector<Variable*>* variables, std::string lepton_sel)
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
-  std::string selection = get_selection(variable, variables, with_cut, is_signal, control_sel);
+  std::string selection = get_selection(variable, variables, with_cut, is_signal, lepton_sel);
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
@@ -244,7 +246,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 }
 
 TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-																											std::vector<Variable*>* variables)
+																											std::vector<Variable*>* variables, std::string lepton_sel)
 {
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
@@ -256,7 +258,7 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
 }
 
 TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-																													std::vector<Variable*>* variables)
+																													std::vector<Variable*>* variables, std::string lepton_sel)
 {
   data_chain->chain->SetLineColor(2);
   data_chain->chain->SetLineWidth(3);
@@ -267,13 +269,13 @@ TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool wit
   return signal_histo;
 }
 
-TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, std::string control_sel,
-                                 int fill_colour, bool with_cut, std::vector<Variable*>* variables)
+TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
+																																	std::vector<Variable*>* variables, std::string lepton_sel)
 {
   data_chain->chain->SetLineColor(1);
   data_chain->chain->SetFillColor(fill_colour);
 
-  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, control_sel);
+  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, lepton_sel);
 }
 
 
@@ -336,7 +338,7 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
 double HistoPlot::MC_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut,
 																												std::vector<Variable*>* variables)
 {
-		std::string control_str = bg_chain->control_selection;
+		std::string control_str = bg_chain->lepton_selection;
 	 TH1F* bg_control_histo = HistoPlot::build_1d_histo(bg_chain, var, with_cut, true, "goff", variables, control_str); // builds bg histo
   TH1F* data_control_histo = HistoPlot::build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, control_str); // builds data histo
 

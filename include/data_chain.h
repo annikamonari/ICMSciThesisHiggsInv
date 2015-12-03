@@ -24,8 +24,10 @@ public:
   const char* legend;
   TreeLeaves* leaves;
   TChain* chain;
+  const char* control_selection;
+  double mc_normaliser;
 
-  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend);
+  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, const char* control_region_selection="");
 
   void get_data();
 };

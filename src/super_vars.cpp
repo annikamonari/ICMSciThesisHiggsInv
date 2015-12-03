@@ -69,7 +69,7 @@ std::vector<Variable*> SuperVars::get_var_vector()
 
 std::vector<Variable*> SuperVars::get_cut_vector()
 {
-		Variable* var_arr[] =		{metnomu_significance/*, alljetsmetnomu_mindphi, dijet_deta*/};
+		Variable* var_arr[] =		{metnomu_significance, alljetsmetnomu_mindphi, dijet_deta};
 																									/*{m_mumu, forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M,
 																									alljetsmetnomu_mindphi, metnomuons, jet1_pt, jet2_eta, central_tag_eta,
 																									dijet_dphi, metnomu_x, metnomu_y,  ht, ht30, unclustered_et, jet1metnomu_dphi,

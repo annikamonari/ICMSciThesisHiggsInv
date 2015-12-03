@@ -14,7 +14,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p2->cd();
 
   THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, data, variables);
-  TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
+    TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
   TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend, variables);
 
   stack.Draw();
@@ -27,6 +27,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
   draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
+
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   build_legend(legend, max_histo, var, with_cut);
 
@@ -56,6 +57,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 																																					bool with_cut, bool is_signal, std::string lepton_sel)
 {
 		std::string selection;
+   std::cout<<"variables:"<<variables<<"\n";
 		if ((variables != NULL) && (with_cut))
 	 {
 	  	selection = variable->build_multicut_selection(is_signal, variables, lepton_sel);
@@ -64,7 +66,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 	 {
 	  	selection = variable->build_selection_string(with_cut, is_signal, lepton_sel);
 	 }
-
+std::cout<<"selection:"<<selection<<"\n";
 		return selection;
 }
 
@@ -94,6 +96,7 @@ double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																														bool with_cut, TH1F* last_stacked, TH1F* signal_histo)
 {
+
 		std::string selection = get_selection(variable, variables, with_cut, false);
 		std::string plot_subtitle("#font[12]{");
 		std::string s_bg("Signal to Background Ratio: " + get_string_from_double(integral_ratio(variable, last_stacked, signal_histo, with_cut)));
@@ -106,20 +109,25 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		}
 		else
 		{
+
 				if (selection.length() > 69)
 				{
+
 						std::string first_line 			= selection.substr(0, 69);
-						selection.erase(selection.length() - 22, 22);
-						if (selection.length() > 148)
+						//selection.erase(selection.length() - 22, 22);
+ 
+						if (selection.length() > 138)
 						{
-								std::string second_line = selection.substr(69, 148);
+								std::string second_line = selection.substr(69, 138);
 								//std::string third_line 	= selection.substr(148, selection.length() - 1);
 								plot_subtitle 									+= ("#splitline{With cuts:" + first_line + "-}{" + second_line + "}");
+
 						}
 						else
 						{
-								std::string second_line = selection.substr(69, selection.length() - 1);
-								plot_subtitle 									+= ("#splitline{With cuts: " + first_line + "-}{" + second_line + "}");
+ 								std::string second_line = selection.substr(69, selection.length() - 1);    
+
+								plot_subtitle += ("#splitline{With cuts: " + first_line + "-}{" + second_line + "}");
 						}
 
 				}
@@ -130,7 +138,8 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		}
 
 		plot_subtitle += "}";
-	 TLatex t;
+
+	 /*TLatex t;
 	 t.SetTextSize(0.03);
 	 t.DrawLatexNDC(0.1, 0.96, plot_subtitle.c_str());
 		t.Draw();
@@ -138,7 +147,8 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		TLatex g;
 		g.SetTextSize(0.025);
 		g.DrawLatexNDC(0.1, 0.91, plot_subsubtitle.c_str());
-		g.Draw();
+		g.Draw();*/
+std::cout << plot_subtitle<<"\n";
 }
 
 std::string HistoPlot::get_string_from_double(double num)
@@ -156,13 +166,12 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
-  		double mc_weight = 1; //get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
-  		std::string lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
-  		std::cout << "for background:::::" << bg_chains[i]->legend << std::endl;
-  		std::cout << "lep sel string w/ mc weight" << lep_sel_w_mc_weight << std::endl;
-    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
-    stack.Add(single_bg_histo);
-    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+  	std::cout << "background:" << bg_chains[i]->legend<<"\n";
+  	double mc_weight = 10; //get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
+ 	std::string lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+    	TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
+    	stack.Add(single_bg_histo);
+    	legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
 
   return stack;

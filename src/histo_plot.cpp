@@ -39,12 +39,12 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
 void HistoPlot::draw_title(const char* title)
 {
-	TPaveText* pt = new TPaveText(0.1, 0.1, 0.9, 1.0, "blNDC");
-	pt->SetBorderSize(0);
-	pt->SetFillColor(0);
-	pt->AddText(title);
-	pt->SetAllWith(title, "size", 0.5);
-	pt->Draw();
+		TPaveText* pt = new TPaveText(0.1, 0.1, 0.9, 1.0, "blNDC");
+		pt->SetBorderSize(0);
+		pt->SetFillColor(0);
+		pt->AddText(title);
+		pt->SetAllWith(title, "size", 0.5);
+		pt->Draw();
 
 	/*TLatex t;
 		t.SetTextSize(0.5);
@@ -68,11 +68,8 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 		return selection;
 }
 
-std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
-																																							TH1F* signal_histo, bool with_cut)
+std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg, TH1F* signal_histo, bool with_cut)
 {
-
-
   double bg_integral 				= atof(get_histo_integral(bg, with_cut, var).c_str());
   double sig_integral 			= atof(get_histo_integral(signal_histo, with_cut, var).c_str());
   float signal_mult 					= atof(var->signal_multiplier);
@@ -164,6 +161,11 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   }
 
   return stack;
+}
+
+TH1F* HistoPlot::get_histogram(const char* histo_name)
+{
+  return gDirectory->Get(histo_name);
 }
 
 TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)

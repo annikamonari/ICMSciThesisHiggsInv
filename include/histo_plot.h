@@ -34,6 +34,8 @@ public:
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
 																																			bool with_cut, bool is_signal);
 
+  static TH1F* get_histogram(const char* histo_name);
+
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,
 																																				std::vector<DataChain*> bg_chains, bool with_cut,
 																																				std::vector<Variable*>* variables = NULL);

@@ -28,7 +28,13 @@ public:
 		Variable* l1met;
 		Variable* metnomuons;
 		Variable* m_mumu;
-		Variable* alljetsmet_mindphi;
+		Variable* nvetomuons;
+		Variable* nvetoelectrons;
+		Variable* ntaus;
+		Variable* nselelectrons;
+		Variable* nselmuons;
+		Variable* jet1_E;
+		Variable* jet2_E;
 
   SuperVars();
 

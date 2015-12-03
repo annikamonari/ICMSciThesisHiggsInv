@@ -32,6 +32,9 @@ public:
   std::string build_selection(const char* var_name, const char* x_min_cut,
 																														const char* x_max_cut, bool abs_for_cut);
 
+  std::string build_single_selection(const char* var_name, const char* op, const char* val,
+																																					bool abs_for_cut)
+
   double get_graph_dx(bool with_cut);
 
   double get_x_min(bool with_cut);

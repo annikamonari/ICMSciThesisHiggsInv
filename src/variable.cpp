@@ -30,8 +30,8 @@ std::string Variable::scale_bins_for_cut()
   else
   {
   		x_max_cut_d = atof(x_max_nocut);
-  		std::cout << "maxcut=''" << std::endl;
   }
+
   double  fraction  = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
   const double bins = atof(bins_nocut);
   double bins_cut   = bins * fraction;
@@ -128,31 +128,45 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
 std::string Variable::build_selection(const char* var_name, const char* x_min_cut,
 																																						const char* x_max_cut, bool abs_for_cut)
 {
-		std::string sel_str("(");
-		std::string var_str;
+		std::string sel_str;
 
-		if (abs_for_cut)
+		if ((var_name[0] == "n") && (var_name[1] != "_"))
 		{
-				var_str += "abs(";
-				var_str.append(var_name);
-				var_str += ")";
+				sel_str += build_single_selection(var_name, "==", x_min_cut, abs_for_cut);
 		}
+
 		else
 		{
-				var_str.append(var_name);
+				sel_str += build_single_selection(var_name, ">", x_min_cut, abs_for_cut);
+
+				if (strcmp(x_max_cut, ""))
+				{
+					 sel_str += "&&";
+					 sel_str += build_single_selection(var_name, "<", x_max_cut, abs_for_cut);
+				}
 		}
 
-	 sel_str += (var_str + ">");
-	 sel_str.append(x_min_cut);
-
-	 if (x_max_cut)
-	 {
-	 		sel_str += (")&&(" + var_str + "<");
-	 		sel_str.append(x_max_cut);
-	 }
-	 sel_str += ")";
-
 	 return sel_str;
+}
+
+std::string Variable::build_single_selection(const char* var_name, const char* op, const char* val, bool abs_for_cut)
+{
+	 std::string var_str;
+	 var_str += "(";
+	 if (abs_for_cut)
+	 {
+	 		var_str += "abs(";
+	 		var_str.append(var_name);
+	 		var_str += ")";
+	 }
+	 else
+	 {
+	 		var_str.append(var_name);
+	 }
+	 var_str.append(op);
+	 var_str.append(val);
+
+	 return var_str;
 }
 
 double Variable::get_graph_dx(bool with_cut)

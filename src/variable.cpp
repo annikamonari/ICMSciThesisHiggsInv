@@ -107,7 +107,7 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 std::string Variable::build_selection_string(bool with_cut, bool is_signal, std::string lepton_sel)
 {
   std::string sel_string;
-  sel_string += "(" + lepton_sel;
+  sel_string += lepton_sel; //lepton_sel syntax must have an open ( at the front, or if MC weight applied between this and the lepton_sel part
 
   if (with_cut)
   {
@@ -128,21 +128,12 @@ std::string Variable::build_selection(const char* var_name, const char* x_min_cu
 																																						const char* x_max_cut, bool abs_for_cut)
 {
 		std::string sel_str;
+		sel_str += build_single_selection(var_name, ">", x_min_cut, abs_for_cut);
 
-		if ((var_name[0] == "n") && (var_name[1] != "_"))
+		if (strcmp(x_max_cut, ""))
 		{
-				sel_str += build_single_selection(var_name, "==", x_min_cut, abs_for_cut);
-		}
-
-		else
-		{
-				sel_str += build_single_selection(var_name, ">", x_min_cut, abs_for_cut);
-
-				if (strcmp(x_max_cut, ""))
-				{
-					 sel_str += "&&";
-					 sel_str += build_single_selection(var_name, "<", x_max_cut, abs_for_cut);
-				}
+				sel_str += "&&";
+				sel_str += build_single_selection(var_name, "<", x_max_cut, abs_for_cut);
 		}
 
 	 return sel_str;
@@ -164,6 +155,7 @@ std::string Variable::build_single_selection(const char* var_name, const char* o
 	 }
 	 var_str.append(op);
 	 var_str.append(val);
+	 var_str += ")";
 
 	 return var_str;
 }

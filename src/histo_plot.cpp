@@ -96,8 +96,8 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 {
 		std::string selection = get_selection(variable, variables, with_cut, false);
 		std::string plot_subtitle("#font[12]{");
-		std::string s_bg("Signal to Background Ratio: " + sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut));
-		std::string s_int(" / Signal Integral: " + get_histo_integral(signal_histo, with_cut, variable));
+		std::string s_bg("Signal to Background Ratio: " + get_string_from_double(integral_ratio(variable, last_stacked, signal_histo, with_cut)));
+		std::string s_int(" / Signal Integral: " + get_string_from_double(get_histo_integral(signal_histo, with_cut, variable)));
 		std::string plot_subsubtitle = s_bg + s_int;
 
 		if (!with_cut)
@@ -141,6 +141,15 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		g.Draw();
 }
 
+std::string HistoPlot::get_string_from_double(double num)
+{
+	 std::ostringstream num_ss;
+	 num_ss << num;
+	 std::string num_str(num_ss.str());
+
+	 return num_str;
+}
+
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
 																																						bool with_cut, DataChain* data_chain, std::vector<Variable*>* variables)
 {
@@ -148,17 +157,13 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
 
   for(int i = 0; i < bg_chains.size(); i++) {
   		double mc_weight = get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
-    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
+  		std::string lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
 
   return stack;
-}
-
-TH1F* HistoPlot::get_histogram(const char* histo_name)
-{
-  return gDirectory->Get(histo_name);
 }
 
 TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)

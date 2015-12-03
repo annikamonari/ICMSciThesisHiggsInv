@@ -24,6 +24,7 @@ public:
   const char* legend;
   TreeLeaves* leaves;
   TChain* chain;
+  //lepton_sel syntax must have an open ( at the front
   const char* lepton_selection;
   double mc_normaliser;
 

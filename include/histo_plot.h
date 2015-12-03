@@ -19,7 +19,7 @@ public:
 
   static std::string lepton_sel_default()
   {
-  	 std::string lepton_sel = "&&(nvetomuons == 0)&&(nvetoelectrons == 0)";
+  	 std::string lepton_sel = "((nvetomuons == 0)&&(nvetoelectrons == 0)";
 
   	 return lepton_sel;
   }
@@ -84,6 +84,8 @@ public:
   static std::string build_file_name(Variable* variable, bool with_cut);
 
   static std::string build_signal_leg_entry(Variable* var, DataChain* signal_chain);
+
+  static std::string get_string_from_double(double num);
 
   static double get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut, std::vector<Variable*>* variables);
 };

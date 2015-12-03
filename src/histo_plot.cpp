@@ -145,12 +145,10 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
 																																						bool with_cut, DataChain* data_chain, std::vector<Variable*>* variables)
 {
   THStack stack(var->name_styled, "");
-  const char* lepton_sel = data_chain->lepton_selection;
 
   for(int i = 0; i < bg_chains.size(); i++) {
-  		double MC_weight = MC_weight(bg_chains[i], data_chain, Variable* var, bool with_cut,
-																																	std::vector<Variable*>* variables)
-    TH1F* single_bg_histo = draw_background(bg_chains[i], var, lepton_sel, colours()[i], with_cut, variables);
+  		double mc_weight = get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
+    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
     stack.Add(single_bg_histo);
     legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
@@ -335,7 +333,7 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
   return signal_leg_str;
 }
 
-double HistoPlot::MC_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut,
+double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut,
 																												std::vector<Variable*>* variables)
 {
 		std::string control_str = bg_chain->lepton_selection;

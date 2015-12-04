@@ -16,7 +16,7 @@ public:
 		DataChain* signal_chain;
 		DataChain* data_chain;
 
-  SuperChains();
+  SuperChains(SuperVars* super_vars);
 
   std::vector<DataChain*> get_bg_chains();
 

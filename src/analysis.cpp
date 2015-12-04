@@ -190,9 +190,3 @@ std::vector<const char*> data (data_arr, data_arr+ sizeof(data_arr)/sizeof(const
 
 const char* data_label = "data";
 const char* data_legend = "data";
-
-
-
-
-
-

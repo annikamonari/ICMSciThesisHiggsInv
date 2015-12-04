@@ -1,6 +1,7 @@
 #ifndef Data_Chain_h
 #define Data_Chain_h
 
+#include "../include/tree_leaves.h"
 #include <TCanvas.h>
 #include <TROOT.h>
 #include <TFile.h>
@@ -8,7 +9,6 @@
 #include <TChain.h>
 #include <TCut.h>
 #include <TH2.h>
-#include "tree_leaves.h"
 #include <cmath>
 #include <string>
 #include <iostream>
@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <sstream>
 #include <stdlib.h>
+#include <map>
 
+class SuperVars;
 
 class DataChain {
 public:
@@ -26,9 +28,10 @@ public:
   TChain* chain;
   //lepton_sel syntax must have an open ( at the front
   const char* lepton_selection;
-  double mc_normaliser;
+  std::map<char*, double> mc_weights;
 
-  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, const char* control_region_selection="");
+  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend,
+												SuperVars* super_vars, const char* control_region_selection="");
 
   void get_data();
 };

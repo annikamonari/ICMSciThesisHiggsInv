@@ -1,7 +1,7 @@
 #include "../include/data_chain.h"
 
 DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend,
-																					SuperVars* super_vars, const char* control_region_selection)
+																					const char* control_region_selection)
 {
   label = data_label;
   legend = data_legend;

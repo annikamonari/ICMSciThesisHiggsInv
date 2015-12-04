@@ -362,11 +362,12 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
 }
 
 double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut,
-																												std::vector<Variable*>* variables)
+																																std::vector<Variable*>* variables)
 {
-		std::string control_str = bg_chain->lepton_selection;
-	 TH1F* bg_control_histo = HistoPlot::build_1d_histo(bg_chain, var, with_cut, true, "goff", variables, control_str); // builds bg histo
-  TH1F* data_control_histo = HistoPlot::build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, control_str); // builds data histo
+		std::string control_str  = bg_chain->lepton_selection;
+	 TH1F* bg_control_histo   = HistoPlot::build_1d_histo(bg_chain, var, with_cut, true, "goff", variables, control_str);
+  TH1F* data_control_histo = HistoPlot::build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, control_str);
+
   return integral_ratio(var, bg_control_histo, data_control_histo, with_cut);
 }
 

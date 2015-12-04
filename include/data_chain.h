@@ -16,22 +16,17 @@
 #include <stdio.h>
 #include <sstream>
 #include <stdlib.h>
-#include <map>
-
-class SuperVars;
 
 class DataChain {
 public:
   const char* label;
   const char* legend;
-  TreeLeaves* leaves;
   TChain* chain;
-  //lepton_sel syntax must have an open ( at the front
-  const char* lepton_selection;
-  std::map<char*, double> mc_weights;
+  const char* lepton_selection; // lepton_sel syntax must have an open ( at the front
+  // TreeLeaves* leaves;
 
   DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend,
-												SuperVars* super_vars, const char* control_region_selection="");
+												const char* control_region_selection="");
 
   void get_data();
 };

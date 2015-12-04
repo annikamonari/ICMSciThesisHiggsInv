@@ -57,7 +57,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 																																					bool with_cut, bool is_signal, std::string lepton_sel)
 {
 		std::string selection;
-   std::cout<<"variables:"<<variables<<"\n";
+
 		if ((variables != NULL) && (with_cut))
 	 {
 	  	selection = variable->build_multicut_selection(is_signal, variables, lepton_sel);
@@ -66,7 +66,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 	 {
 	  	selection = variable->build_selection_string(with_cut, is_signal, lepton_sel);
 	 }
-std::cout<<"selection:"<<selection<<"\n";
+
 		return selection;
 }
 
@@ -148,7 +148,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		g.SetTextSize(0.025);
 		g.DrawLatexNDC(0.1, 0.91, plot_subsubtitle.c_str());
 		g.Draw();*/
-std::cout << plot_subtitle<<"\n";
+
 }
 
 std::string HistoPlot::get_string_from_double(double num)
@@ -167,8 +167,20 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
 
   for(int i = 0; i < bg_chains.size(); i++) {
   	std::cout << "background:" << bg_chains[i]->legend<<"\n";
-  	double mc_weight = 10; //get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
- 	std::string lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+   const char * lep_sel =	bg_chains[i]->lepton_selection;
+   
+   std::string lep_sel_w_mc_weight;
+   if (strcmp(lep_sel,""))
+   {
+  	double mc_weight = get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
+  std::cout<< "mc weight:"<<mc_weight<<"\n";
+ 	lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+  }
+  else{
+  lep_sel_w_mc_weight = lepton_sel_default();
+  std::cout<<lep_sel_w_mc_weight<<"\n";
+  }
+   std::cout<< "lepton sel w mc weight"<<lep_sel_w_mc_weight <<"\n";
     	TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
     	stack.Add(single_bg_histo);
     	legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");

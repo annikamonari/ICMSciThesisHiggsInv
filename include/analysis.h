@@ -5,69 +5,57 @@
 #include <stdlib.h>
 #include "../include/data_chain.h"
 
+/* Note the include structure:
+ *
+ */
+
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////      DATA, BACKGROUND, SIGNAL INPUT      /////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////     BACKGROUNDS   ///////////////////////////////////////////
 
 /////////////////////////////      QCD       ///////////////////////////////////////////
+
 extern const char* qcd_arr[];
 extern std::vector<const char*> qcd;
 extern const char* qcd_label;
 extern const char* qcd_legend;
-
 extern const char* z_ll_arr[];
-
-
-
-
-
 extern std::vector<const char*> z_ll;
 extern const char* z_ll_label;
 extern const char* z_ll_legend;
+
 ///////////////////////////      W+jets->ev      ////////////////////////////////////////
+
 extern const char* wjets_ev_arr[];
-
-
-
-
-
-
-
 extern std::vector<const char*> wjets_ev;
 extern const char* wjets_ev_label;
 extern const char* wjets_ev_legend;
+
 ////////////////////////////      W+jets->muv      ///////////////////////////////////////
+
 extern const char* wjets_muv_arr[];
-
-
-
-
-
-
-
 extern std::vector<const char*> wjets_muv;
 extern const char* wjets_muv_label;
 extern const char* wjets_muv_legend;
+
 ///////////////////////////      /W+jets->tauv       //////////////////////////////////////
+
 extern const char* wjets_tauv_arr[];
-
-
-
-
-
-
-
 extern std::vector<const char*> wjets_tauv;
 extern const char* wjets_tauv_label;
 extern const char* wjets_tauv_legend;
+
 ///////////////////////////          Top            ///////////////////////////////////////
+
 extern const char* top_arr[];
 
 extern std::vector<const char*> top;
 extern const char* top_label;
 extern const char* top_legend;
+
 ///////////////////////////           VV            ///////////////////////////////////////
+
 extern const char* vv_arr[];
 
 
@@ -84,11 +72,13 @@ extern const char* zjets_vv_label;
 extern const char* zjets_vv_legend;
 
 ///////////////////////////          Signal:          //////////////////////////////////////
+
 extern const char* mc_signal_data_arr[];
 
 extern std::vector<const char*> mc_signal_data;
 extern const char* mc_signal_label;
 extern const char* mc_signal_legend;
+
 ///////////////////////////           Data:          //////////////////////////////////////
 extern const char* data_arr[];
 extern std::vector<const char*> data;

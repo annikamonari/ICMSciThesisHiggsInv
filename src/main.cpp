@@ -7,7 +7,7 @@ void produce_graphs() {
 		std::vector<Variable*> vars = super_vars->get_var_vector();
 		std::vector<Variable*> cut_vars = super_vars->get_cut_vector();
 
-		SuperChains* super_chains 								= new SuperChains();
+		SuperChains* super_chains 								= new SuperChains(super_vars);
 		std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
 		DataChain* signal_chain 										= super_chains->signal_chain;
 		DataChain* data_chain 												= super_chains->data_chain;

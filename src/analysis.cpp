@@ -145,7 +145,7 @@ const char* zjets_vv_arr[] = {"data/background/MC_ZJetsToNuNu_50_HT_100.root",
 std::vector<const char*> zjets_vv (zjets_vv_arr, zjets_vv_arr +
                           sizeof(zjets_vv_arr)/sizeof(const char*));
 
-const char* zjets_vv_label = "Z_jets_rightarrow_nu_nu";
+const char* zjets_vv_label = "bg_zjets_vv";
 const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
 
 ///////////////////////////          Signal:          //////////////////////////////////////

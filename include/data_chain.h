@@ -22,11 +22,11 @@ public:
   const char* label;
   const char* legend;
   TChain* chain;
-  const char* lepton_selection; // lepton_sel syntax must have an open ( at the front
+  std::string lepton_selection; // lepton_sel syntax must have an open ( at the front
   // TreeLeaves* leaves;
 
   DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend,
-												const char* control_region_selection="");
+												std::string control_region_selection="");
 
   void get_data();
 };

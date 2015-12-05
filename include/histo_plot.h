@@ -87,7 +87,14 @@ public:
 
   static std::string get_string_from_double(double num);
 
-  static double get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut, std::vector<Variable*>* variables);
+  static double get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double other_bg_in_ctrl,
+																														Variable* var, bool with_cut, std::vector<Variable*>* variables);
+
+  static double get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
+																																								std::vector<Variable*>* variables, std::string lepton_sel = lepton_sel_default());
+
+  static double get_other_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
+																																					std::vector<Variable*>* variables, std::string lepton_sel);
 };
 
 #endif

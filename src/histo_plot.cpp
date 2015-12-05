@@ -164,26 +164,35 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
 																																						bool with_cut, DataChain* data_chain, std::vector<Variable*>* variables)
 {
   THStack stack(var->name_styled, "");
+  double z_ll_mc_weight = 1.0;
 
   for(int i = 0; i < bg_chains.size(); i++) {
-  	std::cout << "background:" << bg_chains[i]->legend<<"\n";
-   const char * lep_sel =	bg_chains[i]->lepton_selection;
-   
+   std::string lep_sel =	bg_chains[i]->lepton_selection;
+   double other_bg_in_ctrl = get_other_bg_in_ctrl(bg_chains, var, with_cut, variables, lep_sel);
    std::string lep_sel_w_mc_weight;
-   if (strcmp(lep_sel,""))
+   
+   if (lep_sel != "")
    {
-  	double mc_weight = get_mc_weight(bg_chains[i], data_chain, var, with_cut, variables);
-  std::cout<< "mc weight:"<<mc_weight<<"\n";
- 	lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
-  }
-  else{
-  lep_sel_w_mc_weight = lepton_sel_default();
-  std::cout<<lep_sel_w_mc_weight<<"\n";
-  }
-   std::cout<< "lepton sel w mc weight"<<lep_sel_w_mc_weight <<"\n";
-    	TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
-    	stack.Add(single_bg_histo);
-    	legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+  	  double mc_weight = get_mc_weight(bg_chains[i], data_chain, other_bg_in_ctrl, var, with_cut, variables);
+ 	   lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+
+ 	   if (!strcmp(bg_chains[i]->label, "bg_zll"))
+ 	   {
+ 	   		z_ll_mc_weight = mc_weight;
+ 	   }
+   }
+   else if (!strcmp(bg_chains[i]->label, "bg_zjets_vv"))
+   {
+     lep_sel_w_mc_weight = z_ll_mc_weight * (6602/1168);
+   }
+   else
+   {
+   		lep_sel_w_mc_weight = lepton_sel_default();
+   }
+
+   TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
+   stack.Add(single_bg_histo);
+   legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
 
   return stack;
@@ -361,13 +370,34 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
   return signal_leg_str;
 }
 
-double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, Variable* var, bool with_cut,
-																																std::vector<Variable*>* variables)
+double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double other_bg_in_ctrl,
+																																Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-		std::string control_str  = bg_chain->lepton_selection;
-	 TH1F* bg_control_histo   = HistoPlot::build_1d_histo(bg_chain, var, with_cut, true, "goff", variables, control_str);
-  TH1F* data_control_histo = HistoPlot::build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, control_str);
+	 std::string lepton_sel = bg_chain->lepton_selection;
+		// number of events from process A MC in control region
+		double a_events_ctrl_region = get_n_events(bg_chain, var, with_cut, variables, lepton_sel);
+		// number of data events process A in control region
+		double data_events_ctrl_region = get_n_events(chain_of_data, var, with_cut, variables, lepton_sel);
 
-  return integral_ratio(var, bg_control_histo, data_control_histo, with_cut);
+		return (data_events_ctrl_region - other_bg_in_ctrl) / a_events_ctrl_region;
+}
+
+double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
+																															std::vector<Variable*>* variables, std::string lepton_sel)
+{
+  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, lepton_sel), with_cut, var);
+}
+
+double HistoPlot::get_other_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
+																																							std::vector<Variable*>* variables, std::string lepton_sel)
+{
+  double nevents = 0.0;
+
+  for (int i = 0; i < bg_chains.size(); i++)
+  {
+  		nevents += get_n_events(bg_chains[i], var, with_cut, variables, lepton_sel);
+  }
+
+  return nevents;
 }
 

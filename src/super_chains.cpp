@@ -18,9 +18,9 @@ SuperChains::SuperChains(std::vector<Variable*>* vars, std::vector<Variable*>* c
 
 std::vector<DataChain*> SuperChains::get_bg_chains()
 {
-		DataChain* bg_chain_arr[] = {bg_zll, bg_wjets_ev, bg_wjets_muv,
+		DataChain* bg_chain_arr[] = {bg_zll/*, bg_wjets_ev, bg_wjets_muv,
 																															bg_wjets_tauv, bg_top, bg_vv,
-																															bg_zjets_vv, bg_qcd};
+																															bg_zjets_vv, bg_qcd*/};
 
 		std::vector<DataChain*> bg_chains (bg_chain_arr, bg_chain_arr + sizeof(bg_chain_arr) / sizeof(bg_chain_arr[0]));
 

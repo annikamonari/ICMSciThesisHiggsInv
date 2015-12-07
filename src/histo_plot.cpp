@@ -32,7 +32,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   //build_legend(legend, max_histo, var, with_cut);
-  std::cout << "legend built" << std::endl;
+  //std::cout << "legend built" << std::endl;
   p1->cd();
   draw_title(var->name_styled);
 
@@ -167,12 +167,12 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
 {
   THStack stack(var->name_styled, "");
 
-  for(int i = 0; i < bg_chains.size(); i++) {
-  	std::cout << bg_chains[i]->label << std::endl;
+  for(int i = 0; i < 1/*bg_chains.size()*/; i++) {
+  	//std::cout << bg_chains[i]->label << std::endl;
    double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
    std::string lep_sel_w_mc_weight = get_mc_weight_lep_sel_str(bg_chains[i], data_chain, var, variables, with_cut,
 																																																															other_bg_in_ctrl);
-   std::cout << bg_chains[i]->label << " -- mc weight string: " << lep_sel_w_mc_weight << std::endl;
+   //std::cout << bg_chains[i]->label << " -- mc weight string: " << lep_sel_w_mc_weight << std::endl;
    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
    stack.Add(single_bg_histo);
    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
@@ -257,7 +257,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
   std::string selection = get_selection(variable, variables, with_cut, is_signal, lepton_sel);
-  std::cout << data_chain->label << " : " << selection << std::endl;
+  //std::cout << data_chain->label << " : " << selection << std::endl;
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
@@ -340,7 +340,7 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
     file_name.append(variable->x_max_nocut);
   }
   file_name += ".png";
-  std::cout << file_name << std::endl;
+  //std::cout << file_name << std::endl;
   return file_name;
 }
 
@@ -360,16 +360,18 @@ double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, d
 	 std::string lepton_sel = bg_chain->lepton_selection;
 		// number of events from process A MC in control region
 		double a_events_ctrl_region = get_n_events(bg_chain, var, with_cut, variables, lepton_sel);
+  std::cout<< "number of events in background to be weighted = "<< a_events_ctrl_region<<"\n";
 		// number of data events process A in control region
 		double data_events_ctrl_region = get_n_events(chain_of_data, var, with_cut, variables, lepton_sel);
+  std::cout<< "number of data events=  "<< data_events_ctrl_region<<"\n";
 
-		return (data_events_ctrl_region - (a_events_ctrl_region - all_bg_in_ctrl)) / a_events_ctrl_region;
+		return (data_events_ctrl_region - ( all_bg_in_ctrl - a_events_ctrl_region )) / a_events_ctrl_region;
 }
 
 double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
 																															std::vector<Variable*>* variables, std::string lepton_sel)
 {
-  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, lepton_sel), with_cut, var);
+  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, false, "goff", variables, lepton_sel), with_cut, var);
 }
 
 double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
@@ -384,7 +386,7 @@ double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
     		nevents += get_n_events(bg_chains[i], var, with_cut, variables, lepton_sel);
   		}
   }
-
+   std::cout<< "number of events in total background = "<< nevents<<"\n";
   return nevents;
 }
 
@@ -397,7 +399,7 @@ std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain*
 	 if (bg_chain->lepton_selection != "")
 	 {
 	 	 double mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
-	   lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+	   lep_sel_w_mc_weight = lepton_sel_default() + "*" + get_string_from_double(mc_weight) ;
 
 	   if (!strcmp(bg_chain->label, "bg_zll"))
 	   {

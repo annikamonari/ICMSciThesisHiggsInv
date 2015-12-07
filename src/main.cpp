@@ -12,7 +12,7 @@ void produce_graphs(bool with_cut) {
 		DataChain* signal_chain 										= super_chains->signal_chain;
 		DataChain* data_chain 												= super_chains->data_chain;
 
-  for (int i = 0; i < vars.size(); i++)
+  for (int i = 0; 1/*i < vars.size()*/; i++)
   {
   		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, with_cut, &cut_vars);
   }

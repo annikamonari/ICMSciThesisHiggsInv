@@ -115,7 +115,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal, std:
   		sel_string += "&&" + build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
   }
 
-  sel_string += ")*total_weight_lepveto";
+  sel_string += ")";
 
   if(is_signal) {
     sel_string += "*";

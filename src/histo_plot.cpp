@@ -373,9 +373,12 @@ double HistoPlot::get_other_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variab
 {
   double nevents = 0.0;
 
-  for (int i = 0; i < bg_chains.size(); i++)
+  if (lepton_sel != "")
   {
-  		nevents += get_n_events(bg_chains[i], var, with_cut, variables, lepton_sel);
+  		for (int i = 0; i < bg_chains.size(); i++)
+  		{
+    		nevents += get_n_events(bg_chains[i], var, with_cut, variables, lepton_sel);
+  		}
   }
 
   return nevents;
@@ -386,7 +389,7 @@ std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain*
 {
 	 std::string lep_sel_w_mc_weight;
 	 double z_ll_mc_weight = 1.0;
-
+	 std::cout << bg_chain->label << std::endl;
 	 if (bg_chain->lepton_selection != "")
 	 {
 	 	 double mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
@@ -396,16 +399,22 @@ std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain*
 	   {
 	    	z_ll_mc_weight = mc_weight;
 		  }
-  }
-  else if (!strcmp(bg_chain->label, "bg_zjets_vv"))
-  {
-    double mc_weight = z_ll_mc_weight * 5.652;
-    lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+	   std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
   }
   else
   {
-   	lep_sel_w_mc_weight = lepton_sel_default();
+  		if (!strcmp(bg_chain->label, "bg_zjets_vv"))
+  		{
+  				double mc_weight = z_ll_mc_weight * 5.652;
+  				lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+  				std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
+  		}
+  		else
+  		{
+  				lep_sel_w_mc_weight = lepton_sel_default();
+  				std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
+  		}
   }
-
+	 std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
 	 return lep_sel_w_mc_weight;
 }

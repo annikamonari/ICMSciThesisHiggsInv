@@ -14,7 +14,9 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p2->cd();
 
   THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, data, variables);
+
   TH1F* signal_histo 	 		= draw_signal(signal_chain, var, with_cut, legend, variables);
+
   TH1F* data_histo   	 		= draw_data(data, var, with_cut, legend, variables);
 
   stack.Draw();
@@ -26,7 +28,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
-  draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
+  //draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   build_legend(legend, max_histo, var, with_cut);
@@ -166,7 +168,7 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
-   double other_bg_in_ctrl = get_other_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
+   double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
    std::string lep_sel_w_mc_weight = get_mc_weight_lep_sel_str(bg_chains[i], data_chain, var, variables, with_cut,
 																																																															other_bg_in_ctrl);
    std::cout << bg_chains[i]->label << " -- mc weight string: " << lep_sel_w_mc_weight << std::endl;
@@ -368,7 +370,7 @@ double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool wit
   return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, lepton_sel), with_cut, var);
 }
 
-double HistoPlot::get_other_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
+double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
 																																							std::vector<Variable*>* variables, std::string lepton_sel)
 {
   double nevents = 0.0;

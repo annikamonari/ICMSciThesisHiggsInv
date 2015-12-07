@@ -93,7 +93,7 @@ public:
   static double get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
 																																								std::vector<Variable*>* variables, std::string lepton_sel = lepton_sel_default());
 
-  static double get_other_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
+  static double get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
 																																					std::vector<Variable*>* variables, std::string lepton_sel = lepton_sel_default());
 
   static std::string get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,

@@ -350,7 +350,7 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
   return signal_leg_str;
 }
 
-double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double other_bg_in_ctrl,
+double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double all_bg_in_ctrl,
 																																Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
 	 std::string lepton_sel = bg_chain->lepton_selection;
@@ -359,7 +359,7 @@ double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, d
 		// number of data events process A in control region
 		double data_events_ctrl_region = get_n_events(chain_of_data, var, with_cut, variables, lepton_sel);
 
-		return (data_events_ctrl_region - other_bg_in_ctrl) / a_events_ctrl_region;
+		return (data_events_ctrl_region - (a_events_ctrl_region - all_bg_in_ctrl)) / a_events_ctrl_region;
 }
 
 double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,

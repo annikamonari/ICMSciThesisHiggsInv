@@ -369,7 +369,7 @@ double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, d
 double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
 																															std::vector<Variable*>* variables, std::string lepton_sel)
 {
-  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, true, "goff", variables, lepton_sel), with_cut, var);
+  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, false, "goff", variables, lepton_sel), with_cut, var);
 }
 
 double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,

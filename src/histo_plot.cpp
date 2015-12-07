@@ -167,29 +167,9 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   double z_ll_mc_weight = 1.0;
 
   for(int i = 0; i < bg_chains.size(); i++) {
-   std::string lep_sel =	bg_chains[i]->lepton_selection;
-   double other_bg_in_ctrl = get_other_bg_in_ctrl(bg_chains, var, with_cut, variables, lep_sel);
-   std::string lep_sel_w_mc_weight;
-   
-   if (lep_sel != "")
-   {
-  	  double mc_weight = get_mc_weight(bg_chains[i], data_chain, other_bg_in_ctrl, var, with_cut, variables);
- 	   lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
-
- 	   if (!strcmp(bg_chains[i]->label, "bg_zll"))
- 	   {
- 	   		z_ll_mc_weight = mc_weight;
- 	   }
-   }
-   else if (!strcmp(bg_chains[i]->label, "bg_zjets_vv"))
-   {
-     lep_sel_w_mc_weight = z_ll_mc_weight * (6602/1168);
-   }
-   else
-   {
-   		lep_sel_w_mc_weight = lepton_sel_default();
-   }
-
+   double other_bg_in_ctrl = get_other_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
+   std::string lep_sel_w_mc_weight = get_mc_weight_lep_sel_str(bg_chains[i], data_chain, var, variables, with_cut,
+																																																															other_bg_in_ctrl);
    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
    stack.Add(single_bg_histo);
    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
@@ -401,3 +381,31 @@ double HistoPlot::get_other_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variab
   return nevents;
 }
 
+std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,
+																																																	std::vector<Variable*>* variables, bool with_cut, double other_bg_in_ctrl)
+{
+	 std::string lep_sel_w_mc_weight;
+	 double z_ll_mc_weight = 0.0;
+
+	 if (bg_chain->lepton_selection != "")
+	 {
+	 	 double mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
+	   lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+
+	   if (!strcmp(bg_chain->label, "bg_zll"))
+	   {
+	    	z_ll_mc_weight = mc_weight;
+		  }
+  }
+  else if (!strcmp(bg_chain->label, "bg_zjets_vv"))
+  {
+    double mc_weight = z_ll_mc_weight * 5.652;
+    lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
+  }
+  else
+  {
+   	lep_sel_w_mc_weight = lepton_sel_default();
+  }
+
+	 return lep_sel_w_mc_weight;
+}

@@ -31,8 +31,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   //draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
-  build_legend(legend, max_histo, var, with_cut);
-
+  //build_legend(legend, max_histo, var, with_cut);
+  std::cout << "legend built" << std::endl;
   p1->cd();
   draw_title(var->name_styled);
 
@@ -168,6 +168,7 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
+  	std::cout << bg_chains[i]->label << std::endl;
    double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
    std::string lep_sel_w_mc_weight = get_mc_weight_lep_sel_str(bg_chains[i], data_chain, var, variables, with_cut,
 																																																															other_bg_in_ctrl);
@@ -256,6 +257,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
   std::string selection = get_selection(variable, variables, with_cut, is_signal, lepton_sel);
+  std::cout << data_chain->label << " : " << selection << std::endl;
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
@@ -338,7 +340,7 @@ std::string HistoPlot::build_file_name(Variable* variable, bool with_cut)
     file_name.append(variable->x_max_nocut);
   }
   file_name += ".png";
-
+  std::cout << file_name << std::endl;
   return file_name;
 }
 
@@ -391,7 +393,7 @@ std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain*
 {
 	 std::string lep_sel_w_mc_weight;
 	 double z_ll_mc_weight = 1.0;
-	 std::cout << bg_chain->label << std::endl;
+
 	 if (bg_chain->lepton_selection != "")
 	 {
 	 	 double mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
@@ -401,7 +403,6 @@ std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain*
 	   {
 	    	z_ll_mc_weight = mc_weight;
 		  }
-	   std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
   }
   else
   {
@@ -409,14 +410,12 @@ std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain*
   		{
   				double mc_weight = z_ll_mc_weight * 5.652;
   				lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
-  				std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
   		}
   		else
   		{
   				lep_sel_w_mc_weight = lepton_sel_default();
-  				std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
   		}
   }
-	 std::cout << bg_chain->label << lep_sel_w_mc_weight << std::endl;
+
 	 return lep_sel_w_mc_weight;
 }

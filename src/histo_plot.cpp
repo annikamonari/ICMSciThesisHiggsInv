@@ -22,21 +22,20 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   stack.Draw();
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
-
   style_stacked_histo(&stack, var->name_styled);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
-
   //draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   //build_legend(legend, max_histo, var, with_cut);
-  //std::cout << "legend built" << std::endl;
+  std::cout << "im on line 35 of histoplot" << std::endl;
   p1->cd();
   draw_title(var->name_styled);
-
+  std::cout << "im on line 36 of histoplot" << std::endl;
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
+  std::cout << "im on line 38 of histoplot" << std::endl;
   c1->Close();
 }
 
@@ -69,7 +68,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 	  	selection = variable->build_singlecut_selection(with_cut, is_signal, lepton_sel);
 	 }
   selection += "*" + mc_weight;
-  std::cout <<"selection : "<< selection<<"\n";
+ // std::cout <<"selection : "<< selection<<"\n";
 		return selection;
 }
 
@@ -168,14 +167,15 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
 {
   THStack stack(var->name_styled, "");
 
-  for(int i = 0; i < 1/*bg_chains.size()*/; i++) {
-  	//std::cout << bg_chains[i]->label << std::endl;
+  for(int i = 0; i < bg_chains.size(); i++) {
+  	std::cout << bg_chains[i]->label << std::endl;
    double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
    double z_ll_mcw;// the z_ll mc decay weight as an input to mc_weight_str to find z_nunu
    std::string mc_weight_str = get_mc_weight_str(bg_chains[i], data_chain, var, variables, with_cut,z_ll_mcw,
 																																																															other_bg_in_ctrl);
    std::cout << bg_chains[i]->label << " -- mc weight string: " << mc_weight_str << std::endl;
-   TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut,mc_weight_str, variables, lepton_sel_default());
+   TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut,mc_weight_str, variables, HistoPlot::lepton_sel_default());
+   std::cout<<"bg histo stack plotted"<<"\n";
    stack.Add(single_bg_histo);
    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
@@ -259,7 +259,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
   std::string selection = get_selection(variable, variables, with_cut, is_signal, mc_weight, lepton_sel);
-  //std::cout << data_chain->label << " : " << selection << std::endl;
+  std::cout << data_chain->label << " : " << selection << std::endl;
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
@@ -269,7 +269,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																											std::vector<Variable*>* variables, std::string lepton_sel)
 {
-  std::string mc_weight = HistoPlot::mc_weight_default();
+  std::string mc_weight = get_string_from_double(1.0);
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
   data_chain->chain->SetLineColor(1);
@@ -282,7 +282,7 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
 TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																													std::vector<Variable*>* variables, std::string lepton_sel)
 {
-  std::string mc_weight = mc_weight_default();
+  std::string mc_weight= get_string_from_double(1.0);
   data_chain->chain->SetLineColor(2);
   data_chain->chain->SetLineWidth(3);
   data_chain->chain->SetFillColor(0);

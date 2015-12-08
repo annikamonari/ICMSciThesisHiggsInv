@@ -118,9 +118,9 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 		}
 
    sel_string += "&&" + lepton_sel; 
-  	sel_string.append(")*(total_weight_lepveto))");
+  	sel_string.append(")*(total_weight_lepveto)");
 
-		std::cout << "selection string" << sel_string <<"\n";
+		//std::cout << "selection string" << sel_string <<"\n";
 		return sel_string;
 }
 

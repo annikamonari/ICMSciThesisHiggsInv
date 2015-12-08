@@ -10,11 +10,18 @@
 #include <list>
 #include <algorithm>
 
+class MCWeights;
+
 class HistoPlot {
 public:
   static const int* colours() { 
     int ret[8] = {40, 41, 42, 30, 38, 28, 15, 49};
     return ret;
+  }
+
+  static std::string lep_sel_default()
+  {
+    return "(nvetomuons == 0)&&(nvetoelectrons == 0)";
   }
 
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
@@ -23,7 +30,7 @@ public:
 
   static void draw_title(const char* title);
 
-  static std::string get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
+  static double get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
 
   static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																																							bool with_cut, TH1F* last_stacked, TH1F* signal_histo);
@@ -56,7 +63,7 @@ public:
 
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
                               bool is_signal, const char* option,
-																														std::vector<Variable*>* variables = NULL);
+																														std::vector<Variable*>* variables = NULL, std::string selection = "");
 
   static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																									std::vector<Variable*>* variables = NULL);

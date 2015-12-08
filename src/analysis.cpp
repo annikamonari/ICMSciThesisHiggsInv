@@ -5,7 +5,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 
-
 //////////////////////////     BACKGROUNDS   ///////////////////////////////////////////
 
 
@@ -31,7 +30,7 @@ const char* qcd_arr[] = {"data/background/MC_QCD-Pt-1000to1400-pythia6.root",
 
 std::vector<const char*> qcd (qcd_arr, qcd_arr+ sizeof(qcd_arr)/sizeof(const char*));
 
-const char* qcd_label = "QCD";
+const char* qcd_label = "bg_qcd";
 const char* qcd_legend = "QCD";
 
 
@@ -46,7 +45,7 @@ const char* z_ll_arr[] = {"data/background/MC_DY1JetsToLL.root",
 
 std::vector<const char*> z_ll (z_ll_arr, z_ll_arr+ sizeof(z_ll_arr)/sizeof(const char*));
 
-const char* z_ll_label = "Z_rightarrow_ell_ell";
+const char* z_ll_label = "bg_zll";
 const char* z_ll_legend = "Z #rightarrow ll";
 
 
@@ -64,7 +63,7 @@ const char* wjets_ev_arr[] = {"data/background/MC_EWK-W2jminus_enu.root",
 std::vector<const char*> wjets_ev (wjets_ev_arr, wjets_ev_arr +
                             sizeof(wjets_ev_arr)/sizeof(const char*));
 
-const char* wjets_ev_label = "W_jets_rightarrowe_nu";
+const char* wjets_ev_label = "bg_wjets_ev";
 const char* wjets_ev_legend = "W+jets #rightarrow e#nu";
 
 
@@ -82,7 +81,7 @@ const char* wjets_muv_arr[] = {"data/background/MC_EWK-W2jminus_munu.root",
 std::vector<const char*> wjets_muv (wjets_muv_arr, wjets_muv_arr +
                           sizeof(wjets_muv_arr)/sizeof(const char*));
 
-const char* wjets_muv_label = "W_jets_rightarrow_mu_nu";
+const char* wjets_muv_label = "bg_wjets_muv";
 const char* wjets_muv_legend = "W+jets #rightarrow #mu#nu";
 
 
@@ -100,7 +99,7 @@ const char* wjets_tauv_arr[] = {"data/background/MC_EWK-W2jminus_taunu.root",
 std::vector<const char*> wjets_tauv (wjets_tauv_arr, wjets_tauv_arr +
                           sizeof(wjets_tauv_arr)/sizeof(const char*));
 
-const char* wjets_tauv_label = "W_jets_rightarrow_tau_nu";
+const char* wjets_tauv_label = "bg_wjets_tauv";
 const char* wjets_tauv_legend = "W+jets #rightarrow #tau#nu";
 
 ///////////////////////////          Top            ///////////////////////////////////////
@@ -145,7 +144,7 @@ const char* zjets_vv_arr[] = {"data/background/MC_ZJetsToNuNu_50_HT_100.root",
 std::vector<const char*> zjets_vv (zjets_vv_arr, zjets_vv_arr +
                           sizeof(zjets_vv_arr)/sizeof(const char*));
 
-const char* zjets_vv_label = "Z_jets_rightarrow_nu_nu";
+const char* zjets_vv_label = "bg_zjets_vv";
 const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
 
 ///////////////////////////          Signal:          //////////////////////////////////////
@@ -156,7 +155,7 @@ const char* mc_signal_data_arr[] = {"data/signal/MC_Powheg-ggHtoinv-mH125.root",
 std::vector<const char*> mc_signal_data (mc_signal_data_arr, mc_signal_data_arr +
                           sizeof(mc_signal_data_arr)/sizeof(const char*));
 
-const char* mc_signal_label = "signal";
+const char* mc_signal_label = "signal_chain";
 const char* mc_signal_legend = "signal";
 
 
@@ -188,11 +187,5 @@ const char* data_arr[] = {"data/data/MET_MET-2012A-22Jan2013-v1.root",
 
 std::vector<const char*> data (data_arr, data_arr+ sizeof(data_arr)/sizeof(const char*));
 
-const char* data_label = "data";
+const char* data_label = "data_chain";
 const char* data_legend = "data";
-
-
-
-
-
-

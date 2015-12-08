@@ -110,7 +110,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
 
   if (with_cut)
   {
-  		sel_string += "(";
+  		sel_string += "((nselmuons == 2)&&(m_mumu>60)&&(m_mumu<120)&&";
   		sel_string += build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
   		sel_string += ")*";
   }
@@ -145,7 +145,7 @@ std::string Variable::build_selection(const char* var_name, const char* x_min_cu
 	 sel_str += (var_str + ">");
 	 sel_str.append(x_min_cut);
 
-	 if (x_max_cut)
+	 if (strcmp(x_max_cut, ""))
 	 {
 	 		sel_str += (")&&(" + var_str + "<");
 	 		sel_str.append(x_max_cut);

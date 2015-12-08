@@ -26,8 +26,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
-  draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
-  stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
+  //draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
+  stack.SetMaximum(get_histo_y_max(max_histo)*3);
   build_legend(legend, max_histo, var, with_cut);
 
   p1->cd();
@@ -45,11 +45,6 @@ void HistoPlot::draw_title(const char* title)
 	pt->AddText(title);
 	pt->SetAllWith(title, "size", 0.5);
 	pt->Draw();
-
-	/*TLatex t;
-		t.SetTextSize(0.5);
-		t.DrawLatexNDC(0.1, 0.5, title);
-		t.Draw();*/
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
@@ -73,8 +68,8 @@ std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
 {
 
 
-  double bg_integral 				= atof(get_histo_integral(bg, with_cut, var).c_str());
-  double sig_integral 			= atof(get_histo_integral(signal_histo, with_cut, var).c_str());
+  double bg_integral 				= get_histo_integral(bg, with_cut, var);
+  double sig_integral 			= get_histo_integral(signal_histo, with_cut, var);
   float signal_mult 					= atof(var->signal_multiplier);
   float sig_to_bg 							= sig_integral / bg_integral / signal_mult;
 
@@ -85,7 +80,7 @@ std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
 		return sig_to_bg_str;
 }
 
-std::string HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
+double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 {
 		int nbins;
 		if (with_cut)
@@ -96,12 +91,11 @@ std::string HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* 
 		{
 				nbins = (int) (atof(var->bins_nocut) + 0.5);
 		}
-		std::ostringstream sig;
-		sig << histo->Integral(0, nbins + 1);
 
-		return sig.str();
+		return histo->Integral(0, nbins + 1);
 }
 
+/*
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																														bool with_cut, TH1F* last_stacked, TH1F* signal_histo)
 {
@@ -151,6 +145,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		g.DrawLatexNDC(0.1, 0.91, plot_subsubtitle.c_str());
 		g.Draw();
 }
+*/
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
 																																						bool with_cut, std::vector<Variable*>* variables)
@@ -237,13 +232,22 @@ void HistoPlot::style_legend(TLegend* legend)
   legend->SetBorderSize(0);
 }
 
-TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                                bool is_signal, const char* option, std::vector<Variable*>* variables)
+TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, bool is_signal,
+																																const char* option, std::vector<Variable*>* variables, std::string selection)
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
-  std::string selection = get_selection(variable, variables, with_cut, is_signal);
+  std::string selection_str;
 
-  data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
+  if (selection == "")
+  {
+  		selection_str = get_selection(variable, variables, with_cut, is_signal);
+  }
+  else
+  {
+  		selection_str = selection;
+  }
+  std::cout << data_chain->label << selection_str << std::endl;
+  data_chain->chain->Draw(var_arg.c_str(), selection_str.c_str(), option);
 
   return (TH1F*)gDirectory->Get(data_chain->label);
 }

@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/data_chain.cpp \
 ../src/histo_plot.cpp \
 ../src/main.cpp \
+../src/mc_weights.cpp \
 ../src/super_chains.cpp \
 ../src/super_vars.cpp \
 ../src/tree_leaves.cpp \
@@ -18,6 +19,7 @@ OBJS += \
 ./src/data_chain.o \
 ./src/histo_plot.o \
 ./src/main.o \
+./src/mc_weights.o \
 ./src/super_chains.o \
 ./src/super_vars.o \
 ./src/tree_leaves.o \
@@ -28,6 +30,7 @@ CPP_DEPS += \
 ./src/data_chain.d \
 ./src/histo_plot.d \
 ./src/main.d \
+./src/mc_weights.d \
 ./src/super_chains.d \
 ./src/super_vars.d \
 ./src/tree_leaves.d \

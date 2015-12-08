@@ -24,8 +24,9 @@ public:
   const char* legend;
   TreeLeaves* leaves;
   TChain* chain;
+  std::string lep_sel;
 
-  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend);
+  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection = "");
 
   void get_data();
 };

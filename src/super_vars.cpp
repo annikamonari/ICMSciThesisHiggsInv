@@ -10,7 +10,7 @@ SuperVars::SuperVars()
 		sqrt_ht = new Variable("sqrt_ht","SquareRootHCALScalarSumofEnergy","0.0","35.0","9.0",
 																									"18.0","75","50");
 		alljetsmetnomu_mindphi = new Variable("alljetsmetnomu_mindphi","Alljets,METmindphiexcludingmuons",
-																																								"0.0","3.5","0.5","3.0","40","50");
+																																								"0.0","3.5","0.5","3.0","40","30");
 		dijet_M = new Variable("dijet_M","DijetMass","0.0","2000.0","800.0","","50","100");
 		metnomuons = new Variable("metnomuons","METExcludingMuons","0.0","400.0","120.0","",
 																												"50","80");

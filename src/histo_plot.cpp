@@ -1,4 +1,5 @@
 #include "../include/histo_plot.h"
+#include <algorithm>
 
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 																										DataChain* signal_chain, DataChain* data, bool with_cut,
@@ -26,7 +27,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
-  //draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
+  draw_subtitle(var, variables, with_cut, data);
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   build_legend(legend, max_histo, var, with_cut);
 
@@ -68,9 +69,16 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 
 std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection)
 {
-  std::string mc_weight_str = get_string_from_double(bg_chain->mc_weights[variable->name]);
+  if (strcmp(bg_chain->label, "data_chain") && strcmp(bg_chain->label, "signal_chain"))
+  {
+	   std::string mc_weight_str = get_string_from_double(bg_chain->mc_weights[variable->name]);
 
-  return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
+    return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
+  }
+  else
+  {
+  		return selection;
+  }
 }
 
 std::string HistoPlot::get_string_from_double(double num)
@@ -114,57 +122,50 @@ double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 		return histo->Integral(0, nbins + 1);
 }
 
-/*
-void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-																														bool with_cut, TH1F* last_stacked, TH1F* signal_histo)
+std::string HistoPlot::replace_all(std::string str, const std::string& from, const std::string& to)
 {
-		std::string selection = get_selection(variable, variables, with_cut, false);
-		std::string plot_subtitle("#font[12]{");
-		std::string s_bg("Signal to Background Ratio: " + sig_to_bg_ratio(variable, last_stacked, signal_histo, with_cut));
-		std::string s_int(" / Signal Integral: " + get_histo_integral(signal_histo, with_cut, variable));
-		std::string plot_subsubtitle = s_bg + s_int;
+  size_t start_pos = 0;
+  while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+    str.replace(start_pos, from.length(), to);
+    start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
+  }
 
-		if (!with_cut)
-		{
-				plot_subtitle += "No cuts implemented." + s_bg;
-		}
-		else
-		{
-				if (selection.length() > 69)
-				{
-						std::string first_line 			= selection.substr(0, 69);
-						selection.erase(selection.length() - 22, 22);
-						if (selection.length() > 148)
-						{
-								std::string second_line = selection.substr(69, 148);
-								//std::string third_line 	= selection.substr(148, selection.length() - 1);
-								plot_subtitle 									+= ("#splitline{With cuts:" + first_line + "-}{" + second_line + "}");
-						}
-						else
-						{
-								std::string second_line = selection.substr(69, selection.length() - 1);
-								plot_subtitle 									+= ("#splitline{With cuts: " + first_line + "-}{" + second_line + "}");
-						}
+  return str;
+}
 
-				}
-				else
-				{
-						plot_subtitle += selection;
-				}
-		}
+std::string HistoPlot::style_selection(std::string selection)
+{
+	 std::string sele = replace_all(replace_all(replace_all(replace_all(selection, ")", ""), ">", " > "), "==", " = "), "&&", ", ");
 
-		plot_subtitle += "}";
+	 return replace_all(replace_all(replace_all(replace_all(replace_all(sele, "_", " "), "))", ""), "(", ""), "((", ""), "<", " < ");
+}
+
+void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
+																														bool with_cut, DataChain* data)
+{
+		std::string selection = "Selection: " + style_selection(get_selection(variable, variables, with_cut, false, data));
+		std::replace(selection.begin(), selection.end(), '(', ' ');
+		std::replace(selection.begin(), selection.end(), ')', ' ');
+		std::string line_1 = "#font[12]{" + selection.substr(0, 88) + "-}";
+		std::string line_2 = "#font[12]{" + selection.substr(88, 88) + "-}";
+		std::string line_3 = "#font[12]{" + selection.substr(176, 88) + "}";
+
 	 TLatex t;
 	 t.SetTextSize(0.03);
-	 t.DrawLatexNDC(0.1, 0.96, plot_subtitle.c_str());
+	 t.DrawLatexNDC(0.1, 0.97, line_1.c_str());
 		t.Draw();
 
-		TLatex g;
-		g.SetTextSize(0.025);
-		g.DrawLatexNDC(0.1, 0.91, plot_subsubtitle.c_str());
-		g.Draw();
+		TLatex d;
+		d.SetTextSize(0.03);
+		d.DrawLatexNDC(0.1, 0.94, line_2.c_str());
+		d.Draw();
+
+		TLatex f;
+		f.SetTextSize(0.03);
+		f.DrawLatexNDC(0.1, 0.91, line_3.c_str());
+		f.Draw();
 }
-*/
+
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
 																																						bool with_cut, std::vector<Variable*>* variables)
@@ -174,7 +175,9 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   for(int i = 0; i < bg_chains.size(); i++) {
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
     stack.Add(single_bg_histo);
-    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
+    std::string legend_str(bg_chains[i]->legend);
+    legend_str += (" #font[12]{(MC weight: " + get_string_from_double(bg_chains[i]->mc_weights[var->name]) + ")}");
+    legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");
   }
 
   return stack;
@@ -247,7 +250,7 @@ void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
 
 void HistoPlot::style_legend(TLegend* legend)
 {
-  legend->SetTextSize(0.035);
+  legend->SetTextSize(0.025);
   legend->SetBorderSize(0);
 }
 

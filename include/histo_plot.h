@@ -33,7 +33,11 @@ public:
   static double get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
 
   static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-																																							bool with_cut, TH1F* last_stacked, TH1F* signal_histo);
+																												bool with_cut, DataChain* data);
+
+  static std::string style_selection(std::string selection);
+
+  static std::string replace_all(std::string str, const std::string& from, const std::string& to);
 
   static std::string sig_to_bg_ratio(Variable* var, TH1F* last_stacked, TH1F* signal_histo,
 																																					bool with_cut);

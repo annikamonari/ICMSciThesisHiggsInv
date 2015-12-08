@@ -1,4 +1,5 @@
-src/main.o: ../src/main.cpp ../src/../include/histo_plot.h \
+src/mc_weights.o: ../src/mc_weights.cpp ../src/../include/mc_weights.h \
+  ../src/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TStyle.h \
   /Applications/root_v5.34.34/include/TNamed.h \
   /Applications/root_v5.34.34/include/TObject.h \
@@ -91,7 +92,9 @@ src/main.o: ../src/main.cpp ../src/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TH2.h \
   /Applications/root_v5.34.34/include/TMatrixFBasefwd.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
-  ../src/../include/tree_leaves.h ../src/../include/mc_weights.h
+  ../src/../include/tree_leaves.h
+
+../src/../include/mc_weights.h:
 
 ../src/../include/histo_plot.h:
 
@@ -280,5 +283,3 @@ src/main.o: ../src/main.cpp ../src/../include/histo_plot.h \
 /Applications/root_v5.34.34/include/TMatrixDBasefwd.h:
 
 ../src/../include/tree_leaves.h:
-
-../src/../include/mc_weights.h:

@@ -6,8 +6,7 @@
 class MCWeights
 {
  public:
-	 static std::string get_mc_selection_str(DataChain* bg_chain, Variable* variable, std::vector<Variable*>* variables,
-																																										bool with_cut);
+	 static std::string get_mc_selection_str(DataChain* bg_chain, Variable* variable, std::vector<Variable*>* variables);
 
 	 static double get_nevents(DataChain* chain_of_data, Variable* var, bool with_cut,
 				                        std::vector<Variable*>* variables, std::string selection);

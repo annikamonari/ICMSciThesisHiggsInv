@@ -7,7 +7,7 @@ DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label
   leaves = new TreeLeaves();
   chain = new TChain("LightTree");
   lep_sel = lep_selection;
-
+  mc_weights = std::map<const char*, double>();
   //leaves->set_branch_addresses(chain);
   //get_data();
 
@@ -22,6 +22,11 @@ void DataChain::get_data() {
   for(int i = 0; i < nentries; i++) {
     chain -> GetEntry(i);
   }
+}
+
+void DataChain::set_mc_weights(std::map<const char*, double> weight_map)
+{
+  mc_weights = weight_map;
 }
 
 

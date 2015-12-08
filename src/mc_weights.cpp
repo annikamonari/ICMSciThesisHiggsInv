@@ -1,9 +1,8 @@
 #include "../include/mc_weights.h"
 
-std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* variable, std::vector<Variable*>* variables,
-																																	bool with_cut)
+std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* variable, std::vector<Variable*>* variables)
 {
-  std::string selection_str = HistoPlot::get_selection(variable, variables, with_cut, false);
+  std::string selection_str = variable->build_multicut_selection(false, variables);
   selection_str.insert(selection_str.find("(") + 1, bg_chain->lep_sel + "&&");
 
   return selection_str;
@@ -30,7 +29,7 @@ double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
 double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
 																																	Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-  std::string selection   = get_mc_selection_str(bg_chain, var, variables, with_cut);
+  std::string selection   = get_mc_selection_str(bg_chain, var, variables);
 	 double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);
   double ctrl_mc_in_ctrl  = get_nevents(bg_chain, var, with_cut, variables, selection);
   double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - ctrl_mc_in_ctrl;

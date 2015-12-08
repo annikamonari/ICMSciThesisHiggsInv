@@ -28,6 +28,10 @@ public:
                         DataChain* signal_chain, DataChain* data, bool with_cut,
 																								std::vector<Variable*>* variables = NULL);
 
+  static TH1F* data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo);
+
+  static TH1F* set_ratio_error_bars(TH1F* ratio_histo, TH1F* data_histo, TH1F* bg_histo);
+
   static void draw_title(const char* title);
 
   static double get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
@@ -64,6 +68,8 @@ public:
   static double position_legend_x1(TH1F* max_histo, Variable* var, bool with_cut);
 
   static void style_stacked_histo(THStack* hs, const char* x_label);
+
+  static void style_ratio_histo(TH1F* single_histo, const char* x_label);
 
   static void style_legend(TLegend* legend);
   

@@ -11,6 +11,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TPad* p3															= new TPad("p3", "p3", 0.0, 0.0, 1.0, 0.2);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
 
+  p2->SetBottomMargin(0.1);
+  p3->SetBottomMargin(0.5);
   p1->Draw();
   p2->Draw();
   p3->Draw();
@@ -33,6 +35,11 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   stack.SetMaximum(get_histo_y_max(max_histo)*1.1);
   build_legend(legend, max_histo, var, with_cut);
 
+  p3->cd();
+  TH1F* data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
+  data_bg_ratio_histo->Draw("e1");
+  style_ratio_histo(data_bg_ratio_histo, var->name_styled);
+
   p1->cd();
   draw_title(var->name_styled);
 
@@ -44,12 +51,12 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
 void HistoPlot::draw_title(const char* title)
 {
-	TPaveText* pt = new TPaveText(0.1, 0.1, 0.9, 1.0, "blNDC");
-	pt->SetBorderSize(0);
-	pt->SetFillColor(0);
-	pt->AddText(title);
-	pt->SetAllWith(title, "size", 0.5);
-	pt->Draw();
+	 TPaveText* pt = new TPaveText(0.1, 0.1, 0.9, 1.0, "blNDC");
+	 pt->SetBorderSize(0);
+	 pt->SetFillColor(0);
+	 pt->AddText(title);
+	 pt->SetAllWith(title, "size", 0.8);
+	 pt->Draw();
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
@@ -93,6 +100,8 @@ std::string HistoPlot::get_string_from_double(double num)
 
   return num_str;
 }
+
+
 
 double HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
 																																		TH1F* signal_histo, bool with_cut)
@@ -243,9 +252,18 @@ void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
   hs->GetYaxis()->SetTitle("Events");
   hs->GetYaxis()->SetLabelSize(0.035);
   hs->GetYaxis()->SetTitleOffset(1.55);
-  hs->GetXaxis()->SetTitle(x_label);
-  hs->GetXaxis()->SetLabelSize(0.035);
-  hs->GetXaxis()->SetTitleOffset(1.35);
+  hs->GetXaxis()->SetLabelSize(0);
+}
+
+void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)
+{
+	 single_histo->GetYaxis()->SetTitle("Data/MC");
+	 single_histo->GetYaxis()->SetLabelSize(0.12);
+	 single_histo->GetYaxis()->SetTitleOffset(1.55);
+	 single_histo->GetXaxis()->SetLabelSize(0.12);
+	 single_histo->GetXaxis()->SetTitle(x_label);
+	 single_histo->GetXaxis()->SetTitleSize(0.12);
+	 single_histo->SetTitle("");
 }
 
 void HistoPlot::style_legend(TLegend* legend)
@@ -307,13 +325,32 @@ TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable,
   return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables);
 }
 
+TH1F* HistoPlot::data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo)
+{
+  TH1F* ratio_histo = (TH1F*) data_histo->Clone();
+  ratio_histo->Divide(bg_histo);
+
+  return set_ratio_error_bars(ratio_histo, data_histo, bg_histo);
+}
+
+TH1F* HistoPlot::set_ratio_error_bars(TH1F* ratio_histo, TH1F* data_histo, TH1F* bg_histo)
+{
+	 int nbins = ratio_histo->GetNbinsX();
+
+	 for(int i = 0; i < nbins; i++) {
+	   double error_val = std::pow(get_data_error(data_histo, i), 0.5) / get_data_error(bg_histo, i);
+	   ratio_histo->SetBinError(i, error_val);
+	 }
+
+	 return ratio_histo;
+}
 
 TH1F* HistoPlot::set_error_bars(TH1F* histo) 
 {
   int nbins = histo->GetNbinsX();
   
   for(int i = 0; i < nbins; i++) {
-    double error_val = get_data_error(histo, i);
+    double error_val = std::pow(get_data_error(histo, i), 0.5);
     histo->SetBinError(i, error_val);
   }
 
@@ -322,9 +359,7 @@ TH1F* HistoPlot::set_error_bars(TH1F* histo)
 
 float HistoPlot::get_data_error(TH1F* histo, int bin) 
 {
-  double integral = histo->Integral(bin, bin + 1);
-
-  return std::pow(integral, 0.5);
+  return histo->Integral(bin, bin + 1);
 }
 
 std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) 

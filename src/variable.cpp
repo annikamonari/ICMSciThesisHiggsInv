@@ -30,7 +30,6 @@ std::string Variable::scale_bins_for_cut()
   else
   {
   		x_max_cut_d = atof(x_max_nocut);
-  		std::cout << "maxcut=''" << std::endl;
   }
   double  fraction  = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
   const double bins = atof(bins_nocut);
@@ -110,7 +109,7 @@ std::string Variable::build_selection_string(bool with_cut, bool is_signal)
 
   if (with_cut)
   {
-  		sel_string += "((nselmuons == 2)&&(m_mumu>60)&&(m_mumu<120)&&";
+  		sel_string += "(";
   		sel_string += build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
   		sel_string += ")*";
   }

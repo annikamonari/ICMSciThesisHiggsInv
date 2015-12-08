@@ -246,7 +246,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   {
   		selection_str = selection;
   }
-  std::cout << data_chain->label << selection_str << std::endl;
+
   data_chain->chain->Draw(var_arg.c_str(), selection_str.c_str(), option);
 
   return (TH1F*)gDirectory->Get(data_chain->label);

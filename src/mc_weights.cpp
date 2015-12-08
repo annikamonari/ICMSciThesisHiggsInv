@@ -5,7 +5,7 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
 {
   std::string selection_str = HistoPlot::get_selection(variable, variables, with_cut, false);
   selection_str.insert(selection_str.find("(") + 1, bg_chain->lep_sel + "&&");
-  std::cout << selection_str << std::endl;
+
   return selection_str;
 }
 
@@ -23,7 +23,7 @@ double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
   {
   		total_integral += get_nevents(bg_chains[i], var, with_cut, variables, selection);
   }
-  std::cout << total_integral << std::endl;
+
   return total_integral;
 }
 

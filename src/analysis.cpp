@@ -110,7 +110,7 @@ const char* top_arr[] = {"data/background/MC_T-tW.root",
 std::vector<const char*> top (top_arr, top_arr +
                           sizeof(top_arr)/sizeof(const char*));
 
-const char* top_label = "TT";
+const char* top_label = "bg_top";
 const char* top_legend = "TT";
 
 
@@ -123,7 +123,7 @@ const char* vv_arr[] = {"data/background/MC_WGamma.root",
 
 std::vector<const char*> vv (vv_arr, vv_arr+ sizeof(vv_arr)/sizeof(const char*));
 
-const char* vv_label = "VV";
+const char* vv_label = "bg_vv";
 const char* vv_legend = "VV";
 
 ///////////////////////////         Z+jets          ///////////////////////////////////////

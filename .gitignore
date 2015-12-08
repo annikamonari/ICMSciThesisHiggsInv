@@ -6,6 +6,10 @@ data/*
 
 # Ignore Dan's swp files
 *.swp
+*.swo
+
+# Ignore Debug
+Debug/*
 
 # Ignore any executables
 bin/*

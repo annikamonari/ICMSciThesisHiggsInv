@@ -39,7 +39,11 @@ public:
 																																					bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																			bool with_cut, bool is_signal);
+																																			bool with_cut, bool is_signal, DataChain* bg_chain);
+
+  static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection);
+
+  static std::string get_string_from_double(double num);
 
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,
 																																				std::vector<DataChain*> bg_chains, bool with_cut,

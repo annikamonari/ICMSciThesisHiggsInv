@@ -27,7 +27,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
   //draw_subtitle(var, variables, with_cut, plot_histos[0], plot_histos[2]);
-  stack.SetMaximum(get_histo_y_max(max_histo)*3);
+  stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   build_legend(legend, max_histo, var, with_cut);
 
   p1->cd();
@@ -48,9 +48,10 @@ void HistoPlot::draw_title(const char* title)
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																					bool with_cut, bool is_signal)
+																																					bool with_cut, bool is_signal, DataChain* bg_chain)
 {
 		std::string selection;
+
 		if ((variables != NULL) && (with_cut))
 	 {
 	  	selection = variable->build_multicut_selection(is_signal, variables);
@@ -60,7 +61,25 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 	  	selection = variable->build_selection_string(with_cut, is_signal);
 	 }
 
-		return selection;
+		selection.insert(selection.find("(") + 1, lep_sel_default() + "&&");
+
+		return add_mc_to_selection(bg_chain, variable, selection);
+}
+
+std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection)
+{
+  std::string mc_weight_str = get_string_from_double(bg_chain->mc_weights[variable->name]);
+
+  return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
+}
+
+std::string HistoPlot::get_string_from_double(double num)
+{
+  std::ostringstream num_ss;
+  num_ss << num;
+  std::string num_str(num_ss.str());
+
+  return num_str;
 }
 
 std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
@@ -240,7 +259,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 
   if (selection == "")
   {
-  		selection_str = get_selection(variable, variables, with_cut, is_signal);
+  		selection_str = get_selection(variable, variables, with_cut, is_signal, data_chain);
   }
   else
   {

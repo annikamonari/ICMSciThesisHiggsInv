@@ -3,7 +3,6 @@
 
 #include "../include/super_vars.h"
 #include "../include/mc_weights.h"
-#include <map>
 
 class SuperChains {
 public:
@@ -36,6 +35,8 @@ public:
   std::map<const char*, std::map<const char*, double> > set_bg_zjets_vv_weights(std::map<const char*, std::map<const char*,
   																																																																														double> > mc_weights,
   																																																																														std::vector<Variable*>* vars);
+
+  void set_chain_mc_weights();
 
 };
 

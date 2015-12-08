@@ -10,7 +10,7 @@ SuperVars::SuperVars()
 		sqrt_ht = new Variable("sqrt_ht","Square Root HCAL Scalar Sum of Energy","0.0","35.0","9.0",
 																									"18.0","75","10");
 		alljetsmetnomu_mindphi = new Variable("alljetsmetnomu_mindphi","All Jets - MET Min. #Delta#phi (No Muons)",
-																																								"0.0","3.5","0.5","3.0","40","20");
+																																								"0.0","3.5","1.5","3.0","40","20");
 		dijet_M = new Variable("dijet_M","Dijet Mass","0.0","2000.0","800.0","","50","20");
 		metnomuons = new Variable("metnomuons","MET (No Muons)","0.0","400.0","120.0","",
 																												"50","20");
@@ -20,7 +20,7 @@ SuperVars::SuperVars()
 
 std::vector<Variable*> SuperVars::get_discriminating_vars()
 {
-		Variable* var_arr[] = {alljetsmetnomu_mindphi, forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M, metnomuons};
+		Variable* var_arr[] = {alljetsmetnomu_mindphi};//, forward_tag_eta, dijet_deta, metnomu_significance, sqrt_ht, dijet_M, metnomuons};
 
 		std::vector<Variable*> vars (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
 

@@ -39,7 +39,7 @@ public:
 
   static std::string replace_all(std::string str, const std::string& from, const std::string& to);
 
-  static std::string sig_to_bg_ratio(Variable* var, TH1F* last_stacked, TH1F* signal_histo,
+  static double sig_to_bg_ratio(Variable* var, TH1F* last_stacked, TH1F* signal_histo,
 																																					bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,

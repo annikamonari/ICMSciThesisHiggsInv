@@ -30,9 +30,10 @@ double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_cha
 																																	Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   std::string selection   = get_mc_selection_str(bg_chain, var, variables);
-	 double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);
+  double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);
   double ctrl_mc_in_ctrl  = get_nevents(bg_chain, var, with_cut, variables, selection);
   double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - ctrl_mc_in_ctrl;
+			//std::cout<<"calc mc weights func in mc_wieghts gives data in control =  "<<data_in_ctrl<<"\n"<<"bg to be weighted = "<<ctrl_mc_in_ctrl<<"\n"<<"other gb = "<<other_bg_in_ctrl<<"\n";
 
   return (data_in_ctrl - other_bg_in_ctrl) / ctrl_mc_in_ctrl;
 }

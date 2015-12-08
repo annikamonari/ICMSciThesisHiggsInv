@@ -69,9 +69,13 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 
 std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection)
 {
+std::cout<<"mc weight test in add mc to sel"<<bg_chain->mc_weights[variable->name]<<"\n";
   if (strcmp(bg_chain->label, "data_chain") && strcmp(bg_chain->label, "signal_chain"))
   {
+double test  = bg_chain->mc_weights[variable->name];
+std::cout<<"variable name = "<<variable->name<<"--mc weight = "<< test<<"\n";
 	   std::string mc_weight_str = get_string_from_double(bg_chain->mc_weights[variable->name]);
+//std::cout<<"add mc to selection func in histo plot mc weight str: "<<bg_chain->mc_weights[]<<"\n""mc weight double = "<< test<<"\n";
 
     return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
   }
@@ -150,7 +154,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string line_2 = "#font[12]{" + selection.substr(88, 88) + "-}";
 		std::string line_3 = "#font[12]{" + selection.substr(176, 88) + "}";
 
-	 TLatex t;
+	 /*TLatex t;
 	 t.SetTextSize(0.03);
 	 t.DrawLatexNDC(0.1, 0.97, line_1.c_str());
 		t.Draw();
@@ -163,7 +167,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		TLatex f;
 		f.SetTextSize(0.03);
 		f.DrawLatexNDC(0.1, 0.91, line_3.c_str());
-		f.Draw();
+		f.Draw();*/
 }
 
 
@@ -173,6 +177,7 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   THStack stack(var->name_styled, "");
 
   for(int i = 0; i < bg_chains.size(); i++) {
+    std::cout<<"adding background "<<bg_chains[i]->label<<", "<<var->name<<" with mc = "<<bg_chains[i]->mc_weights[bg_chains[i]->label]<<"\n";
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
     stack.Add(single_bg_histo);
     std::string legend_str(bg_chains[i]->legend);

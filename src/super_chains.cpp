@@ -28,9 +28,7 @@ std::vector<DataChain*> SuperChains::get_bg_chains()
 		return bg_chains;
 }
 
-std::map<const char*, std::map<const char*, double> > SuperChains::build_mc_weight_map(std::vector<Variable*>* discriminating_vars,
-																																																																									std::vector<Variable*>* cut_vars,
-																																																																									bool with_cut)
+std::map<const char*, std::map<const char*, double> > SuperChains::build_mc_weight_map(std::vector<Variable*>* discriminating_vars,	std::vector<Variable*>* cut_vars,	bool with_cut)
 {
 	 std::vector<DataChain*> bg_chains = get_bg_chains();
 	 std::map<const char*, std::map<const char*, double> > mc_weights;
@@ -38,8 +36,10 @@ std::map<const char*, std::map<const char*, double> > SuperChains::build_mc_weig
   for (int i = 0; i < bg_chains.size(); i++)
   {
     mc_weights[bg_chains[i]->label] = get_var_mc_weights(bg_chains[i], discriminating_vars, cut_vars, with_cut);
+    //double test2  = bg_chains[i]->mc_weights[(*discriminating_vars)[i]->name];
+    double test = mc_weights[bg_chains[i]->label][(*discriminating_vars)[0]->name];
+    std::cout<<bg_chains[i]->label<<", "<< (*discriminating_vars)[0]->name<<" "<<"test all jets mc weight = "<<test<<"\n";//, test2 = "<<test2<<"\n";
   }
-
   return set_bg_zjets_vv_weights(mc_weights, discriminating_vars);
 }
 
@@ -54,6 +54,7 @@ std::map<const char*, double> SuperChains::get_var_mc_weights(DataChain* bg_chai
 	   {
 	   		var_weights[(*vars)[i]->name] = MCWeights::calc_mc_weight(data_chain, get_bg_chains(),
 																																																																bg_chain, (*vars)[i], with_cut, cut_vars);
+					//std::cout<<"get var weight func in super chains gives: "<<bg_chain->label<<", "<<(*vars)[i]->name<<" = "<<var_weights[(*vars)[i]->name] <<"\n";
 	   }
 	   else
 	   {
@@ -64,9 +65,7 @@ std::map<const char*, double> SuperChains::get_var_mc_weights(DataChain* bg_chai
 	 return var_weights;
 }
 
-std::map<const char*, std::map<const char*, double> > SuperChains::set_bg_zjets_vv_weights(std::map<const char*, std::map<const char*,
-																																																																																											double> > mc_weights,
-																																																																																											std::vector<Variable*>* vars)
+std::map<const char*, std::map<const char*, double> > SuperChains::set_bg_zjets_vv_weights(std::map<const char*, std::map<const char*,  double> > mc_weights, std::vector<Variable*>* vars)
 {
 	 for (int i = 0; i < (*vars).size(); i++)
 	 {

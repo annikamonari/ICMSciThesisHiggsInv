@@ -19,11 +19,17 @@ public:
 
   static std::string lepton_sel_default()
   {
-  	 std::string lepton_sel = "((nvetomuons == 0)&&(nvetoelectrons == 0)";
+  	 std::string lepton_sel = "(nvetomuons == 0)&&(nvetoelectrons == 0)";
 
   	 return lepton_sel;
   }
+  
+  static std::string get_string_from_double(double num);
 
+  static std::string mc_weight_default()
+  { 
+    std::string mc_weight= get_string_from_double(1.0);
+  } 
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                         DataChain* signal_chain, DataChain* data, bool with_cut,
 																								std::vector<Variable*>* variables = NULL);
@@ -39,7 +45,7 @@ public:
 																																					bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																			bool with_cut, bool is_signal, std::string lepton_sel = lepton_sel_default());
+																																			bool with_cut, bool is_signal, std::string mc_weight, std::string lepton_sel = lepton_sel_default());
 
   static TH1F* get_histogram(const char* histo_name);
 
@@ -62,9 +68,7 @@ public:
   
   static double get_x1_from_bin(double max_bin, double nbins);
 
-  static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                              bool is_signal, const char* option, std::vector<Variable*>* variables = NULL,
-																														std::string lepton_sel = lepton_sel_default());
+  static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, bool is_signal, const char* option,std::string mc_weight, std::vector<Variable*>* variables = NULL,std::string lepton_sel = lepton_sel_default());
 
   static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut,
 																									TLegend* legend, std::vector<Variable*>* variables = NULL, std::string lepton_sel = lepton_sel_default());
@@ -72,8 +76,8 @@ public:
   static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																											std::vector<Variable*>* variables = NULL, std::string lepton_sel = lepton_sel_default());
 
-  static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
-																															std::vector<Variable*>* variables = NULL, std::string lepton_sel = lepton_sel_default());
+  static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,std::string mc_weight, 
+																															std::vector<Variable*>* variables = NULL,std::string lepton_sel = lepton_sel_default());
 
   static void set_histo_style(bool is_signal, int fill_colour = 0);
   
@@ -85,8 +89,6 @@ public:
 
   static std::string build_signal_leg_entry(Variable* var, DataChain* signal_chain);
 
-  static std::string get_string_from_double(double num);
-
   static double get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double other_bg_in_ctrl,
 																														Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
@@ -96,8 +98,8 @@ public:
   static double get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
 																																					std::vector<Variable*>* variables, std::string lepton_sel = lepton_sel_default());
 
-  static std::string get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,
-																																															std::vector<Variable*>* variables, bool with_cut, double other_bg_in_ctrl);
+  static std::string get_mc_weight_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,
+																																															std::vector<Variable*>* variables, bool with_cut,double z_ll_mcw, double other_bg_in_ctrl);
 };
 
 #endif

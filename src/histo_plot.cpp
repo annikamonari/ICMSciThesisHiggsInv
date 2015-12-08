@@ -56,7 +56,7 @@ void HistoPlot::draw_title(const char* title)
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
-																																					bool with_cut, bool is_signal, std::string lepton_sel)
+																																					bool with_cut, bool is_signal,std::string mc_weight, std::string lepton_sel)
 {
 		std::string selection;
 
@@ -66,9 +66,10 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 	 }
 	 else
 	 {
-	  	selection = variable->build_selection_string(with_cut, is_signal, lepton_sel);
+	  	selection = variable->build_singlecut_selection(with_cut, is_signal, lepton_sel);
 	 }
-
+  selection += "*" + mc_weight;
+  std::cout <<"selection : "<< selection<<"\n";
 		return selection;
 }
 
@@ -98,8 +99,8 @@ double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
 																														bool with_cut, TH1F* last_stacked, TH1F* signal_histo)
 {
-
-		std::string selection = get_selection(variable, variables, with_cut, false);
+  std::string mc_weight= get_string_from_double(1.0);
+		std::string selection = get_selection(variable, variables, with_cut, false, mc_weight);
 		std::string plot_subtitle("#font[12]{");
 		std::string s_bg("Signal to Background Ratio: " + get_string_from_double(integral_ratio(variable, last_stacked, signal_histo, with_cut)));
 		std::string s_int(" / Signal Integral: " + get_string_from_double(get_histo_integral(signal_histo, with_cut, variable)));
@@ -170,10 +171,11 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   for(int i = 0; i < 1/*bg_chains.size()*/; i++) {
   	//std::cout << bg_chains[i]->label << std::endl;
    double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
-   std::string lep_sel_w_mc_weight = get_mc_weight_lep_sel_str(bg_chains[i], data_chain, var, variables, with_cut,
+   double z_ll_mcw;// the z_ll mc decay weight as an input to mc_weight_str to find z_nunu
+   std::string mc_weight_str = get_mc_weight_str(bg_chains[i], data_chain, var, variables, with_cut,z_ll_mcw,
 																																																															other_bg_in_ctrl);
-   //std::cout << bg_chains[i]->label << " -- mc weight string: " << lep_sel_w_mc_weight << std::endl;
-   TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, lep_sel_w_mc_weight);
+   std::cout << bg_chains[i]->label << " -- mc weight string: " << mc_weight_str << std::endl;
+   TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut,mc_weight_str, variables, lepton_sel_default());
    stack.Add(single_bg_histo);
    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
@@ -253,10 +255,10 @@ void HistoPlot::style_legend(TLegend* legend)
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
-                                bool is_signal, const char* option, std::vector<Variable*>* variables, std::string lepton_sel)
+                                bool is_signal, const char* option,std::string mc_weight, std::vector<Variable*>* variables, std::string lepton_sel)
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
-  std::string selection = get_selection(variable, variables, with_cut, is_signal, lepton_sel);
+  std::string selection = get_selection(variable, variables, with_cut, is_signal, mc_weight, lepton_sel);
   //std::cout << data_chain->label << " : " << selection << std::endl;
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
@@ -267,10 +269,11 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																											std::vector<Variable*>* variables, std::string lepton_sel)
 {
+  std::string mc_weight = HistoPlot::mc_weight_default();
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
   data_chain->chain->SetLineColor(1);
-  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1", variables));
+  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1",mc_weight, variables));
   legend->AddEntry(data_histo, data_chain->legend, "lep");
 
   return data_histo;
@@ -279,22 +282,23 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
 TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
 																													std::vector<Variable*>* variables, std::string lepton_sel)
 {
+  std::string mc_weight = mc_weight_default();
   data_chain->chain->SetLineColor(2);
   data_chain->chain->SetLineWidth(3);
   data_chain->chain->SetFillColor(0);
-  TH1F* signal_histo = build_1d_histo(data_chain, variable, with_cut, true, "goff", variables);
+  TH1F* signal_histo = build_1d_histo(data_chain, variable, with_cut, true, "goff", mc_weight,variables);
   legend->AddEntry(signal_histo, (build_signal_leg_entry(variable, data_chain)).c_str(), "l");
 
   return signal_histo;
 }
 
-TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
-																																	std::vector<Variable*>* variables, std::string lepton_sel)
+TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,std::string mc_weight, 
+																																	std::vector<Variable*>* variables,std::string lepton_sel)
 {
   data_chain->chain->SetLineColor(1);
   data_chain->chain->SetFillColor(fill_colour);
 
-  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, lepton_sel);
+  return build_1d_histo(data_chain, variable, with_cut, false, "goff", mc_weight,variables,lepton_sel);
 }
 
 
@@ -371,7 +375,8 @@ double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, d
 double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
 																															std::vector<Variable*>* variables, std::string lepton_sel)
 {
-  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, false, "goff", variables, lepton_sel), with_cut, var);
+  std::string mc_weight= get_string_from_double(1.0);
+  return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, false, "goff",mc_weight, variables,lepton_sel), with_cut, var);
 }
 
 double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
@@ -387,37 +392,29 @@ double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
   		}
   }
    std::cout<< "number of events in total background = "<< nevents<<"\n";
+   
   return nevents;
 }
 
-std::string HistoPlot::get_mc_weight_lep_sel_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,
-																																																	std::vector<Variable*>* variables, bool with_cut, double other_bg_in_ctrl)
+std::string HistoPlot::get_mc_weight_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,
+																																																	std::vector<Variable*>* variables, bool with_cut, double z_ll_mcw, double other_bg_in_ctrl)
 {
-	 std::string lep_sel_w_mc_weight;
-	 double z_ll_mc_weight = 1.0;
+	 std::string mc_weight_str;
 
 	 if (bg_chain->lepton_selection != "")
 	 {
 	 	 double mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
-	   lep_sel_w_mc_weight = lepton_sel_default() + "*" + get_string_from_double(mc_weight) ;
-
-	   if (!strcmp(bg_chain->label, "bg_zll"))
-	   {
-	    	z_ll_mc_weight = mc_weight;
-		  }
-  }
-  else
-  {
+	   mc_weight_str = get_string_from_double(mc_weight) ;
   		if (!strcmp(bg_chain->label, "bg_zjets_vv"))
   		{
-  				double mc_weight = z_ll_mc_weight * 5.652;
-  				lep_sel_w_mc_weight = get_string_from_double(mc_weight) + "*" + lepton_sel_default();
-  		}
-  		else
-  		{
-  				lep_sel_w_mc_weight = lepton_sel_default();
-  		}
+  				double mc_weight = z_ll_mcw * 5.652;
+  				mc_weight_str = get_string_from_double(mc_weight) ;
+  		}  
   }
+  else
+   {
+					 std::string mc_weight_str= get_string_from_double(1.0);
+   }
 
-	 return lep_sel_w_mc_weight;
+	 return mc_weight_str;
 }

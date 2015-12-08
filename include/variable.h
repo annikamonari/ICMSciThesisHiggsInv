@@ -25,6 +25,8 @@ public:
 
   std::string build_var_string(const char* label, bool with_cut);
 
+  std::string build_singlecut_selection(bool with_cut,bool is_signal,std::string lepton_sel);
+
   std::string build_multicut_selection(bool is_signal, std::vector<Variable*>* variables, std::string lepton_sel);
 
   std::string build_selection_string(bool with_cut, bool is_signal, std::string lepton_sel);

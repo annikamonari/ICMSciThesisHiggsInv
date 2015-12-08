@@ -86,11 +86,26 @@ std::string Variable::build_var_string(const char* label, bool with_cut)
 
   return var_string;
 }
+std::string Variable::build_singlecut_selection(bool with_cut, bool is_signal , std::string lepton_sel)
+{
+  std::string sel_string("(");
+  if (with_cut)
+    {
+  		  sel_string += build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
+    }
+    sel_string += "&&" + lepton_sel+")"; 
+				sel_string.append("*(total_weight_lepveto)");
 
+  if(is_signal) {
+    sel_string += "*";
+    sel_string.append(signal_multiplier);
+  }   
+  return sel_string;
+}
 std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*>* variables, std::string lepton_sel)
 {
 		std::string sel_string = build_selection_string(true, is_signal, lepton_sel);
-		int insert_pos 								= sel_string.find("(") + 1;
+		//int insert_pos 								= sel_string.find("(") + 1;
 
 		for (int i = 0; i < variables->size(); i++)
 		{
@@ -98,31 +113,33 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 				{
 						std::string var_sel = build_selection((*variables)[i]->name, (*variables)[i]->x_min_cut,
 																																												(*variables)[i]->x_max_cut, (*variables)[i]->abs_for_cut);
-						sel_string.insert(insert_pos, var_sel + "&&");
+						sel_string.append("&&" +  var_sel);
 				}
 		}
 
+   sel_string += "&&" + lepton_sel; 
+  	sel_string.append(")*(total_weight_lepveto))");
+
+		std::cout << "selection string" << sel_string <<"\n";
 		return sel_string;
 }
 
 std::string Variable::build_selection_string(bool with_cut, bool is_signal, std::string lepton_sel)
 {
-  std::string sel_string;
-  sel_string += lepton_sel; //lepton_sel syntax must have an open ( at the front, or if MC weight applied between this and the lepton_sel part
+  std::string sel_string("(");
+ //lepton_sel syntax must have an open ( at the front, or if MC weight applied between this and the lepton_sel part
 
   if (with_cut)
   {
-  		sel_string += "&&" + build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
+  		sel_string += build_selection(name, x_min_cut, x_max_nocut, abs_for_cut);
   }
-
-  sel_string += ")*total_weight_lepveto";
-
-
 
   if(is_signal) {
     sel_string += "*";
     sel_string.append(signal_multiplier);
   }
+//	std::cout<< "sel_str = "<<sel_string<<"\n";
+
   return sel_string;
 }
 
@@ -137,7 +154,6 @@ std::string Variable::build_selection(const char* var_name, const char* x_min_cu
 				sel_str += "&&";
 				sel_str += build_single_selection(var_name, "<", x_max_cut, abs_for_cut);
 		}
-
 	 return sel_str;
 }
 

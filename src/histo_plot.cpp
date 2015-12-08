@@ -30,12 +30,12 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.2);
   //build_legend(legend, max_histo, var, with_cut);
-  std::cout << "im on line 35 of histoplot" << std::endl;
+  //std::cout << "im on line 35 of histoplot" << std::endl;
   p1->cd();
   draw_title(var->name_styled);
-  std::cout << "im on line 36 of histoplot" << std::endl;
+  //std::cout << "im on line 36 of histoplot" << std::endl;
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
-  std::cout << "im on line 38 of histoplot" << std::endl;
+  //std::cout << "im on line 38 of histoplot" << std::endl;
   c1->Close();
 }
 
@@ -158,24 +158,34 @@ std::string HistoPlot::get_string_from_double(double num)
 	 std::ostringstream num_ss;
 	 num_ss << num;
 	 std::string num_str(num_ss.str());
-
+//std::cout<<"get string func : "<<num_str<<"\n";
 	 return num_str;
 }
 
-THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-																																						bool with_cut, DataChain* data_chain, std::vector<Variable*>* variables)
+THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,bool with_cut, DataChain* data_chain, std::vector<Variable*>* variables)
 {
   THStack stack(var->name_styled, "");
+  double z_ll_mcw;// the z_ll mc decay weight as an input to mc_weight_str to find z_nunu  
 
-  for(int i = 0; i < 2/*bg_chains.size()*/; i++) {
+  double all_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[0]->lepton_selection);
+
+  z_ll_mcw =  HistoPlot::get_mc_weight(bg_chains[0], data_chain, all_bg_in_ctrl, var, with_cut, variables);
+std::cout<< "zll mc weight  = "<<z_ll_mcw<<"\n";
+
+  for(int i = 0; i < bg_chains.size(); i++) {
   	std::cout << bg_chains[i]->label << std::endl;
    double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, bg_chains[i]->lepton_selection);
-   double z_ll_mcw;// the z_ll mc decay weight as an input to mc_weight_str to find z_nunu
-   std::string mc_weight_str = get_mc_weight_str(bg_chains[i], data_chain, var, variables, with_cut,z_ll_mcw,
-																																																															other_bg_in_ctrl);
+      
+  std::string mc_weight_str = get_mc_weight_str(bg_chains[i], data_chain, var, variables, with_cut,z_ll_mcw,other_bg_in_ctrl);
    std::cout << bg_chains[i]->label << " -- mc weight string: " << mc_weight_str << std::endl;
    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut,mc_weight_str, variables, HistoPlot::lepton_sel_default());
-   std::cout<<"bg histo stack plotted"<<"\n";
+   //double events_after_weighting = get_histo_integral(build_1d_histo(bg_chains[i], var, with_cut, false, "goff",mc_weight_str, variables,HistoPlot::lepton_sel_default()), with_cut, var);
+  double a_events_ctrl_region = get_histo_integral(build_1d_histo(bg_chains[4], var, with_cut, false, "goff",mc_weight_str, variables), with_cut, var);
+;
+ 
+ std::cout<< "number of events in background to be weighted in signal region = "<< a_events_ctrl_region<<"\n";
+
+   //std::cout<<"events after weighting = "<<events_after_weighting<<"\n";
    stack.Add(single_bg_histo);
    legend->AddEntry(single_bg_histo, bg_chains[i]->legend, "f");
   }
@@ -259,7 +269,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 {
 		std::string var_arg   = variable->build_var_string(data_chain->label, with_cut);
   std::string selection = get_selection(variable, variables, with_cut, is_signal, mc_weight, lepton_sel);
-  std::cout << data_chain->label << " : " << selection << std::endl;
+  //std::cout << data_chain->label << " : " << selection << std::endl;
 
   data_chain->chain->Draw(var_arg.c_str(), selection.c_str(), option);
 
@@ -358,22 +368,21 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
   return signal_leg_str;
 }
 
-double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double all_bg_in_ctrl,
-																																Variable* var, bool with_cut, std::vector<Variable*>* variables)
+double HistoPlot::get_mc_weight(DataChain* bg_chain, DataChain* chain_of_data, double all_bg_in_ctrl,Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
 	 std::string lepton_sel = bg_chain->lepton_selection;
 		// number of events from process A MC in control region
 		double a_events_ctrl_region = get_n_events(bg_chain, var, with_cut, variables, lepton_sel);
-  std::cout<< "number of events in background to be weighted = "<< a_events_ctrl_region<<"\n";
+  std::cout<< "number of events in background to be weighted in control region= "<< a_events_ctrl_region<<"\n";
 		// number of data events process A in control region
 		double data_events_ctrl_region = get_n_events(chain_of_data, var, with_cut, variables, lepton_sel);
   std::cout<< "number of data events=  "<< data_events_ctrl_region<<"\n";
-
-		return (data_events_ctrl_region - ( all_bg_in_ctrl - a_events_ctrl_region )) / a_events_ctrl_region;
+		double remaining_background = all_bg_in_ctrl - a_events_ctrl_region;
+  std::cout<<"remaining background = "<< remaining_background <<"\n";
+		return (data_events_ctrl_region - (remaining_background )) / a_events_ctrl_region;
 }
 
-double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,
-																															std::vector<Variable*>* variables, std::string lepton_sel)
+double HistoPlot::get_n_events(DataChain* chain_of_data, Variable* var, bool with_cut,std::vector<Variable*>* variables, std::string lepton_sel)
 {
   std::string mc_weight= get_string_from_double(1.0);
   return get_histo_integral(build_1d_histo(chain_of_data, var, with_cut, false, "goff",mc_weight, variables,lepton_sel), with_cut, var);
@@ -391,30 +400,36 @@ double HistoPlot::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
     		nevents += get_n_events(bg_chains[i], var, with_cut, variables, lepton_sel);
   		}
   }
-   std::cout<< "number of events in total background = "<< nevents<<"\n";
+  // std::cout<< "number of events in total background = "<< nevents<<"\n";
    
   return nevents;
 }
 
-std::string HistoPlot::get_mc_weight_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,
-																																																	std::vector<Variable*>* variables, bool with_cut, double z_ll_mcw, double other_bg_in_ctrl)
+std::string HistoPlot::get_mc_weight_str(DataChain* bg_chain, DataChain* data_chain, Variable* var,std::vector<Variable*>* variables, bool with_cut, double z_ll_mcw, double other_bg_in_ctrl)
 {
 	 std::string mc_weight_str;
-
+	 double mc_weight;
 	 if (bg_chain->lepton_selection != "")
 	 {
-	 	 double mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
-	   mc_weight_str = get_string_from_double(mc_weight) ;
-  		if (!strcmp(bg_chain->label, "bg_zjets_vv"))
-  		{
-  				double mc_weight = z_ll_mcw * 5.652;
-  				mc_weight_str = get_string_from_double(mc_weight) ;
-  		}  
+	   mc_weight = get_mc_weight(bg_chain, data_chain, other_bg_in_ctrl, var, with_cut, variables);
+	  // mc_weight_str = get_string_from_double(mc_weight) ;
   }
   else
    {
-					 std::string mc_weight_str= get_string_from_double(1.0);
+         
+	if (!strcmp(bg_chain->label, "bg_zjets_vv"))
+  		{
+  			mc_weight = z_ll_mcw * 5.652;
+			std::cout<<"calculating z to nunu correctly, z_vv weight = "<<mc_weight<<"\n";
+    		}  
+	else{
+  		mc_weight=1.0;
+		}	
    }
+	mc_weight_str = get_string_from_double(mc_weight) ;
 
+	std::cout<<"mc weight string = "<<mc_weight_str<<"\n";
 	 return mc_weight_str;
+  
 }
+

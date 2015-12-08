@@ -92,7 +92,8 @@ src/mc_weights.o: ../src/mc_weights.cpp ../src/../include/mc_weights.h \
   /Applications/root_v5.34.34/include/TH2.h \
   /Applications/root_v5.34.34/include/TMatrixFBasefwd.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
-  ../src/../include/tree_leaves.h
+  ../src/../include/tree_leaves.h \
+  ../src/../include/../include/mc_weights.h
 
 ../src/../include/mc_weights.h:
 
@@ -283,3 +284,5 @@ src/mc_weights.o: ../src/mc_weights.cpp ../src/../include/mc_weights.h \
 /Applications/root_v5.34.34/include/TMatrixDBasefwd.h:
 
 ../src/../include/tree_leaves.h:
+
+../src/../include/../include/mc_weights.h:

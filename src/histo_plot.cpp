@@ -5,13 +5,15 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 																										DataChain* signal_chain, DataChain* data, bool with_cut,
 																										std::vector<Variable*>* variables)
 {
-  TCanvas* c1            = new TCanvas("c1", var->name_styled, 800, 700);
-  TPad* p1															= new TPad("p1", "p1", 0.0, 0.9, 1.0, 1.0);
-  TPad* p2															= new TPad("p2", "p2", 0.0, 0.0, 1.0, 0.9);
+  TCanvas* c1            = new TCanvas("c1", var->name_styled, 800, 800);
+  TPad* p1															= new TPad("p1", "p1", 0.0, 0.95, 1.0, 1.0);
+  TPad* p2															= new TPad("p2", "p2", 0.0, 0.2, 1.0, 0.95);
+  TPad* p3															= new TPad("p3", "p3", 0.0, 0.0, 1.0, 0.2);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
 
   p1->Draw();
   p2->Draw();
+  p3->Draw();
   p2->cd();
 
   THStack stack 	 	 					= draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
@@ -21,7 +23,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   stack.Draw();
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
-
+  //stack.GetStack()->Last()->Draw();
   style_stacked_histo(&stack, var->name_styled);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
@@ -37,6 +39,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
   c1->Close();
 }
+
+
 
 void HistoPlot::draw_title(const char* title)
 {
@@ -90,8 +94,8 @@ std::string HistoPlot::get_string_from_double(double num)
   return num_str;
 }
 
-std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
-																																							TH1F* signal_histo, bool with_cut)
+double HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
+																																		TH1F* signal_histo, bool with_cut)
 {
 
 
@@ -100,11 +104,7 @@ std::string HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
   float signal_mult 					= atof(var->signal_multiplier);
   float sig_to_bg 							= sig_integral / bg_integral / signal_mult;
 
-  std::ostringstream stb;
-  stb << sig_to_bg;
-  std::string sig_to_bg_str(stb.str());
-
-		return sig_to_bg_str;
+		return sig_to_bg;
 }
 
 double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
@@ -146,9 +146,9 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string selection = "Selection: " + style_selection(get_selection(variable, variables, with_cut, false, data));
 		std::replace(selection.begin(), selection.end(), '(', ' ');
 		std::replace(selection.begin(), selection.end(), ')', ' ');
-		std::string line_1 = "#font[12]{" + selection.substr(0, 88) + "-}";
-		std::string line_2 = "#font[12]{" + selection.substr(88, 88) + "-}";
-		std::string line_3 = "#font[12]{" + selection.substr(176, 88) + "}";
+		std::string line_1 = "#font[12]{" + selection.substr(0, 90) + "-}";
+		std::string line_2 = "#font[12]{" + selection.substr(88, 90) + "-}";
+		std::string line_3 = "#font[12]{" + selection.substr(178, 88) + "}";
 
 	 TLatex t;
 	 t.SetTextSize(0.03);

@@ -27,7 +27,7 @@ double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
 }
 
 double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-																																	Variable* var, bool with_cut, std::vector<Variable*>* variables)
+Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   std::string selection   = get_mc_selection_str(bg_chain, var, variables);
   double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);

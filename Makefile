@@ -11,7 +11,7 @@ SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT)) # dynamic, includes
 
 # OBJECTS - build object list based on available sources
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o)) 
-CFLAGS := -g -Wall -pedantic `root-config --cflags`
+CFLAGS := -g -Wall `root-config --cflags`
 LDFLAGS := `root-config --libs --cflags`
 INC := -I include # ensures all header files are acessible
 

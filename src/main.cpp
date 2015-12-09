@@ -13,7 +13,7 @@ void produce_graphs(bool with_cut) {
 		DataChain* signal_chain 										= super_chains->signal_chain;
 		DataChain* data_chain 												= super_chains->data_chain;
 		(std::map<const char*, std::map<const char*, double> >) *mc_weights_ptr;
-          mc_weights_ptr  = super_chains->mc_weights; 
+      mc_weights_ptr  = super_chains->mc_weights; 
 
   for (int i = 0; i < 1/*vars.size()*/; i++)
   {

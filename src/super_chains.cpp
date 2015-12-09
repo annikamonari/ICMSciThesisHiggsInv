@@ -78,12 +78,12 @@ std::map<const char*, std::map<const char*, double> > SuperChains::set_bg_zjets_
 
 void SuperChains::set_chain_mc_weights()
 {
-	 bg_zll->set_mc_weights(mc_weights["bg_zll"]);
-		bg_wjets_ev->set_mc_weights(mc_weights["bg_wjets_ev"]);
-		bg_wjets_muv->set_mc_weights(mc_weights["bg_wjets_muv"]);
-		bg_wjets_tauv->set_mc_weights(mc_weights["bg_wjets_tauv"]);
-		bg_top->set_mc_weights(mc_weights["bg_top"]);
-		bg_vv->set_mc_weights(mc_weights["bg_vv"]);
-		bg_zjets_vv->set_mc_weights(mc_weights["bg_zjets_vv"]);
-		bg_qcd->set_mc_weights(mc_weights["bg_qcd"]);
+	 bg_zll->set_mc_weights(mc_weights[bg_zll->label]);
+		bg_wjets_ev->set_mc_weights(mc_weights[bg_wjets_ev->label]);
+		bg_wjets_muv->set_mc_weights(mc_weights[bg_wjets_muv->label]);
+		bg_wjets_tauv->set_mc_weights(mc_weights[bg_wjets_tauv->label]);
+		bg_top->set_mc_weights(mc_weights[bg_top->label]);
+		bg_vv->set_mc_weights(mc_weights[bg_vv->label]);
+		bg_zjets_vv->set_mc_weights(mc_weights[bg_zjets_vv->label]);
+		bg_qcd->set_mc_weights(mc_weights[bg_qcd->label]);
 }

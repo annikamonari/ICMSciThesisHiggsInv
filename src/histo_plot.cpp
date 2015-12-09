@@ -179,19 +179,17 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
   std::string l1        = "#font[12]{" + selection.substr(0, 90) + "-}";
   std::string l2        = "#font[12]{" + selection.substr(88, 90) + "-}";
   std::string l3        = "#font[12]{" + selection.substr(178, 88) + "}";
+  TPaveText* pts        = new TPaveText(0.1, 1.0, 0.9, 0.9, "blNDC");
 
-
-     TPaveText* pts = new TPaveText(0.1, 1.0, 0.9, 0.9, "blNDC");
-
-     pts->SetBorderSize(0);
-     pts->SetFillColor(0);
-     pts->AddText(line_1);
-  pts->AddText(line_2);
-     pts->AddText(line_3);
-     pts->SetAllWith(l1.c_str(), "size", 0.03);
-     pts->SetAllWith(l2.c_str(), "size", 0.03);
-     pts->SetAllWith(l3.c_str(), "size", 0.03);
-     pts->Draw();
+  pts->SetBorderSize(0);
+  pts->SetFillColor(0);
+  pts->AddText(l1.c_str());
+  pts->AddText(l2.c_str());
+  pts->AddText(l3.c_str());
+  pts->SetAllWith(l1.c_str(), "size", 0.03);
+  pts->SetAllWith(l2.c_str(), "size", 0.03);
+  pts->SetAllWith(l3.c_str(), "size", 0.03);
+  pts->Draw();
 }
 
 

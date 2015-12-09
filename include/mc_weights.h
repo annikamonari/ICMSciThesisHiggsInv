@@ -15,7 +15,19 @@ class MCWeights
 							                            std::vector<Variable*>* variables, std::string selection);
 
 	 static double calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-																															Variable* var,	bool with_cut, std::vector<Variable*>* variables);
+	Variable* var,	bool with_cut, std::vector<Variable*>* variables);
+
+	static TH1F* build_histo(DataChain* data_chain, Variable* variable,std::vector<Variable*>* variables, bool with_cut, bool is_signal,const char* option,std::string selection);
+
+	static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,bool with_cut, bool is_signal, DataChain* bg_chain);
+
+static std::string lep_sel_default()
+  {
+    return "(nvetomuons == 0)&&(nvetoelectrons == 0)";
+  }
+
+
+
 };
 
 

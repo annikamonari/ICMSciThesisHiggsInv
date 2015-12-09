@@ -19,8 +19,9 @@
 #include <map>
 
 
-class DataChain {
-public:
+class DataChain 
+{
+ public:
   const char* label;
   const char* legend;
   TreeLeaves* leaves;

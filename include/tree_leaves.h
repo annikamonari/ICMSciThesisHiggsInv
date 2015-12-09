@@ -3,8 +3,9 @@
 
 #include <TChain.h>
 
-class TreeLeaves {
-public:
+class TreeLeaves 
+{
+ public:
   UInt_t run;
   UInt_t lumi;
   UInt_t event;

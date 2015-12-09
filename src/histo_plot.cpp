@@ -179,7 +179,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string line_1 = "#font[12]{" + selection.substr(0, 90) + "-}";
 		std::string line_2 = "#font[12]{" + selection.substr(88, 90) + "-}";
 		std::string line_3 = "#font[12]{" + selection.substr(178, 88) + "}";
-  /*
+
 	 TLatex t;
 	 t.SetTextSize(0.03);
 	 t.DrawLatexNDC(0.1, 0.97, line_1.c_str());
@@ -194,7 +194,6 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		f.SetTextSize(0.03);
 		f.DrawLatexNDC(0.1, 0.91, line_3.c_str());
 		f.Draw();
-		*/
 }
 
 
@@ -282,7 +281,7 @@ void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)
 	 single_histo->GetYaxis()->SetTitle("Data/MC");
 	 single_histo->GetYaxis()->SetLabelSize(0.12);
 	 //single_histo->GetYaxis()->SetTitleOffset(0.8);
-	 single_histo->GetYaxis()->SetTitleSize(0.12);
+	 single_histo->GetYaxis()->SetTitleSize(0.22);
 	 single_histo->GetXaxis()->SetLabelSize(0.12);
 	 single_histo->GetXaxis()->SetTitle(x_label);
 	 single_histo->GetXaxis()->SetTitleSize(0.12);

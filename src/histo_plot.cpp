@@ -179,7 +179,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string line_1 = "#font[12]{" + selection.substr(0, 90) + "-}";
 		std::string line_2 = "#font[12]{" + selection.substr(88, 90) + "-}";
 		std::string line_3 = "#font[12]{" + selection.substr(178, 88) + "}";
-
+  /*
 	 TLatex t;
 	 t.SetTextSize(0.03);
 	 t.DrawLatexNDC(0.1, 0.97, line_1.c_str());
@@ -194,6 +194,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		f.SetTextSize(0.03);
 		f.DrawLatexNDC(0.1, 0.91, line_3.c_str());
 		f.Draw();
+		*/
 }
 
 

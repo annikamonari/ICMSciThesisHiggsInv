@@ -11,8 +11,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TPad* p3															= new TPad("p3", "p3", 0.0, 0.0, 1.0, 0.2);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
 
-  p2->SetBottomMargin(0.1);
-  p3->SetBottomMargin(0.5);
+  p2->SetBottomMargin(0.01);
+  p3->SetBottomMargin(0.3);
   p1->Draw();
   p2->Draw();
   p3->Draw();
@@ -38,7 +38,9 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p3->cd();
   TH1F* data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
   data_bg_ratio_histo->Draw("e1");
+
   style_ratio_histo(data_bg_ratio_histo, var->name_styled);
+  draw_yline_on_plot(var, with_cut, 1.0);
 
   p1->cd();
   draw_title(var->name_styled);
@@ -47,7 +49,26 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   c1->Close();
 }
 
+void HistoPlot::draw_yline_on_plot(Variable* var, bool with_cut, double y)
+{
+	 double x_min = 0.0;
+	 double x_max = 1.0;
 
+	 if (with_cut)
+	 {
+	 		x_min = atof(var->x_min_cut);
+    x_max = atof(var->x_max_cut);
+	 }
+	 else
+	 {
+	 	 x_min = atof(var->x_min_nocut);
+	 	 x_max = atof(var->x_max_nocut);
+	 }
+
+	 TLine *line = new TLine(x_min, y, x_max, y);
+	 line->SetLineColor(kGreen);
+	 line->Draw("SAME");
+}
 
 void HistoPlot::draw_title(const char* title)
 {
@@ -259,11 +280,15 @@ void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)
 {
 	 single_histo->GetYaxis()->SetTitle("Data/MC");
 	 single_histo->GetYaxis()->SetLabelSize(0.12);
-	 single_histo->GetYaxis()->SetTitleOffset(1.55);
+	 //single_histo->GetYaxis()->SetTitleOffset(0.8);
+	 single_histo->GetYaxis()->SetTitleSize(0.12);
 	 single_histo->GetXaxis()->SetLabelSize(0.12);
 	 single_histo->GetXaxis()->SetTitle(x_label);
 	 single_histo->GetXaxis()->SetTitleSize(0.12);
+	 single_histo->GetXaxis()->SetTitleOffset(1.1);
 	 single_histo->SetTitle("");
+	 single_histo->SetStats(false);
+	 single_histo->GetYaxis()->SetNdivisions(5, 5, 0);
 }
 
 void HistoPlot::style_legend(TLegend* legend)

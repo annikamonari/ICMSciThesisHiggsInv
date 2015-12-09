@@ -28,6 +28,8 @@ public:
                         DataChain* signal_chain, DataChain* data, bool with_cut,
 																								std::vector<Variable*>* variables = NULL);
 
+  static void draw_yline_on_plot(Variable* var, bool with_cut, double y);
+
   static TH1F* data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo);
 
   static TH1F* set_ratio_error_bars(TH1F* ratio_histo, TH1F* data_histo, TH1F* bg_histo);

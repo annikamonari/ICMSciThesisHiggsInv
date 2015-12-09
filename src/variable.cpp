@@ -11,9 +11,21 @@ Variable::Variable(const char* var_name, const char* var_name_styled, const char
   x_min_nocut       = x_min;
   x_max_nocut       = x_max;
   x_min_cut         = x_min_c;
-  x_max_cut         = x_max_c;
+  x_max_cut         = get_x_max_cut(x_max_c, x_max);
   abs_for_cut							= abs_val_for_cuts;
   bins_cut          = scale_bins_for_cut();
+}
+
+const char* Variable::get_x_max_cut(const char* x_max_c, const char* x_max)
+{
+	 if (strcmp(x_max_c, ""))
+	 {
+    return x_max_c;
+	 }
+	 else
+	 {
+	  	return x_max;
+	 }
 }
 
 std::string Variable::scale_bins_for_cut()
@@ -21,21 +33,12 @@ std::string Variable::scale_bins_for_cut()
   double x_min_nocut_d = atof(x_min_nocut);
   double x_max_nocut_d = atof(x_max_nocut);
   double x_min_cut_d   = atof(x_min_cut);
-  double x_max_cut_d 		= 0.0;
-
-  if (strcmp(x_max_cut, ""))
-  {
-  		x_max_cut_d = atof(x_max_cut);
-  }
-  else
-  {
-  		x_max_cut_d = atof(x_max_nocut);
-  }
-  double  fraction  = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
-  const double bins = atof(bins_nocut);
-  double bins_cut   = bins * fraction;
-  bins_cut          = bins_cut + 0.5;
-  int bins_cut_int  = (int) bins_cut;
+  double x_max_cut_d 		= atof(x_max_cut);
+  double  fraction     = (x_max_cut_d - x_min_cut_d) / (x_max_nocut_d - x_min_nocut_d);
+  const double bins    = atof(bins_nocut);
+  double bins_cut      = bins * fraction;
+  bins_cut             = bins_cut + 0.5;
+  int bins_cut_int     = (int) bins_cut;
 
   if (bins_cut_int == 0)
   {

@@ -3,8 +3,9 @@
 
 #include "../include/analysis.h"
 
-class Variable {
-public:
+class Variable 
+{
+ public:
   const char* name;
   const char* name_styled;
   const char* signal_multiplier;
@@ -18,8 +19,8 @@ public:
   
 
   Variable(const char* var_name, const char* var_name_styled, const char* x_min,
-											const char* x_max, const char* x_min_c, const char* x_max_c,
-											const char* nbins, const char* xsignal, bool abs_val_for_cuts = false);
+           const char* x_max, const char* x_min_c, const char* x_max_c,
+           const char* nbins, const char* xsignal, bool abs_val_for_cuts = false);
   
   const char* get_x_max_cut(const char* x_max_c, const char* x_max);
 
@@ -32,7 +33,7 @@ public:
   std::string build_selection_string(bool with_cut, bool is_signal);
 
   std::string build_selection(const char* var_name, const char* x_min_cut,
-																														const char* x_max_cut, bool abs_for_cut);
+                              const char* x_max_cut, bool abs_for_cut);
 
   double get_graph_dx(bool with_cut);
 

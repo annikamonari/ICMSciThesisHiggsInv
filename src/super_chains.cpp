@@ -70,7 +70,7 @@ std::map<const char*, std::map<const char*, double> > SuperChains::set_bg_zjets_
 {
 	 for (int i = 0; i < (*vars).size(); i++)
 	 {
-    mc_weights["bg_zjets_vv"][(*vars)[i]->name] = mc_weights["bg_zll"][(*vars)[i]->name] * 5.651 * 1.513;
+    mc_weights[bg_zjets_vv->label][(*vars)[i]->name] = mc_weights[bg_zll->label][(*vars)[i]->name] * 5.651 * 1.513;
 	 }
 
 	 return mc_weights;

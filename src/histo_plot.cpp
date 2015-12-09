@@ -11,8 +11,11 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TPad* p3															= new TPad("p3", "p3", 0.0, 0.0, 1.0, 0.2);
   TLegend* legend        = new TLegend(0.0, 0.5, 0.0, 0.88);
 
-  p2->SetBottomMargin(0.01);
+  p1->SetLeftMargin(0.102);
+  p2->SetBottomMargin(0.012);
+  p2->SetLeftMargin(0.105);
   p3->SetBottomMargin(0.3);
+  p3->SetLeftMargin(0.102);
   p1->Draw();
   p2->Draw();
   p3->Draw();
@@ -66,7 +69,8 @@ void HistoPlot::draw_yline_on_plot(Variable* var, bool with_cut, double y)
 	 }
 
 	 TLine *line = new TLine(x_min, y, x_max, y);
-	 line->SetLineColor(kGreen);
+	 line->SetLineColor(13);
+	 line->SetLineStyle(2);
 	 line->Draw("SAME");
 }
 
@@ -280,8 +284,8 @@ void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)
 {
 	 single_histo->GetYaxis()->SetTitle("Data/MC");
 	 single_histo->GetYaxis()->SetLabelSize(0.12);
-	 //single_histo->GetYaxis()->SetTitleOffset(0.8);
-	 single_histo->GetYaxis()->SetTitleSize(0.22);
+	 single_histo->GetYaxis()->SetTitleOffset(0.45);
+	 single_histo->GetYaxis()->SetTitleSize(0.12);
 	 single_histo->GetXaxis()->SetLabelSize(0.12);
 	 single_histo->GetXaxis()->SetTitle(x_label);
 	 single_histo->GetXaxis()->SetTitleSize(0.12);
@@ -295,6 +299,7 @@ void HistoPlot::style_legend(TLegend* legend)
 {
   legend->SetTextSize(0.025);
   legend->SetBorderSize(0);
+  legend->SetFillStyle(0);
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, bool is_signal,

@@ -12,11 +12,12 @@ void produce_graphs(bool with_cut) {
 		std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
 		DataChain* signal_chain 										= super_chains->signal_chain;
 		DataChain* data_chain 												= super_chains->data_chain;
-		std::map<const char*, std::map<const char*, double> >* mc_weights_ptr=super_chains->mc_weights; 
+		(std::map<const char*, std::map<const char*, double> >) *mc_weights_ptr;
+          mc_weights_ptr  = super_chains->mc_weights; 
 
   for (int i = 0; i < 1/*vars.size()*/; i++)
   {
-  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
+  		HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, mc_weights_ptr, &cut_vars);
   }
 }
 

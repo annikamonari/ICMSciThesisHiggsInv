@@ -31,13 +31,14 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo 	   	= get_max_histo(plot_histos);
 
-  draw_subtitle(var, variables, with_cut, data);
   stack.SetMaximum(get_histo_y_max(max_histo)*1.1);
   build_legend(legend, max_histo, var, with_cut);
+  draw_subtitle(var, variables, with_cut, data);
 
   p3->cd();
   TH1F* data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
   data_bg_ratio_histo->Draw("e1");
+
 
   style_ratio_histo(data_bg_ratio_histo, var->name_styled);
   draw_yline_on_plot(var, with_cut, 1.0);
@@ -176,24 +177,26 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 		std::string selection = "Selection: " + style_selection(get_selection(variable, variables, with_cut, false, data));
 		std::replace(selection.begin(), selection.end(), '(', ' ');
 		std::replace(selection.begin(), selection.end(), ')', ' ');
-		std::string line_1 = "#font[12]{" + selection.substr(0, 90) + "-}";
-		std::string line_2 = "#font[12]{" + selection.substr(88, 90) + "-}";
-		std::string line_3 = "#font[12]{" + selection.substr(178, 88) + "}";
+		std::string l1 = "#font[12]{" + selection.substr(0, 90) + "-}";
+		std::string l2 = "#font[12]{" + selection.substr(88, 90) + "-}";
+		std::string l3 = "#font[12]{" + selection.substr(178, 88) + "}";
+	 const char* line_1=l2.c_str();
+	 const char* line_2=l2.c_str();
+	 const char* line_3=l3.c_str();
 
-	 TLatex t;
-	 t.SetTextSize(0.03);
-	 t.DrawLatexNDC(0.1, 0.97, line_1.c_str());
-		t.Draw();
 
-		TLatex d;
-		d.SetTextSize(0.03);
-		d.DrawLatexNDC(0.1, 0.94, line_2.c_str());
-		d.Draw();
+	 TPaveText* pts = new TPaveText(0.1, 1.0, 0.9, 0.9, "blNDC");
+	 pts->SetBorderSize(0);
+	 pts->SetFillColor(0);
+	 pts->AddText(line_1);
+         pts->AddText(line_2);
+	 pts->AddText(line_3);
 
-		TLatex f;
-		f.SetTextSize(0.03);
-		f.DrawLatexNDC(0.1, 0.91, line_3.c_str());
-		f.Draw();
+	 pts->SetAllWith(line_1, "size", 0.03);
+	 pts->SetAllWith(line_2, "size", 0.03);
+ 	 pts->SetAllWith(line_3, "size", 0.03);
+
+	 pts->Draw();
 }
 
 
@@ -245,6 +248,7 @@ void HistoPlot::build_legend(TLegend* legend, TH1F* max_histo, Variable* var, bo
   legend->SetX1(x1);
   legend->SetX2(x2);
   legend->Draw();
+
 }
 
 double HistoPlot::position_legend_x1(TH1F* max_histo, Variable* var, bool with_cut)
@@ -295,6 +299,7 @@ void HistoPlot::style_legend(TLegend* legend)
 {
   legend->SetTextSize(0.025);
   legend->SetBorderSize(0);
+  legend->SetFillStyle(0);
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, bool is_signal,

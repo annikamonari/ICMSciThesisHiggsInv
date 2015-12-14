@@ -1,7 +1,9 @@
 #ifndef Super_Vars_h
 #define Super_Vars_h
 
+#include <string>
 #include "../include/variable.h"
+#include "../include/histo_plot.h"
 
 class SuperVars 
 {
@@ -22,7 +24,7 @@ class SuperVars
 
   std::vector<Variable*> get_signal_cut_vars();
 
-
+  std::string get_cuts_str_for_tmva();
 };
 
 

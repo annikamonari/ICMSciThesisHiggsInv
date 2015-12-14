@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/analysis.cpp \
+../src/bdt_analysis.cpp \
 ../src/data_chain.cpp \
 ../src/histo_plot.cpp \
 ../src/main.cpp \
@@ -16,6 +17,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/analysis.o \
+./src/bdt_analysis.o \
 ./src/data_chain.o \
 ./src/histo_plot.o \
 ./src/main.o \
@@ -27,6 +29,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/analysis.d \
+./src/bdt_analysis.d \
 ./src/data_chain.d \
 ./src/histo_plot.d \
 ./src/main.d \
@@ -41,7 +44,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I/Applications/root_v5.34.34/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++98 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -I/Applications/root_v5.34.34/include -I/Applications/root_v5.34.34/include/TMVA -O0 -g3 -Wall -c -fmessage-length=0 -std=c++98 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

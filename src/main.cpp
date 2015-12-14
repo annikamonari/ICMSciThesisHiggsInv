@@ -1,13 +1,14 @@
 #include <initializer_list>
 #include <cmath>
-#include "../include/histo_plot.h"
 #include "../include/mc_weights.h"
+#include "../include/histo_plot.h"
+//#include "../include/bdt_analysis.h"
 
 void produce_graphs(bool with_cut) {
-  SuperVars* super_vars           = new SuperVars();
-  std::vector<Variable*> vars     = super_vars->get_discriminating_vars();
-  std::vector<Variable*> cut_vars = super_vars->get_signal_cut_vars();
-
+  SuperVars* super_vars             = new SuperVars();
+  std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
+  std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
+  super_vars->get_cuts_str_for_tmva();
   SuperChains* super_chains         = new SuperChains(&vars, &cut_vars, with_cut);
   std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
   DataChain* signal_chain           = super_chains->signal_chain;
@@ -15,7 +16,7 @@ void produce_graphs(bool with_cut) {
 
   for (int i = 0; i < vars.size(); i++)
   {
-    HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
+    //HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
   }
 }
 

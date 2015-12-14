@@ -80,7 +80,21 @@ src/super_vars.o: ../src/super_vars.cpp ../src/../include/super_vars.h \
   /Applications/root_v5.34.34/include/TFitResultPtr.h \
   /Applications/root_v5.34.34/include/TMatrixFBasefwd.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
-  ../src/../include/tree_leaves.h
+  ../src/../include/tree_leaves.h \
+  ../src/../include/../include/histo_plot.h \
+  /Applications/root_v5.34.34/include/TStyle.h \
+  /Applications/root_v5.34.34/include/THStack.h \
+  /Applications/root_v5.34.34/include/TLegend.h \
+  /Applications/root_v5.34.34/include/TPave.h \
+  /Applications/root_v5.34.34/include/TBox.h \
+  /Applications/root_v5.34.34/include/TPaveText.h \
+  /Applications/root_v5.34.34/include/TText.h \
+  /Applications/root_v5.34.34/include/TLine.h \
+  /Applications/root_v5.34.34/include/TLatex.h \
+  ../src/../include/../include/super_chains.h \
+  ../src/../include/../include/super_vars.h \
+  ../src/../include/../include/mc_weights.h \
+  ../src/../include/histo_plot.h
 
 ../src/../include/super_vars.h:
 
@@ -247,3 +261,31 @@ src/super_vars.o: ../src/super_vars.cpp ../src/../include/super_vars.h \
 /Applications/root_v5.34.34/include/TMatrixDBasefwd.h:
 
 ../src/../include/tree_leaves.h:
+
+../src/../include/../include/histo_plot.h:
+
+/Applications/root_v5.34.34/include/TStyle.h:
+
+/Applications/root_v5.34.34/include/THStack.h:
+
+/Applications/root_v5.34.34/include/TLegend.h:
+
+/Applications/root_v5.34.34/include/TPave.h:
+
+/Applications/root_v5.34.34/include/TBox.h:
+
+/Applications/root_v5.34.34/include/TPaveText.h:
+
+/Applications/root_v5.34.34/include/TText.h:
+
+/Applications/root_v5.34.34/include/TLine.h:
+
+/Applications/root_v5.34.34/include/TLatex.h:
+
+../src/../include/../include/super_chains.h:
+
+../src/../include/../include/super_vars.h:
+
+../src/../include/../include/mc_weights.h:
+
+../src/../include/histo_plot.h:

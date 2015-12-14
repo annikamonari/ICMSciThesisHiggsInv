@@ -8,6 +8,7 @@ class Variable
  public:
   const char* name;
   const char* name_styled;
+  const char* units;
   const char* signal_multiplier;
   const char* bins_nocut;
   const char* x_min_nocut;
@@ -18,9 +19,9 @@ class Variable
   const char* x_max_cut;
   
 
-  Variable(const char* var_name, const char* var_name_styled, const char* x_min,
-           const char* x_max, const char* x_min_c, const char* x_max_c,
-           const char* nbins, const char* xsignal, bool abs_val_for_cuts = false);
+  Variable(const char* var_name, const char* var_name_styled,
+											const char* x_min, const char* x_max, const char* x_min_c, const char* x_max_c,
+           const char* nbins, const char* xsignal, const char* var_units, bool abs_val_for_cuts = false);
   
   const char* get_x_max_cut(const char* x_max_c, const char* x_max);
 

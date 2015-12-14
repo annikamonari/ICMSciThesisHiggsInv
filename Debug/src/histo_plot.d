@@ -92,6 +92,7 @@ src/histo_plot.o: ../src/histo_plot.cpp ../src/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TMatrixFBasefwd.h \
   /Applications/root_v5.34.34/include/TMatrixDBasefwd.h \
   ../src/../include/tree_leaves.h \
+  ../src/../include/../include/histo_plot.h \
   ../src/../include/../include/mc_weights.h
 
 ../src/../include/histo_plot.h:
@@ -281,5 +282,7 @@ src/histo_plot.o: ../src/histo_plot.cpp ../src/../include/histo_plot.h \
 /Applications/root_v5.34.34/include/TMatrixDBasefwd.h:
 
 ../src/../include/tree_leaves.h:
+
+../src/../include/../include/histo_plot.h:
 
 ../src/../include/../include/mc_weights.h:

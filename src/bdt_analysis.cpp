@@ -1,6 +1,6 @@
 #include "../include/bdt_analysis.h"
 
-void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables)
+void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
   // --- Here the preparation phase begins
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
@@ -56,7 +56,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   factory->SetBackgroundWeightExpression("total_weight_lepveto");
 
   // Apply additional cuts on the signal and background samples (can be different)
-  TCut signal_cuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+  TCut signal_cuts = var_cut_str.c_str(); // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
   TCut bg_cuts = signal_cuts; // for example: TCut mycutb = "abs(var1)<0.5";
 
   factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,

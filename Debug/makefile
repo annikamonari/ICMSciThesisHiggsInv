@@ -45,7 +45,7 @@ all: HiggsThesis
 HiggsThesis: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MacOS X C++ Linker'
-	g++ -L/Applications/root_v5.34.34/lib -Xlinker -L/usr/local/lib `/Applications/root_v5.34.34/bin/root-config --libs --glibs --cflags --ldflags --auxlibs --auxcflags` -pthread -lm -ldl -o "HiggsThesis" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/Applications/root_v5.34.34/ -L/Applications/root_v5.34.34/lib -Xlinker -L/usr/local/lib `/Applications/root_v5.34.34/bin/root-config --libs --glibs --cflags --ldflags --auxlibs --auxcflags` -pthread -lm -ldl -lTMVA -lMinuit -lXMLIO -o "HiggsThesis" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

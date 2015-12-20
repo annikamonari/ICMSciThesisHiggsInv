@@ -52,8 +52,8 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
 
   // Signal
   double signal_weight = 1.0;
-  factory->AddBackgroundTree(signal_chain->chain, signal_weight);
-  factory->SetBackgroundWeightExpression("total_weight_lepveto");
+  factory->AddSignalTree(signal_chain->chain, signal_weight);
+  factory->SetSignalWeightExpression("total_weight_lepveto");
 
   // Apply additional cuts on the signal and background samples (can be different)
   TCut signal_cuts = var_cut_str.c_str(); // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";

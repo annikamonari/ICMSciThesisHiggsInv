@@ -13,6 +13,7 @@ void produce_graphs(bool with_cut) {
   DataChain* data_chain             = super_chains->data_chain;
 
   BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
+  BDTAnalysis::evaluate_BDT(bg_chains[0], signal_chain, &vars);
 
   for (int i = 0; i < vars.size(); i++)
   {

@@ -28,7 +28,7 @@ class BDTAnalysis
  public:
 	 static void create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str);
 
-	 static void evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables);
+	 static TChain* evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables);
 };
 
 

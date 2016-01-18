@@ -106,7 +106,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   delete factory;
 }
 
-void BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables)
+TChain* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables)
 {
 	// --- Create the Reader object
 
@@ -211,7 +211,7 @@ void BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std
 	   std::cout << "--- End of event loop: "; sw.Print();
 
 	   // --- Write histograms
-
+    data->AddFriend(output_tree);
 	   TFile *target  = new TFile( "TMVApp.root","RECREATE" );
 	   target->cd();
 	   output_tree->Write();
@@ -224,4 +224,6 @@ void BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std
 	   delete reader;
 
 	   std::cout << "==> TMVAClassificationApplication is done!" << std::endl;
+
+	   return data;
 }

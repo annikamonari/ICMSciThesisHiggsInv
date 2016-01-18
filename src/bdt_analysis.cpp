@@ -41,8 +41,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
 
   for (int i = 0; i < variables->size(); i++)
   {
-    factory->AddVariable((*variables)[i]->name, (*variables)[i]->name_styled, (*variables)[i]->units,
-																									'F', atof((*variables)[i]->x_min_cut), atof((*variables)[i]->x_max_cut));
+    factory->AddVariable((*variables)[i]->name, (*variables)[i]->name_styled, (*variables)[i]->units, 'F');
   }
 
   // Background
@@ -102,5 +101,127 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   std::cout << "==> To view the results, launch the GUI: \"root -l ./TMVAGui.C\"" << std::endl;
   std::cout << std::endl;
 
+  gROOT->ProcessLine(".L TMVAGui.C");
+
   delete factory;
+}
+
+void BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables)
+{
+	// --- Create the Reader object
+
+	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
+
+	   // Create a set of variables and declare them to the reader
+	   // - the variable names MUST corresponds in name and type to those given in the weight file(s) used
+
+	   Float_t dijet_deta;
+	   Float_t forward_tag_eta;
+	   Float_t metnomu_significance;
+	   Float_t sqrt_ht;
+	   Float_t alljetsmetnomu_mindphi;
+	   Float_t dijet_M;
+	   Float_t metnomuons;
+
+	   reader->AddVariable("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
+	   reader->AddVariable("forward_tag_eta", &forward_tag_eta);
+	   reader->AddVariable("dijet_deta", &dijet_deta);
+	   reader->AddVariable("metnomu_significance", &metnomu_significance);
+	   reader->AddVariable("sqrt_ht", &sqrt_ht);
+	   reader->AddVariable("dijet_M", &dijet_M);
+	   reader->AddVariable("metnomuons", &metnomuons);
+
+	   // Spectator variables declared in the training have to be added to the reader, too
+	   /*Float_t spec1,spec2;
+	   reader->AddSpectator( "spec1 := var1*2",   &spec1 );
+	   reader->AddSpectator( "spec2 := var1*3",   &spec2 );*/
+
+	   /*Float_t Category_cat1, Category_cat2, Category_cat3;
+	   if (Use["Category"]){
+	      // Add artificial spectators for distinguishing categories
+	      reader->AddSpectator( "Category_cat1 := var3<=0",             &Category_cat1 );
+	      reader->AddSpectator( "Category_cat2 := (var3>0)&&(var4<0)",  &Category_cat2 );
+	      reader->AddSpectator( "Category_cat3 := (var3>0)&&(var4>=0)", &Category_cat3 );
+	   }*/
+
+	   // --- Book the MVA methods
+
+	   // Book method(s)
+	   reader->BookMVA( "BDT method", "weights/TMVAClassification_BDT.weights.xml" );
+
+	   // Book output histograms
+	   TH1F* histBdt     = new TH1F( "MVA_BDT", "MVA_BDT", 100, -1.0, 1.0 );
+
+	   // Prepare input tree (this must be replaced by your data source)
+
+
+	   // --- Event loop
+
+	   // Prepare the event tree
+	   // - here the variable names have to corresponds to your tree
+	   // - you can use the same variables as above which is slightly faster,
+	   //   but of course you can use different ones and copy the values inside the event loop
+	   //
+	   /*std::cout << "--- Select signal sample" << std::endl;
+	   TTree* theTree = (TTree*)input->Get("TreeS");
+	   Float_t userVar1, userVar2;
+	   theTree->SetBranchAddress( "var1", &userVar1 );
+	   theTree->SetBranchAddress( "var2", &userVar2 );
+	   theTree->SetBranchAddress( "var3", &var3 );
+	   theTree->SetBranchAddress( "var4", &var4 );*/
+
+	   Float_t output;
+	   TTree* output_tree = new TTree("MVAtree","Tree with classifier outputs");
+	   output_tree -> Branch("output", &output, "output");
+
+	   TChain* data = signal_chain->chain;
+	   data->Add(bg_chain->chain);
+
+	   data->SetBranchAddress("dijet_deta", &dijet_deta);
+	   data->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
+	   data->SetBranchAddress("metnomu_significance", &metnomu_significance);
+	   data->SetBranchAddress("sqrt_ht", &sqrt_ht);
+	   data->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
+	   data->SetBranchAddress("dijet_M", &dijet_M);
+	   data->SetBranchAddress("metnomuons", &metnomuons);
+
+	   std::vector<Float_t> vecVar(9); // vector for EvaluateMVA tests
+
+	   std::cout << "--- Processing: " << data->GetEntries() << " events" << std::endl;
+	   TStopwatch sw;
+	   sw.Start();
+	   for (Long64_t ievt=0; ievt<data->GetEntries(); ievt++) {
+
+	      if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
+
+	      data->GetEntry(ievt);
+
+	      //var1 = userVar1 + userVar2;
+	      //var2 = userVar1 - userVar2;
+
+	      // --- Return the MVA outputs and fill into histograms
+
+	      output = reader->EvaluateMVA( "BDT method" );
+	      output_tree->Fill();
+	      histBdt->Fill(output);
+	   }
+
+	   // Get elapsed time
+	   sw.Stop();
+	   std::cout << "--- End of event loop: "; sw.Print();
+
+	   // --- Write histograms
+
+	   TFile *target  = new TFile( "TMVApp.root","RECREATE" );
+	   target->cd();
+	   output_tree->Write();
+	   histBdt->Write();
+
+	   target->Close();
+
+	   std::cout << "--- Created root file: \"TMVApp.root\" containing the MVA output histograms" << std::endl;
+
+	   delete reader;
+
+	   std::cout << "==> TMVAClassificationApplication is done!" << std::endl;
 }

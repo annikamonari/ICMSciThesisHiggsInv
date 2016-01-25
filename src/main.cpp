@@ -1,6 +1,6 @@
 #include <initializer_list>
 #include <cmath>
-#include "../include/bdt_analysis.h"
+#include "../include/mva_analysis.h"
 
 void produce_graphs(bool with_cut) {
   SuperVars* super_vars             = new SuperVars();
@@ -13,7 +13,9 @@ void produce_graphs(bool with_cut) {
   DataChain* data_chain             = super_chains->data_chain;
 
   BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
-  BDTAnalysis::evaluate_BDT(bg_chains[0], signal_chain, &vars);
+  TChain* combined_sig_bg = BDTAnalysis::evaluate_BDT(bg_chains[0], signal_chain, &vars);
+  combined_sig_bg->Draw("output");
+  //MVAAnalysis::draw_histo(vars[0], combined_sig_bg, &vars, bg_chains[0]);
 
   for (int i = 0; i < vars.size(); i++)
   {

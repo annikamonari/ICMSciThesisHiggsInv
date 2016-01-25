@@ -69,7 +69,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   // FOR BDTS:
 
   factory->BookMethod(TMVA::Types::kBDT, "BDT",
-                      "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");
+                      "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");
 
   // If you wish to modify default settings
   // (please check "src/Config.h" to see all available global options)
@@ -202,6 +202,7 @@ TChain* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, 
 	      // --- Return the MVA outputs and fill into histograms
 
 	      output = reader->EvaluateMVA( "BDT method" );
+
 	      output_tree->Fill();
 	      histBdt->Fill(output);
 	   }
@@ -212,7 +213,7 @@ TChain* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, 
 
 	   // --- Write histograms
     data->AddFriend(output_tree);
-	   TFile *target  = new TFile( "TMVApp.root","RECREATE" );
+	   TFile* target  = new TFile( "TMVApp.root","RECREATE" );
 	   target->cd();
 	   output_tree->Write();
 	   histBdt->Write();

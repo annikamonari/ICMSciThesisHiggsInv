@@ -1,4 +1,5 @@
-src/main.o: ../src/main.cpp ../src/../include/bdt_analysis.h \
+src/main.o: ../src/main.cpp ../src/../include/mva_analysis.h \
+  ../src/../include/../include/bdt_analysis.h \
   ../src/../include/../include/histo_plot.h \
   /Applications/root_v5.34.34/include/TStyle.h \
   /Applications/root_v5.34.34/include/TNamed.h \
@@ -137,7 +138,9 @@ src/main.o: ../src/main.cpp ../src/../include/bdt_analysis.h \
   /Applications/root_v5.34.34/include/TMVA/PDF.h \
   /Applications/root_v5.34.34/include/TMVA/KDEKernel.h
 
-../src/../include/bdt_analysis.h:
+../src/../include/mva_analysis.h:
+
+../src/../include/../include/bdt_analysis.h:
 
 ../src/../include/../include/histo_plot.h:
 

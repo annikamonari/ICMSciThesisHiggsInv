@@ -42,9 +42,9 @@ const char* z_ll_arr[] = {
                           "data/background/MC_DY1JetsToLL.root",
                           "data/background/MC_DY2JetsToLL.root",
                           "data/background/MC_DY3JetsToLL.root",
-                          "data/background/MC_DY4JetsToLL.root",
+                          "data/background/MC_DY4JetsToLL.root"/*,
                           "data/background/MC_DYJetsToLL_PtZ-100-madgraph.root",
-                          "data/background/MC_DYJetsToLL.root"
+                          "data/background/MC_DYJetsToLL.root"*/
                          };
 
 std::vector<const char*> z_ll (z_ll_arr, z_ll_arr + 

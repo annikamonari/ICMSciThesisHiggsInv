@@ -100,7 +100,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 
   selection.insert(selection.find("(") + 1, lep_sel_default() + "&&");
 
-  return add_mc_to_selection(bg_chain, variable, selection);
+  return selection;//add_mc_to_selection(bg_chain, variable, selection);
 }
 
 std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection)

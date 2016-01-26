@@ -1,8 +1,22 @@
 #include "../include/bdt_analysis.h"
-
+//#include "TInterpretor.h"
 void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
-	 std::string output_folder(bg_chain->label);
+
+     // This loads the library
+  TMVA::Tools::Instance();
+
+
+// to get access to the GUI and all tmva macros
+
+ /* TString thisdir = gSystem->DirName(gInterpreter->GetCurrentMacroName());
+
+  gROOT->SetMacroPath(thisdir + ":" + gROOT->GetMacroPath());
+  gROOT->ProcessLine(".L TMVAGui.C");*/
+
+	 
+
+std::string output_folder(bg_chain->label);
   TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel.root").c_str(),"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,

@@ -16,3 +16,8 @@ bin/*
 
 # Ignore Mac specific files
 .DS_Store
+
+.rootmap
+.rootrc
+setup.sh
+libTMVA.rootmap

@@ -28,7 +28,7 @@
 								<option id="macosx.cpp.link.option.other.1555598839" name="Other options (-Xlinker [option])" superClass="macosx.cpp.link.option.other" valueType="stringList">
 									<listOptionValue builtIn="false" value="-L/usr/local/lib `${ROOTSYS}/bin/root-config --libs --glibs --cflags --ldflags --auxlibs --auxcflags` -pthread -lm -ldl -lTMVA -lMinuit -lXMLIO"/>
 								</option>
-								<option id="macosx.cpp.link.option.libs.565294543" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs" valueType="libs"/>
+								<option id="macosx.cpp.link.option.libs.565294543" name="Libraries (-l)" superClass="macosx.cpp.link.option.libs"/>
 								<inputType id="cdt.managedbuild.tool.macosx.cpp.linker.input.34113925" superClass="cdt.managedbuild.tool.macosx.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -53,7 +53,7 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.macosx.exe.debug.option.optimization.level.129132392" name="Optimization Level" superClass="gnu.c.compiler.macosx.exe.debug.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.macosx.exe.debug.option.debugging.level.1747260263" name="Debug Level" superClass="gnu.c.compiler.macosx.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.dialect.std.266377536" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.2084916587" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol" valueType="undefDefinedSymbols"/>
+								<option id="gnu.c.compiler.option.preprocessor.undef.symbol.2084916587" name="Undefined symbols (-U)" superClass="gnu.c.compiler.option.preprocessor.undef.symbol"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1354809544" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 						</toolChain>
@@ -127,5 +127,13 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/HiggsThesis"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/HiggsThesis"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

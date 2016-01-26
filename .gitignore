@@ -16,5 +16,24 @@ bin/*
 
 # Ignore Mac specific files
 .DS_Store
+<<<<<<< HEAD
 /Debug/
 Debug
+=======
+
+setup.sh
+TMVAClassification.C
+tmvaglob.C
+TMVAGui.C
+TMVAlogon.C
+TMVARegGui.C
+weights/*
+weights
+libTMVA.rootmap
+Makefile.arch
+MakefileOriginial
+effciencies.C
+bg_zll/*
+bg_zll
+
+>>>>>>> 1e43c8e2086e5e0b677ca8073365861a65a9c9b3

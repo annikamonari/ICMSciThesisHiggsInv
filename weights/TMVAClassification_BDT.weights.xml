@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.0 [262656]"/>
     <Info name="ROOT Release" value="5.34/04 [336388]"/>
     <Info name="Creator" value="dsg12"/>
-    <Info name="Date" value="Tue Jan 26 21:41:29 2016"/>
+    <Info name="Date" value="Tue Jan 26 22:26:36 2016"/>
     <Info name="Host" value="Linux hepadmin.hep.ph.ic.ac.uk 2.6.32-279.14.1.el6.x86_64 #1 SMP Tue Nov 6 23:43:09 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/hep/dsg12/mproject/ICMSciThesisHiggsInv"/>
     <Info name="Training events" value="2983"/>
-    <Info name="TrainingTime" value="2.24783301e+00"/>
+    <Info name="TrainingTime" value="2.24797487e+00"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>

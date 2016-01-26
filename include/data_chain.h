@@ -29,7 +29,7 @@ class DataChain
   std::string lep_sel;
   std::map<const char*, double> mc_weights;
 
-  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection = "");
+  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection, TChain* tchain = NULL);
 
   void get_data();
 

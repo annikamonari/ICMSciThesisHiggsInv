@@ -141,3 +141,16 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, s
 
 	   return output_tree;
 }
+
+DataChain* get_BDT_results(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+{
+	 BDTAnalysis::create_BDT(bg_chain, signal_chain, variables, var_cut_str);
+
+	 TTree* output_weight           = BDTAnalysis::evaluate_BDT(bg_chain, signal_chain, variables);
+	 TChain* combined_sig_bg        = bg_chain->chain;
+
+	 combined_sig_bg->Add(signal_chain->chain);
+	 combined_sig_bg->AddFriend(output_weight);
+
+	 DataChain* output_data = new DataChain();
+}

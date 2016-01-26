@@ -1,7 +1,19 @@
 #include "../include/bdt_analysis.h"
-
+//#include "TInterpretor.h"
 void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
+     // This loads the library
+   //TMVA::Tools::Instance();
+
+
+// to get access to the GUI and all tmva macros
+
+  /* TString thisdir = gSystem->DirName(gInterpreter->GetCurrentMacroName());
+
+   gROOT->SetMacroPath(thisdir + ":" + gROOT->GetMacroPath());
+   gROOT->ProcessLine(".L TMVAGui.C");*/
+
+
   // --- Here the preparation phase begins
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
 

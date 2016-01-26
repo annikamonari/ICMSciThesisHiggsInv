@@ -1,6 +1,7 @@
 #include <initializer_list>
 #include <cmath>
 #include "../include/mva_analysis.h"
+//#include "../efficiencies.C"
 
 void produce_graphs(bool with_cut) {
   SuperVars* super_vars             = new SuperVars();
@@ -14,6 +15,7 @@ void produce_graphs(bool with_cut) {
 
   BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
   TChain* combined_sig_bg = BDTAnalysis::evaluate_BDT(bg_chains[0], signal_chain, &vars);
+  //plot_efficiencies( combined_sig_bg, 2, gDirectory);
   combined_sig_bg->Draw("output");
   //MVAAnalysis::draw_histo(vars[0], combined_sig_bg, &vars, bg_chains[0]);
 

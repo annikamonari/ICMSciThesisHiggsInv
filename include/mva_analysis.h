@@ -6,6 +6,8 @@
 class MVAAnalysis
 {
  public:
+	 static void plot_output(DataChain* combined_data);
+
   static std::vector<double> get_categories(std::vector<double> x_range);
 
   static std::vector<double> get_x_range(TH1F* output_histo);

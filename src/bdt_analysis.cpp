@@ -3,11 +3,11 @@
 void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
 
-     // This loads the library
-   //TMVA::Tools::Instance();
+  // This loads the library
+  //TMVA::Tools::Instance();
 
 
-// to get access to the GUI and all tmva macros
+  // to get access to the GUI and all tmva macros
 
   /* TString thisdir = gSystem->DirName(gInterpreter->GetCurrentMacroName());
 
@@ -160,7 +160,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, s
 
 DataChain* get_BDT_results(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
-	 BDTAnalysis::create_BDT(bg_chain, signal_chain, variables, var_cut_str);
+	 //BDTAnalysis::create_BDT(bg_chain, signal_chain, variables, var_cut_str);
 
 	 TTree* output_weight           = BDTAnalysis::evaluate_BDT(bg_chain, signal_chain, variables);
 	 TChain* combined_sig_bg        = bg_chain->chain;
@@ -168,5 +168,13 @@ DataChain* get_BDT_results(DataChain* bg_chain, DataChain* signal_chain, std::ve
 	 combined_sig_bg->Add(signal_chain->chain);
 	 combined_sig_bg->AddFriend(output_weight);
 
-	 //DataChain* output_data = new DataChain();
+	 //TTree* test_clone = combined_sig_bg->CopyTree("output>0");
+	 //std::cout << test_clone->GetListOfFriends();
+
+	 std::string label(bg_chain->label);
+	 label += "_trained_output";
+
+	 DataChain* output_data = new DataChain(top, label.c_str(), label.c_str(), "", combined_sig_bg);
+
+	 return output_data;
 }

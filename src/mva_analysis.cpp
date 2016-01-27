@@ -1,9 +1,17 @@
 #include "../include/mva_analysis.h"
 
+void MVAAnalysis::plot_output(DataChain* combined_data)
+{
+  combined_data->chain->Draw("output>>output_hist(100, -0.8, 0.8)");
+  //TH1F* output = (TH1F*)gDirectory->Get("output_hist");
+
+  //return output;
+}
+
 std::vector<double> MVAAnalysis::get_x_range(TH1F* output_histo)
 {
-  double x_min = output_histo->GetXaxis()->GetXmin();
-  double x_max = output_histo->GetXaxis()->GetXmax();
+  double x_min = output_histo->GetBinCenter(output_histo->FindFirstBinAbove(0.0, 1));
+  double x_max = output_histo->GetBinCenter(output_histo->FindLastBinAbove(0.0, 1));
   double x_arr[] = {x_min, x_max};
 
   std::vector<double> x_range (x_arr, x_arr + sizeof(x_arr) / sizeof(x_arr[0]));

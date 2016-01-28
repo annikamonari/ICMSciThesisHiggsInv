@@ -1,11 +1,13 @@
 #include "../include/data_chain.h"
 #include <cmath>
 
-DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection, TChain* tchain) {
+DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection,
+																					std::string extra_label_arg, TChain* tchain) {
   label = data_label;
   legend = data_legend;
   leaves = new TreeLeaves();
   lep_sel = lep_selection;
+  extra_label = extra_label_arg;
   mc_weights = std::map<const char*, double>();
   //leaves->set_branch_addresses(chain);
   //get_data();

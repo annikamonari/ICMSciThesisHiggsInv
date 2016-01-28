@@ -158,23 +158,20 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, s
 	   return output_tree;
 }
 
-DataChain* get_BDT_results(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
 	 //BDTAnalysis::create_BDT(bg_chain, signal_chain, variables, var_cut_str);
 
 	 TTree* output_weight           = BDTAnalysis::evaluate_BDT(bg_chain, signal_chain, variables);
-	 TChain* combined_sig_bg        = bg_chain->chain;
+	 TChain* combined_sig_bg        = (TChain*) bg_chain->chain->Clone();
+	 TChain* cloned_sig             = (TChain*) signal_chain->chain->Clone();
+	 combined_sig_bg->Add(cloned_sig);
 
-	 combined_sig_bg->Add(signal_chain->chain);
 	 combined_sig_bg->AddFriend(output_weight);
-
-	 //TTree* test_clone = combined_sig_bg->CopyTree("output>0");
-	 //std::cout << test_clone->GetListOfFriends();
 
 	 std::string label(bg_chain->label);
 	 label += "_trained_output";
-
-	 DataChain* output_data = new DataChain(top, label.c_str(), label.c_str(), "", combined_sig_bg);
+	 DataChain* output_data = new DataChain(top, "trained_output", bg_chain->legend, "", label, combined_sig_bg);
 
 	 return output_data;
 }

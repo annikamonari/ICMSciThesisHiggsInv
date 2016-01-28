@@ -6,24 +6,22 @@
 class MVAAnalysis
 {
  public:
-	 static void plot_output(DataChain* combined_data);
+	 static TH1F* plot_output(DataChain* combined_data);
 
-  static std::vector<double> get_categories(std::vector<double> x_range);
+  static std::vector<double> get_categories(TH1F* output_histo);
 
-  static std::vector<double> get_x_range(TH1F* output_histo);
 
   static std::vector<std::string> get_category_strs(std::vector<double> categories);
 
-  static TH1F* build_histo(TChain* data, std::string selection, Variable* variable, bool with_cut, bool is_signal,
-																											std::vector<Variable*>* variables, DataChain* bg_chain);
+  static TH1F* build_histo(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable);
 
-  static TH1F* draw_signal(TChain* data, std::string selection, Variable* variable, bool with_cut, bool is_signal,
-																																								std::vector<Variable*>* variables, DataChain* bg_chain);
+  static TH1F* draw_signal(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable);
 
-  static TH1F* draw_background(TChain* data, std::string selection, Variable* variable, bool with_cut, bool is_signal,
-																																												std::vector<Variable*>* variables, DataChain* bg_chain);
+  static TH1F* draw_background(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable);
 
-  static void draw_histo(Variable* variable, TChain* data, std::vector<Variable*>* variables, DataChain* bg_chain);
+  static void draw_histo(DataChain* combined_output, std::string final_cuts, Variable* variable);
+
+  static void plot_bdt_results(DataChain* bg_chain, DataChain* signal_chain, SuperVars* super_vars);
 };
 
 

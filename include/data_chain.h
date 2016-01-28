@@ -27,9 +27,11 @@ class DataChain
   TreeLeaves* leaves;
   TChain* chain;
   std::string lep_sel;
+  std::string extra_label;
   std::map<const char*, double> mc_weights;
 
-  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection, TChain* tchain = NULL);
+  DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection,
+												std::string extra_label_arg = "", TChain* tchain = NULL);
 
   void get_data();
 

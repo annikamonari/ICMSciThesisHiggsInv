@@ -12,7 +12,8 @@ void produce_graphs(bool with_cut) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
 
-  BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
+  MVAAnalysis::plot_bdt_results(bg_chains[0], signal_chain, super_vars);
+  //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
   //MVAAnalysis::draw_histo(vars[0], combined_sig_bg, &vars, bg_chains[0]);
 
   for (int i = 0; i < vars.size(); i++)

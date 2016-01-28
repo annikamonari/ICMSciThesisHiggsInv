@@ -24,6 +24,8 @@ class SuperVars
 
   std::vector<Variable*> get_signal_cut_vars();
 
+  std::string get_final_cuts_str();
+
   std::string get_cuts_str_for_tmva();
 };
 

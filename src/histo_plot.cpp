@@ -173,9 +173,19 @@ std::string HistoPlot::style_selection(std::string selection)
 }
 
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-                              bool with_cut, DataChain* data)
+                              bool with_cut, DataChain* data, std::string supervar_selection)
 {
-  std::string selection = "Selection: " + style_selection(get_selection(variable, variables, with_cut, false, data));
+  std::string sel;
+	 if (variables == NULL)
+  {
+    sel = supervar_selection;
+  }
+	 else
+	 {
+			 sel = style_selection(get_selection(variable, variables, with_cut, false, data));
+	 }
+
+	 std::string selection = "Selection: " + sel;
   std::string l1        = "#font[12]{" + selection.substr(0, 90) + "-}";
   std::string l2        = "#font[12]{" + selection.substr(88, 90) + "-}";
   std::string l3        = "#font[12]{" + selection.substr(178, 88) + "}";

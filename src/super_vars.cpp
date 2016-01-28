@@ -39,17 +39,25 @@ std::vector<Variable*> SuperVars::get_signal_cut_vars()
   return vars;
 }
 
+
+std::string SuperVars::get_final_cuts_str()
+{
+	 std::vector<Variable*> cut_vars = get_signal_cut_vars();
+	 std::string cuts_str            = cut_vars[0]->build_multicut_selection(false, &cut_vars);
+
+	 cuts_str.insert(cuts_str.find("(") + 1, HistoPlot::lep_sel_default() + "&&");
+
+	 return cuts_str;
+}
+
 std::string SuperVars::get_cuts_str_for_tmva()
 {
-  std::vector<Variable*> cut_vars = get_signal_cut_vars();
   std::string cut_str = HistoPlot::replace_all(
   		                      HistoPlot::replace_all(
-  		                     		 HistoPlot::replace_all(cut_vars[0]->build_multicut_selection(false, &cut_vars),
+  		                     		 HistoPlot::replace_all(get_final_cuts_str(),
 																																																			"(", " "),
 																																																 "*total_weight_lepveto", ""),
 																																														")", " ");
 
-  cut_str += "&&" + HistoPlot::replace_all(HistoPlot::replace_all(HistoPlot::lep_sel_default(), "(", " "), ")", " ");
-  std::cout << cut_str << std::endl;
   return cut_str;
 }

@@ -64,23 +64,26 @@ std::vector<std::string> MVAAnalysis::get_category_strs(std::vector<double> cate
 	 return cat_strs_vector;
 }
 
-TH1F* MVAAnalysis::build_histo(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable, std::string histo_label)
+TH1F* MVAAnalysis::build_histo(DataChain* combined_output, std::string selection_str, Variable* variable, std::string histo_label)
 {
-  std::string selection_str = final_cuts;
-  std::cout << "final cuts made sel str::" << selection_str << std::endl;
-  selection_str.insert(selection_str.find("(") + 1, category + "&&");
   std::string hist_label = combined_output->extra_label + histo_label;
-  std::cout << selection_str << std::endl;
+
   std::string var_arg = variable->build_var_string(hist_label.c_str(), true);
-  std::cout << "label:" << hist_label << std::endl;
-  std::cout << var_arg << std::endl;
+
   combined_output->chain->Draw(var_arg.c_str(), selection_str.c_str(), "goff");
 
   TH1F* histo = (TH1F*)gDirectory->Get(hist_label.c_str());
-  std::cout << "hist:" << histo << std::endl;
+
   return histo;
 }
 
+std::string MVAAnalysis::build_output_sel_str(std::string category, std::string final_cuts)
+{
+	 std::string selection_str = final_cuts;
+	 selection_str.insert(selection_str.find("(") + 1, category + "&&");
+
+	 return selection_str;
+}
 
 TH1F* MVAAnalysis::draw_signal(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable)
 {
@@ -88,8 +91,8 @@ TH1F* MVAAnalysis::draw_signal(DataChain* combined_output, std::string category,
   combined_output->chain->SetLineWidth(3);
   combined_output->chain->SetFillColor(0);
 
-  TH1F* histo = build_histo(combined_output, category, final_cuts, variable, "signal");
-  std::cout << "sighist" << histo << std::endl;
+  TH1F* histo = build_histo(combined_output, build_output_sel_str(category, final_cuts), variable, "signal");
+
   return histo;
 }
 
@@ -97,9 +100,9 @@ TH1F* MVAAnalysis::draw_background(DataChain* combined_output, std::string categ
 {
   combined_output->chain->SetLineColor(1);
   combined_output->chain->SetFillColor(40);
-  std::cout << "styled" << std::endl;
-  TH1F* hist = build_histo(combined_output, category, final_cuts, variable, "bg");
-  std::cout << "bg histo num entries:" << hist->GetEntries() << std::endl;
+
+  TH1F* hist = build_histo(combined_output, build_output_sel_str(category, final_cuts), variable, "bg");
+
   return hist;
 }
 
@@ -109,6 +112,7 @@ void MVAAnalysis::style_histo(TH1F* histo)
 	 histo->GetYaxis()->SetLabelSize(0.035);
 	 histo->GetYaxis()->SetTitleOffset(1.55);
 	 histo->GetXaxis()->SetLabelSize(0);
+	 histo->SetStats(kFALSE);
 	 histo->SetTitle("");
 }
 
@@ -133,17 +137,17 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   p2->cd();
 
   TH1F* very_sig = draw_signal(combined_output, category_strs[3], final_cuts, variable);
-  TH1F* very_bg   = draw_background(combined_output, category_strs[0], final_cuts, variable);
+  TH1F* very_bg  = draw_background(combined_output, category_strs[0], final_cuts, variable);
 
   legend->AddEntry(very_sig, "Signal (Top 10% of output)", "f");
   legend->AddEntry(very_bg, "Background (Bottom 10% of output)", "f");
   HistoPlot::style_legend(legend);
-  legend->Draw();
 
   very_bg->Draw();
   very_sig->Draw("SAME");
-  very_sig->SetStats(kFALSE);
-  very_bg->SetStats(kFALSE);
+  legend->Draw("SAME");
+  style_histo(very_bg);
+  style_histo(very_sig);
   TH1F* plot_histos[2] = {very_sig, very_bg};
 
   TH1F* max_histo = HistoPlot::get_max_histo(plot_histos);

@@ -148,8 +148,9 @@ double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
   {
     nbins = (int) (atof(var->bins_nocut) + 0.5);
   }
+  double integral = histo->Integral(0, nbins + 1);
 
-  return histo->Integral(0, nbins + 1);
+  return integral;
 }
 
 std::string HistoPlot::replace_all(std::string str, const std::string& from, const std::string& to)
@@ -285,7 +286,7 @@ void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)
 
 void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)
 {
-  single_histo->GetYaxis()->SetTitle("Data/MC");
+  single_histo->GetYaxis()->SetTitle("Signal/Background"); //when not tmva was data/MC
   single_histo->GetYaxis()->SetLabelSize(0.12);
   single_histo->GetYaxis()->SetTitleOffset(0.45);
   single_histo->GetYaxis()->SetTitleSize(0.12);
@@ -293,6 +294,7 @@ void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)
   single_histo->GetXaxis()->SetTitle(x_label);
   single_histo->GetXaxis()->SetTitleSize(0.12);
   single_histo->GetXaxis()->SetTitleOffset(1.1);
+
   single_histo->SetTitle("");
   single_histo->SetStats(false);
   single_histo->GetYaxis()->SetNdivisions(5, 5, 0);
@@ -313,6 +315,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 
   if (selection == "")
   {
+
     selection_str = get_selection(variable, variables, with_cut, is_signal, data_chain);
   }
   else
@@ -322,7 +325,9 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
 
   data_chain->chain->Draw(var_arg.c_str(), selection_str.c_str(), option);
 
-  return (TH1F*)gDirectory->Get(data_chain->label);
+  TH1F* histo = (TH1F*)gDirectory->Get(data_chain->label);
+
+  return histo;
 }
 
 TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
@@ -362,6 +367,7 @@ TH1F* HistoPlot::data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo)
 {
   TH1F* ratio_histo = (TH1F*) data_histo->Clone();
   ratio_histo->Divide(bg_histo);
+  ratio_histo->SetMarkerColor(1);
 
   return set_ratio_error_bars(ratio_histo, data_histo, bg_histo);
 }

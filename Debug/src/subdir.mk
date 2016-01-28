@@ -11,6 +11,7 @@ CPP_SRCS += \
 ../src/main.cpp \
 ../src/mc_weights.cpp \
 ../src/mva_analysis.cpp \
+../src/roc_curves.cpp \
 ../src/super_chains.cpp \
 ../src/super_vars.cpp \
 ../src/tree_leaves.cpp \
@@ -24,6 +25,7 @@ OBJS += \
 ./src/main.o \
 ./src/mc_weights.o \
 ./src/mva_analysis.o \
+./src/roc_curves.o \
 ./src/super_chains.o \
 ./src/super_vars.o \
 ./src/tree_leaves.o \
@@ -37,6 +39,7 @@ CPP_DEPS += \
 ./src/main.d \
 ./src/mc_weights.d \
 ./src/mva_analysis.d \
+./src/roc_curves.d \
 ./src/super_chains.d \
 ./src/super_vars.d \
 ./src/tree_leaves.d \

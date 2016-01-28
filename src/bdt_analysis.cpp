@@ -19,7 +19,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
 
 	 std::string output_folder(bg_chain->label);
-  TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel.root").c_str(),"RECREATE");
+  TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel2.root").c_str(),"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -47,7 +47,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   				       "SplitMode=Random:NormMode=NumEvents:!V" );
 
   factory->BookMethod(TMVA::Types::kBDT, "BDT",
-                      "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");
+                      "!H:!V:NTrees=450:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");
 
   // Train MVAs using the set of training events
   factory->TrainAllMethods();

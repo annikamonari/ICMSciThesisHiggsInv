@@ -7,13 +7,15 @@ void produce_graphs(bool with_cut) {
   SuperVars* super_vars             = new SuperVars();
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
-
+  const char* NeuronType = "sigmoid";
+  const char* NCycles = "100";
+  const char* HiddenLayers = "5,3";//number of neurons in each hidden layer
   SuperChains* super_chains         = new SuperChains(&vars, &cut_vars, with_cut);
   std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
 
-  BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
+  BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType, NCycles, HiddenLayers);
   TTree* output = BDTAnalysis::evaluate_BDT(bg_chains[0], signal_chain, &vars);
   TChain* combined_sig_bg = bg_chains[0]->chain;
   combined_sig_bg->Add(signal_chain->chain);

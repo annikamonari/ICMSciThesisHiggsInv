@@ -224,7 +224,7 @@ TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
   double plot_max = 0.0;
   TH1F* histo_max = NULL;
 
-  for (int i = 1; i < 3; i++)
+  for (int i = 0; i < 2; i++)
   {
     double y_max = get_histo_y_max(plot_histos[i]);
     if (y_max > plot_max)

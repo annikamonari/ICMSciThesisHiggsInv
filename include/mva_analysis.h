@@ -13,11 +13,13 @@ class MVAAnalysis
 
   static std::vector<std::string> get_category_strs(std::vector<double> categories);
 
-  static TH1F* build_histo(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable);
+  static TH1F* build_histo(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable, std::string histo_label);
 
   static TH1F* draw_signal(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable);
 
   static TH1F* draw_background(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable);
+
+  static void style_histo(TH1F* histo);
 
   static void draw_histo(DataChain* combined_output, std::string final_cuts, Variable* variable);
 

@@ -12,7 +12,7 @@ void produce_graphs(bool with_cut) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
 
-  //BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
+  /*BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
   TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
   TFile* file2 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=100-HiddenLayers=5,5,5.root");
   TFile* file3 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=1000-HiddenLayers=5,5,5.root");
@@ -22,9 +22,9 @@ void produce_graphs(bool with_cut) {
   TFile* files[] = {file1, file2, file3};
   std::vector<TFile*> tfiles (files, files+ sizeof(files)/sizeof(TFile*));
   //RocCurves::get_presel_effy(bg_chains[0], super_vars->get_final_cuts_str(), vars[0], &vars);
-  RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);
+  RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);*/
 
-  //MVAAnalysis::plot_bdt_results(bg_chains[0], signal_chain, super_vars);
+  MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, super_vars);
   //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
 
 

@@ -74,7 +74,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   delete factory;
 }
 
-TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables)
+TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables)
 {
 	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -102,8 +102,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, s
 
 	   // --- Event loop
 
-	   TChain* data = signal_chain->chain;
-	   data->Add(bg_chain->chain);
+	   TChain* data = bg_chain->chain;
 
 	   data->SetBranchAddress("dijet_deta", &dijet_deta);
 	   data->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
@@ -158,20 +157,17 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, DataChain* signal_chain, s
 	   return output_tree;
 }
 
-DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+//note before calling this method you must call create_bdt to update the xml weight file:
+DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
-	 //BDTAnalysis::create_BDT(bg_chain, signal_chain, variables, var_cut_str);
+	 TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables);
+	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
 
-	 TTree* output_weight           = BDTAnalysis::evaluate_BDT(bg_chain, signal_chain, variables);
-	 TChain* combined_sig_bg        = (TChain*) bg_chain->chain->Clone();
-	 TChain* cloned_sig             = (TChain*) signal_chain->chain->Clone();
-	 combined_sig_bg->Add(cloned_sig);
-
-	 combined_sig_bg->AddFriend(output_weight);
+	 bg_clone->AddFriend(output_weight);
 
 	 std::string label(bg_chain->label);
-	 label += "_trained_output";
-	 DataChain* output_data = new DataChain(top, "trained_output", bg_chain->legend, "", label, combined_sig_bg);
+	 label += "_w_mva_output";
+	 DataChain* output_data = new DataChain(top, bg_chain->label, bg_chain->legend, "", label, bg_clone);
 
 	 return output_data;
 }

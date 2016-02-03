@@ -24,11 +24,20 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
   THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables);
-  TH1F* data_histo   = draw_data(data, var, with_cut, legend, variables);
 
   stack.Draw();
-  data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
+
+  TH1F* data_histo;
+  if (data != NULL)
+  {
+  		data_histo = draw_data(data, var, with_cut, legend, variables);
+  		data_histo->Draw("SAME");
+  }
+  else
+  {
+  		data_histo = NULL;
+  }
   
   style_stacked_histo(&stack, var->name_styled);
 
@@ -40,10 +49,13 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   draw_subtitle(var, variables, with_cut, data);
 
   p3->cd();
-  TH1F* data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
-  data_bg_ratio_histo->Draw("e1");
-  style_ratio_histo(data_bg_ratio_histo, var->name_styled);
-  draw_yline_on_plot(var, with_cut, 1.0);
+  if (data != NULL)
+  {
+  		TH1F* data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
+  		data_bg_ratio_histo->Draw("e1");
+  		style_ratio_histo(data_bg_ratio_histo, var->name_styled);
+  		draw_yline_on_plot(var, with_cut, 1.0);
+  }
 
   p1->cd();
   draw_title(var->name_styled);
@@ -227,11 +239,14 @@ TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
 
   for (int i = 0; i < 2; i++)
   {
-    double y_max = get_histo_y_max(plot_histos[i]);
-    if (y_max > plot_max)
+    if (plot_histos[i] != NULL)
     {
-      plot_max = y_max;
-      histo_max = plot_histos[i];
+					double y_max = get_histo_y_max(plot_histos[i]);
+					if (y_max > plot_max)
+					{
+							plot_max = y_max;
+							histo_max = plot_histos[i];
+					}
     }
   }
   return histo_max;

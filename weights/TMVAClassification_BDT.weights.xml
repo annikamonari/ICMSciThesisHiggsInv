@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.0 [262656]"/>
     <Info name="ROOT Release" value="5.34/34 [336418]"/>
     <Info name="Creator" value="annikamonari"/>
-    <Info name="Date" value="Thu Jan 28 15:09:42 2016"/>
+    <Info name="Date" value="Wed Feb  3 18:01:27 2016"/>
     <Info name="Host" value="Darwin macitois14.cern.ch 14.5.0 Darwin Kernel Version 14.5.0: Wed Jul 29 02:26:53 PDT 2015; root:xnu-2782.40.9~1/RELEASE_X86_64 x86_64"/>
     <Info name="Dir" value="/Users/annikamonari/Desktop/ICMSciThesisHiggsInv"/>
     <Info name="Training events" value="2983"/>
-    <Info name="TrainingTime" value="1.50140381e+00"/>
+    <Info name="TrainingTime" value="1.27642298e+00"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>

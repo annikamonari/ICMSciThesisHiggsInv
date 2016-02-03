@@ -21,34 +21,35 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p2->Draw();
   p3->Draw();
   p2->cd();
-
+ 
   THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables);
   TH1F* data_histo   = draw_data(data, var, with_cut, legend, variables);
-
+  
   stack.Draw();
   data_histo->Draw("SAME");
   signal_histo->Draw("SAME");
-  
-  style_stacked_histo(&stack, var->name_styled);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo      = get_max_histo(plot_histos);
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.1);
+
   build_legend(legend, max_histo, var, with_cut);
-  draw_subtitle(var, variables, with_cut, data);
+
+   draw_subtitle(var, variables, with_cut, data);
 
   p3->cd();
   TH1F* data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
+
   data_bg_ratio_histo->Draw("e1");
   style_ratio_histo(data_bg_ratio_histo, var->name_styled);
   draw_yline_on_plot(var, with_cut, 1.0);
 
   p1->cd();
   draw_title(var->name_styled);
-
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
+  std::cout<<"before close"<<"\n";
   c1->Close();
 }
 
@@ -155,20 +156,23 @@ double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 
 std::string HistoPlot::replace_all(std::string str, const std::string& from, const std::string& to)
 {
+
   size_t start_pos = 0;
+
   while((start_pos = str.find(from, start_pos)) != std::string::npos) {
     str.replace(start_pos, from.length(), to);
     start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
   }
-
   return str;
 }
 
 std::string HistoPlot::style_selection(std::string selection)
 {
+
   std::string sele = replace_all(replace_all(replace_all(replace_all(selection, ")", ""), ">", " > "), "==", " = "), "&&", ", ");
-  std::replace(sele.begin(), selection.end(), '(', ' ');
-  std::replace(sele.begin(), selection.end(), ')', ' ');
+//  std::replace(sele.begin(), selection.end(), '(', ' ');
+
+ // std::replace(sele.begin(), selection.end(), ')', ' ');  //fails here
 
   return replace_all(replace_all(replace_all(replace_all(replace_all(sele, "_", " "), "))", ""), "(", ""), "((", ""), "<", " < ");
 }
@@ -183,13 +187,15 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
   }
 	 else
 	 {
+
 			 sel = style_selection(get_selection(variable, variables, with_cut, false, data));
 	 }
 
-	 std::string selection = "Selection: " + sel;
+	 std::string selection = "Selection in draw sub: " + sel;
   std::string l1        = "#font[12]{" + selection.substr(0, 90) + "-}";
   std::string l2        = "#font[12]{" + selection.substr(88, 90) + "-}";
   std::string l3        = "#font[12]{" + selection.substr(178, 88) + "}";
+
   TPaveText* pts        = new TPaveText(0.1, 1.0, 0.9, 0.9, "blNDC");
 
   pts->SetBorderSize(0);

@@ -12,9 +12,9 @@ SuperChains::SuperChains(std::vector<Variable*>* discriminating_vars, std::vecto
   bg_qcd        = new DataChain(qcd, qcd_label, qcd_legend, "");
   signal_chain  = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend, "");
   data_chain    = new DataChain(data, data_label, data_legend, "");
-  //mc_weights    = build_mc_weight_map(discriminating_vars, cut_vars, with_cut);
+  /*mc_weights    = build_mc_weight_map(discriminating_vars, cut_vars, with_cut);
 
-  //set_chain_mc_weights();
+  set_chain_mc_weights();*/
 }
 
 std::vector<DataChain*> SuperChains::get_bg_chains()
@@ -56,6 +56,8 @@ std::map<const char*, double> SuperChains::get_var_mc_weights(DataChain* bg_chai
     {
       var_weights[(*vars)[i]->name] = MCWeights::calc_mc_weight(data_chain, get_bg_chains(),
                                                                                                                                 bg_chain, (*vars)[i], with_cut, cut_vars);
+/*std::cout<< "variable:"<<(*vars)[i]->name<<", mc weight:"<< MCWeights::calc_mc_weight(data_chain, get_bg_chains(),
+                                                                                                                                bg_chain, (*vars)[i], with_cut, cut_vars)<<"\n";*/
     }
     else
     {

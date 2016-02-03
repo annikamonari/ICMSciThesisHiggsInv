@@ -54,6 +54,9 @@ class HistoPlot
 
   static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection);
 
+  static double single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables);
+
   static std::string get_string_from_double(double num);
 
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,

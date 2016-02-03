@@ -49,7 +49,6 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p1->cd();
   draw_title(var->name_styled);
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
-  std::cout<<"before close"<<"\n";
   c1->Close();
 }
 
@@ -116,6 +115,14 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
   {
     return selection;
   }
+}
+
+double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables)
+{
+  
+  weight = bg_chain->mc_weights[variable->name];
+  weight_error = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
 }
 
 std::string HistoPlot::get_string_from_double(double num)
@@ -191,7 +198,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 			 sel = style_selection(get_selection(variable, variables, with_cut, false, data));
 	 }
 
-	 std::string selection = "Selection in draw sub: " + sel;
+	 std::string selection = "Selection:" + sel;
   std::string l1        = "#font[12]{" + selection.substr(0, 90) + "-}";
   std::string l2        = "#font[12]{" + selection.substr(88, 90) + "-}";
   std::string l3        = "#font[12]{" + selection.substr(178, 88) + "}";

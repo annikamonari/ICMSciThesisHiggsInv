@@ -120,9 +120,17 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-  
-  weight = bg_chain->mc_weights[variable->name];
-  weight_error = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
+  double MC_N_S = get_histo_integral(build_1d_histo(bg_chain, var, with_cut, false, "goff", variables), with_cut, var); 
+ std::cout<<"MC_N_S: "<< MC_N_S <<"\n";
+  double sigma_N = std::pow(MC_N_S, 0.5);
+  double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
+//std::cout<<"weight: "<<weight<<"\n";
+  double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
+std::cout<<"sigma W = "<<sigma_w<<"\n";
+  double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
+  double sigma_total = std::pow(sigma_total_sq,0.5);
+
+  return sigma_total;
 }
 
 std::string HistoPlot::get_string_from_double(double num)
@@ -229,7 +237,6 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
     legend_str += (" #font[12]{(MC weight: " + get_string_from_double(bg_chains[i]->mc_weights[var->name]) + ")}");
     legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");
   }
-
   return stack;
 }
 

@@ -8,7 +8,6 @@ DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label
   leaves = new TreeLeaves();
   lep_sel = lep_selection;
   extra_label = extra_label_arg;
-  mc_weights = std::map<const char*, double>();
   //leaves->set_branch_addresses(chain);
   //get_data();
   if (tchain != NULL)
@@ -33,10 +32,4 @@ void DataChain::get_data() {
     chain -> GetEntry(i);
   }
 }
-
-void DataChain::set_mc_weights(std::map<const char*, double> weight_map)
-{
-  mc_weights = weight_map;
-}
-
 

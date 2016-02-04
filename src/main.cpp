@@ -7,7 +7,7 @@ void produce_graphs(bool with_cut) {
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
 
-  SuperChains* super_chains         = new SuperChains(&vars, &cut_vars, with_cut);
+  SuperChains* super_chains         = new SuperChains();
   std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
@@ -19,8 +19,6 @@ void produce_graphs(bool with_cut) {
   		std::cout << bg_chains[i]->label << weight << std::endl;
 
   }
-
-  std::cout << bg_chains[0]->mc_weights["alljetsmetnomu_mindphi"] << std::endl;
   /*BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
   TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
   TFile* file2 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=100-HiddenLayers=5,5,5.root");

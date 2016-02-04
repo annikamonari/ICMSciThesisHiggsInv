@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/analysis.cpp \
 ../src/bdt_analysis.cpp \
+../src/data_card.cpp \
 ../src/data_chain.cpp \
 ../src/histo_plot.cpp \
 ../src/main.cpp \
@@ -20,6 +21,7 @@ CPP_SRCS += \
 OBJS += \
 ./src/analysis.o \
 ./src/bdt_analysis.o \
+./src/data_card.o \
 ./src/data_chain.o \
 ./src/histo_plot.o \
 ./src/main.o \
@@ -34,6 +36,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/analysis.d \
 ./src/bdt_analysis.d \
+./src/data_card.d \
 ./src/data_chain.d \
 ./src/histo_plot.d \
 ./src/main.d \

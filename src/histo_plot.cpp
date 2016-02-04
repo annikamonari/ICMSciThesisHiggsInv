@@ -22,7 +22,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p3->Draw();
   p2->cd();
  
-  THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables);
+  THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables, data);
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables);
 
   stack.Draw();
@@ -128,24 +128,34 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
 
   return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
 }
-double HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
+std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   double mc_weight[8];
   double zll_weight;
+
   for(int i=0; i<8;i++)
+  {
+    mc_weight[i] = 1;
+
+    if (bg_chains[i]->lep_sel != "")
     {
-      mc_weights[i]=1;
+      mc_weight[i] = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], var, with_cut, variables);
+	     if(!strcmp(bg_chains[i]->label, "bg_zll"))
+	     {
+	     		zll_weight = mc_weight[i];
+	     }
+    }
 
-      if (bg_chains[i]->lep_sel != ""){
-        mc_weight[i] = MCWcalc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
-	if(!strcmp(bg_chains[i]->label, "bg_zll")){zll_weight = mc_weight[i]};
-      }
+    if (!strcmp(bg_chains[i]->label, "bg_zjets_vv"))
+    {
+    	 mc_weight[i] = zll_weight* 5.651 * 1.513;
+    }
+    std::cout<<i<<": "<<mc_weight[i]<<"\n";
+  }
+  std::vector<double> mc_weights_vector (mc_weight, mc_weight + sizeof(mc_weight) / sizeof(mc_weight[0]));
 
-      if (!strcmp(bg_chains[i]->label, "bg_zjets_vv")){mc_weight[i] = zll_weight* 5.651 * 1.513};
-     std::cout<<i<<": "<<mc_weight[i]<<"\n";
-     }
-    return mc_weight;
+  return mc_weights_vector;
 }
 
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
@@ -260,15 +270,16 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-                                      bool with_cut, std::vector<Variable*>* variables)
+                                      bool with_cut, std::vector<Variable*>* variables, DataChain* data)
 {
   THStack stack(var->name_styled, "");
+  std::vector<double> mc_weights_vector = mc_weights(data, bg_chains, var, with_cut, variables);
 
   for(int i = 0; i < bg_chains.size(); i++) {
-    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
+    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, mc_weights_vector[i]);
     stack.Add(single_bg_histo);
     std::string legend_str(bg_chains[i]->legend);
-    legend_str += (" #font[12]{(MC weight: " + get_string_from_double(bg_chains[i]->mc_weights["alljetsmetnomu_mindphi"]) + ")}");
+    legend_str += (" #font[12]{(MC weight: " + get_string_from_double(mc_weights_vector[i]) + ")}");
     legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");
   }
   return stack;

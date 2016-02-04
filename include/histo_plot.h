@@ -54,7 +54,7 @@ class HistoPlot
 
   static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight);
 
-  static double mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
+  static std::vector<double> mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
   static double single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
@@ -64,7 +64,7 @@ class HistoPlot
 
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,
                                     std::vector<DataChain*> bg_chains, bool with_cut,
-                                    std::vector<Variable*>* variables = NULL);
+                                    std::vector<Variable*>* variables = NULL, DataChain* data = NULL);
 
   static TH1F* get_max_histo(TH1F** plot_histos);
 

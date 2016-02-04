@@ -4,8 +4,11 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
                                             std::vector<Variable*>* variables)
 {
   std::string selection_str = variable->build_multicut_selection(false, variables);
-  selection_str.insert(selection_str.find("(") + 1, bg_chain->lep_sel);
 
+  if (bg_chain->lep_sel != "")
+  {
+  	 selection_str.insert(selection_str.find("(") + 1, bg_chain->lep_sel);
+  }
   return selection_str;
 }
 

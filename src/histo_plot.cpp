@@ -136,15 +136,36 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
     return selection;
   }
 }
+double HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables)
+{
+  double mc_weight[8];
+  double zll_weight;
+  for(int i=0; i<8;i++)
+    {
+      mc_weights[i]=1;
+
+      if (bg_chains[i]->lep_sel != ""){
+        mc_weight[i] = MCWcalc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
+	if(!strcmp(bg_chains[i]->label, "bg_zll")){zll_weight = mc_weight[i]};
+      }
+
+      if (!strcmp(bg_chains[i]->label, "bg_zjets_vv")){mc_weight[i] = zll_weight* 5.651 * 1.513};
+     std::cout<<i<<": "<<mc_weights[i]<<"\n";
+     }
+}
 
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-  double MC_N_S = get_histo_integral(build_1d_histo(bg_chain, var, with_cut, false, "goff", variables), with_cut, var); 
+TCanvas* c1     = new TCanvas("c1", var->name_styled, 800, 800);
+  TH1F* bg = build_1d_histo(bg_chain, var, with_cut, false, "goff", variables);
+bg->Draw();
+double MC_N_S = get_histo_integral(bg, with_cut, var); 
  std::cout<<"MC_N_S: "<< MC_N_S <<"\n";
   double sigma_N = std::pow(MC_N_S, 0.5);
   double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
-//std::cout<<"weight: "<<weight<<"\n";
+  std::cout<<"weight: "<<weight<<"\n";
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
 std::cout<<"sigma W = "<<sigma_w<<"\n";
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);

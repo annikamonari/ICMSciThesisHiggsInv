@@ -65,10 +65,6 @@ std::vector<int> process_line_2(std::vector<DataChain*> bg_chains)
   return pl_vector;
 
 }
-std::vector<int> rate_line()
-{
-}
-
 
 /*
 int imax = 1;//bin number

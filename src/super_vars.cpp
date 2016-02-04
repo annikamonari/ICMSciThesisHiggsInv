@@ -32,7 +32,7 @@ std::vector<Variable*> SuperVars::get_discriminating_vars()
 
 std::vector<Variable*> SuperVars::get_signal_cut_vars()
 {
-  Variable* var_arr[] =  {metnomu_significance, alljetsmetnomu_mindphi, dijet_deta, jet1_E, jet2_E};
+  Variable* var_arr[] =  {alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E};
 
   std::vector<Variable*> vars (var_arr, var_arr + sizeof(var_arr) / sizeof(var_arr[0]));
 

@@ -1,7 +1,7 @@
 #include "../include/data_card.h"
 
 
-double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables)
+double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables);
   double total_signal = HistoPlot::get_histo_integral(signalh, with_cut, var);
@@ -9,7 +9,7 @@ double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, s
   return std::pow(total_signal,0.5);
 }
 
-double* get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains,
+double* DataCard::get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   double bg_errors[bg_chains.size()];

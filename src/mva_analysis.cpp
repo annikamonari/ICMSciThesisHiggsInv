@@ -168,7 +168,7 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   c1->Close();
 }
 
-void MVAAnalysis::plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, SuperVars* super_vars)
+void MVAAnalysis::plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars)
 {
 	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
 	 std::string selection_str        = super_vars->get_final_cuts_str();
@@ -179,7 +179,7 @@ void MVAAnalysis::plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain*
 	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, var_cut_str_tmva);
 	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, var_cut_str_tmva);
   Variable* mva_output = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
-  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, NULL, true, &vars, false);
+  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false);
 }
 
 std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string var_cut_str_tmva)

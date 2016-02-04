@@ -25,7 +25,7 @@ class MVAAnalysis
 
   static void draw_histo(DataChain* combined_output, std::string final_cuts, Variable* variable);
 
-  static void plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, SuperVars* super_vars);
+  static void plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars);
 
   static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains,
 																																																						std::vector<Variable*> vars, std::string var_cut_str_tmva);

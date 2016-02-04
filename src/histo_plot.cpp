@@ -68,7 +68,6 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p1->cd();
   draw_title(var->name_styled);
   c1->SaveAs((build_file_name(var, with_cut)).c_str());
-  std::cout<<"before close"<<"\n";
   c1->Close();
 }
 
@@ -136,6 +135,22 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
   {
     return selection;
   }
+}
+
+double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables)
+{
+  double MC_N_S = get_histo_integral(build_1d_histo(bg_chain, var, with_cut, false, "goff", variables), with_cut, var); 
+ std::cout<<"MC_N_S: "<< MC_N_S <<"\n";
+  double sigma_N = std::pow(MC_N_S, 0.5);
+  double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
+//std::cout<<"weight: "<<weight<<"\n";
+  double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
+std::cout<<"sigma W = "<<sigma_w<<"\n";
+  double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
+  double sigma_total = std::pow(sigma_total_sq,0.5);
+
+  return sigma_total;
 }
 
 std::string HistoPlot::get_string_from_double(double num)
@@ -211,7 +226,7 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 			 sel = style_selection(get_selection(variable, variables, with_cut, false, data));
 	 }
 
-	 std::string selection = "Selection in draw sub: " + sel;
+	 std::string selection = "Selection:" + sel;
   std::string l1        = "#font[12]{" + selection.substr(0, 90) + "-}";
   std::string l2        = "#font[12]{" + selection.substr(88, 90) + "-}";
   std::string l3        = "#font[12]{" + selection.substr(178, 88) + "}";
@@ -242,7 +257,6 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
     legend_str += (" #font[12]{(MC weight: " + get_string_from_double(bg_chains[i]->mc_weights[var->name]) + ")}");
     legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");
   }
-
   return stack;
 }
 

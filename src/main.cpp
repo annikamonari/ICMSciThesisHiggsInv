@@ -27,10 +27,15 @@ void produce_graphs(bool with_cut) {
   //MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, super_vars);
   //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
 
-  for (int i = 0; i < vars.size(); i++)
+  std::string test = ""; 
+  double MC_N_S = HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(bg_chains[0], vars[0], with_cut, false, "goff", &cut_vars,test), with_cut, vars[0]);
+  double error;  
+  error = HistoPlot::single_bg_error(data_chain, bg_chains, bg_chains[0], vars[0], true, &cut_vars);
+  std::cout<<"variable: "<<vars[0]->name<<", background: "<<bg_chains[0]->legend<<", total events: "<<MC_N_S<<"\n"<<"error = "<<error<<"\n";
+  /*for (int i = 0; i < vars.size(); i++)
   {
      HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
-  }
+  }*/
 }
 
 int main(int argc, char** argv) {

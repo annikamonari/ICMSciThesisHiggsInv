@@ -3,17 +3,17 @@
 SuperVars::SuperVars()
 {
   forward_tag_eta        = new Variable("forward_tag_eta","Forward Tag #eta","-5.0","5.0","1.8",
-                                        "5.0","60","30", "", true);
-  dijet_deta             = new Variable("dijet_deta","Dijet #Delta#eta","3.5","8.0","4.2","8.0","25","20", "");
+                                        "5.0","60","5", "", true);
+  dijet_deta             = new Variable("dijet_deta","Dijet #Delta#eta","3.5","8.0","4.2","8.0","25","10", "");
   metnomu_significance   = new Variable("metnomu_significance","MET Significance (No Muons)",
-                                        "3.0","12.0","3.5","","50","30", "");
+                                        "3.0","12.0","3.5","","50","10", "");
   sqrt_ht                = new Variable("sqrt_ht","Square Root HCAL Scalar Sum of Energy","0.0","35.0","9.0",
                                         "18.0","75","10", "GeV^{0.5}");
   alljetsmetnomu_mindphi = new Variable("alljetsmetnomu_mindphi","All Jets - MET Min. #Delta#phi (No Muons)",
-                                        "0.0","3.5","2.0","3.0","40","20", "");
-  dijet_M                = new Variable("dijet_M","Dijet Mass","0.0","2000.0","800.0","","50","20", "GeV");
+                                        "0.0","3.5","2.0","3.0","40","5", "");
+  dijet_M                = new Variable("dijet_M","Dijet Mass","0.0","2000.0","800.0","","50","10", "GeV");
   metnomuons             = new Variable("metnomuons","MET (No Muons)","0.0","400.0","120.0","",
-                                        "50","20", "GeV");
+                                        "50","5", "GeV");
   jet1_E                 = new Variable("jet1_E","Jet1E","0.0","5000.0","50.0","","30","100", "GeV");
   jet2_E                 = new Variable("jet2_E","Jet2E","0.0","5000.0","45.0","","30","100", "GeV");
 }

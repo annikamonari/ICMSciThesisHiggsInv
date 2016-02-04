@@ -3,7 +3,7 @@
 
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                           DataChain* signal_chain, DataChain* data, bool with_cut,
-                          std::vector<Variable*>* variables)
+                          std::vector<Variable*>* variables, bool plot_data)
 {
   TCanvas* c1     = new TCanvas("c1", var->name_styled, 800, 800);
   TPad* p1        = new TPad("p1", "p1", 0.0, 0.95, 1.0, 1.0);
@@ -24,26 +24,18 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
  
   THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables, data);
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables);
+  TH1F* data_histo   = draw_data(data, var, with_cut, legend, variables);
 
   stack.Draw();
   signal_histo->Draw("SAME");
+  if(plot_data){data_histo->Draw("SAME");}
 
-  TH1F* data_histo;
-  if (data != NULL)
-  {
-  		data_histo = draw_data(data, var, with_cut, legend, variables);
-  		data_histo->Draw("SAME");
-  }
-  else
-  {
-  		data_histo = NULL;
-  }
-  
   style_stacked_histo(&stack, var->name_styled);
+
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo      = get_max_histo(plot_histos);
 
-  stack.SetMaximum(get_histo_y_max(max_histo)*1.1);
+  stack.SetMaximum(get_histo_y_max(max_histo)*1.15);
 
   build_legend(legend, max_histo, var, with_cut);
 
@@ -51,18 +43,18 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
   p3->cd();
   TH1F* data_bg_ratio_histo;
-  if (data != NULL)
+  if (data_histo != NULL)
   {
   		data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[1], plot_histos[0]);
-  		data_bg_ratio_histo->Draw("e1");
-  		  style_ratio_histo(data_bg_ratio_histo, var->name_styled);
-  		  draw_yline_on_plot(var, with_cut, 1.0);
   }
   else
   {
   		data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[2], plot_histos[0]);
   }
 
+  data_bg_ratio_histo->Draw("e1");
+  style_ratio_histo(data_bg_ratio_histo, var->name_styled);
+  draw_yline_on_plot(var, with_cut, 1.0);
 
   p1->cd();
   draw_title(var->name_styled);
@@ -140,7 +132,7 @@ std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain
 
     if (bg_chains[i]->lep_sel != "")
     {
-      mc_weight[i] = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], var, with_cut, variables);
+      mc_weight[i] = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], (*variables)[0], with_cut, variables);
 	     if(!strcmp(bg_chains[i]->label, "bg_zll"))
 	     {
 	     		zll_weight = mc_weight[i];
@@ -404,7 +396,7 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
   data_chain->chain->SetLineColor(1);
-  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1", variables));
+  TH1F* data_histo = build_1d_histo(data_chain, variable, with_cut, false, "E1", variables);
   legend->AddEntry(data_histo, data_chain->legend, "lep");
 
   return data_histo;

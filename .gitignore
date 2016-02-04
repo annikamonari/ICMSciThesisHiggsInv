@@ -16,10 +16,7 @@ bin/*
 
 # Ignore Mac specific files
 .DS_Store
-<<<<<<< HEAD
-/Debug/
 Debug
-=======
 
 setup.sh
 TMVAClassification.C
@@ -35,5 +32,4 @@ MakefileOriginial
 effciencies.C
 bg_zll/*
 bg_zll
-
->>>>>>> 1e43c8e2086e5e0b677ca8073365861a65a9c9b3
+TMVApp.root

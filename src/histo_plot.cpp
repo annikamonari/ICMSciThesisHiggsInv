@@ -151,8 +151,9 @@ double HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
       }
 
       if (!strcmp(bg_chains[i]->label, "bg_zjets_vv")){mc_weight[i] = zll_weight* 5.651 * 1.513};
-     std::cout<<i<<": "<<mc_weights[i]<<"\n";
+     std::cout<<i<<": "<<mc_weight[i]<<"\n";
      }
+    return mc_weight;
 }
 
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,

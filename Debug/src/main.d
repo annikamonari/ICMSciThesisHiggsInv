@@ -1,4 +1,5 @@
-src/main.o: ../src/main.cpp ../src/../include/mva_analysis.h \
+src/main.o: ../src/main.cpp ../src/../include/data_card.h \
+  ../src/../include/mva_analysis.h \
   ../src/../include/../include/roc_curves.h \
   ../src/../include/../include/bdt_analysis.h \
   ../src/../include/../include/histo_plot.h \
@@ -141,6 +142,8 @@ src/main.o: ../src/main.cpp ../src/../include/mva_analysis.h \
   /Applications/root_v5.34.34/include/TH2F.h \
   /Applications/root_v5.34.34/include/TKey.h \
   /Applications/root_v5.34.34/include/TGraph.h
+
+../src/../include/data_card.h:
 
 ../src/../include/mva_analysis.h:
 

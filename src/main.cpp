@@ -1,6 +1,6 @@
 #include <initializer_list>
 #include <cmath>
-#include "../include/mva_analysis.h"
+#include "../include/data_card.h"
 
 void produce_graphs(bool with_cut) {
   SuperVars* super_vars             = new SuperVars();

@@ -47,7 +47,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   				       "SplitMode=Random:NormMode=NumEvents:!V" );
 
   factory->BookMethod(TMVA::Types::kBDT, "BDT",
-                      "!H:!V:NTrees=450:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");
+                      "!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");
 
   // Train MVAs using the set of training events
   factory->TrainAllMethods();
@@ -69,7 +69,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   std::cout << "==> To view the results, launch the GUI: \"root -l ./TMVAGui.C\"" << std::endl;
   std::cout << std::endl;
 
-  gROOT->ProcessLine(".L TMVAGui.C");
+  //gROOT->ProcessLine(".L TMVAGui.C");
 
   delete factory;
 }

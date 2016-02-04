@@ -92,7 +92,7 @@ class HistoPlot
                            std::vector<Variable*>* variables = NULL);
 
   static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
-                               std::vector<Variable*>* variables = NULL, double mc_weight);
+                               std::vector<Variable*>* variables = NULL, double mc_weight = 1);
 
   static void set_histo_style(bool is_signal, int fill_colour = 0);
   

@@ -104,10 +104,10 @@ void HistoPlot::draw_title(const char* title)
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
-                                     bool with_cut, bool is_signal, DataChain* bg_chain)
+                                     bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight)
 {
   std::string selection;
-  std::cout << "test:" << bg_chain->mc_weights["alljetsmetnomu_mindphi"] << std::endl;
+
   if ((variables != NULL) && (with_cut))
   {
     selection = variable->build_multicut_selection(is_signal, variables);
@@ -118,23 +118,15 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
   }
 
   selection.insert(selection.find("(") + 1, lep_sel_default());
-  std::cout << add_mc_to_selection(bg_chain, variable, selection) << std::endl;
-  return add_mc_to_selection(bg_chain, variable, selection);
+
+  return add_mc_to_selection(bg_chain, variable, selection, mc_weight);
 }
 
-std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection)
+std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight)
 {
-  if (strcmp(bg_chain->label, "data_chain") && strcmp(bg_chain->label, "signal_chain"))
-  {
-    std::cout << bg_chain->mc_weights["alljetsmetnomu_mindphi"] << std::endl;
-  		std::string mc_weight_str = get_string_from_double(bg_chain->mc_weights["alljetsmetnomu_mindphi"]);
+  std::string mc_weight_str = get_string_from_double(mc_weight);
 
-    return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
-  }
-  else
-  {
-    return selection;
-  }
+  return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
 }
 double HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
@@ -276,7 +268,7 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
     TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables);
     stack.Add(single_bg_histo);
     std::string legend_str(bg_chains[i]->legend);
-    legend_str += (" #font[12]{(MC weight: " + get_string_from_double(bg_chains[i]->mc_weights[var->name]) + ")}");
+    legend_str += (" #font[12]{(MC weight: " + get_string_from_double(bg_chains[i]->mc_weights["alljetsmetnomu_mindphi"]) + ")}");
     legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");
   }
   return stack;
@@ -373,7 +365,7 @@ void HistoPlot::style_legend(TLegend* legend)
 }
 
 TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, bool is_signal,
-                                const char* option, std::vector<Variable*>* variables, std::string selection)
+                                const char* option, std::vector<Variable*>* variables, std::string selection, double mc_weight)
 {
   std::string var_arg = variable->build_var_string(data_chain->label, with_cut);
   std::string selection_str;
@@ -381,7 +373,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   if (selection == "")
   {
 
-    selection_str = get_selection(variable, variables, with_cut, is_signal, data_chain);
+    selection_str = get_selection(variable, variables, with_cut, is_signal, data_chain, mc_weight);
   }
   else
   {
@@ -420,12 +412,12 @@ TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool wit
 }
 
 TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, 
-                                 int fill_colour, bool with_cut, std::vector<Variable*>* variables)
+                                 int fill_colour, bool with_cut, std::vector<Variable*>* variables, double mc_weight)
 {
   data_chain->chain->SetLineColor(1);
   data_chain->chain->SetFillColor(fill_colour);
 
-  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables);
+  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, "", mc_weight);
 }
 
 TH1F* HistoPlot::data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo)

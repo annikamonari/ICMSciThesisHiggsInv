@@ -15,7 +15,7 @@ class DataCard
   static std::vector<double> get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
   							                                 Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
-  static std::vector<int> process_line_2(std::vector<DataChain*> bg_chains);
+  static std::vector<int> process_line_2(int size);
 
   static int test();
 
@@ -25,7 +25,7 @@ class DataCard
 
   static std::string jmax_string(int jmax);
 
-  static std::string imax_string(int imax);
+  static std::string imax_string();
 
   static std::string kmax_string(int kmax);
 
@@ -46,6 +46,18 @@ class DataCard
   static std::vector<double> get_zeros(int size);
 
   static std::vector<std::vector<double> > get_uncertainty_vectors(double signal_error, std::vector<double> bg_errors);
+
+  static std::string get_single_uncertainty_str(std::vector<double> single_uncertainty_vector);
+
+  static std::string get_uncertainties_string(std::vector<std::vector<double> > uncertainty_vectors);
+
+  static void create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
+																														Variable* var, bool with_cut, std::vector<Variable*>* variables);
+
+  static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables);
+
+  static std::string get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,
+																																																					DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables);
 };
 
 #endif

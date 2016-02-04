@@ -11,6 +11,15 @@ void produce_graphs(bool with_cut) {
   std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
+  std::vector<double> bg_chains_weight;
+  for (int i = 0; i < bg_chains.size(); i++)
+  {
+  		double weight = MCWeights::calc_mc_weight(data_chain, bg_chains, bg_chains[i], vars[0], with_cut, &vars);
+  		bg_chains_weight.push_back(weight);
+  		std::cout << bg_chains[i]->label << weight << std::endl;
+
+  }
+
   std::cout << bg_chains[0]->mc_weights["alljetsmetnomu_mindphi"] << std::endl;
   /*BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
   TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
@@ -24,18 +33,18 @@ void produce_graphs(bool with_cut) {
   //RocCurves::get_presel_effy(bg_chains[0], super_vars->get_final_cuts_str(), vars[0], &vars);
   RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);*/
 
-  //MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, super_vars);
+  MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, super_vars);
   //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
 
-  std::string test = ""; 
+  /*std::string test = "";
   double MC_N_S = HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(bg_chains[0], vars[0], with_cut, false, "goff", &cut_vars,test), with_cut, vars[0]);
   double error;  
   error = HistoPlot::single_bg_error(data_chain, bg_chains, bg_chains[0], vars[0], true, &cut_vars);
-  std::cout<<"variable: "<<vars[0]->name<<", background: "<<bg_chains[0]->legend<<", total events: "<<MC_N_S<<"\n"<<"error = "<<error<<"\n";
-  /*for (int i = 0; i < vars.size(); i++)
+  std::cout<<"variable: "<<vars[0]->name<<", background: "<<bg_chains[0]->legend<<", total events: "<<MC_N_S<<"\n"<<"error = "<<error<<"\n";*/
+  for (int i = 0; i < vars.size(); i++)
   {
-     HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
-  }*/
+     //HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars);
+  }
 }
 
 int main(int argc, char** argv) {

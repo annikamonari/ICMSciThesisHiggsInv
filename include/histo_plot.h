@@ -50,9 +50,9 @@ class HistoPlot
                                      bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
-                                   bool with_cut, bool is_signal, DataChain* bg_chain);
+                                   bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight = 1.0);
 
-  static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection);
+  static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight);
 
   static double single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables);
@@ -83,7 +83,7 @@ class HistoPlot
 
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
                               bool is_signal, const char* option,
-                              std::vector<Variable*>* variables = NULL, std::string selection = "");
+                              std::vector<Variable*>* variables = NULL, std::string selection = "", double mc_weight = 1);
 
   static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
                          std::vector<Variable*>* variables = NULL);
@@ -92,7 +92,7 @@ class HistoPlot
                            std::vector<Variable*>* variables = NULL);
 
   static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
-                               std::vector<Variable*>* variables = NULL);
+                               std::vector<Variable*>* variables = NULL, double mc_weight);
 
   static void set_histo_style(bool is_signal, int fill_colour = 0);
   

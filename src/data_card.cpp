@@ -1,6 +1,7 @@
 #include "../include/data_card.h"
-
-
+#include <sstream>
+#include <string>
+/*
 double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables);
@@ -70,11 +71,18 @@ int DataCard::test() {
 
   return 0;
 }
-
+std::string DataCard::int_to_str(int sint)
+{
+  std::ostringstream ss;
+  ss << sint;
+  std::string str(ss.str());
+  return str;
+}
 std::string DataCard::jmax_string(int jmax)
 {
   std::string jmax_str = "jmax ";
-  jmax_str += std::to_string(jmax);
+  
+  jmax_str += int_to_str(jmax);
   jmax_str += "  number of backgrounds";
 
   return jmax_str;
@@ -88,7 +96,7 @@ std::string DataCard::imax_string(int imax)
 std::string DataCard::kmax_string(int kmax)
 {
   std::string kmax_str = "kmax ";
-  kmax_str += std::to_string(kmax);
+  kmax_str += int_to_str(kmax);
   kmax_str += "  number of nuisance parameters (sources of systematical uncertainties)";
 
   return kmax_str;
@@ -103,7 +111,7 @@ std::string DataCard::bin_observation_string(int nbins)
 {
   std::string bin_obs_str;
   bin_obs_str += "observation ";
-  bin_obs_str += std::to_string(nbins);
+  bin_obs_str += int_to_str(nbins);
 
   return bin_obs_str;
 }
@@ -144,7 +152,7 @@ std::string DataCard::process_2_string(std::vector<int> line_2_vals)
 	 for (int i = 0; i < line_2_vals.size(); i++)
 	 	{
 	 		line_2 += "   ";
-    line_2 += std::to_string(line_2_vals[i]);
+    line_2 += int_to_str(line_2_vals[i]);
 	 	}
 
 	 return line_2;
@@ -156,7 +164,7 @@ std::string DataCard::rate_string(std::vector<double> rates)
   for (int i = 0; i < rates.size(); i++)
   {
   		rate_str += "   ";
-  		rate_str += std::to_string(rates[i]);
+  		rate_str += int_to_str(rates[i]);
   }
 
   return rate_str;

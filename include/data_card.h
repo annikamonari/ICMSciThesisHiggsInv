@@ -21,6 +21,8 @@ class DataCard
 
   static std::vector<int> bin_line(std::vector<DataChain*> bg_chains);
 
+  static std::string int_to_str(int sint);
+
   static std::string jmax_string(int jmax);
 
   static std::string imax_string(int imax);

@@ -15,7 +15,7 @@ double* DataCard::get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chai
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   double bg_errors[bg_chains.size()];
-  double rates = get_rates(data, sbg_chains,  bg_chain,var,with_cut, variables);
+  double rates = get_rates(data, bg_chains,var,with_cut, variables);
   for(int i=0; i<bg_chains.size();i++)
   {
     bg_errors_no = HistoPlot::single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables);
@@ -23,15 +23,15 @@ double* DataCard::get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chai
   }
   return bg_errors;
 }
-double get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
+double get_rates(DataChain* data, std::vector<DataChain*> bg_chains,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
-{
+{//returns total number of each background as an array of doubles.
   double rates[bg_chains.size()];
  
   for(int i=0; i<bg_chains.size();i++)
   {
-    double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
-    double N = get_histo_integral(bg, with_cut, var);//integral of single bg
+    double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], var, with_cut, variables);
+    double N = get_histo_integral(bg_chains[i], with_cut, var);//integral of single bg
     rates[i]=N*weight;
   }  
    return rates;

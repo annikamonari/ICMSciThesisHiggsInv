@@ -40,7 +40,6 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   }
   
   style_stacked_histo(&stack, var->name_styled);
-
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   TH1F* max_histo      = get_max_histo(plot_histos);
 
@@ -48,7 +47,7 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
 
   build_legend(legend, max_histo, var, with_cut);
 
-   draw_subtitle(var, variables, with_cut, data);
+  draw_subtitle(var, variables, with_cut, data);
 
   p3->cd();
   TH1F* data_bg_ratio_histo;
@@ -125,8 +124,9 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
 std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight)
 {
   std::string mc_weight_str = get_string_from_double(mc_weight);
-
-  return selection.insert(selection.find("*") + 1, mc_weight_str + "*");
+  std::string sel_new = selection += "*" + mc_weight_str; //selection.insert(selection.find("*") + 1, mc_weight_str + "*");
+  std::cout << sel_new << std::endl;
+  return sel_new;
 }
 std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)

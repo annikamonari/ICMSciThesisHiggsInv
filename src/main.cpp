@@ -23,8 +23,8 @@ void produce_graphs(bool with_cut) {
   std::vector<TFile*> tfiles (files, files+ sizeof(files)/sizeof(TFile*));
   //RocCurves::get_presel_effy(bg_chains[0], super_vars->get_final_cuts_str(), vars[0], &vars);
   RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);*/
-
-  MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, data_chain, super_vars);
+  DataCard::test();
+  //MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, data_chain, super_vars);
   //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
 
   /*std::string test = "";

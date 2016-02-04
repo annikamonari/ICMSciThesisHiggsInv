@@ -20,13 +20,26 @@ double* DataCard::get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chai
   return bg_errors;
 }
 
-double get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
+double DataCard::get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   for(int i=0; i < bg_chains.size(); i++)
   {
     double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
   }
+
+  return 0;
+}
+
+int DataCard::test() {
+
+  std::fstream fs;
+  fs.open ("test.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+
+  fs << "\n more lorem ipsum \n";
+  fs << "test  0   0   9";
+
+  fs.close();
 
   return 0;
 }

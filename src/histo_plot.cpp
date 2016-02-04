@@ -24,7 +24,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
  
   THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables, data);
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables);
-  TH1F* data_histo   = draw_data(data, var, with_cut, legend, variables);
+  TH1F* data_histo   = NULL;
+  if(plot_data){TH1F* data_histo   = draw_data(data, var, with_cut, legend, variables);}
 
   stack.Draw();
   signal_histo->Draw("SAME");
@@ -126,7 +127,7 @@ std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain
   double mc_weight[8];
   double zll_weight;
 
-  for(int i=0; i<8;i++)
+  for(int i=0; i<bg_chains.size();i++)
   {
     mc_weight[i] = 1;
 
@@ -371,6 +372,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
                                 const char* option, std::vector<Variable*>* variables, std::string selection, double mc_weight)
 {
   std::string var_arg = variable->build_var_string(data_chain->label, with_cut);
+  std::cout << "var arg" << var_arg << std::endl;
   std::string selection_str;
 
   if (selection == "")
@@ -396,7 +398,7 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
   data_chain->chain->SetMarkerStyle(7);
   data_chain->chain->SetMarkerColor(1);
   data_chain->chain->SetLineColor(1);
-  TH1F* data_histo = build_1d_histo(data_chain, variable, with_cut, false, "E1", variables);
+  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1", variables));
   legend->AddEntry(data_histo, data_chain->legend, "lep");
 
   return data_histo;

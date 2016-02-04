@@ -167,7 +167,7 @@ DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variabl
 
 	 std::string label(bg_chain->label);
 	 label += "_w_mva_output";
-	 DataChain* output_data = new DataChain(top, bg_chain->label, bg_chain->legend, "", label, bg_clone);
+	 DataChain* output_data = new DataChain(z_ll, bg_chain->label, bg_chain->legend, bg_chain->lep_sel, label, bg_clone);
 
 	 return output_data;
 }

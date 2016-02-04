@@ -1,4 +1,4 @@
-#include "../include/data_card.h"
+/*#include "../include/data_card.h"
 #include <sstream>
 #include <string>
 
@@ -197,7 +197,7 @@ std::string DataCard::get_uncertainties_string(std::vector<std::vector<double> >
 
   for (int i = 0; i < uncertainty_vectors.size(); i++)
   	{
-    uncertainties += ("uncertainty" + std::to_string(i) + " lnN  ");
+    uncertainties += ("uncertainty" + int_to_str(i) + " lnN  ");
     uncertainties += get_single_uncertainty_str(uncertainty_vectors[i]);
     uncertainties += "\n";
   	}
@@ -227,7 +227,7 @@ std::string DataCard::get_single_uncertainty_str(std::vector<double> single_unce
     	}
 	 		else
 	 			{
-	 				vector_str += std::to_string(single_uncertainty_vector[i]);
+	 				vector_str += int_to_str(single_uncertainty_vector[i]);
 	 			}
 	 }
 

@@ -254,30 +254,21 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
 																					Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
 	 std::fstream fs;
-	 fs.open ("test1.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	 fs.open ("test1.txt", std::fstream::in | std::ofstream::trunc | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 	 fs << imax_string();
-	 std::cout << imax_string() << std::endl;
   fs << jmax_string(size - 1);
-  std::cout << jmax_string(size - 1) << std::endl;
   fs << kmax_string(size);
   fs << dashed_line();
   fs << bin_header_string();
-  std::cout << bin_header_string() << std::endl;
   fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables));
-  std::cout << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables)) << std::endl;
   fs << dashed_line();
-  std::cout << dashed_line() << std::endl;
   fs << bin_grid_line(size);
-  std::cout << bin_grid_line(size) << std::endl;
+  fs << process_labels(bg_chains, signal_chain);
   fs << process_2_string(process_line_2(size));
-  std::cout << process_2_string(process_line_2(size)) << std::endl;
   fs << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables));
-  std::cout << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables)) << std::endl;
   fs << dashed_line();
-  std::cout << dashed_line() << std::endl;
   fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables);
-  std::cout << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables) << std::endl;
 	 fs.close();
 }
 

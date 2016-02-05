@@ -7,10 +7,15 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
 
   if (bg_chain->lep_sel != "")
   {
-         std::cout<<"lep sel not ="" but is: "<<bg_chain->lep_sel<<"\n";
+    std::cout<<"lep sel not ="" but is: "<<bg_chain->lep_sel<<"\n";
   	 selection_str.insert(selection_str.find("(") + 1, bg_chain->lep_sel);
   }
-  
+
+  if (selection_str.find("(&&", 0) == 0)
+  	{
+  		 selection_str.erase(1, 2);
+  	}
+  std::cout<<"lep sel in get mc selection str "<<bg_chain->lep_sel<<"\n";
   return selection_str;
 }
 
@@ -38,7 +43,6 @@ double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
 double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-  std::cout<<"about to calc selection string in calc_mc_weights fun"<<"\n";
   std::string selection   = get_mc_selection_str(bg_chain, var, variables);
   std::cout<<"selection string: "<<selection<<"\n"<<"about to calc dta in ctrl in calc_mc_weights fun"<<"\n";
   double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);

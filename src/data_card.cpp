@@ -16,7 +16,6 @@ std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataCha
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   double bg_errors[bg_chains.size()];
-  std::cout<<"chain length: "<<bg_chains.size()<<"\n";
   std::vector<double> rates = get_rates(data, bg_chains, signal_chain, var,with_cut, variables);
     for(int i=0; i<bg_chains.size();i++)
   {

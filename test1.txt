@@ -6,6 +6,7 @@ bin 1
 observation 36553 
 ------------ 
 bin   1   1   1   1   1   1   1   1   1 
+process   signal_chain   bg_zll   bg_wjets_ev   bg_wjets_muv   bg_wjets_tauv   bg_top   bg_vv   bg_zjets_vv   bg_qcd 
 process   0   1   2   3   4   5   6   7   8
 rate   7018.06   14.647   3590.29   766.359   10795.2   240473   60055.4   50396.7   48148.3 
 ------------ 

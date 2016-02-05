@@ -254,7 +254,7 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
 																					Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
 	 std::fstream fs;
-	 fs.open ("test1.txt", std::fstream::in | std::ofstream::trunc | std::fstream::out | std::fstream::app);
+	 fs.open ("test1.txt", std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 	 fs << imax_string();
   fs << jmax_string(size - 1);

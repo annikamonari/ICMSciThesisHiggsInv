@@ -1,1 +1,20 @@
-i
+iiimax 1  number of channels 
+jmax 8  number of backgrounds 
+kmax 9  number of nuisance parameters (sources of systematical uncertainties) 
+------------ 
+bin 1 
+observation 36553 
+------------ 
+bin   1   1   1   1   1   1   1   1   1 
+process   0   1   2   3   4   5   6   7   8
+rate   7018   14   3590   766   10795   240473   60055   50396   48148 
+------------ 
+uncertainty0 lnN     1   -   -   -   -   -   -   -   -
+uncertainty1 lnN     -   1   -   -   -   -   -   -   -
+uncertainty2 lnN     -   -   1   -   -   -   -   -   -
+uncertainty3 lnN     -   -   -   1   -   -   -   -   -
+uncertainty4 lnN     -   -   -   -   1   -   -   -   -
+uncertainty5 lnN     -   -   -   -   -   1   -   -   -
+uncertainty6 lnN     -   -   -   -   -   -   1   -   -
+uncertainty7 lnN     -   -   -   -   -   -   -   1   -
+uncertainty8 lnN     -   -   -   -   -   -   -   -   1

@@ -35,7 +35,7 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
   TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, true, "goff", variables);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);
  
-  for(int i = 4/*0*/; i < bg_chains.size();i++)
+  for(int i = 0; i < bg_chains.size();i++)
   {
     std::cout<<"bg chain about to have total calculated"<<bg_chains[i]->legend<<"\n";
     double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], var, with_cut, variables);
@@ -73,7 +73,7 @@ int DataCard::test() {
 
   return 0;
 }
-std::string DataCard::int_to_str(int sint)
+std::string DataCard::double_to_str(double sint)
 {
   std::ostringstream ss;
   ss << sint;
@@ -83,7 +83,7 @@ std::string DataCard::int_to_str(int sint)
 std::string DataCard::jmax_string(int jmax)
 {
   std::string jmax_str = "jmax ";
-  jmax_str += int_to_str(jmax);
+  jmax_str += double_to_str(jmax);
 
   jmax_str += "  number of backgrounds \n";
 
@@ -98,7 +98,7 @@ std::string DataCard::imax_string()
 std::string DataCard::kmax_string(int kmax)
 {
   std::string kmax_str = "kmax ";
-  kmax_str += int_to_str(kmax);
+  kmax_str += double_to_str(kmax);
   kmax_str += "  number of nuisance parameters (sources of systematical uncertainties) \n";
   return kmax_str;
 }
@@ -112,7 +112,7 @@ std::string DataCard::bin_observation_string(int nbins)
 {
   std::string bin_obs_str;
   bin_obs_str += "observation ";
-  bin_obs_str += int_to_str(nbins);
+  bin_obs_str += double_to_str(nbins);
   bin_obs_str += " \n";
 
 
@@ -158,7 +158,7 @@ std::string DataCard::process_2_string(std::vector<int> line_2_vals)
 	 for (int i = 0; i < line_2_vals.size(); i++)
 	 	{
 	 		line_2 += "   ";
-    line_2 += int_to_str(line_2_vals[i]);
+    line_2 += double_to_str(line_2_vals[i]);
 	 	}
   line_2 += "\n";
 
@@ -171,7 +171,7 @@ std::string DataCard::rate_string(std::vector<double> rates)
   for (int i = 0; i < rates.size(); i++)
   {
   		rate_str += "   ";
-  		rate_str += int_to_str(rates[i]);
+  		rate_str += double_to_str(rates[i]);
   }
   rate_str += " \n";
 
@@ -185,10 +185,11 @@ std::vector<std::vector<double> > DataCard::get_uncertainty_vectors(double signa
   error_lines[0] = get_zeros(size);
   error_lines[0][0] = signal_error;
 
-  for (int i = 0; i < size; i++)
+  for (int i = 0; i < bg_errors.size() ; i++)
   {
   		error_lines[i+1] = get_zeros(size);
     error_lines[i+1][i+1] = bg_errors[i];
+    std::cout << error_lines[i+1][i+1] << std::endl;
   }
 
   return error_lines;
@@ -200,7 +201,7 @@ std::string DataCard::get_uncertainties_string(std::vector<std::vector<double> >
 
   for (int i = 0; i < uncertainty_vectors.size(); i++)
   	{
-    uncertainties += ("uncertainty" + int_to_str(i) + " lnN  ");
+    uncertainties += ("uncertainty" + double_to_str(i) + " lnN  ");
     uncertainties += get_single_uncertainty_str(uncertainty_vectors[i]);
     uncertainties += "\n";
   	}
@@ -230,7 +231,7 @@ std::string DataCard::get_single_uncertainty_str(std::vector<double> single_unce
     	}
 	 		else
 	 			{
-	 				vector_str += int_to_str(single_uncertainty_vector[i]);
+	 				vector_str += double_to_str(single_uncertainty_vector[i]);
 	 			}
 	 }
 
@@ -256,17 +257,27 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
 	 fs.open ("test1.txt", std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 	 fs << imax_string();
+	 std::cout << imax_string() << std::endl;
   fs << jmax_string(size - 1);
+  std::cout << jmax_string(size - 1) << std::endl;
   fs << kmax_string(size);
   fs << dashed_line();
   fs << bin_header_string();
+  std::cout << bin_header_string() << std::endl;
   fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables));
+  std::cout << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables)) << std::endl;
   fs << dashed_line();
+  std::cout << dashed_line() << std::endl;
   fs << bin_grid_line(size);
+  std::cout << bin_grid_line(size) << std::endl;
   fs << process_2_string(process_line_2(size));
+  std::cout << process_2_string(process_line_2(size)) << std::endl;
   fs << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables));
+  std::cout << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables)) << std::endl;
   fs << dashed_line();
+  std::cout << dashed_line() << std::endl;
   fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables);
+  std::cout << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables) << std::endl;
 	 fs.close();
 }
 

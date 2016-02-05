@@ -118,7 +118,7 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
 {
   std::string mc_weight_str = get_string_from_double(mc_weight);
   std::string sel_new = selection += "*" + mc_weight_str; //selection.insert(selection.find("*") + 1, mc_weight_str + "*");
-  std::cout << sel_new << std::endl;
+  //std::cout << sel_new << std::endl;
   return sel_new;
 }
 std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
@@ -144,7 +144,7 @@ std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain
     {
     	 mc_weight[i] = zll_weight* 5.651 * 1.513;
     }
-    std::cout<<i<<": "<<mc_weight[i]<<"\n";
+    //std::cout<<i<<": "<<mc_weight[i]<<"\n";
   }
   std::vector<double> mc_weights_vector (mc_weight, mc_weight + sizeof(mc_weight) / sizeof(mc_weight[0]));
 
@@ -372,7 +372,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
                                 const char* option, std::vector<Variable*>* variables, std::string selection, double mc_weight)
 {
   std::string var_arg = variable->build_var_string(data_chain->label, with_cut);
-  std::cout << "var arg" << var_arg << std::endl;
+  //std::cout << "var arg" << var_arg << std::endl;
   std::string selection_str;
 
   if (selection == "")

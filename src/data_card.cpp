@@ -1,4 +1,4 @@
-/*#include "../include/data_card.h"
+#include "../include/data_card.h"
 #include <sstream>
 #include <string>
 
@@ -16,11 +16,13 @@ std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataCha
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   double bg_errors[bg_chains.size()];
+  std::cout<<"chain length: "<<bg_chains.size()<<"\n";
   std::vector<double> rates = get_rates(data, bg_chains, signal_chain, var,with_cut, variables);
-  for(int i=0; i<bg_chains.size();i++)
+    for(int i=0; i<bg_chains.size();i++)
   {
-    double bg_errors_no = HistoPlot::single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables);
-    bg_errors[i] = 1+(bg_errors_no/rates[i+1]);
+    std::cout<<"bg chain about to have error calculated"<<bg_chains[i]->legend<<"\n";
+    double bg_errors_val = HistoPlot::single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables);
+    bg_errors[i] = 1+(bg_errors_val/rates[i+1]);
   }
   std::vector<double> bg_error_vector (bg_errors, bg_errors + sizeof(bg_errors) / sizeof(bg_errors[0]));
 
@@ -34,9 +36,11 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
   TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, true, "goff", variables);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);
  
-  for(int i = 0; i < bg_chains.size();i++)
+  for(int i = 4/*0*/; i < bg_chains.size();i++)
   {
+    std::cout<<"bg chain about to have total calculated"<<bg_chains[i]->legend<<"\n";
     double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], var, with_cut, variables);
+    std::cout<<"weight= "<<weight<<"\n";
     TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", weight);
     double N = HistoPlot::get_histo_integral(histo, with_cut, var);//integral of single bg
     rates[i + 1]=N*weight;

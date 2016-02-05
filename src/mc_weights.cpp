@@ -7,14 +7,17 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
 
   if (bg_chain->lep_sel != "")
   {
+         std::cout<<"lep sel not ="" but is: "<<bg_chain->lep_sel<<"\n";
   	 selection_str.insert(selection_str.find("(") + 1, bg_chain->lep_sel);
   }
+  
   return selection_str;
 }
 
 double MCWeights::get_nevents(DataChain* data_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, 
                               std::string selection)
 {
+  std::cout<<"selection in getnevents"<<selection<<"\n";
   return HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(data_chain, var, with_cut, false, "goff", variables, 
                                                                  selection), with_cut, var);
 }
@@ -35,11 +38,15 @@ double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable
 double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
+  std::cout<<"about to calc selection string in calc_mc_weights fun"<<"\n";
   std::string selection   = get_mc_selection_str(bg_chain, var, variables);
+  std::cout<<"selection string: "<<selection<<"\n"<<"about to calc dta in ctrl in calc_mc_weights fun"<<"\n";
   double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);
+std::cout<<"data in ctrl= "<<data_in_ctrl<<"about to calc mc in ctrl in calc_mc_weights fun"<<"\n";
   double ctrl_mc_in_ctrl  = get_nevents(bg_chain, var, with_cut, variables, selection);
+std::cout<<"mc in ctrl= "<<data_in_ctrl<<"about to calc other bg in ctrl in calc_mc_weights fun"<<"\n";
   double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - ctrl_mc_in_ctrl;
-
+  std::cout<<"mc weight= "<<(data_in_ctrl - other_bg_in_ctrl) / ctrl_mc_in_ctrl<<"\n";
   return (data_in_ctrl - other_bg_in_ctrl) / ctrl_mc_in_ctrl;
 }
 

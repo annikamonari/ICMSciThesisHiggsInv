@@ -398,7 +398,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
                                 const char* option, std::vector<Variable*>* variables, std::string selection, double mc_weight)
 {
   std::string var_arg = variable->build_var_string(data_chain->label, with_cut);
-  //std::cout << "var arg" << var_arg << std::endl;
+
   std::string selection_str;
 
   if (selection == "")
@@ -410,7 +410,8 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   {
     selection_str = selection;
   }
-
+  std::cout << "selection - " << selection_str << std::endl;
+  std::cout << "var arg - " << var_arg << std::endl;
   data_chain->chain->Draw(var_arg.c_str(), selection_str.c_str(), option);
 
   TH1F* histo = (TH1F*)gDirectory->Get(data_chain->label);

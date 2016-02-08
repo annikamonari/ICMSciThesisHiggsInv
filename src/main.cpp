@@ -28,7 +28,7 @@ void produce_graphs(bool with_cut) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
   
-  //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
+  DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
   /*double signal_error = DataCard::get_signal_error(signal_chain, cut_vars[0],true, &cut_vars); 
   std::cout<<"signal error: "<<signal_error<<"\n";
   //std::vector<double> bg_errors = DataCard::get_bg_errors(data_chain,bg_chains,signal_chain, cut_vars[0], true, &cut_vars);
@@ -54,12 +54,12 @@ void produce_graphs(bool with_cut) {
   for (int j=0; j < 1; j++)
   {
     if (!strcmp(mva_type, "BDT")){
-        BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NTrees,BoostType,AdaBoostBeta,
-	SeparationType, nCuts);
+        //BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NTrees,BoostType,AdaBoostBeta,
+	//SeparationType, nCuts);
 	//file_names[counter] = BDTAnalysis::BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts).c_str();
     };
     if (!strcmp(mva_type, "MLP")){
-        MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
+        //MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
 	file_names[counter] = MLPAnalysis::MLP_output_name_str(NeuronType[0],NCycles[j],HiddenLayers[5]).c_str();
     };
     std::cout<< "file_name :"<< file_names[counter] <<"\n";

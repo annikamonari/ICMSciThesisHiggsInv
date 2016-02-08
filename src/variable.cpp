@@ -97,12 +97,9 @@ std::string Variable::build_multicut_selection(bool is_signal, std::vector<Varia
 
   for (int i = 0; i < variables->size(); i++)
   {
-    if (((*variables)[i]->name) != name)
-    {
-      std::string var_sel = build_selection((*variables)[i]->name, (*variables)[i]->x_min_cut,
+    std::string var_sel = build_selection((*variables)[i]->name, (*variables)[i]->x_min_cut,
                                             (*variables)[i]->x_max_cut, (*variables)[i]->abs_for_cut);
-      sel_string.insert(insert_pos, "&&" + var_sel);
-    }
+    sel_string.insert(insert_pos, "&&" + var_sel);
   }
 
   return sel_string;

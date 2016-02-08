@@ -35,14 +35,14 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
   double rates[bg_chains.size() + 1];
   TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, true, "goff", variables);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);
- 
+
   for(int i = 0; i < bg_chains.size();i++)
   {
-    std::cout << bg_chains[i]->label << std::endl;
     std::cout << bg_mc_weights[i] << std::endl;
   		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
     double N = HistoPlot::get_histo_integral(histo, with_cut, var); //integral of single bg
     rates[i + 1]= N;
+    std::cout << bg_chains[i]->label << " - " << N << std::endl;
   }
   std::vector<double> rates_vector (rates, rates + sizeof(rates) / sizeof(rates[0]));
 
@@ -241,7 +241,7 @@ std::vector<double> DataCard::get_zeros(int size)
 
 std::string DataCard::no_shape_line()
 {
-  return "shapes *    ch1  FAKE";
+  return "shapes *    ch1  FAKE \n";
 }
 
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,

@@ -60,18 +60,6 @@ std::vector<int> DataCard::process_line_2(int size)
 
 }
 
-int DataCard::test() {
-
-  std::fstream fs;
-  fs.open ("test1.txt", std::fstream::in | std::fstream::out | std::fstream::app);
-
-  fs << "\n more lorem ipsum \n";
-  fs << "test  0   0   9";
-
-  fs.close();
-
-  return 0;
-}
 std::string DataCard::double_to_str(double sint)
 {
   std::ostringstream ss;

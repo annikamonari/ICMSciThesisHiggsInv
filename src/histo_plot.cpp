@@ -191,11 +191,8 @@ double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_ch
 {
   TH1F* bg = build_1d_histo(bg_chain, var, with_cut, false, "goff", variables);
   double MC_N_S = get_histo_integral(bg, with_cut, var);
-  std::cout<<"MC_N_S: "<< MC_N_S <<"\n";
   double sigma_N = std::pow(MC_N_S, 0.5);
-  std::cout<<"weight: "<<weight<<"\n";
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
-  std::cout<<"sigma W = "<<sigma_w<<"\n";
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
   double sigma_total = std::pow(sigma_total_sq,0.5);
 

@@ -55,26 +55,20 @@ std::cout<<"mc in ctrl= "<<data_in_ctrl<<"about to calc other bg in ctrl in calc
 double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-  std::string selection   = get_mc_selection_str(bg_chain, var, variables);
-  double data_N_C     = get_nevents(data, var, with_cut, variables, selection);
-std::cout<<"data control: "<<data_N_C<<"\n";
-  double MC_N_C  = get_nevents(bg_chain, var, with_cut, variables, selection);
-std::cout<<"MC control: "<<MC_N_C<<"\n";
-  double bg_N_C = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - MC_N_C;
-std::cout<<"bg control: "<<bg_N_C<<"\n";
-
+  std::string selection = get_mc_selection_str(bg_chain, var, variables);
+  double data_N_C       = get_nevents(data, var, with_cut, variables, selection);
+  double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, selection);
+  double bg_N_C         = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - MC_N_C;
   double sigma_data_N_C = std::pow(data_N_C, 0.5);
-  double sigma_MC_N_C = std::pow(MC_N_C, 0.5);
-  double sigma_bg_N_C = std::pow(bg_N_C, 0.5);
-double weight = calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
+  double sigma_MC_N_C   = std::pow(MC_N_C, 0.5);
+  double sigma_bg_N_C   = std::pow(bg_N_C, 0.5);
+  double weight         = calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
+  double err1           = sigma_data_N_C/MC_N_C;
+  double err2           = sigma_bg_N_C/MC_N_C;
+  double err3           = (data_N_C- bg_N_C)/(2*pow(MC_N_C,1.5));
+  double error_sq       = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
+  double weight_error   = std::pow(error_sq, 0.5);
 
-  double err1 = sigma_data_N_C/MC_N_C;
-  double err2 = sigma_bg_N_C/MC_N_C;
-  double err3 = (data_N_C- bg_N_C)/(2*pow(MC_N_C,1.5));
-std::cout<<"partial answer: "<<err1<<"\n"<<err2<<"\n"<<err3<<"\n";
-  double error_sq = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
-  double weight_error = std::pow(error_sq, 0.5);
-std::cout<<"weight: "<<weight<<"\n";
   return weight_error;
 
 }

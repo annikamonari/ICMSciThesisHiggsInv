@@ -1,14 +1,23 @@
 #include "../include/roc_curves.h"
 
-TH1D* RocCurves::plot_rejBvsS(TFile* training_output)
+TH1D* RocCurves::plot_rejBvsS(TFile* training_output, std::string method_name)
 {
-  TH1D* rejBvsS_histo = (TH1D*) training_output->Get("Method_MLP/MLP/MVA_MLP_rejBvsS;1");
+  std::string file_path;
+	 if (method_name == "MLP")
+  	{
+    file_path = "Method_MLP/MLP/MVA_MLP_rejBvsS;1";
+  	}
+	 else if (method_name == "BDT")
+	 	{
+	 		file_path = "Method_BDT/BDT/MVA_BDT_rejBvsS;1";
+	 	}
+	 TH1D* rejBvsS_histo = (TH1D*) training_output->Get(file_path.c_str());
 
   return rejBvsS_histo;
 }
 
 void RocCurves::get_rocs(std::vector<TFile*> training_outputs, DataChain* signal,
-																									DataChain* bg, SuperVars* super_vars)
+																									DataChain* bg, SuperVars* super_vars, std::string method_name)
 {
 	 std::vector<Variable*> vars      = super_vars->get_discriminating_vars();
 	 std::string preselection         = super_vars->get_final_cuts_str();

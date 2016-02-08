@@ -29,15 +29,6 @@ void produce_graphs(bool with_cut) {
   DataChain* data_chain             = super_chains->data_chain;
   
   DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
-  /*double signal_error = DataCard::get_signal_error(signal_chain, cut_vars[0],true, &cut_vars); 
-  std::cout<<"signal error: "<<signal_error<<"\n";
-  //std::vector<double> bg_errors = DataCard::get_bg_errors(data_chain,bg_chains,signal_chain, cut_vars[0], true, &cut_vars);
-  //std::cout<<"bg errors: "<<bg_errors[0]<<"\n";
-
-  //std::vector<std::vector<double> > error_matrix = DataCard::get_uncertainty_vectors(signal_error, bg_errors);
-  /*for (int i=0;i<7;i++){
-   std::cout<<"error matrix: "<<"\n"<<error_matrix[i][i]<<"\n";
-  }*/
 
   /*BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());*/
   TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
@@ -48,7 +39,7 @@ void produce_graphs(bool with_cut) {
   TFile* file6 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=500-HiddenLayers=5,5,5,5,5.root");
   TFile* files[] = {file1, file2, file3};
   std::vector<TFile*> tfiles (files, files+ sizeof(files)/sizeof(TFile*));
-  RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);
+  RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars, "MLP");
 
   //MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, data_chain, super_vars,NeuronType, NCycles, HiddenLayers,NTrees, BoostType, AdaBoostBeta, SeparationType,nCuts,  mva_type);
   for (int j=0; j < 1; j++)
@@ -68,12 +59,6 @@ void produce_graphs(bool with_cut) {
   //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(), NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts);
   //MLPAnalysis::get_MLP_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
 
-
-  /*std::string test = "";
-  double MC_N_S = HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(bg_chains[0], vars[0], with_cut, false, "goff", &cut_vars,test), with_cut, vars[0]);
-  double error;  
-  error = HistoPlot::single_bg_error(data_chain, bg_chains, bg_chains[0], vars[0], true, &cut_vars);
-  std::cout<<"variable: "<<vars[0]->name<<", background: "<<bg_chains[0]->legend<<", total events: "<<MC_N_S<<"\n"<<"error = "<<error<<"\n";*/
   for (int i = 0; i < 1; i++)
   {
      //HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars, false);

@@ -12,10 +12,10 @@
 class RocCurves
 {
  public:
-  static TH1D* plot_rejBvsS(TFile* training_output);
+  static TH1D* plot_rejBvsS(TFile* training_output, std::string method_name);
 
   static void get_rocs(std::vector<TFile*> training_outputs, DataChain* signal,
-																													DataChain* bg, SuperVars* super_vars);
+																													DataChain* bg, SuperVars* super_vars, std::string method_name);
 
   static void plot_all_rejBvsS(std::vector<TFile*> training_outputs, std::string bg_name, DataChain* signal,
 																																										DataChain* bg, std::string preselection, Variable* var, std::vector<Variable*>* variables);

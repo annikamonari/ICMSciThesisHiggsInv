@@ -178,7 +178,6 @@ std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector
 	   {
 	     mc_weight_errors[i] = zll_weight_error * 5.651 * 1.513;
 	   }
-	   std::cout << "weight error for " << bg_chains[i]->label << ": " << mc_weight_errors[i] << std::endl;
 	 }
 	 std::vector<double> mc_weights_vector (mc_weight_errors, mc_weight_errors + sizeof(mc_weight_errors) / sizeof(mc_weight_errors[0]));
 

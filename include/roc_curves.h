@@ -24,10 +24,10 @@ class RocCurves
 																									       std::vector<Variable*>* variables);
 
   static TGraph* parked_data_point(DataChain* signal, DataChain* bg, std::string preselection, Variable* var,
-  																										       std::vector<Variable*>* variables);
+  																										       std::vector<Variable*>* variables, TLegend* legend);
   static TH1F* histo(DataChain* data, Variable* variable, std::string preselection);
 
-  static TH1F* histo2(DataChain* data, Variable* variable, std::string preselection);
+  static void style_legend(TLegend* legend);
 };
 
 #endif

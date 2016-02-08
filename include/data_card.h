@@ -60,6 +60,8 @@ class DataCard
   static std::string get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,
 																																											DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables,
 																																											std::vector<double> bg_mc_weights);
+
+  static std::string no_shape_line();
 };
 
 #endif

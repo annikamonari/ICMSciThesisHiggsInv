@@ -239,6 +239,11 @@ std::vector<double> DataCard::get_zeros(int size)
   return zeros;
 }
 
+std::string DataCard::no_shape_line()
+{
+  return "shapes *    ch1  FAKE";
+}
+
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
 																					Variable* var, bool with_cut, std::vector<Variable*>* variables )
 {
@@ -249,6 +254,7 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
 	 fs << imax_string();
   fs << jmax_string(size - 1);
   fs << kmax_string(size);
+  fs << no_shape_line();
   fs << dashed_line();
   fs << bin_header_string();
   fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables, mc_weights));

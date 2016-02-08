@@ -169,14 +169,15 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   c1->Close();
 }
 
-void MVAAnalysis::plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars)
+void MVAAnalysis::plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars, const char* NTrees, const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
 {
 	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
 	 std::vector<Variable*> vars2      = super_vars->get_discriminating_vars();
 	 std::string selection_str        = super_vars->get_final_cuts_str();
 	 std::string var_cut_str_tmva     = super_vars->get_cuts_str_for_tmva();
 
-	 BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars2, var_cut_str_tmva);
+	 BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars2, var_cut_str_tmva, NTrees,BoostType,AdaBoostBeta,
+	SeparationType, nCuts);
 
 	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, var_cut_str_tmva);
 	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, var_cut_str_tmva);

@@ -14,14 +14,13 @@ void produce_graphs(bool with_cut) {
   
   double signal_error = DataCard::get_signal_error(signal_chain, cut_vars[0],true, &cut_vars); 
   std::cout<<"signal error: "<<signal_error<<"\n";
-  std::vector<double> bg_errors = DataCard::get_bg_errors(data_chain,bg_chains,signal_chain,
-  cut_vars[0], true, &cut_vars);
-  std::cout<<"bg errors: "<<bg_errors[0]<<"\n";
+  //std::vector<double> bg_errors = DataCard::get_bg_errors(data_chain,bg_chains,signal_chain, cut_vars[0], true, &cut_vars);
+  //std::cout<<"bg errors: "<<bg_errors[0]<<"\n";
 
-  std::vector<std::vector<double> > error_matrix = DataCard::get_uncertainty_vectors(signal_error, bg_errors);
-  for (int i=0;i<7;i++){
+  //std::vector<std::vector<double> > error_matrix = DataCard::get_uncertainty_vectors(signal_error, bg_errors);
+  /*for (int i=0;i<7;i++){
    std::cout<<"error matrix: "<<"\n"<<error_matrix[i][i]<<"\n";
-  }
+  }*/
 
   /*BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
   TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");

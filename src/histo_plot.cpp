@@ -151,19 +151,19 @@ std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain
   return mc_weights_vector;
 }
 
+
+
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
-TCanvas* c1     = new TCanvas("c1", var->name_styled, 800, 800);
   TH1F* bg = build_1d_histo(bg_chain, var, with_cut, false, "goff", variables);
-bg->Draw();
-double MC_N_S = get_histo_integral(bg, with_cut, var); 
- std::cout<<"MC_N_S: "<< MC_N_S <<"\n";
+  double MC_N_S = get_histo_integral(bg, with_cut, var);
+  std::cout<<"MC_N_S: "<< MC_N_S <<"\n";
   double sigma_N = std::pow(MC_N_S, 0.5);
   double weight = MCWeights::calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variables);
   std::cout<<"weight: "<<weight<<"\n";
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
-std::cout<<"sigma W = "<<sigma_w<<"\n";
+  std::cout<<"sigma W = "<<sigma_w<<"\n";
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
   double sigma_total = std::pow(sigma_total_sq,0.5);
 

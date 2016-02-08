@@ -10,10 +10,10 @@ class DataCard
   static double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
   static std::vector<double> get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-                               Variable* var, bool with_cut, std::vector<Variable*>* variables);
+                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights);
 
   static std::vector<double> get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-  							                                 Variable* var, bool with_cut, std::vector<Variable*>* variables);
+  							                              Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights);
 
   static std::vector<int> process_line_2(int size);
 
@@ -54,10 +54,12 @@ class DataCard
   static void create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
 																														Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
-  static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables);
+  static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,
+																																		std::vector<double> bg_mc_weights);
 
   static std::string get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,
-																																																					DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables);
+																																											DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables,
+																																											std::vector<double> bg_mc_weights);
 };
 
 #endif

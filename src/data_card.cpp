@@ -33,7 +33,7 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights)
 {
   double rates[bg_chains.size() + 1];
-  TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, true, "goff", variables);
+  TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);
 
   for(int i = 0; i < bg_chains.size();i++)
@@ -93,7 +93,7 @@ std::string DataCard::kmax_string(int kmax)
 
 std::string DataCard::bin_header_string()
 {
-	 return "bin 1 \n";
+	 return "bin c1 \n";
 }
 
 std::string DataCard::bin_observation_string(int nbins)
@@ -112,7 +112,7 @@ std::string DataCard::bin_grid_line(int cols)
   std::string bin_grid_str = "bin";
 	 for (int i = 0; i < cols; i++)
   {
-    bin_grid_str += "   1";
+    bin_grid_str += "   c1";
   }
   bin_grid_str += " \n";
 
@@ -241,7 +241,7 @@ std::vector<double> DataCard::get_zeros(int size)
 
 std::string DataCard::no_shape_line()
 {
-  return "shapes *    ch1  FAKE \n";
+  return "shapes *    c1  FAKE \n";
 }
 
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,

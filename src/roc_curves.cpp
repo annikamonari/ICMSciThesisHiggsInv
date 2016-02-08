@@ -88,7 +88,6 @@ void RocCurves::style_legend(TLegend* legend)
 	 legend->SetTextSize(0.03);
 	 legend->SetBorderSize(0);
 	 legend->SetFillStyle(0);
-	 legend->SetBorderSize(1);
 }
 
 

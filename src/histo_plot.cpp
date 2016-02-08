@@ -151,6 +151,8 @@ std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain
   return mc_weights_vector;
 }
 
+// new function written ust like the one above: HistoPlot::mc_weights, which calculates the right error for the bgs without a control
+// region (its just sqrt(unweighted mc events in signal) / unweighted mc events in signal)
 std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
 																																																				std::vector<Variable*>* variables, std::vector<double> bg_mc_weights)
 {
@@ -182,6 +184,8 @@ std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector
 	 return mc_weights_vector;
 }
 
+// problem: TH1F* bg doesn't plot with the mc weight? in the function above this, whenever we call this we pass through
+// the mc weight (see last arg: double weight), so if you realise we need it then just put it onto the end of the build_1d_histo call
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, double weight)
 {

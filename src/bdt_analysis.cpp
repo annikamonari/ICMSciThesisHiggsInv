@@ -17,8 +17,24 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   // --- Here the preparation phase begins
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
 
-	 std::string output_folder(bg_chain->label);
-  TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel2.root").c_str(),"RECREATE");
+// bdt options
+  const char* NTrees = "800";
+  const char* BoostType = "AdaBoost";
+  const char* AdaBoostBeta ="0.5";
+  const char* SeparationType ="GiniIndex";
+  const char* nCuts = "0";
+
+
+  std::string output_folder(bg_chain->label);
+  output_folder.append("/");
+  std::string output_file;
+
+  output_file = BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts);
+  output_folder.append(output_file);
+  const char* name = output_folder.c_str();
+  TFile* output_tmva = TFile::Open(name,"RECREATE");
+
+ // TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel2.root").c_str(),"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -44,16 +60,10 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
 
   factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
   				       "SplitMode=Random:NormMode=NumEvents:!V" );
-  const char* NTrees = "800";
-  const char* BoostType = "AdaBoost";
-  const char* AdaBoostBeta ="0.5";
-  const char* SeparationType ="GiniIndex";
-  const char* nCuts = "30";
-  std::string opt = BDT_options_str(NTrees,BoostType, AdaBoostBeta,SeparationType,nCuts);
-  std::cout<<"option str: "<< opt<<"\n";
 
-  factory->BookMethod(TMVA::Types::kBDT, "BDT",opt
-                      /*"!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"*/);
+  std::cout<<"bdt options"<<BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts)<<"\n";
+ 
+ factory->BookMethod(TMVA::Types::kBDT, BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts));/*"BDT","!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");*/
 
   // Train MVAs using the set of training events
   factory->TrainAllMethods();

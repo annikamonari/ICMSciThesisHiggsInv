@@ -54,7 +54,7 @@ void produce_graphs(bool with_cut) {
   {
     if (!strcmp(mva_type, "BDT")){
         BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
-	file_names[counter] = BDTAnalysis::BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts).c_str();
+	//file_names[counter] = BDTAnalysis::BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts).c_str();
     };
     if (!strcmp(mva_type, "MLP")){
         MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);

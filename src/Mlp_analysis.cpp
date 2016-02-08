@@ -22,7 +22,6 @@ void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::
     output_folder.append("/");
     std::string output_file;
  
-    
     output_file = MLP_output_name_str(NeuronType,NCycles,HiddenLayers);
   
   output_folder.append(output_file);
@@ -54,6 +53,7 @@ void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::
   factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
   				       "SplitMode=Random:NormMode=NumEvents:!V" );
   std::cout<<"mlp option str: "<<MLP_options_str(NeuronType, NCycles, HiddenLayers)<<"\n";
+  
   factory->BookMethod(TMVA::Types::kMLP, "MLP", MLP_options_str(NeuronType, NCycles, HiddenLayers) );
 
 

@@ -22,7 +22,7 @@ void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, std::stri
 {
 	 std::string plot_name = bg_name + " ROC Curves";
 	 TCanvas* c1     = new TCanvas("c1", plot_name.c_str());
-	 TLegend* legend = new TLegend(0.15, 0.5, 0.3, 0.2);
+	 TLegend* legend = new TLegend(0.15, 0.5, 0.65, 0.2);
 	 TGraph* point   = parked_data_point(signal, bg, preselection, var, variables, legend);
 
 	 for (int i = 0; i < 3; i++)
@@ -88,6 +88,7 @@ void RocCurves::style_legend(TLegend* legend)
 	 legend->SetTextSize(0.03);
 	 legend->SetBorderSize(0);
 	 legend->SetFillStyle(0);
+	 legend->SetBorderSize(1);
 }
 
 

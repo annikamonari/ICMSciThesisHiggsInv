@@ -7,6 +7,7 @@ void produce_graphs(bool with_cut) {
   SuperVars* super_vars             = new SuperVars();
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
+
   const char* mva_type = "MLP";
   const char* NTrees = "10";
   const char* BoostType = "AdaBoost";
@@ -27,6 +28,7 @@ void produce_graphs(bool with_cut) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
   
+  DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
   /*double signal_error = DataCard::get_signal_error(signal_chain, cut_vars[0],true, &cut_vars); 
   std::cout<<"signal error: "<<signal_error<<"\n";
   //std::vector<double> bg_errors = DataCard::get_bg_errors(data_chain,bg_chains,signal_chain, cut_vars[0], true, &cut_vars);
@@ -67,7 +69,7 @@ void produce_graphs(bool with_cut) {
   //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(), NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts);
   //MLPAnalysis::get_MLP_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
 
-  DataCard::create_datacard(data_chain,signal_chain,bg_chains, cut_vars[0], with_cut, &cut_vars);
+
   /*std::string test = "";
   double MC_N_S = HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(bg_chains[0], vars[0], with_cut, false, "goff", &cut_vars,test), with_cut, vars[0]);
   double error;  

@@ -22,9 +22,7 @@ std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataCha
 
   for(int i = 0; i < bg_chains.size(); i++)
   {
-   // std::cout<<"bg chain about to have error calculated"<<bg_chains[i]->legend<<"\n";
-    double bg_errors_val = HistoPlot::single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables,bg_mc_weights[i]);
-    bg_errors[i] = 1+(bg_errors_val/rates[i+1]);
+    bg_errors_parsed[i] = 1 + (bg_errors[i] / rates[i+1]);
   }
   std::vector<double> bg_error_vector (bg_errors_parsed, bg_errors_parsed + sizeof(bg_errors_parsed) / sizeof(bg_errors_parsed[0]));
 
@@ -40,7 +38,9 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
  
   for(int i = 0; i < bg_chains.size();i++)
   {
-    TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
+    std::cout << bg_chains[i]->label << std::endl;
+    std::cout << bg_mc_weights[i] << std::endl;
+  		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
     double N = HistoPlot::get_histo_integral(histo, with_cut, var); //integral of single bg
     rates[i + 1]= N;
   }

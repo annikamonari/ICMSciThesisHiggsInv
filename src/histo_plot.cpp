@@ -163,7 +163,7 @@ std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector
 	 {
 	   TH1F* histo = build_1d_histo(bg_chains[i], var,with_cut, false, "goff", variables);
 	   double integral = get_histo_integral(histo, with_cut, var);
-	 		mc_weight_errors[i] = (1 / std::pow(integral, 0.5));
+	 		mc_weight_errors[i] = std::pow(integral, 0.5);
 
 	   if (bg_chains[i]->lep_sel != "")
 	   {
@@ -178,6 +178,7 @@ std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector
 	   {
 	     mc_weight_errors[i] = zll_weight_error * 5.651 * 1.513;
 	   }
+	   std::cout << "weight error for " << bg_chains[i]->label << ": " << mc_weight_errors[i] << std::endl;
 	 }
 	 std::vector<double> mc_weights_vector (mc_weight_errors, mc_weight_errors + sizeof(mc_weight_errors) / sizeof(mc_weight_errors[0]));
 
@@ -195,7 +196,7 @@ double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_ch
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
   double sigma_total = std::pow(sigma_total_sq,0.5);
-
+  std::cout << bg_chain->label << " - single bg error: " << sigma_total << std::endl;
   return sigma_total;
 }
 
@@ -251,9 +252,6 @@ std::string HistoPlot::style_selection(std::string selection)
 {
 
   std::string sele = replace_all(replace_all(replace_all(replace_all(selection, ")", ""), ">", " > "), "==", " = "), "&&", ", ");
-//  std::replace(sele.begin(), selection.end(), '(', ' ');
-
- // std::replace(sele.begin(), selection.end(), ')', ' ');  //fails here
 
   return replace_all(replace_all(replace_all(replace_all(replace_all(sele, "_", " "), "))", ""), "(", ""), "((", ""), "<", " < ");
 }

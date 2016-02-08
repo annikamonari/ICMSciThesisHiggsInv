@@ -1,6 +1,6 @@
-#include "../include/bdt_analysis.h"
+#include "../include/Mlp_analysis.h"
 //#include "TInterpretor.h"
-void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str, const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
 
   // This loads the library
@@ -10,6 +10,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   // to get access to the GUI and all tmva macros
 
   /* TString thisdir = gSystem->DirName(gInterpreter->GetCurrentMacroName());
+
    gROOT->SetMacroPath(thisdir + ":" + gROOT->GetMacroPath());
    gROOT->ProcessLine(".L TMVAGui.C");*/
 
@@ -17,8 +18,16 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   // --- Here the preparation phase begins
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
 
-	 std::string output_folder(bg_chain->label);
-  TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel2.root").c_str(),"RECREATE");
+    std::string output_folder(bg_chain->label);
+    output_folder.append("/");
+    std::string output_file;
+ 
+    
+    output_file = MLP_output_name_str(NeuronType,NCycles,HiddenLayers);
+  
+  output_folder.append(output_file);
+  const char* name = output_folder.c_str();
+  TFile* output_tmva = TFile::Open(name,"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -44,16 +53,9 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
 
   factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
   				       "SplitMode=Random:NormMode=NumEvents:!V" );
-  const char* NTrees = "800";
-  const char* BoostType = "AdaBoost";
-  const char* AdaBoostBeta ="0.5";
-  const char* SeparationType ="GiniIndex";
-  const char* nCuts = "30";
-  std::string opt = BDT_options_str(NTrees,BoostType, AdaBoostBeta,SeparationType,nCuts);
-  std::cout<<"option str: "<< opt<<"\n";
+  std::cout<<"mlp option str: "<<MLP_options_str(NeuronType, NCycles, HiddenLayers)<<"\n";
+  factory->BookMethod(TMVA::Types::kMLP, "MLP", MLP_options_str(NeuronType, NCycles, HiddenLayers) );
 
-  factory->BookMethod(TMVA::Types::kBDT, "BDT",opt
-                      /*"!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20"*/);
 
   // Train MVAs using the set of training events
   factory->TrainAllMethods();
@@ -80,7 +82,7 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
   delete factory;
 }
 
-TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables)
+TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables)
 {
 	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -101,11 +103,9 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   reader->AddVariable("metnomuons", &metnomuons);
 
 	   // Book method(s)
-	   reader->BookMVA( "BDT method", "weights/TMVAClassification_BDT.weights.xml" );
-
+ 	   reader->BookMVA( "MLP method", "weights/TMVAClassification_MLP.weights.xml" );
 	   // Book output histograms
-	   TH1F* histBdt     = new TH1F( "MVA_BDT", "MVA_BDT", 100, -0.8, 0.8 );
-
+	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.25, 1.5 );
 	   // --- Event loop
 
 	   TChain* data = bg_chain->chain;
@@ -135,10 +135,10 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	      if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
 
 	      data->GetEntry(ievt);
+	      output = reader->EvaluateMVA( "MLP method");
 
-	      output = reader->EvaluateMVA( "BDT method" );
 	      output_tree->Fill();
-	      histBdt->Fill(output);
+	      histNn->Fill(output);
 	   }
 
 	   // Get elapsed time
@@ -150,7 +150,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   TFile* target  = new TFile( "TMVApp.root","RECREATE" );
 	   target->cd();
 	   data->CloneTree()->Write();
-	   histBdt->Write();
+	   histNn->Write();
 
 	   target->Close();
 
@@ -163,10 +163,11 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   return output_tree;
 }
 
-//note before calling this method you must call create_bdt to update the xml weight file:
-DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+//note before calling this method you must call create_MLP to update the xml weight file:
+//
+DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str, const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
-	 TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables);
+	 TTree* output_weight = MLPAnalysis::evaluate_MLP(bg_chain, variables);
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
 
 	 bg_clone->AddFriend(output_weight);
@@ -178,37 +179,35 @@ DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variabl
 	 return output_data;
 }
 
-std::string BDTAnalysis::BDT_options_str(const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char*nCuts)
+std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
-	std::string BDT_options = "!H:!V:NTrees=";
-	BDT_options.append(NTrees);
-	BDT_options += ":MinNodeSize=2.5%:MaxDepth=3:BoostType=";
-	BDT_options.append(BoostType);
-	BDT_options += ":AdaBoostBeta=";
-	BDT_options.append(AdaBoostBeta);
-	BDT_options += ":UseBaggedBoost:BaggedSampleFraction=";
-	BDT_options.append(AdaBoostBeta);
-	BDT_options += ":SeparationType=";
-	BDT_options.append(SeparationType);
-	BDT_options += ":nCuts=";
-	BDT_options.append(nCuts);
-
-        return BDT_options;
+	std::string MLP_options = "H:!V:NeuronType=";
+	std::string nt = NeuronType;
+	std::string nc = NCycles;
+	std::string hl = HiddenLayers;
+	MLP_options.append(nt);
+	MLP_options += ":VarTransform=N:NCycles=";
+	MLP_options.append(nc);
+	MLP_options += ":HiddenLayers=";
+	MLP_options.append(hl);
+	MLP_options += ":TestRate=5:!UseRegulator";
+        return MLP_options;
 }
 
-std::string BDTAnalysis::BDT_output_name_str(const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType, const char* nCuts)
+std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
+	std::string nt = NeuronType;
+	std::string nc = NCycles;
+	std::string hl = HiddenLayers;
 
-	std::string out_nam = "BDT-NTrees=";
-	out_nam.append(NTrees);
-	out_nam += "-BoostType=";
-	out_nam.append(BoostType);
-	out_nam += "-AdaBoostBeta=";
-	out_nam.append(AdaBoostBeta);
-	out_nam += "-SeparationType=";
-	out_nam.append(SeparationType);
-	out_nam += "-nCuts=";
-	out_nam.append(nCuts);
+	std::string out_nam = "MLP-NeuronType=";
+	out_nam.append(nt);
+	out_nam += "-NCycles=";
+	out_nam.append(nc);
+	out_nam += "-HiddenLayers=";
+	out_nam.append(hl);
 	out_nam += ".root";
+
 	return out_nam;
 }
+

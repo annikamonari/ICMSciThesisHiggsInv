@@ -70,7 +70,7 @@ double weight = calc_mc_weight(data, bg_chains, bg_chain, var, with_cut, variabl
 
   double err1 = sigma_data_N_C/MC_N_C;
   double err2 = sigma_bg_N_C/MC_N_C;
-  double err3 = (data_N_C- bg_N_C)/(2*pow(MC_N_C,1.5));
+  double err3 = (data_N_C- bg_N_C)/(pow(MC_N_C,1.5));
 std::cout<<"partial answer: "<<err1<<"\n"<<err2<<"\n"<<err3<<"\n";
   double error_sq = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
   double weight_error = std::pow(error_sq, 0.5);

@@ -22,8 +22,9 @@ std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataCha
 
   for(int i = 0; i < bg_chains.size(); i++)
   {
-    std::cout<<"bg chain about to have error calculated"<<bg_chains[i]->legend<<"\n";
-    bg_errors_parsed[i] = 1 + (bg_errors[i] / rates[i+1]);
+   // std::cout<<"bg chain about to have error calculated"<<bg_chains[i]->legend<<"\n";
+    double bg_errors_val = HistoPlot::single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables,bg_mc_weights[i]);
+    bg_errors[i] = 1+(bg_errors_val/rates[i+1]);
   }
   std::vector<double> bg_error_vector (bg_errors_parsed, bg_errors_parsed + sizeof(bg_errors_parsed) / sizeof(bg_errors_parsed[0]));
 
@@ -239,7 +240,7 @@ std::vector<double> DataCard::get_zeros(int size)
 }
 
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
-																					Variable* var, bool with_cut, std::vector<Variable*>* variables)
+																					Variable* var, bool with_cut, std::vector<Variable*>* variables )
 {
 	 std::vector<double> mc_weights = HistoPlot::mc_weights(data_chain, bg_chains, var, with_cut, variables);
 	 std::fstream fs;

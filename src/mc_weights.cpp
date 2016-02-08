@@ -64,7 +64,7 @@ double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_
   double sigma_bg_N_C   = std::pow(bg_N_C, 0.5);
   double err1           = sigma_data_N_C/MC_N_C;
   double err2           = sigma_bg_N_C/MC_N_C;
-  double err3           = (data_N_C- bg_N_C)/(2*pow(MC_N_C,1.5));
+  double err3           = (data_N_C- bg_N_C)/(pow(MC_N_C,1.5));
   double error_sq       = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
   double weight_error   = std::pow(error_sq, 0.5);
 

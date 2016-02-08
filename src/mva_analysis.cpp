@@ -1,4 +1,5 @@
 #include "../include/mva_analysis.h"
+#include "../include/bdt_analysis.h"
 
 TH1F* MVAAnalysis::plot_output(DataChain* combined_data)
 {

@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/Mlp_analysis.cpp \
 ../src/analysis.cpp \
 ../src/bdt_analysis.cpp \
 ../src/data_card.cpp \
@@ -19,6 +20,7 @@ CPP_SRCS += \
 ../src/variable.cpp 
 
 OBJS += \
+./src/Mlp_analysis.o \
 ./src/analysis.o \
 ./src/bdt_analysis.o \
 ./src/data_card.o \
@@ -34,6 +36,7 @@ OBJS += \
 ./src/variable.o 
 
 CPP_DEPS += \
+./src/Mlp_analysis.d \
 ./src/analysis.d \
 ./src/bdt_analysis.d \
 ./src/data_card.d \

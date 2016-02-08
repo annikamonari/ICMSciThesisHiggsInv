@@ -40,7 +40,9 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
  
   for(int i = 0; i < bg_chains.size();i++)
   {
-    TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
+    std::cout << bg_chains[i]->label << std::endl;
+    std::cout << bg_mc_weights[i] << std::endl;
+  		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
     double N = HistoPlot::get_histo_integral(histo, with_cut, var); //integral of single bg
     rates[i + 1]= N;
   }

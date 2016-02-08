@@ -1,6 +1,7 @@
 #include "../include/bdt_analysis.h"
 //#include "TInterpretor.h"
-void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str,const char* NTrees,
+const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
 {
 
   // This loads the library
@@ -16,14 +17,6 @@ void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::
 
   // --- Here the preparation phase begins
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-
-// bdt options
-  const char* NTrees = "800";
-  const char* BoostType = "AdaBoost";
-  const char* AdaBoostBeta ="0.5";
-  const char* SeparationType ="GiniIndex";
-  const char* nCuts = "0";
-
 
   std::string output_folder(bg_chain->label);
   output_folder.append("/");

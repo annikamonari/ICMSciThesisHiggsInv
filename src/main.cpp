@@ -7,7 +7,7 @@ void produce_graphs(bool with_cut) {
   SuperVars* super_vars             = new SuperVars();
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
-  const char* mva_type = "BDT";
+  const char* mva_type = "MLP";
   const char* NTrees = "10";
   const char* BoostType = "AdaBoost";
   const char* AdaBoostBeta ="0.5";
@@ -53,7 +53,8 @@ void produce_graphs(bool with_cut) {
   for (int j=0; j < 1; j++)
   {
     if (!strcmp(mva_type, "BDT")){
-        BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
+        BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NTrees,BoostType,AdaBoostBeta,
+	SeparationType, nCuts);
 	//file_names[counter] = BDTAnalysis::BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts).c_str();
     };
     if (!strcmp(mva_type, "MLP")){
@@ -63,7 +64,7 @@ void produce_graphs(bool with_cut) {
     std::cout<< "file_name :"<< file_names[counter] <<"\n";
     counter++;
   }
-  //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());
+  //BDTAnalysis::get_BDT_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(), NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts);
   //MLPAnalysis::get_MLP_results(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
 
   DataCard::create_datacard(data_chain,signal_chain,bg_chains, cut_vars[0], with_cut, &cut_vars);

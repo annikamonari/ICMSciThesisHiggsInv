@@ -18,7 +18,8 @@ class RocCurves
 																													DataChain* bg, SuperVars* super_vars, std::string method_name);
 
   static void plot_all_rejBvsS(std::vector<TFile*> training_outputs, std::string bg_name, DataChain* signal,
-																																										DataChain* bg, std::string preselection, Variable* var, std::vector<Variable*>* variables);
+																																										DataChain* bg, std::string preselection, Variable* var, std::vector<Variable*>* variables,
+																																										std::string method_name);
 
   static double get_presel_effy(DataChain* data_chain, std::string preselection, Variable* var,
 																									       std::vector<Variable*>* variables);

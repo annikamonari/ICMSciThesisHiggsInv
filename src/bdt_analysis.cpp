@@ -1,23 +1,8 @@
 #include "../include/bdt_analysis.h"
-//#include "TInterpretor.h"
-void BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str,const char* NTrees,
-const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
+
+TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str,const char* NTrees,
+                             const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
 {
-
-  // This loads the library
-  //TMVA::Tools::Instance();
-
-
-  // to get access to the GUI and all tmva macros
-
-  /* TString thisdir = gSystem->DirName(gInterpreter->GetCurrentMacroName());
-   gROOT->SetMacroPath(thisdir + ":" + gROOT->GetMacroPath());
-   gROOT->ProcessLine(".L TMVAGui.C");*/
-
-
-  // --- Here the preparation phase begins
-  // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-
   std::string output_folder(bg_chain->label);
   output_folder.append("/");
   std::string output_file;
@@ -78,9 +63,9 @@ const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const 
   std::cout << "==> To view the results, launch the GUI: \"root -l ./TMVAGui.C\"" << std::endl;
   std::cout << std::endl;
 
-  //gROOT->ProcessLine(".L TMVAGui.C");
-
   delete factory;
+
+  return output_tmva;
 }
 
 TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables)

@@ -5,15 +5,6 @@
 #include "../include/mc_weights.h"
 
 #include <cstdlib>
-#include <iostream>
-#include <map>
-#include <string>
-#include <vector>
-
-#include "TChain.h"
-#include "TFile.h"
-#include "TTree.h"
-#include "TString.h"
 #include "TObjString.h"
 #include "TSystem.h"
 #include "TROOT.h"

@@ -486,7 +486,22 @@ TH1F* HistoPlot::set_error_bars(TH1F* histo)
   return histo;
 }
 
+void HistoPlot::set_th1d_error_bars(TH1D* histo)
+{
+  int nbins = histo->GetNbinsX();
+
+  for(int i = 0; i < nbins; i++) {
+    double error_val = std::pow(get_th1d_data_error(histo, i), 0.5);
+    histo->SetBinError(i, error_val);
+  }
+}
+
 float HistoPlot::get_data_error(TH1F* histo, int bin) 
+{
+  return histo->Integral(bin, bin + 1);
+}
+
+double HistoPlot::get_th1d_data_error(TH1D* histo, int bin)
 {
   return histo->Integral(bin, bin + 1);
 }

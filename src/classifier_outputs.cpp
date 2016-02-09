@@ -48,16 +48,22 @@ void ClassifierOutputs::plot_histos(std::vector<TH1D*> histos, TFile* file)
 	 TLegend* legend = new TLegend(0.12, 0.6, 0.38, 0.86);
 	 RocCurves::style_legend(legend);
 	 int colours[4] = {2, 46, 4, 38};
-
+	std::cout<<"for lop len: "<<normalised_histos.size()<<"\n";
 	 for (int i = 0; i < normalised_histos.size(); i++)
 	 {
-	 		style_histo(normalised_histos[i], colours[i]);
+	 		style_histo(normalised_histos[i], colours[i],i);
 				std::string leg_entry = "#splitline{" + HistoPlot::replace_all(normalised_histos[i]->GetName(), "_", " ") + "}";
 				leg_entry += "{(" + DataCard::double_to_str(normalised_histos[i]->GetEntries()) + " Entries)}";
 	 		legend->AddEntry(normalised_histos[i], leg_entry.c_str(), "lep");
-	 		normalised_histos[i]->SetMaximum((normalised_histos[0]->GetMaximum())*2.5);
-	 		HistoPlot::set_th1d_error_bars(normalised_histos[i]);
-	 		normalised_histos[i]->Draw("e1SAME");
+	 		//normalised_histos[i]->SetMaximum(normalised_histos[0]->GetMaximum());// this line doesn't do what its supposed to do
+	 		if(i == 0||i == 2){
+			  HistoPlot::set_th1d_error_bars(normalised_histos[i]);
+	 		  normalised_histos[i]->Draw("samee");
+			}
+			if(i == 1||i == 3){
+			  normalised_histos[i]->Draw("samehist");
+			  normalised_histos[i]->Draw("samehist");
+			}
 	 }
 	 draw_ktest(normalised_histos);
 	 legend->Draw("SAME");
@@ -87,12 +93,29 @@ void ClassifierOutputs::draw_classifier_outputs(TFile* file, std::string method_
 	 plot_histos(histos, file);
 }
 
-void ClassifierOutputs::style_histo(TH1D* histo, int colour)
+void ClassifierOutputs::style_histo(TH1D* histo, int colour, int hist_no)
 {
-	 histo->SetMarkerColor(colour);
-		histo->SetLineColor(colour);
-		histo->SetMarkerStyle(20);
-		histo->SetTitle("OverTraining Check");
-		histo->SetXTitle("MVA Output");
-		histo->SetStats(false);
+	if(hist_no == 0 ){//s1
+	  histo->SetMarkerColor(colour);
+          histo->SetMarkerStyle(20);
+	}
+	if(hist_no == 1 ){//train s1
+	  histo->SetLineColor(colour);
+	  histo->SetFillColor(colour);
+	  histo->SetFillStyle( 3005 );
+	}
+	if(hist_no == 2 ){// b1
+	  histo->SetMarkerColor(colour);
+          histo->SetMarkerStyle(24);
+	}
+	if(hist_no == 3 ){// train b1
+	  histo->SetLineColor(colour);
+	  histo->SetFillColor(colour);
+	  histo->SetFillStyle( 3004 );
+
+	}
+	
+	histo->SetTitle("OverTraining Check");
+	histo->SetXTitle("MVA Output");
+	histo->SetStats(false);
 }

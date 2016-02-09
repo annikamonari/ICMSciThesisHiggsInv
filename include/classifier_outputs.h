@@ -18,7 +18,7 @@ class ClassifierOutputs
 
   static void draw_classifier_outputs(TFile* file, std::string method_name);
 
-  static void style_histo(TH1D* histo, int colour);
+  static void style_histo(TH1D* histo, int colour, int hist_no);
 };
 
 

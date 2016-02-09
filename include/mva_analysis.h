@@ -31,6 +31,9 @@ const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const 
   static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string var_cut_str_tmva);
 
   static DataChain* get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva);
+
+  static void train_and_run_BDT(std::vector<DataChain*> bg_chains, DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva, const char* mva_type);
+
 };
 
 

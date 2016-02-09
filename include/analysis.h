@@ -74,6 +74,9 @@ extern std::vector<const char*> zjets_vv;
 extern const char* zjets_vv_label;
 extern const char* zjets_vv_legend;
 
+///////////////////////////  background file paths  ///////////////////////////////////////
+
+//extern std::vector< const char*> file_paths;
 
 ///////////////////////////          Signal:          //////////////////////////////////////
 

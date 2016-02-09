@@ -142,6 +142,7 @@ std::vector<const char*> vv (vv_arr, vv_arr +
 const char* vv_label  = "bg_vv";
 const char* vv_legend = "VV";
 
+
 ///////////////////////////         Z+jets          ///////////////////////////////////////
 
 //"~/mproject/data/background/MC_EWK-Z2j.root"
@@ -164,6 +165,13 @@ std::vector<const char*> zjets_vv (zjets_vv_arr, zjets_vv_arr +
 
 const char* zjets_vv_label  = "bg_zjets_vv";
 const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
+
+///////////////////////////  background file paths  ///////////////////////////////////////
+/*
+std::vector<const char*>* fp_array[] = {z_ll,wjets_ev,wjets_muv,wjets_tauv, top,vv,zjets_vv,qcd};
+
+std::vector< const char*> file_paths (fp_array, fp_array+sizeof(vv_arr)/sizeof(const char*));
+*/
 
 ///////////////////////////          Signal:          //////////////////////////////////////
 

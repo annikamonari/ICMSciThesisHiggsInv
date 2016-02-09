@@ -1,5 +1,6 @@
 #include "../include/mva_analysis.h"
 #include "../include/bdt_analysis.h"
+#include "../include/mlp_analysis.h"
 
 TH1F* MVAAnalysis::plot_output(DataChain* combined_data)
 {
@@ -201,4 +202,34 @@ std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*
 DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva)
 {
   return BDTAnalysis::get_BDT_results(signal_chain, &vars, var_cut_str_tmva);
+}
+
+void MVAAnalysis::train_and_run_BDT(std::vector<DataChain*> bg_chains, DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva,const char* mva_type)
+{  
+  const char* NTrees = "10";
+  const char* BoostType = "AdaBoost";
+  const char* AdaBoostBeta ="0.5";
+  const char* SeparationType = "GiniIndex";
+  const char* nCuts = "30";
+  
+  const char* const NeuronType[2] = {"sigmoid","tanh"};
+  const char* NCycles[5] = {"10","100","500","1000","5000"};
+  const char* HiddenLayers[8] = {"2","5","10","50","5,5",
+  "5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
+      
+  if (!strcmp(mva_type, "BDT"))
+  {
+  for (int j=0; j < 1/*bg_chains.size*/; j++)//variable loop
+    {    
+        BDTAnalysis::create_BDT(bg_chains[j], signal_chain, &vars, var_cut_str_tmva,
+        NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts);
+	BDTAnalysis::get_BDT_results(bg_chains[j], &vars,var_cut_str_tmva);
+    }
+   }
+  if (!strcmp(mva_type, "MLP"))
+  {
+        MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, var_cut_str_tmva,
+        NeuronType[0],NCycles[0],HiddenLayers[5]);
+        MLPAnalysis::get_MLP_results(bg_chains[0], &vars, var_cut_str_tmva);
+   }
 }

@@ -1,7 +1,6 @@
 #include "../include/bdt_analysis.h"
 
-TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str,const char* NTrees,
-                             const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
+TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str,const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
 {
   std::string output_folder(bg_chain->label);
   output_folder.append("/");
@@ -161,7 +160,19 @@ DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variabl
 
 	 std::string label(bg_chain->label);
 	 label += "_w_mva_output";
-	 DataChain* output_data = new DataChain(z_ll, bg_chain->label, bg_chain->legend, bg_chain->lep_sel, label, bg_clone);
+	 std::vector<const char*> file_path;
+
+         if(!strcmp(bg_chain->label,"bg_zll")){file_path = z_ll;}
+         else if(!strcmp(bg_chain->label,"bg_wjets_ev")){file_path = wjets_ev;}
+         else if(!strcmp(bg_chain->label,"bg_wjets_muv")){file_path = wjets_muv;}
+         else if(!strcmp(bg_chain->label,"bg_wjets_tauv")){file_path = wjets_tauv;}
+         else if(!strcmp(bg_chain->label,"bg_top")){file_path = top;}
+         else if(!strcmp(bg_chain->label,"bg_vv")){file_path = vv;}
+         else if(!strcmp(bg_chain->label,"bg_zjets_vv")){file_path = zjets_vv;}
+         else if(!strcmp(bg_chain->label,"bg_qcd")){file_path = qcd;}
+	 else{std::cout<<"error background label not found in get_BDT_results"<<"\n";}
+
+         DataChain* output_data = new DataChain(file_path, bg_chain->label, bg_chain->legend, bg_chain->lep_sel, label, bg_clone);
 
 	 return output_data;
 }

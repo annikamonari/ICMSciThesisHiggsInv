@@ -1,24 +1,33 @@
 #include "../include/roc_curves.h"
 
-TH1D* RocCurves::plot_rejBvsS(TFile* training_output)
+TH1D* RocCurves::plot_rejBvsS(TFile* training_output, std::string method_name)
 {
-  TH1D* rejBvsS_histo = (TH1D*) training_output->Get("Method_MLP/MLP/MVA_MLP_rejBvsS;1");
+  std::string file_path;
+	 if (method_name == "MLP")
+  	{
+    file_path = "Method_MLP/MLP/MVA_MLP_rejBvsS;1";
+  	}
+	 else if (method_name == "BDT")
+	 	{
+	 		file_path = "Method_BDT/BDT/MVA_BDT_rejBvsS;1";
+	 	}
+	 TH1D* rejBvsS_histo = (TH1D*) training_output->Get(file_path.c_str());
 
   return rejBvsS_histo;
 }
 
 void RocCurves::get_rocs(std::vector<TFile*> training_outputs, DataChain* signal,
-																									DataChain* bg, SuperVars* super_vars)
+																									DataChain* bg, SuperVars* super_vars, std::string method_name)
 {
 	 std::vector<Variable*> vars      = super_vars->get_discriminating_vars();
 	 std::string preselection         = super_vars->get_final_cuts_str();
 	 std::string var_cut_str_tmva     = super_vars->get_cuts_str_for_tmva();
   std::cout << preselection << std::endl;
-	 plot_all_rejBvsS(training_outputs, bg->label, signal, bg, preselection, vars[0], &vars);
+	 plot_all_rejBvsS(training_outputs, bg->label, signal, bg, preselection, vars[0], &vars, method_name);
 }
 
 void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, std::string bg_name, DataChain* signal,
-																																	DataChain* bg, std::string preselection, Variable* var, std::vector<Variable*>* variables)
+																																	DataChain* bg, std::string preselection, Variable* var, std::vector<Variable*>* variables, std::string method_name)
 {
 	 std::string plot_name = bg_name + " ROC Curves";
 	 TCanvas* c1     = new TCanvas("c1", plot_name.c_str());
@@ -31,7 +40,7 @@ void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, std::stri
     std::string legend_str = HistoPlot::replace_all(HistoPlot::replace_all(file_name, ".root", ""), "/", " - ");
     std::string legend_text = "#splitline{" + legend_str.substr(0, 25) + "}{" + legend_str.substr(26, -1) + "}";
 
-	 		TH1D* rejBvsS_histo    = plot_rejBvsS(training_outputs[i]);
+	 		TH1D* rejBvsS_histo    = plot_rejBvsS(training_outputs[i], method_name);
 	 		rejBvsS_histo->SetLineColor(HistoPlot::colours()[i+2]);
 	 		rejBvsS_histo->SetStats(false);
 	 		rejBvsS_histo->SetLineWidth(3);

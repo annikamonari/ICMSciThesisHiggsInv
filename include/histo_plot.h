@@ -105,7 +105,11 @@ class HistoPlot
   
   static TH1F* set_error_bars(TH1F* histo);
 
+  static void set_th1d_error_bars(TH1D* histo);
+
   static float get_data_error(TH1F* histo, int bin);
+
+  static double get_th1d_data_error(TH1D* histo, int bin);
 
   static std::string build_file_name(Variable* variable, bool with_cut);
 

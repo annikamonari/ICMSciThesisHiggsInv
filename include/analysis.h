@@ -93,5 +93,15 @@ extern std::vector<const char*> data;
 extern const char* data_label;
 extern const char* data_legend;
 
+/////////////////////// MVA parameters /////////////////////////
+extern const char* NTrees[];
+extern const char* BoostType[];
+extern const char* AdaBoostBeta[];
+extern const char* SeparationType[];
+extern const char* nCuts[];
+  
+extern const char* NeuronType[];
+extern const char* NCycles[];
+extern const char* HiddenLayers[];//number of neurons in each hidden layer
 
 #endif

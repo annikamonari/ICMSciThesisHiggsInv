@@ -10,7 +10,6 @@ class MVAAnalysis
 
   static std::vector<double> get_categories(TH1F* output_histo);
 
-
   static std::vector<std::string> get_category_strs(std::vector<double> categories);
 
   static TH1F* build_histo(DataChain* combined_output, std::string selection_str, Variable* variable, std::string histo_label);

@@ -53,7 +53,7 @@ class DataCard
   static std::string get_uncertainties_string(std::vector<std::vector<double> > uncertainty_vectors);
 
   static void create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
-																														Variable* var, bool with_cut, std::vector<Variable*>* variables);
+																														Variable* var, bool with_cut, std::vector<Variable*>* variables, const char* mva_type);
 
   static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,
 																																		std::vector<double> bg_mc_weights);
@@ -63,6 +63,8 @@ class DataCard
 																																											std::vector<double> bg_mc_weights);
 
   static std::string no_shape_line();
+
+  static const char* get_data_card_name(DataChain* data_chain,const char* mva_type);
 };
 
 #endif

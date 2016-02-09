@@ -220,3 +220,17 @@ std::vector<const char*> data (data_arr, data_arr +
 
 const char* data_label  = "data_chain";
 const char* data_legend = "data";
+
+/////////////////////// MVA parameters /////////////////////////
+  const char* NTrees[] = {"10"};
+  const char* BoostType[] = {"AdaBoost"};
+  const char* AdaBoostBeta[] ={"0.5"};
+  const char* SeparationType[] = {"GiniIndex"};
+  const char* nCuts[] = {"30"};
+  
+  const char* NeuronType[2] = {"sigmoid","tanh"};
+  const char* NCycles[5] = {"10","100","500","1000","5000"};
+  const char* HiddenLayers[8] = {"2","5","10","50","5,5",
+  "5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
+
+

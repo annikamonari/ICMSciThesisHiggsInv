@@ -1,4 +1,6 @@
 #include "../include/data_card.h"
+#include "../include/mlp_analysis.h"
+#include "../include/bdt_analysis.h"
 #include <sstream>
 #include <string>
 
@@ -245,13 +247,15 @@ std::string DataCard::no_shape_line()
 }
 
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
-																					Variable* var, bool with_cut, std::vector<Variable*>* variables )
+Variable* var, bool with_cut, std::vector<Variable*>* variables, const char* mva_type )
 {
 	 std::vector<double> mc_weights = HistoPlot::mc_weights(data_chain, bg_chains, var, with_cut, variables);
 	 std::fstream fs;
-	 fs.open ("test1.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	 const char* data_card_name=get_data_card_name(data_chain,mva_type);
+	 fs.open (data_card_name, std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
-	 fs << imax_string();
+
+  fs << imax_string();
   fs << jmax_string(size - 1);
   fs << kmax_string(size);
   fs << no_shape_line();
@@ -266,10 +270,12 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
   fs << dashed_line();
   fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights);
 	 fs.close();
+for (int i=0; i< 10;i++){
 }
 
-double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																			std::vector<double> bg_mc_weights)
+}
+
+double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,std::vector<double> bg_mc_weights)
 {
 	 double total = 0;
 	 for (int i = 0; i < bg_chains.size(); i++)
@@ -280,6 +286,31 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 	 	}
 
 	 return total;
+}
+
+const char* DataCard::get_data_card_name(DataChain* data_chain, const char* mva_type)
+{
+  std::string data_card_name ="data_cards/";
+  data_card_name.append(data_chain->label);
+  data_card_name.append("/");
+  std::string mva_str;
+if (!strcmp(mva_type, "BDT"))
+  {
+  for (int j=0; j < 1/*bg_chains.size*/; j++)//variable loop
+    {    
+     mva_str = BDTAnalysis::BDT_output_name_str(NTrees[0],BoostType[0],AdaBoostBeta[0],SeparationType[0], nCuts[0]);
+      mva_str.append(".txt");
+    }
+   }
+  if (!strcmp(mva_type, "MLP"))
+  {
+     mva_str = MLPAnalysis::MLP_output_name_str(NeuronType[0],NCycles[0],HiddenLayers[5]);
+     mva_str.append(".txt");
+  }
+  data_card_name.append(mva_str);
+  std::cout<<data_card_name<<"\n";
+  const char* name_char; name_char = data_card_name.c_str();
+  return name_char;
 }
 
 /*

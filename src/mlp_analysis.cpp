@@ -23,7 +23,7 @@ void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::
     std::string output_file;
  
     output_file = MLP_output_name_str(NeuronType,NCycles,HiddenLayers);
-  
+    output_file.append(".root");  
   output_folder.append(output_file);
   const char* name = output_folder.c_str();
   TFile* output_tmva = TFile::Open(name,"RECREATE");
@@ -206,7 +206,6 @@ std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char*
 	out_nam.append(nc);
 	out_nam += "-HiddenLayers=";
 	out_nam.append(hl);
-	out_nam += ".root";
 
 	return out_nam;
 }

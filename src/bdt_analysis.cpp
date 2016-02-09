@@ -7,6 +7,7 @@ TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std
   std::string output_file;
 
   output_file = BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts);
+  output_file.append(".root");
   output_folder.append(output_file);
   const char* name = output_folder.c_str();
   TFile* output_tmva = TFile::Open(name,"RECREATE");
@@ -208,6 +209,5 @@ std::string BDTAnalysis::BDT_output_name_str(const char* NTrees,const char* Boos
 	out_nam.append(SeparationType);
 	out_nam += "-nCuts=";
 	out_nam.append(nCuts);
-	out_nam += ".root";
 	return out_nam;
 }

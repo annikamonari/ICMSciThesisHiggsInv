@@ -82,7 +82,7 @@ void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::
   delete factory;
 }
 
-TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables, const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables)
 {
 	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -165,9 +165,9 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 //note before calling this method you must call create_MLP to update the xml weight file:
 //
-DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str, const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str)
 {
-	 TTree* output_weight = MLPAnalysis::evaluate_MLP(bg_chain, variables, NeuronType,  NCycles, HiddenLayers);
+	 TTree* output_weight = MLPAnalysis::evaluate_MLP(bg_chain, variables);
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
 
 	 bg_clone->AddFriend(output_weight);

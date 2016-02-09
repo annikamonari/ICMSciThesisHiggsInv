@@ -28,7 +28,7 @@ void produce_graphs(bool with_cut) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
   
-  DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
+  //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
   /*double signal_error = DataCard::get_signal_error(signal_chain, cut_vars[0],true, &cut_vars); 
   std::cout<<"signal error: "<<signal_error<<"\n";
   //std::vector<double> bg_errors = DataCard::get_bg_errors(data_chain,bg_chains,signal_chain, cut_vars[0], true, &cut_vars);
@@ -40,7 +40,7 @@ void produce_graphs(bool with_cut) {
   }*/
 
   /*BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva());*/
-  TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
+  /*TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
   TFile* file2 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=100-HiddenLayers=5,5,5.root");
   TFile* file3 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=1000-HiddenLayers=5,5,5.root");
   TFile* file4 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=500-HiddenLayers=10.root");
@@ -48,19 +48,22 @@ void produce_graphs(bool with_cut) {
   TFile* file6 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=500-HiddenLayers=5,5,5,5,5.root");
   TFile* files[] = {file1, file2, file3};
   std::vector<TFile*> tfiles (files, files+ sizeof(files)/sizeof(TFile*));
-  RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);
+  RocCurves::get_rocs(tfiles, signal_chain, bg_chains[0], super_vars);*/
 
   //MVAAnalysis::plot_bdt_results(bg_chains, signal_chain, data_chain, super_vars,NeuronType, NCycles, HiddenLayers,NTrees, BoostType, AdaBoostBeta, SeparationType,nCuts,  mva_type);
+  
   for (int j=0; j < 1; j++)
   {
     if (!strcmp(mva_type, "BDT")){
-        //BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NTrees,BoostType,AdaBoostBeta,
-	//SeparationType, nCuts);
-	//file_names[counter] = BDTAnalysis::BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts).c_str();
+        BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NTrees,BoostType,AdaBoostBeta,
+	SeparationType, nCuts);
+	file_names[counter] = BDTAnalysis::BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType, nCuts).c_str();
+        BDTAnalysis::get_BDT_results(bg_chains[0], &vars, super_vars->get_cuts_str_for_tmva());
     };
     if (!strcmp(mva_type, "MLP")){
-        //MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
+        MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, super_vars->get_cuts_str_for_tmva(),NeuronType[0],NCycles[j],HiddenLayers[5]);
 	file_names[counter] = MLPAnalysis::MLP_output_name_str(NeuronType[0],NCycles[j],HiddenLayers[5]).c_str();
+        MLPAnalysis::get_MLP_results(bg_chains[0], &vars, super_vars->get_cuts_str_for_tmva());
     };
     std::cout<< "file_name :"<< file_names[counter] <<"\n";
     counter++;

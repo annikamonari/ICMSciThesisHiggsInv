@@ -34,7 +34,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   style_stacked_histo(&stack, var->name_styled);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
-  TH1F* max_histo      = get_max_histo(plot_histos);
+  std::vector<TH1F*> plot_histos_vector (plot_histos, plot_histos + sizeof(plot_histos) / sizeof(plot_histos[0]));
+  TH1F* max_histo      = get_max_histo(plot_histos_vector);
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.15);
 
@@ -304,16 +305,16 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   return stack;
 }
 
-TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
+TH1F* HistoPlot::get_max_histo(std::vector<TH1F*> plot_histos)
 {
   double plot_max = 0.0;
   TH1F* histo_max = NULL;
-
-  for (int i = 0; i < 2; i++)
+  for (int i = 0; i < plot_histos.size(); i++)
   {
     if (plot_histos[i] != NULL)
     {
 					double y_max = get_histo_y_max(plot_histos[i]);
+
 					if (y_max > plot_max)
 					{
 							plot_max = y_max;
@@ -321,6 +322,7 @@ TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
 					}
     }
   }
+
   return histo_max;
 }
 
@@ -346,7 +348,7 @@ double HistoPlot::position_legend_x1(TH1F* max_histo, Variable* var, bool with_c
 {
   int max_bin         = max_histo->GetMaximumBin();
   double nbins        = var->get_bins(with_cut);
-  double max_bin_x1 = get_x1_from_bin(max_bin, nbins);
+  double max_bin_x1   = get_x1_from_bin(max_bin, nbins);
 
   if (max_bin_x1 > 0.5)
   {

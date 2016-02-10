@@ -151,8 +151,8 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   style_histo(very_bg);
   style_histo(very_sig);
   TH1F* plot_histos[2] = {very_sig, very_bg};
-
-  TH1F* max_histo = HistoPlot::get_max_histo(plot_histos);
+  std::vector<TH1F*> plot_histos_vector (plot_histos, plot_histos + sizeof(plot_histos) / sizeof(plot_histos[0]));
+  TH1F* max_histo = HistoPlot::get_max_histo(plot_histos_vector);
 
   very_bg->SetMaximum(HistoPlot::get_histo_y_max(max_histo)*1.1);
 

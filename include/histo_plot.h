@@ -70,7 +70,7 @@ class HistoPlot
                                     std::vector<DataChain*> bg_chains, bool with_cut,
                                     std::vector<Variable*>* variables = NULL, DataChain* data = NULL);
 
-  static TH1F* get_max_histo(TH1F** plot_histos);
+  static TH1F* get_max_histo(std::vector<TH1F*> plot_histos);
 
   static double get_histo_y_max(TH1F* histo);
 

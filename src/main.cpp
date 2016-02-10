@@ -14,7 +14,7 @@ void produce_graphs(bool with_cut) {
   DataChain* data_chain             = super_chains->data_chain;
   const char* mva_type = "MLP";  //go into train_and_run_BDT function to change input parameters
 
-  MVAAnalysis::get_plots_varying_params(bg_chains, 0, signal_chain, data_chain, super_vars, "BDT", "NTrees", NTrees, BoostType,
+  MVAAnalysis::get_plots_varying_params(bg_chains, 0, signal_chain, data_chain, super_vars, "MLP", "NeuronType", NTrees, BoostType,
   																			                   AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
 
   /*TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");

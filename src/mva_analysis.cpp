@@ -2,7 +2,20 @@
 #include "../include/bdt_analysis.h"
 #include "../include/mlp_analysis.h"
 
+void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
+																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
+																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
+																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
+{
+  std::vector<TFile*> files = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name, NTrees, BoostType,
+																																														AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
 
+  std::string folder_name = method_name + "_varying_" + dir_name;
+  std::cout << "=> Set Folder Name: " << folder_name << std::endl;
+  std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
+  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name);
+  RocCurves::get_rocs(files, signal_chain, bg_chains[0], super_vars, method_name, folder_name);
+}
 
 TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain,
 																																			SuperVars* super_vars, std::string folder_name, std::string method_name, const char* NTrees,
@@ -21,17 +34,20 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 	 }
   else if (method_name == "MLP")
   {
-  		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars, folder_name,
+  		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,
 																																													NeuronType, NCycles, HiddenLayers);
   }
-
+  std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
 	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name);
+	 std::cout << "=> All background put through BDT" << std::endl;
 	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name);
+	 std::cout << "=> Signal put through BDT" << std::endl;
   Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
+  std::cout << "=> Declared MVA_Output Variable" << std::endl;
   std::string output_graph_name            = build_output_graph_name(trained_output);
 
   HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false, output_graph_name);
-
+  std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   return trained_output;
 }
 
@@ -80,19 +96,7 @@ std::string MVAAnalysis::build_output_graph_name(TFile* trained_output)
   return HistoPlot::replace_all(file_name, ".root", ".png");
 }
 
-void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
-																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
-																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
-																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
-{
-  std::vector<TFile*> files = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name, NTrees, BoostType,
-																																														AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
 
-  std::string folder_name = method_name + "_varying_" + dir_name;
-  std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
-  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name);
-  RocCurves::get_rocs(files, signal_chain, bg_chains[0], super_vars, method_name, folder_name);
-}
 
 std::vector<TFile*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
 																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,

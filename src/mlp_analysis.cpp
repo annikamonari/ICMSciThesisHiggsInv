@@ -1,7 +1,7 @@
 #include "../include/mlp_analysis.h"
 //#include "TInterpretor.h"
 TFile* MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string folder_name,
-																													const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+																													  const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
   if (!opendir(folder_name.c_str()))
   {

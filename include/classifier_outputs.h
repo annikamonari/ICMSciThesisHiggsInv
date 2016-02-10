@@ -22,7 +22,7 @@ class ClassifierOutputs
 
   static std::vector<int> get_npads(int nfiles);
 
-  static void plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name);
+  static void plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir);
 
   static double get_plot_max(std::vector<TH1D*> histos);
 

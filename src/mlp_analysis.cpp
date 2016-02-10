@@ -1,32 +1,17 @@
 #include "../include/mlp_analysis.h"
 //#include "TInterpretor.h"
-void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str, const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+TFile* MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string folder_name,
+																													const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
+  if (!opendir(folder_name.c_str()))
+  {
+    mkdir(folder_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  }
 
-  // This loads the library
-  //TMVA::Tools::Instance();
-
-
-  // to get access to the GUI and all tmva macros
-
-  /* TString thisdir = gSystem->DirName(gInterpreter->GetCurrentMacroName());
-
-   gROOT->SetMacroPath(thisdir + ":" + gROOT->GetMacroPath());
-   gROOT->ProcessLine(".L TMVAGui.C");*/
-
-
-  // --- Here the preparation phase begins
-  // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-
-    std::string output_folder(bg_chain->label);
-    output_folder.append("/");
-    std::string output_file;
- 
-    output_file = MLP_output_name_str(NeuronType,NCycles,HiddenLayers);
-    output_file.append(".root");  
-  output_folder.append(output_file);
-  const char* name = output_folder.c_str();
-  TFile* output_tmva = TFile::Open(name,"RECREATE");
+  std::string output_path(folder_name);
+  output_path.append("/");
+  output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label));
+  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -80,6 +65,8 @@ void MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::
   //gROOT->ProcessLine(".L TMVAGui.C");
 
   delete factory;
+
+  return output_tmva;
 }
 
 TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables)
@@ -165,7 +152,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 //note before calling this method you must call create_MLP to update the xml weight file:
 //
-DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables)
 {
 	 TTree* output_weight = MLPAnalysis::evaluate_MLP(bg_chain, variables);
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
@@ -191,21 +178,23 @@ std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCy
 	MLP_options += ":HiddenLayers=";
 	MLP_options.append(hl);
 	MLP_options += ":TestRate=5:!UseRegulator";
-        return MLP_options;
+ return MLP_options;
 }
 
-std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* bg_chain_label)
 {
 	std::string nt = NeuronType;
 	std::string nc = NCycles;
 	std::string hl = HiddenLayers;
+ std::string bg = bg_chain_label;
 
-	std::string out_nam = "MLP-NeuronType=";
+	std::string out_nam = "MLP-" + bg + "-NeuronType=";
 	out_nam.append(nt);
 	out_nam += "-NCycles=";
 	out_nam.append(nc);
 	out_nam += "-HiddenLayers=";
 	out_nam.append(hl);
+ out_nam += ".root";
 
 	return out_nam;
 }

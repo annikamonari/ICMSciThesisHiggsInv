@@ -3,7 +3,7 @@
 
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                           DataChain* signal_chain, DataChain* data, bool with_cut,
-                          std::vector<Variable*>* variables, bool plot_data)
+                          std::vector<Variable*>* variables, bool plot_data, std::string file_name)
 {
   TCanvas* c1     = new TCanvas("c1", var->name_styled, 800, 800);
   TPad* p1        = new TPad("p1", "p1", 0.0, 0.95, 1.0, 1.0);
@@ -58,9 +58,19 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   style_ratio_histo(data_bg_ratio_histo, var->name_styled);
   draw_yline_on_plot(var, with_cut, 1.0);
 
+  std::string img_name;
+  if (file_name == "")
+  {
+  		img_name = build_file_name(var, with_cut);
+  }
+  else
+  {
+  		img_name = file_name;
+  }
+
   p1->cd();
   draw_title(var->name_styled);
-  c1->SaveAs((build_file_name(var, with_cut)).c_str());
+  c1->SaveAs(img_name.c_str());
   c1->Close();
 }
 

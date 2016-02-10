@@ -1,7 +1,8 @@
 #ifndef Mva_Analysis_h
 #define Mva_Analysis_h
 
-#include "../include/roc_curves.h"
+#include "roc_curves.h"
+#include "classifier_outputs.h"
 
 class MVAAnalysis
 {
@@ -24,14 +25,27 @@ class MVAAnalysis
 
   static void draw_histo(DataChain* combined_output, std::string final_cuts, Variable* variable);
 
-  static void plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars, const char* NTrees,
-const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts);
+  static std::vector<TFile*> vary_parameters(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
+																														std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
+																														std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
+																														std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers);
 
-  static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string var_cut_str_tmva);
+  static void get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
+																																							std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
+																																							std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
+																																							std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers);
 
-  static DataChain* get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva);
+  static TFile* get_mva_results(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain,
+																														SuperVars* super_vars, std::string folder_name, std::string method_name, const char* NTrees = "800",
+																														const char* BoostType = "AdaBoost", const char* AdaBoostBeta = "0.2", const char* SeparationType = "GiniIndex",
+																														const char* nCuts = "30", const char* NeuronType = "sigmoid", const char* NCycles = "500",
+																														const char* HiddenLayers = "5,5,5,5");
 
-  static void train_and_run_BDT(std::vector<DataChain*> bg_chains, DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva, const char* mva_type);
+  static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string method_name);
+
+  static DataChain* get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name);
+
+  static std::string build_output_graph_name(TFile* trained_output);
 
 };
 

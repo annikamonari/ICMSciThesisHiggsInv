@@ -1,5 +1,21 @@
 #include "../include/classifier_outputs.h"
 
+void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir)
+{
+	 TCanvas* c1 = new TCanvas("c1", "OverTraining Check", 800, 800);
+	 std::vector<int> npads = get_npads(files.size());
+	 c1->Divide(npads[0], npads[1], 0.00001, 0.005);
+
+	 for (int i = 0; i < files.size(); i++)
+	 {
+    c1->cd(i+1);
+    draw_classifier_outputs(files[i], method_name);
+	 }
+  std::string file_name = dir + "/overtraining_check.png";
+	 c1->SaveAs(file_name.c_str());
+	 c1->Close();
+}
+
 std::vector<TH1D*> ClassifierOutputs::get_classifier_histos(TFile* classifier_output, std::string method_name)
 {
 	 std::string histo_dir;
@@ -84,22 +100,6 @@ void ClassifierOutputs::draw_ktest(std::vector<TH1D*> normalised_histos)
 		pt->SetTextAlign(32);
 		pt->SetAllWith(text.c_str(), "size", 0.03);
 		pt->Draw("SAME");
-}
-
-void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name)
-{
-	 TCanvas* c1 = new TCanvas("c1", "OverTraining Check", 800, 800);
-	 std::vector<int> npads = get_npads(files.size());
-	 c1->Divide(npads[0], npads[1], 0.00001, 0.005);
-
-	 for (int i = 0; i < files.size(); i++)
-	 {
-    c1->cd(i+1);
-    draw_classifier_outputs(files[i], method_name);
-	 }
-
-	 c1->SaveAs("overtraining_check.png");
-	 c1->Close();
 }
 
 void ClassifierOutputs::draw_classifier_outputs(TFile* file, std::string method_name)

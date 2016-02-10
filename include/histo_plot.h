@@ -27,7 +27,7 @@ class HistoPlot
 
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                         DataChain* signal_chain, DataChain* data, bool with_cut,
-                        std::vector<Variable*>* variables = NULL, bool plot_data = true);
+                        std::vector<Variable*>* variables = NULL, bool plot_data = true, std::string file_name = "");
 
   static void draw_yline_on_plot(Variable* var, bool with_cut, double y);
 

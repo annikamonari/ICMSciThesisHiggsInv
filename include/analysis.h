@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
 #include "../include/data_chain.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -94,14 +97,28 @@ extern const char* data_label;
 extern const char* data_legend;
 
 /////////////////////// MVA parameters /////////////////////////
-extern const char* NTrees[];
-extern const char* BoostType[];
-extern const char* AdaBoostBeta[];
-extern const char* SeparationType[];
-extern const char* nCuts[];
-  
-extern const char* NeuronType[];
-extern const char* NCycles[];
-extern const char* HiddenLayers[];//number of neurons in each hidden layer
+extern const char* NTrees_arr[];
+extern std::vector<const char*> NTrees;
+
+extern const char* BoostType_arr[];
+extern std::vector<const char*> BoostType;
+
+extern const char* AdaBoostBeta_arr[];
+extern std::vector<const char*> AdaBoostBeta;
+
+extern const char* SeparationType_arr[];
+extern std::vector<const char*> SeparationType;
+
+extern const char* nCuts_arr[];
+extern std::vector<const char*> nCuts;
+
+extern const char* NeuronType_arr[];
+extern std::vector<const char*> NeuronType;
+
+extern const char* NCycles_arr[];
+extern std::vector<const char*> NCycles;
+
+extern const char* HiddenLayers_arr[];//number of neurons in each hidden layer
+extern std::vector<const char*> HiddenLayers;
 
 #endif

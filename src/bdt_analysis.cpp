@@ -1,18 +1,19 @@
 #include "../include/bdt_analysis.h"
 
-TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string var_cut_str,const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
+TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables,
+																															std::string folder_name, const char* NTrees,const char* BoostType,
+																															const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
 {
-  std::string output_folder(bg_chain->label);
-  output_folder.append("/");
-  std::string output_file;
+	 if (!opendir(folder_name.c_str()))
+	 {
+	   mkdir(folder_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	 }
 
-  output_file = BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts);
-  output_file.append(".root");
-  output_folder.append(output_file);
-  const char* name = output_folder.c_str();
-  TFile* output_tmva = TFile::Open(name,"RECREATE");
+	 std::string output_path(folder_name);
+  output_path.append("/");
 
- // TFile* output_tmva = TFile::Open((output_folder + "/TMVA_signalSel2.root").c_str(),"RECREATE");
+  output_path.append(BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts, bg_chain->label));
+  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -36,12 +37,11 @@ TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std
   TCut signal_cuts = "alljetsmetnomu_mindphi>2.0 && alljetsmetnomu_mindphi<3.0 && jet1_E>50.0 && jet2_E>45.0 && metnomu_significance>3.5 && dijet_deta>4.2 && dijet_deta<8.0 && nvetomuons==0 && nvetoelectrons==0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
   TCut bg_cuts = signal_cuts; // for example: TCut mycutb = "abs(var1)<0.5";
 
-  factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
-  				       "SplitMode=Random:NormMode=NumEvents:!V" );
-
-  std::cout<<"bdt options"<<BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts)<<"\n";
+  factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts, "SplitMode=Random:NormMode=NumEvents:!V" );
  
- factory->BookMethod(TMVA::Types::kBDT, BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts));/*"BDT","!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");*/
+  factory->BookMethod(TMVA::Types::kBDT, BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts));
+  /*"BDT","!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:
+   * UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");*/
 
   // Train MVAs using the set of training events
   factory->TrainAllMethods();
@@ -152,7 +152,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 }
 
 //note before calling this method you must call create_bdt to update the xml weight file:
-DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, std::string var_cut_str)
+DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables)
 {
 	 TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables);
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
@@ -161,24 +161,14 @@ DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variabl
 
 	 std::string label(bg_chain->label);
 	 label += "_w_mva_output";
-	 std::vector<const char*> file_path;
 
-         if(!strcmp(bg_chain->label,"bg_zll")){file_path = z_ll;}
-         else if(!strcmp(bg_chain->label,"bg_wjets_ev")){file_path = wjets_ev;}
-         else if(!strcmp(bg_chain->label,"bg_wjets_muv")){file_path = wjets_muv;}
-         else if(!strcmp(bg_chain->label,"bg_wjets_tauv")){file_path = wjets_tauv;}
-         else if(!strcmp(bg_chain->label,"bg_top")){file_path = top;}
-         else if(!strcmp(bg_chain->label,"bg_vv")){file_path = vv;}
-         else if(!strcmp(bg_chain->label,"bg_zjets_vv")){file_path = zjets_vv;}
-         else if(!strcmp(bg_chain->label,"bg_qcd")){file_path = qcd;}
-	 else{std::cout<<"error background label not found in get_BDT_results"<<"\n";}
-
-         DataChain* output_data = new DataChain(file_path, bg_chain->label, bg_chain->legend, bg_chain->lep_sel, label, bg_clone);
+  DataChain* output_data = new DataChain(z_ll, bg_chain->label, bg_chain->legend, bg_chain->lep_sel, label, bg_clone);
 
 	 return output_data;
 }
 
-std::string BDTAnalysis::BDT_options_str(const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char*nCuts)
+std::string BDTAnalysis::BDT_options_str(const char* NTrees, const char* BoostType,
+																																									const char* AdaBoostBeta, const char* SeparationType, const char* nCuts)
 {
 	std::string BDT_options = "!H:!V:NTrees=";
 	BDT_options.append(NTrees);
@@ -193,13 +183,14 @@ std::string BDTAnalysis::BDT_options_str(const char* NTrees,const char* BoostTyp
 	BDT_options += ":nCuts=";
 	BDT_options.append(nCuts);
 
-        return BDT_options;
+ return BDT_options;
 }
 
-std::string BDTAnalysis::BDT_output_name_str(const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType, const char* nCuts)
+std::string BDTAnalysis::BDT_output_name_str(const char* NTrees, const char* BoostType,const char* AdaBoostBeta,
+																																													const char* SeparationType, const char* nCuts, const char* bg_chain_label)
 {
-
-	std::string out_nam = "BDT-NTrees=";
+ std::string bg = bg_chain_label;
+	std::string out_nam = "BDT-" + bg + "-NTrees=";
 	out_nam.append(NTrees);
 	out_nam += "-BoostType=";
 	out_nam.append(BoostType);
@@ -209,5 +200,7 @@ std::string BDTAnalysis::BDT_output_name_str(const char* NTrees,const char* Boos
 	out_nam.append(SeparationType);
 	out_nam += "-nCuts=";
 	out_nam.append(nCuts);
+	out_nam += ".root";
+
 	return out_nam;
 }

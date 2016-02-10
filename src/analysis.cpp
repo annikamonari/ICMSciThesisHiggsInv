@@ -222,15 +222,36 @@ const char* data_label  = "data_chain";
 const char* data_legend = "data";
 
 /////////////////////// MVA parameters /////////////////////////
-  const char* NTrees[] = {"10"};
-  const char* BoostType[] = {"AdaBoost"};
-  const char* AdaBoostBeta[] ={"0.5"};
-  const char* SeparationType[] = {"GiniIndex"};
-  const char* nCuts[] = {"30"};
+  const char* NTrees_arr[] = {"10", "100", "500", "1000"};
+  std::vector<const char*> NTrees (NTrees_arr, NTrees_arr +
+                           sizeof(NTrees_arr)/sizeof(const char*));
+
+  const char* BoostType_arr[] = {"AdaBoost"};
+  std::vector<const char*> BoostType (BoostType_arr, BoostType_arr +
+                             sizeof(BoostType_arr)/sizeof(const char*));
+
+  const char* AdaBoostBeta_arr[] ={"0.5"};
+  std::vector<const char*> AdaBoostBeta (AdaBoostBeta_arr, AdaBoostBeta_arr +
+                               sizeof(AdaBoostBeta_arr)/sizeof(const char*));
+
+  const char* SeparationType_arr[] = {"GiniIndex"};
+  std::vector<const char*> SeparationType (SeparationType_arr, SeparationType_arr +
+                                 sizeof(SeparationType_arr)/sizeof(const char*));
+
+  const char* nCuts_arr[] = {"30"};
+  std::vector<const char*> nCuts (nCuts_arr, nCuts_arr +
+                                   sizeof(nCuts_arr)/sizeof(const char*));
   
-  const char* NeuronType[2] = {"sigmoid","tanh"};
-  const char* NCycles[5] = {"10","100","500","1000","5000"};
-  const char* HiddenLayers[8] = {"2","5","10","50","5,5",
-  "5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
+  const char* NeuronType_arr[2] = {"sigmoid","tanh"};
+  std::vector<const char*> NeuronType (NeuronType_arr, NeuronType_arr +
+                                     sizeof(NeuronType_arr)/sizeof(const char*));
+
+  const char* NCycles_arr[5] = {"10","100","500","1000","5000"};
+  std::vector<const char*> NCycles (NCycles_arr, NCycles_arr +
+                                       sizeof(NCycles_arr)/sizeof(const char*));
+
+  const char* HiddenLayers_arr[8] = {"2","5","10","50","5,5","5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
+  std::vector<const char*> HiddenLayers (HiddenLayers_arr, HiddenLayers_arr +
+                                         sizeof(HiddenLayers_arr)/sizeof(const char*));
 
 

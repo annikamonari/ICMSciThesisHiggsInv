@@ -10,13 +10,16 @@ void produce_graphs(bool with_cut) {
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
   SuperChains* super_chains         = new SuperChains();
   std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
+std::cout<<"bg chains size"<<bg_chains.size()<<"\n";
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
   const char* mva_type = "MLP";  //go into train_and_run_BDT function to change input parameters
 
-  MVAAnalysis::get_plots_varying_params(bg_chains, 0, signal_chain, data_chain, super_vars, "MLP", "NeuronType", NTrees, BoostType,
-  																			                   AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
-
+  /*MVAAnalysis::get_plots_varying_params(bg_chains, 0, signal_chain, data_chain, super_vars, "MLP", "NeuronType", NTrees, BoostType,
+  																			                   AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);*/
+std::string mva_cut_str="hello";
+HistoPlot::plot_control_region(data_chain, signal_chain, bg_chains[0], bg_chains, 
+ cut_vars[0],&cut_vars,mva_cut_str);
   /*TFile* file1 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=10-HiddenLayers=5,5,5.root");
   TFile* file2 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=100-HiddenLayers=5,5,5.root");
   TFile* file3 = TFile::Open("bg_zll/MLP-NeuronType=sigmoid-NCycles=1000-HiddenLayers=5,5,5.root");

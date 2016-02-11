@@ -7,14 +7,30 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
 																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
 {
-  std::vector<TFile*> files = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name, NTrees, BoostType,
-																																														AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+  std::vector<const char*> file_paths = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name,
+																																																   NTrees, BoostType, AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
 
+  std::vector<TFile*> files = get_files_from_paths(file_paths);
   std::string folder_name = method_name + "_varying_" + dir_name;
   std::cout << "=> Set Folder Name: " << folder_name << std::endl;
   std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
+
   ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name);
   RocCurves::get_rocs(files, signal_chain, bg_chains[0], super_vars, method_name, folder_name);
+}
+
+std::vector<TFile*> MVAAnalysis::get_files_from_paths(std::vector<const char*> file_paths)
+{
+  TFile** files_arr = new TFile*[file_paths.size()];
+	 for (int i = 0; i < file_paths.size(); i++)
+  	{
+    TFile* tmp = TFile::Open(file_paths[i]);
+    files_arr[i] = tmp;
+  	}
+
+	 std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+	 return files;
 }
 
 TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain,
@@ -46,9 +62,10 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
   std::string output_graph_name            = build_output_graph_name(trained_output);
 
-  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false, output_graph_name);
+  HistoPlot::draw_plot(mva_output, bg_chains, signal_chain, data_chain, true,&vars,true ,false,output_graph_name);
   std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
-  std::cout << "Trained output name: "<< trained_output->GetName() << std::endl;
+  std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
+  std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
   return trained_output;
 }
 
@@ -99,75 +116,85 @@ std::string MVAAnalysis::build_output_graph_name(TFile* trained_output)
 }
 
 
-
-std::vector<TFile*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
-																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
-																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
-																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
+std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain,
+																																																						DataChain* data_chain, SuperVars* super_vars, std::string method_name,
+																																																						std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
+																				                                  std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType,
+																																																						std::vector<const char*> nCuts, std::vector<const char*> NeuronType,
+																																																						std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
 {
 	 std::string folder_name = method_name + "_varying_" + dir_name;
-  std::vector<TFile*> varying_params;
 
 	 if (method_name == "BDT")
 	 {
     if (dir_name == "NTrees")
     	{
-    		TFile* files_arr[NTrees.size()];
+    		const char* files_arr[NTrees.size()];
     		for (int i = 0; i < NTrees.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[i],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[i],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
 
       	}
-    		 std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		 std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		 return files;
     	}
     else if (dir_name == "BoostType")
     	{
-    		TFile* files_arr[BoostType.size()];
+    		const char* files_arr[BoostType.size()];
     		for (int i = 0; i < BoostType.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[i], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		return files;
     	}
     else if (dir_name == "AdaBoostBeta")
     	{
-    		TFile* files_arr[AdaBoostBeta.size()];
+    		const char* files_arr[AdaBoostBeta.size()];
     		for (int i = 0; i < AdaBoostBeta.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[i], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		return files;
     	}
     else if (dir_name == "SeparationType")
     	{
-    		TFile* files_arr[SeparationType.size()];
+    		const char* files_arr[SeparationType.size()];
     		for (int i = 0; i < SeparationType.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[i], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		return files;
     	}
     else if (dir_name == "nCuts")
     	{
-    		TFile* files_arr[nCuts.size()];
+    		const char* files_arr[nCuts.size()];
     		for (int i = 0; i < nCuts.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[i], NeuronType[0], NCycles[0], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		return files;
     	}
@@ -176,37 +203,47 @@ std::vector<TFile*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chai
 	 {
 	 		if (dir_name == "NeuronType")
 	 			{
-	 				TFile* files_arr[NeuronType.size()];
+	 				const char* files_arr[NeuronType.size()];
+
     		for (int i = 0; i < NeuronType.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[i], NCycles[0], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				std::cout << file_path << std::endl;
+    				files_arr[i] = file_path;
+    				std::cout << files_arr[i] << std::endl;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
-      std::cout << "=> Got input files, got all MVA results" << std::endl;
+
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
     		return files;
 	 			}
 	 		else if (dir_name == "NCycles")
 	 			{
-	 				TFile* files_arr[NCycles.size()];
+	 				const char* files_arr[NCycles.size()];
     		for (int i = 0; i < NCycles.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[i], HiddenLayers[0]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		return files;
 	 			}
 	 		else if (dir_name == "HiddenLayers")
 	 			{
-	 				TFile* files_arr[HiddenLayers.size()];
+	 				const char* files_arr[HiddenLayers.size()];
     		for (int i = 0; i < HiddenLayers.size(); i++)
       	{
-    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+    				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[i]);
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
       	}
-    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+    		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
     		return files;
 	 			}

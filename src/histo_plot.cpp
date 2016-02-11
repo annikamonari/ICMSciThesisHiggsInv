@@ -3,7 +3,8 @@
 
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                           DataChain* signal_chain, DataChain* data, bool with_cut,
-                          std::vector<Variable*>* variables, bool plot_data, std::string file_name)
+                          std::vector<Variable*>* variables, bool plot_data, bool is_control_region, std::string file_name,
+                          std::string selection)
 {
   TCanvas* c1     = new TCanvas("c1", var->name_styled, 800, 800);
   TPad* p1        = new TPad("p1", "p1", 0.0, 0.95, 1.0, 1.0);
@@ -21,17 +22,32 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   p2->Draw();
   p3->Draw();
   p2->cd();
- 
-  THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut, variables, data);
-  TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables);
+
+  std::vector<double> mc_weights_vector = mc_weights(data, bg_chains, var, with_cut, variables);
+if (is_control_region){
+        for ( int i = 0 ; i < mc_weights_vector.size() ; i++ )
+	{
+           mc_weights_vector[i]=1;
+        }
+}
+/*std::cout<<"mc weights"<< mc_weights_vector[0]<<"\n";
+std::cout<<"mc weights"<< mc_weights_vector[1]<<"\n";
+
+std::cout<<"mc weights"<< mc_weights_vector[2]<<"\n";*/
+
+  THStack stack      = draw_stacked_histo(legend, var, bg_chains, with_cut,mc_weights_vector, variables, data, selection);
+  TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables,selection);
+std::cout<<"signal done"<<"\n";
   TH1F* data_histo   = NULL;
   if(plot_data){TH1F* data_histo   = draw_data(data, var, with_cut, legend, variables);}
 
   stack.Draw();
   signal_histo->Draw("SAME");
   if(plot_data){data_histo->Draw("SAME");}
+std::cout<<"data done"<<"\n";
 
   style_stacked_histo(&stack, var->name_styled);
+std::cout<<"styel done"<<"\n";
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
   std::vector<TH1F*> plot_histos_vector (plot_histos, plot_histos + sizeof(plot_histos) / sizeof(plot_histos[0]));
@@ -300,17 +316,20 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 
 
 THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,
-                                      bool with_cut, std::vector<Variable*>* variables, DataChain* data)
+                                      bool with_cut, std::vector<double> mc_weights_vector, std::vector<Variable*>* variables, 
+                                      DataChain* data,std::string selection)
 {
   THStack stack(var->name_styled, "");
-  std::vector<double> mc_weights_vector = mc_weights(data, bg_chains, var, with_cut, variables);
-
+  
   for(int i = 0; i < bg_chains.size(); i++) {
-    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables, mc_weights_vector[i]);
+//std::cout<<"background: "<<bg_chains[i]->label<<"\n";
+
+    TH1F* single_bg_histo = draw_background(bg_chains[i], var, colours()[i], with_cut, variables,selection, mc_weights_vector[i]);
     stack.Add(single_bg_histo);
     std::string legend_str(bg_chains[i]->legend);
     legend_str += (" #font[12]{(MC weight: " + get_string_from_double(mc_weights_vector[i]) + ")}");
     legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");
+
   }
   return stack;
 }
@@ -444,24 +463,24 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
 }
 
 TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-                             std::vector<Variable*>* variables)
+                             std::vector<Variable*>* variables, std::string selection)
 {
   data_chain->chain->SetLineColor(2);
   data_chain->chain->SetLineWidth(3);
   data_chain->chain->SetFillColor(0);
-  TH1F* signal_histo = build_1d_histo(data_chain, variable, with_cut, true, "goff", variables);
+  TH1F* signal_histo = build_1d_histo(data_chain, variable, with_cut, true, "goff", variables,selection);
   legend->AddEntry(signal_histo, (build_signal_leg_entry(variable, data_chain)).c_str(), "l");
 
   return signal_histo;
 }
 
 TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, 
-                                 int fill_colour, bool with_cut, std::vector<Variable*>* variables, double mc_weight)
+                                 int fill_colour, bool with_cut, std::vector<Variable*>* variables,std::string selection, double mc_weight)
 {
   data_chain->chain->SetLineColor(1);
   data_chain->chain->SetFillColor(fill_colour);
 
-  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, "", mc_weight);
+  return build_1d_histo(data_chain, variable, with_cut, false, "goff", variables, selection, mc_weight);
 }
 
 TH1F* HistoPlot::data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo)
@@ -553,4 +572,32 @@ std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_c
   signal_leg_str += ")";
 
   return signal_leg_str;
+}
+
+void HistoPlot::plot_control_region(  DataChain* data,DataChain* signal_chain,DataChain* single_bg_chain, 
+std::vector<DataChain*> bg_chains, 
+Variable* var, std::vector<Variable*>* variables, std::string mva_cut_str)
+{
+   bool with_cut=true;
+ bool is_signal=true;
+  bool plot_data=false;
+  //TLegend* legend = new TLegend(0.0, 0.5, 0.0, 0.88);
+  std::string selection = MCWeights::get_mc_selection_str(single_bg_chain, var, variables);
+//std::cout<<"selection: "<<selection<<"\n";
+draw_plot(var, bg_chains, signal_chain,  data, with_cut,variables, plot_data,true,"", selection);
+
+/*  double mc_weight = 1;
+  THStack stack(var->name_styled, "");
+
+  for(int i = 0; i < bg_chains.size(); i++) {
+    single_bg_chain->chain->SetLineColor(1);
+    int fill_colour = colours()[i];
+    single_bg_chain->chain->SetFillColor(fill_colour);
+    TH1F* single_bg_histo = build_1d_histo(single_bg_chain,
+	 var, with_cut, false, "goff", variables, selection, mc_weight);
+
+    stack.Add(single_bg_histo);
+    std::string legend_str(bg_chains[i]->legend);
+    legend_str += (" #font[12]{(MC weight: " + get_string_from_double(mc_weight) + ")}");
+    legend->AddEntry(single_bg_histo, legend_str.c_str(), "f");*/
 }

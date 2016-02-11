@@ -93,39 +93,57 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
  	   reader->BookMVA( "MLP method", "weights/TMVAClassification_MLP.weights.xml" );
 	   // Book output histograms
 	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.25, 1.5 );
-	   // --- Event loop
+	   
+// Prepare input tree (this must be replaced by your data source)
+   // in this example, there is a toy tree with signal and one with background events
+   // we'll later on use only the "signal" events for the test in this example.
+   //   
+   TFile *input(0);
+   TString fname = "~/TMVA-v4.2.0/test/tmva_example.root";   
+   if (!gSystem->AccessPathName( fname )) 
+      input = TFile::Open( fname ); // check if file in local directory exists
+   else    
+      input = TFile::Open( "http://root.cern.ch/files/tmva_class_example.root" ); // if not: download from ROOT server
+   
+   if (!input) {
+      std::cout << "ERROR: could not open data file" << std::endl;
+      exit(1);
+   }
+   std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
 
-	   TChain* data = (TChain*) bg_chain->chain->Clone();
+           // --- Event loop
+	   TTree *theTree = (TTree*)input->Get("TreeS");
+	   //TChain* data = (TChain*) bg_chain->chain->Clone();
 
-	   data->SetBranchAddress("dijet_deta", &dijet_deta);
-	   data->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
-	   data->SetBranchAddress("metnomu_significance", &metnomu_significance);
-	   data->SetBranchAddress("sqrt_ht", &sqrt_ht);
-	   data->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
-	   data->SetBranchAddress("dijet_M", &dijet_M);
-	   data->SetBranchAddress("metnomuons", &metnomuons);
+	   /*data*/theTree->SetBranchAddress("dijet_deta", &dijet_deta);
+	   /*data*/theTree->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
+	   /*data*/theTree->SetBranchAddress("metnomu_significance", &metnomu_significance);
+	   /*data*/theTree->SetBranchAddress("sqrt_ht", &sqrt_ht);
+	   /*data*/theTree->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
+	   /*data*/theTree->SetBranchAddress("dijet_M", &dijet_M);
+	   /*data*/theTree->SetBranchAddress("metnomuons", &metnomuons);
 
 	   // Efficiency calculator for cut method
-	   Int_t    nSelCutsGA = 0;
-	   Double_t effS       = 0.7;
+	   //Int_t    nSelCutsGA = 0;
+	   //Double_t effS       = 0.7;
 	   std::vector<Float_t> vecVar(9); // vector for EvaluateMVA tests
 
 	   Float_t output;
-	   TTree* output_tree = new TTree("MVAtree","Tree with classifier outputs");
+	   TTree* output_tree = theTree;//new TTree("MVAtree","Tree with classifier outputs");
 	   output_tree->Branch("output", &output, "output");
     output_tree->SetBranchStatus("*",1);
-	   std::cout << "--- Processing: " << data->GetEntries() << " events" << std::endl;
+	   std::cout << "--- Processing: " << /*data*/theTree->GetEntries() << " events" << std::endl;
 	   TStopwatch sw;
 	   sw.Start();
-	   for (Long64_t ievt=0; ievt<data->GetEntries(); ievt++) {
+	   for (Long64_t ievt=0; ievt</*data*/theTree->GetEntries(); ievt++) {
 
 	      if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
 
-	      data->GetEntry(ievt);
+	      /*data*/theTree->GetEntry(ievt);
 	      output = reader->EvaluateMVA( "MLP method");
 
 	      output_tree->Fill();
-	      histNn->Fill(output);
+	      histNn->Fill( reader->EvaluateMVA( "MLP method" ));
 	   }
 
 	   // Get elapsed time
@@ -133,10 +151,10 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::cout << "--- End of event loop: "; sw.Print();
 
 	   // --- Write histograms
-    std::string target_name = training_output_name;
+    /*std::string target_name = training_output_name;
     std::string bg_chain_name = bg_chain->label;
-    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");
-	   TFile* target  = new TFile(target_file.c_str(),"RECREATE" );
+    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");*/
+	   TFile* target  = new TFile("TMVApp.root","RECREATE" );
 	   target->cd();
 	   histNn->Write();
 
@@ -148,7 +166,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 	   std::cout << "==> TMVAClassificationApplication is done!" << std::endl;
 
-	  // return output_tree->CloneTree();
+	   return output_tree->CloneTree();
 }
 
 //note before calling this method you must call create_MLP to update the xml weight file:

@@ -31,10 +31,13 @@ std::vector<TH1D*> ClassifierOutputs::get_classifier_histos(TFile* classifier_ou
 		 	histo_dir = "Method_BDT/BDT/MVA_BDT_";
 		}
 	 histos[0] = get_histo_from_output(classifier_output, histo_dir + "S;1");
+	 std::cout << "Signal" << histos[0] << std::endl;
 	 histos[1] = get_histo_from_output(classifier_output, histo_dir + "Train_S;1");
+	 std::cout << "Signal train" << histos[1] << std::endl;
 	 histos[2] = get_histo_from_output(classifier_output, histo_dir + "B;1");
+	 std::cout << "BG" << histos[2] << std::endl;
 	 histos[3] = get_histo_from_output(classifier_output, histo_dir + "Train_B;1");
-
+	 std::cout << "BG train" << histos[3] << std::endl;
 	 std::vector<TH1D*> histos_vector (histos, histos + sizeof(histos) / sizeof(histos[0]));
 
 	 return histos_vector;
@@ -43,7 +46,7 @@ std::vector<TH1D*> ClassifierOutputs::get_classifier_histos(TFile* classifier_ou
 TH1D* ClassifierOutputs::get_histo_from_output(TFile* file, std::string histo_path)
 {
   TH1D* histo = (TH1D*) file->Get(histo_path.c_str());
-  std::cout << "got histo" << std::endl;
+  std::cout << "got histo" << histo << std::endl;
   return (TH1D*) histo->Clone();
 }
 

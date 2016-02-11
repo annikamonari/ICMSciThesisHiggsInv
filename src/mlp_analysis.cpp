@@ -148,7 +148,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 	   std::cout << "==> TMVAClassificationApplication is done!" << std::endl;
 
-	   return output_tree->CloneTree();
+	  // return output_tree->CloneTree();
 }
 
 //note before calling this method you must call create_MLP to update the xml weight file:

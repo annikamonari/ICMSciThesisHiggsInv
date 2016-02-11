@@ -280,7 +280,6 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 {
 	 double total = 0;
 	 for (int i = 0; i < bg_chains.size(); i++)
-:exe "!" . g:ctags_command
 	 	{
 	 		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
 	 		double integral = HistoPlot::get_histo_integral(histo, with_cut, var);

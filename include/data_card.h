@@ -65,11 +65,7 @@ class DataCard
 
   static std::string no_shape_line();
 
-<<<<<<< HEAD
-  static const char* get_data_card_name(const char* mva_type);
-=======
   static const char* get_data_card_name(TFile* training_output);
->>>>>>> a9781c1a21a1b8945e737c3d4c25855be25d5e84
 };
 
 #endif

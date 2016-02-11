@@ -4,44 +4,42 @@ TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std
 																															std::string folder_name, const char* NTrees,const char* BoostType,
 																															const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
 {
-	 if (!opendir(folder_name.c_str()))
-	 {
-	   mkdir(folder_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-	 }
+	  if (!opendir(folder_name.c_str()))
+	  {
+	    mkdir(folder_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	  }
 
-	 std::string output_path(folder_name);
-  output_path.append("/");
+	  std::string output_path(folder_name);
+	  output_path.append("/");
+	  output_path.append(BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts, bg_chain->label));
+	  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
-  output_path.append(BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts, bg_chain->label));
-  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
+	  TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
+	                                             "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
 
-  TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
-                                             "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
+	  for (int i = 0; i < variables->size(); i++)
+	  {
+	    factory->AddVariable((*variables)[i]->name, (*variables)[i]->name_styled, (*variables)[i]->units, 'F');
+	  }
 
-  for (int i = 0; i < variables->size(); i++)
-  {
-    factory->AddVariable((*variables)[i]->name, (*variables)[i]->name_styled, (*variables)[i]->units, 'F');
-  }
+	  // Background
+	    double background_weight = 1.0;
+	    factory->AddBackgroundTree(bg_chain->chain,background_weight);
+	    factory->SetBackgroundWeightExpression("total_weight_lepveto");
 
-  // Background
-  double background_weight = 1.0;
-  factory->AddBackgroundTree(bg_chain->chain,background_weight);
-  factory->SetBackgroundWeightExpression("total_weight_lepveto");
+	    // Signal
+	    double signal_weight = 1.0;
+	    factory->AddSignalTree(signal_chain->chain, signal_weight);
+	    factory->SetSignalWeightExpression("total_weight_lepveto");
 
-  // Signal
-  double signal_weight = 1.0;
-  factory->AddSignalTree(signal_chain->chain, signal_weight);
-  factory->SetSignalWeightExpression("total_weight_lepveto");
+	    // Apply additional cuts on the signal and background samples (can be different)
+	    TCut signal_cuts = "alljetsmetnomu_mindphi>2.0 && alljetsmetnomu_mindphi<3.0 && jet1_E>50.0 && jet2_E>45.0 && metnomu_significance>3.5 && dijet_deta>4.2 && dijet_deta<8.0 && nvetomuons==0 && nvetoelectrons==0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+	    TCut bg_cuts = signal_cuts; // for example: TCut mycutb = "abs(var1)<0.5";
 
-  // Apply additional cuts on the signal and background samples (can be different)
-  TCut signal_cuts = "alljetsmetnomu_mindphi>2.0 && alljetsmetnomu_mindphi<3.0 && jet1_E>50.0 && jet2_E>45.0 && metnomu_significance>3.5 && dijet_deta>4.2 && dijet_deta<8.0 && nvetomuons==0 && nvetoelectrons==0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-  TCut bg_cuts = signal_cuts; // for example: TCut mycutb = "abs(var1)<0.5";
-
-  factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts, "SplitMode=Random:NormMode=NumEvents:!V" );
+	    factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
+	    				       "SplitMode=Random:NormMode=NumEvents:!V" );
  
-  factory->BookMethod(TMVA::Types::kBDT, BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts));
-  /*"BDT","!H:!V:NTrees=800:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.2:
-   * UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20");*/
+    factory->BookMethod(TMVA::Types::kBDT, "BDT", BDT_options_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts));
 
   // Train MVAs using the set of training events
   factory->TrainAllMethods();
@@ -87,6 +85,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   reader->AddVariable("sqrt_ht", &sqrt_ht);
 	   reader->AddVariable("dijet_M", &dijet_M);
 	   reader->AddVariable("metnomuons", &metnomuons);
+
 
 	   // Book method(s)
 	   reader->BookMVA( "BDT method", "weights/TMVAClassification_BDT.weights.xml" );

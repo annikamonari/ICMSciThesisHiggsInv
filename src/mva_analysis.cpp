@@ -45,7 +45,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 
   if (method_name == "BDT")
 	 {
-  		trained_output = BDTAnalysis::create_BDT(bg_chains[bg_to_train], signal_chain, &vars, folder_name,
+  		trained_output = BDTAnalysis::create_BDT(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,
 																																													NTrees,BoostType,AdaBoostBeta, SeparationType, nCuts);
 	 }
   else if (method_name == "MLP")

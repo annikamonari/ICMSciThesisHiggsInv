@@ -14,8 +14,15 @@ void produce_graphs(bool with_cut) {
   DataChain* data_chain             = super_chains->data_chain;
   const char* mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
   int relevant_bgs[] = {0, 1, 2, 3, 6};
-  MVAAnalysis::get_plots_varying_params(bg_chains, 6, signal_chain, data_chain, super_vars, "BDT", "NTrees", NTrees, BoostType,
-  																			                   AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+
+  for (int i = 0; i < 5; i++)
+  {
+  		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
+  		std::cout << "=================================================" << std::endl;
+  		MVAAnalysis::get_plots_varying_params(bg_chains, i, signal_chain, data_chain, super_vars, "BDT", "AdaBoostBeta", NTrees, BoostType,
+																																										AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+  }
+
 
 
   //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars,mva_type);

@@ -7,8 +7,12 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
 																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
 {
-  std::vector<TFile*> files = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name, NTrees, BoostType,
-																																														AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+  //std::vector<TFile*> files = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name, NTrees, BoostType,
+		//																																											AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+		TFile* file1 = TFile::Open("MLP_varying_NeuronType/MLP-bg_zll-NeuronType=sigmoid-NCycles=10-HiddenLayers=2.root");
+		TFile* file2 = TFile::Open("MLP_varying_NeuronType/MLP-bg_zll-NeuronType=tanh-NCycles=10-HiddenLayers=2.root");
+		TFile* files_arr[] = {file1, file2};
+		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
 
   std::string folder_name = method_name + "_varying_" + dir_name;
   std::cout << "=> Set Folder Name: " << folder_name << std::endl;

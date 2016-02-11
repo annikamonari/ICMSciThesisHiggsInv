@@ -68,7 +68,7 @@ TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std
   return output_tmva;
 }
 
-TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables)
+TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name)
 {
 	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -135,7 +135,10 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 
 	   // --- Write histograms
     data->AddFriend(output_tree);
-	   TFile* target  = new TFile( "TMVApp.root","RECREATE" );
+    std::string target_name = training_output_name;
+    std::string bg_chain_name = bg_chain->label;
+    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");
+	   TFile* target  = new TFile(target_file.c_str(),"RECREATE" );
 	   target->cd();
 	   data->CloneTree()->Write();
 	   histBdt->Write();
@@ -152,12 +155,13 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 }
 
 //note before calling this method you must call create_bdt to update the xml weight file:
-DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables)
+DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name)
 {
-	 TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables);
+	 TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables, training_output_name);
+	 TTree* output_weight_clone = (TTree*) output_weight->Clone();
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
 
-	 bg_clone->AddFriend(output_weight);
+	 bg_clone->AddFriend(output_weight_clone);
 
 	 std::string label(bg_chain->label);
 	 label += "_w_mva_output";

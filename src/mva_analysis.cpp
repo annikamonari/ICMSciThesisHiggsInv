@@ -25,7 +25,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
 	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();
 	 std::string selection_str        = super_vars->get_final_cuts_str();
-	 TFile* trained_output;
+	 TFile* trained_output = NULL;
 
   if (method_name == "BDT")
 	 {
@@ -38,9 +38,9 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 																																													NeuronType, NCycles, HiddenLayers);
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
-	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name);
+	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
 	 std::cout << "=> All background put through BDT" << std::endl;
-	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name);
+	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name, trained_output);
 	 std::cout << "=> Signal put through BDT" << std::endl;
   Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
@@ -48,11 +48,12 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 
   HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false, output_graph_name);
   std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
+  std::cout << "Trained output name: "<< trained_output->GetName() << std::endl;
   return trained_output;
 }
 
 std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars,
-																																																										std::string method_name)
+																																																										std::string method_name, TFile* training_output)
 {
   std::vector<DataChain*> output_bg_chains;
 
@@ -62,11 +63,11 @@ std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*
 
 	 		if (method_name == "BDT")
 	 		{
-	 		  combined_output = BDTAnalysis::get_BDT_results(bg_chains[i], &vars);
+	 		  combined_output = BDTAnalysis::get_BDT_results(bg_chains[i], &vars, training_output->GetName());
 	 		}
 	 		else if (method_name == "MLP")
 	 		{
-	 				combined_output = MLPAnalysis::get_MLP_results(bg_chains[i], &vars);
+	 				combined_output = MLPAnalysis::get_MLP_results(bg_chains[i], &vars, training_output->GetName());
 	 		}
 
 	 		output_bg_chains.push_back(combined_output);
@@ -75,16 +76,17 @@ std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*
 	 return output_bg_chains;
 }
 
-DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name)
+DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name,
+																																																TFile* training_output)
 {
 
 	 if (method_name == "BDT")
 		{
-		  return BDTAnalysis::get_BDT_results(signal_chain, &vars);
+		  return BDTAnalysis::get_BDT_results(signal_chain, &vars, training_output->GetName());
 		}
 		else
 		{
-		 	return MLPAnalysis::get_MLP_results(signal_chain, &vars);
+		 	return MLPAnalysis::get_MLP_results(signal_chain, &vars, training_output->GetName());
 		}
 }
 
@@ -181,7 +183,7 @@ std::vector<TFile*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chai
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[i], NCycles[0], HiddenLayers[0]);
       	}
     		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
-
+      std::cout << "=> Got input files, got all MVA results" << std::endl;
     		return files;
 	 			}
 	 		else if (dir_name == "NCycles")

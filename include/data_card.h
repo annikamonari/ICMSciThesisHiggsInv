@@ -64,7 +64,7 @@ class DataCard
 
   static std::string no_shape_line();
 
-  static const char* get_data_card_name(DataChain* data_chain,const char* mva_type);
+  static const char* get_data_card_name(const char* mva_type);
 };
 
 #endif

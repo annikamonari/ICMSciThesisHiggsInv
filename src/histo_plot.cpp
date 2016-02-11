@@ -195,7 +195,7 @@ double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_ch
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables);
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
   double sigma_total = std::pow(sigma_total_sq,0.5);
-  std::cout << bg_chain->label << " - single bg error: " << sigma_total << std::endl;
+  //std::cout << bg_chain->label << " - single bg error: " << sigma_total << std::endl;
   return sigma_total;
 }
 
@@ -410,8 +410,8 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   {
     selection_str = selection;
   }
-  std::cout << "selection - " << selection_str << std::endl;
-  std::cout << "var arg - " << var_arg << std::endl;
+  //std::cout << "selection - " << selection_str << std::endl;
+  //std::cout << "var arg - " << var_arg << std::endl;
   data_chain->chain->Draw(var_arg.c_str(), selection_str.c_str(), option);
 
   TH1F* histo = (TH1F*)gDirectory->Get(data_chain->label);

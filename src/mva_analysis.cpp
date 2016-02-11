@@ -8,28 +8,27 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
 {
   std::vector<const char*> file_paths = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name,
-																																																   NTrees, BoostType, AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+																																															   NTrees, BoostType, AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
 
   std::vector<TFile*> files = get_files_from_paths(file_paths);
   std::string folder_name = method_name + "_varying_" + dir_name;
   std::cout << "=> Set Folder Name: " << folder_name << std::endl;
   std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
-
-  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name);
-  RocCurves::get_rocs(files, signal_chain, bg_chains[0], super_vars, method_name, folder_name);
+  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
+  RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
 }
 
 std::vector<TFile*> MVAAnalysis::get_files_from_paths(std::vector<const char*> file_paths)
 {
-  TFile** files_arr = new TFile*[file_paths.size()];
+  TFile* files_arr[file_paths.size()];
 	 for (int i = 0; i < file_paths.size(); i++)
   	{
-    TFile* tmp = TFile::Open(file_paths[i]);
-    files_arr[i] = tmp;
+    files_arr[i] = TFile::Open(file_paths[i]);
   	}
 
 	 std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
-
+  std::cout << "File paths size: " << file_paths.size() << std::endl;
+  std::cout << "files size: " << files.size() << std::endl;
 	 return files;
 }
 

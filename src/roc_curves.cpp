@@ -16,16 +16,15 @@ void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, DataChain
 {
 	 std::string plot_name = "ROC Curves";
 	 TCanvas* c1     = new TCanvas("c1", plot_name.c_str());
-	 TLegend* legend = new TLegend(0.15, 0.5, 0.65, 0.2);
+	 TLegend* legend = new TLegend(0.15, 0.6, 0.65, 0.15);
 	 TGraph* point   = parked_data_point(signal, bg, preselection, var, variables, legend);
   std::cout << "=> Parked Data Point done" << std::endl;
 	 for (int i = 0; i < training_outputs.size(); i++)
  	{
     std::string training_name(training_outputs[i]->GetName());
     std::string file_name = training_name.substr(training_name.find("/") + 1 , -1);
-    std::cout << "File name: " << file_name << std::endl;
     std::string legend_str = HistoPlot::replace_all(file_name, ".root", "");
-    std::string legend_text = "#splitline{" + legend_str.substr(0, 25) + "}{" + legend_str.substr(26, -1) + "}";
+    std::string legend_text = "#splitline{" + legend_str.substr(0, 45) + "}{" + legend_str.substr(46, -1) + "}";
 
 	 		TH1D* rejBvsS_histo    = plot_rejBvsS(training_outputs[i], method_name);
 	 		rejBvsS_histo->SetLineColor(HistoPlot::colours()[i+2]);
@@ -47,7 +46,8 @@ void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, DataChain
 	 style_legend(legend);
 	 point->Draw("pSAME");
 	 legend->Draw();
-	 std::string img_name = dir + "/roc_curves_changing_cycles.png";
+	 std::string bg_name = bg->label;
+	 std::string img_name = dir + "/" + bg_name + "_roc_curves.png";
 	 c1->SaveAs(img_name.c_str());
 	 c1->Close();
 }

@@ -1,18 +1,20 @@
 #include "../include/classifier_outputs.h"
 
-void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir)
+void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir,
+																																																							const char* bg_label)
 {
 	std::cout<<"im in plot classifier outputs"<<"\n"; 
 	TCanvas* c1 = new TCanvas("c1", "OverTraining Check", 800, 800);
 	 std::vector<int> npads = get_npads(files.size());
 	 c1->Divide(npads[0], npads[1], 0.00001, 0.005);
-  std::cout << "=> Divided Canvas..." << std::endl;
+  std::cout << "=> Divided Canvas..." << " Files size: " << files.size() << "num pads "<< npads[0] << "," << npads[1] << std::endl;
 	 for (int i = 0; i < files.size(); i++)
 	 {
     c1->cd(i+1);
     draw_classifier_outputs(files[i], method_name);
 	 }
-  std::string file_name = dir + "/overtraining_check.png";
+	 std::string bg = bg_label;
+  std::string file_name = dir + "/" + bg + "_overtraining_check.png";
 	 c1->SaveAs(file_name.c_str());
 	 c1->Close();
 }
@@ -146,7 +148,7 @@ void ClassifierOutputs::style_histo(TH1D* histo, int colour, int hist_no, std::s
 void ClassifierOutputs::draw_title(std::string title)
 {
 	  TPaveText* pt = new TPaveText(0.15, 0.98, 0.9, 0.9, "blNDC");
-	  std::string split_title = "#splitline{" + title.substr(0, 30) + "}{" + title.substr(26, -1) + "}";
+	  std::string split_title = "#splitline{" + title.substr(0, 60) + "}{" + title.substr(61, -1) + "}";
 			pt->SetBorderSize(0);
 			pt->SetFillStyle(0);
 			pt->AddText(split_title.c_str());

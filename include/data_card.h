@@ -8,13 +8,13 @@
 class DataCard
 {
  public:
-  static double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables);
+  static double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string selection);
 
   static std::vector<double> get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights);
+                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string selection);
 
   static std::vector<double> get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-  							                              Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights);
+  							                              Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights,std::string selection);
 
   static std::vector<int> process_line_2(int size);
 
@@ -56,12 +56,13 @@ class DataCard
 																														Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string selection,
 																														TFile* training_output = NULL);
 
-  static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																		std::vector<double> bg_mc_weights);
+  static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, 
+std::vector<Variable*>* variables,
+																																		std::vector<double> bg_mc_weights, std::string selection);
 
   static std::string get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,
 																																											DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																											std::vector<double> bg_mc_weights);
+																																											std::vector<double> bg_mc_weights, std::string selection);
 
   static std::string no_shape_line();
 

@@ -19,7 +19,7 @@ class MCWeights
                                Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
   static double calc_weight_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables);
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut="");
 };
 
 

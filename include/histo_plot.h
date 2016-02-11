@@ -57,11 +57,11 @@ class HistoPlot
   static std::vector<double> mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,                                 Variable* var, bool with_cut, std::vector<Variable*>* variables);
 
   static double single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, double weight);
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, double weight, std::string selection);
 
   static std::vector<double> get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains,
 																	                                 Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																																		std::vector<double> bg_mc_weights);
+																																																		std::vector<double> bg_mc_weights, std::string selection);
 
   static std::string get_string_from_double(double num);
 

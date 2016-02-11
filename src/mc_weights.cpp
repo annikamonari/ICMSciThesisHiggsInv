@@ -51,9 +51,10 @@ double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_cha
 }
 
 double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables)
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut)
 {
   std::string selection = get_mc_selection_str(bg_chain, var, variables);
+  selection.insert(selection.find("(")+1, mva_cut);
   double data_N_C       = get_nevents(data, var, with_cut, variables, selection);
   double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, selection);
   double bg_N_C         = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - MC_N_C;

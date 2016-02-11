@@ -18,7 +18,7 @@ std::cout<<"bg chains size"<<bg_chains.size()<<"\n";
 
   /*MVAAnalysis::get_plots_varying_params(bg_chains, 0, signal_chain, data_chain, super_vars, "MLP", "NeuronType", NTrees, BoostType,
   																			                   AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);*/
-std::string mva_cut_str="hello";
+std::string mva_cut_str="";
 HistoPlot::plot_control_region(data_chain, signal_chain, bg_chains[0], bg_chains, 
  cut_vars[0],&cut_vars,mva_cut_str);
   for (int i = 0; i < 5; i++)

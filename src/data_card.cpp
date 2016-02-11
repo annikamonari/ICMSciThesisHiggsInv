@@ -4,9 +4,9 @@
 #include <sstream>
 #include <string>
 
-double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables)
+double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string selection)
 {
-  TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables);
+  TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables, selection);
   double total_signal = HistoPlot::get_histo_integral(signalh, with_cut, var);
 
   double sig_sqrt = std::pow(total_signal,0.5);
@@ -15,12 +15,12 @@ double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool w
 }
 
 std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights)
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string selection)
 {
 	 double bg_errors_parsed[bg_chains.size()];
 
-	 std::vector<double> bg_errors = HistoPlot::get_mc_weight_errors(data, bg_chains, var, with_cut, variables, bg_mc_weights);
-  std::vector<double> rates = get_rates(data, bg_chains, signal_chain, var,with_cut, variables, bg_mc_weights);
+	 std::vector<double> bg_errors = HistoPlot::get_mc_weight_errors(data, bg_chains, var, with_cut, variables, bg_mc_weights, selection);
+  std::vector<double> rates = get_rates(data, bg_chains, signal_chain, var,with_cut, variables, bg_mc_weights, selection);
 
   for(int i = 0; i < bg_chains.size(); i++)
   {
@@ -32,16 +32,16 @@ std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataCha
 }
 
 std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights)
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights,std::string selection)
 {
   double rates[bg_chains.size() + 1];
-  TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables);
+  TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables,selection);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);
 
   for(int i = 0; i < bg_chains.size();i++)
   {
     std::cout << bg_mc_weights[i] << std::endl;
-  		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
+  		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, selection, bg_mc_weights[i]);
     double N = HistoPlot::get_histo_integral(histo, with_cut, var); //integral of single bg
     rates[i + 1]= N;
     std::cout << bg_chains[i]->label << " - " << N << std::endl;
@@ -201,10 +201,10 @@ std::string DataCard::get_uncertainties_string(std::vector<std::vector<double> >
 
 std::string DataCard::get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,
 																																												DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																												std::vector<double> bg_mc_weights)
+																																												std::vector<double> bg_mc_weights, std::string selection)
 {
-  double signal_error = get_signal_error(signal_chain, var, with_cut, variables);
-  std::vector<double> bg_errors = get_bg_errors(data, bg_chains, signal_chain, var, with_cut, variables, bg_mc_weights);
+  double signal_error = get_signal_error(signal_chain, var, with_cut, variables,selection);
+  std::vector<double> bg_errors = get_bg_errors(data, bg_chains, signal_chain, var, with_cut, variables, bg_mc_weights, selection);
   std::vector<std::vector<double> > uncertainty_vectors = DataCard::get_uncertainty_vectors(signal_error, bg_errors);
 
   return get_uncertainties_string(uncertainty_vectors);
@@ -262,21 +262,22 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
   fs << no_shape_line();
   fs << dashed_line();
   fs << bin_header_string();
-  fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables, mc_weights));
+  fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables, mc_weights,selection));
   fs << dashed_line();
   fs << bin_grid_line(size);
   fs << process_labels(bg_chains, signal_chain);
   fs << process_2_string(process_line_2(size));
-  fs << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights));
+  fs << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,selection));
   fs << dashed_line();
-  fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights);
+  fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,selection);
 	 fs.close();
 for (int i=0; i< 10;i++){
 }
 
 }
 
-double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,std::vector<double> bg_mc_weights)
+double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
+ std::vector<Variable*>* variables,std::vector<double> bg_mc_weights, std::string selection)
 {
 	 double total = 0;
 	 for (int i = 0; i < bg_chains.size(); i++)

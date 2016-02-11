@@ -69,7 +69,7 @@ TFile* MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std
   return output_tmva;
 }
 
-TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables)
+TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables, const char* training_output_name)
 {
 	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -95,7 +95,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.25, 1.5 );
 	   // --- Event loop
 
-	   TChain* data = bg_chain->chain;
+	   TChain* data = (TChain*) bg_chain->chain->Clone();
 
 	   data->SetBranchAddress("dijet_deta", &dijet_deta);
 	   data->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
@@ -112,8 +112,8 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 	   Float_t output;
 	   TTree* output_tree = new TTree("MVAtree","Tree with classifier outputs");
-	   output_tree -> Branch("output", &output, "output");
-
+	   output_tree->Branch("output", &output, "output");
+    output_tree->SetBranchStatus("*",1);
 	   std::cout << "--- Processing: " << data->GetEntries() << " events" << std::endl;
 	   TStopwatch sw;
 	   sw.Start();
@@ -133,10 +133,11 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::cout << "--- End of event loop: "; sw.Print();
 
 	   // --- Write histograms
-    data->AddFriend(output_tree);
-	   TFile* target  = new TFile( "TMVApp.root","RECREATE" );
+    std::string target_name = training_output_name;
+    std::string bg_chain_name = bg_chain->label;
+    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");
+	   TFile* target  = new TFile(target_file.c_str(),"RECREATE" );
 	   target->cd();
-	   data->CloneTree()->Write();
 	   histNn->Write();
 
 	   target->Close();
@@ -147,17 +148,19 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 	   std::cout << "==> TMVAClassificationApplication is done!" << std::endl;
 
-	   return output_tree;
+	   return output_tree->CloneTree();
 }
 
 //note before calling this method you must call create_MLP to update the xml weight file:
 //
-DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables)
+DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name)
 {
-	 TTree* output_weight = MLPAnalysis::evaluate_MLP(bg_chain, variables);
+	 TTree* output_weight = MLPAnalysis::evaluate_MLP(bg_chain, variables, training_output_name);
+	 TTree* output_weight_clone = (TTree*) output_weight->Clone();
+	 output_weight_clone->SetBranchStatus("*",1);
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
 
-	 bg_clone->AddFriend(output_weight);
+	 bg_clone->AddFriend(output_weight_clone);
 
 	 std::string label(bg_chain->label);
 	 label += "_w_mva_output";

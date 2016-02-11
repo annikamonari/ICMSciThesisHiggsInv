@@ -5,7 +5,7 @@ void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files
 	 TCanvas* c1 = new TCanvas("c1", "OverTraining Check", 800, 800);
 	 std::vector<int> npads = get_npads(files.size());
 	 c1->Divide(npads[0], npads[1], 0.00001, 0.005);
-
+  std::cout << "=> Divided Canvas..." << std::endl;
 	 for (int i = 0; i < files.size(); i++)
 	 {
     c1->cd(i+1);
@@ -42,7 +42,7 @@ std::vector<TH1D*> ClassifierOutputs::get_classifier_histos(TFile* classifier_ou
 TH1D* ClassifierOutputs::get_histo_from_output(TFile* file, std::string histo_path)
 {
   TH1D* histo = (TH1D*) file->Get(histo_path.c_str());
-
+  std::cout << "got histo" << std::endl;
   return (TH1D*) histo->Clone();
 }
 
@@ -60,7 +60,7 @@ std::vector<TH1D*> ClassifierOutputs::normalise_histos(std::vector<TH1D*> histos
 void ClassifierOutputs::plot_histos(std::vector<TH1D*> histos, TFile* file)
 {
 	 std::string file_name(file->GetName());
-	 file_name                            = HistoPlot::replace_all(file_name, "bg_zll/", "");
+	 file_name                            = HistoPlot::replace_all(file_name, "/", " - ");
 	 std::string file_name_parsed         = HistoPlot::replace_all(HistoPlot::replace_all(file_name, ".root", ""), "-", ", ");
 	 TLegend* legend                      = new TLegend(0.12, 0.6, 0.38, 0.86);
 	 int colours[4]                       = {2, 46, 4, 38};
@@ -105,6 +105,7 @@ void ClassifierOutputs::draw_ktest(std::vector<TH1D*> normalised_histos)
 void ClassifierOutputs::draw_classifier_outputs(TFile* file, std::string method_name)
 {
 	 std::vector<TH1D*> histos = get_classifier_histos(file, method_name);
+	 std::cout << "=> Got Classifier Histos" << std::endl;
 	 plot_histos(histos, file);
 }
 

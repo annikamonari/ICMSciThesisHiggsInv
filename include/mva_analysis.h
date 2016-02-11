@@ -41,9 +41,10 @@ class MVAAnalysis
 																														const char* nCuts = "30", const char* NeuronType = "sigmoid", const char* NCycles = "500",
 																														const char* HiddenLayers = "5,5,5,5");
 
-  static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string method_name);
+  static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string method_name,
+																																																						TFile* training_output);
 
-  static DataChain* get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name);
+  static DataChain* get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name, TFile* training_output);
 
   static std::string build_output_graph_name(TFile* trained_output);
 

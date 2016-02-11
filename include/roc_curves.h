@@ -15,11 +15,11 @@ class RocCurves
   static TH1D* plot_rejBvsS(TFile* training_output, std::string method_name);
 
   static void get_rocs(std::vector<TFile*> training_outputs, DataChain* signal,
-																													DataChain* bg, SuperVars* super_vars, std::string method_name);
+																													DataChain* bg, SuperVars* super_vars, std::string method_name, std::string dir);
 
-  static void plot_all_rejBvsS(std::vector<TFile*> training_outputs, std::string bg_name, DataChain* signal,
+  static void plot_all_rejBvsS(std::vector<TFile*> training_outputs, DataChain* signal,
 																																										DataChain* bg, std::string preselection, Variable* var, std::vector<Variable*>* variables,
-																																										std::string method_name);
+																																										std::string method_name, std::string dir);
 
   static double get_presel_effy(DataChain* data_chain, std::string preselection, Variable* var,
 																									       std::vector<Variable*>* variables);

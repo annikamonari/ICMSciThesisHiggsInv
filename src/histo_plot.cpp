@@ -3,7 +3,7 @@
 
 void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                           DataChain* signal_chain, DataChain* data, bool with_cut,
-                          std::vector<Variable*>* variables, bool plot_data)
+                          std::vector<Variable*>* variables, bool plot_data, std::string file_name)
 {
   TCanvas* c1     = new TCanvas("c1", var->name_styled, 800, 800);
   TPad* p1        = new TPad("p1", "p1", 0.0, 0.95, 1.0, 1.0);
@@ -34,7 +34,8 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   style_stacked_histo(&stack, var->name_styled);
 
   TH1F* plot_histos[3] = {(TH1F*)(stack.GetStack()->Last()), data_histo, signal_histo};
-  TH1F* max_histo      = get_max_histo(plot_histos);
+  std::vector<TH1F*> plot_histos_vector (plot_histos, plot_histos + sizeof(plot_histos) / sizeof(plot_histos[0]));
+  TH1F* max_histo      = get_max_histo(plot_histos_vector);
 
   stack.SetMaximum(get_histo_y_max(max_histo)*1.15);
 
@@ -57,9 +58,19 @@ void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
   style_ratio_histo(data_bg_ratio_histo, var->name_styled);
   draw_yline_on_plot(var, with_cut, 1.0);
 
+  std::string img_name;
+  if (file_name == "")
+  {
+  		img_name = build_file_name(var, with_cut);
+  }
+  else
+  {
+  		img_name = file_name;
+  }
+
   p1->cd();
   draw_title(var->name_styled);
-  c1->SaveAs((build_file_name(var, with_cut)).c_str());
+  c1->SaveAs(img_name.c_str());
   c1->Close();
 }
 
@@ -304,16 +315,16 @@ THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vecto
   return stack;
 }
 
-TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
+TH1F* HistoPlot::get_max_histo(std::vector<TH1F*> plot_histos)
 {
   double plot_max = 0.0;
   TH1F* histo_max = NULL;
-
-  for (int i = 0; i < 2; i++)
+  for (int i = 0; i < plot_histos.size(); i++)
   {
     if (plot_histos[i] != NULL)
     {
 					double y_max = get_histo_y_max(plot_histos[i]);
+
 					if (y_max > plot_max)
 					{
 							plot_max = y_max;
@@ -321,6 +332,7 @@ TH1F* HistoPlot::get_max_histo(TH1F** plot_histos)
 					}
     }
   }
+
   return histo_max;
 }
 
@@ -346,7 +358,7 @@ double HistoPlot::position_legend_x1(TH1F* max_histo, Variable* var, bool with_c
 {
   int max_bin         = max_histo->GetMaximumBin();
   double nbins        = var->get_bins(with_cut);
-  double max_bin_x1 = get_x1_from_bin(max_bin, nbins);
+  double max_bin_x1   = get_x1_from_bin(max_bin, nbins);
 
   if (max_bin_x1 > 0.5)
   {

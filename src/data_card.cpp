@@ -247,11 +247,12 @@ std::string DataCard::no_shape_line()
 }
 
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
-Variable* var, bool with_cut, std::vector<Variable*>* variables, const char* mva_type )
+                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string selection,
+																															TFile* training_output)
 {
 	 std::vector<double> mc_weights = HistoPlot::mc_weights(data_chain, bg_chains, var, with_cut, variables);
 	 std::fstream fs;
-	 const char* data_card_name=get_data_card_name(mva_type);
+	 const char* data_card_name = get_data_card_name(training_output);
 	 fs.open (data_card_name, std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 
@@ -279,6 +280,7 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 {
 	 double total = 0;
 	 for (int i = 0; i < bg_chains.size(); i++)
+:exe "!" . g:ctags_command
 	 	{
 	 		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", bg_mc_weights[i]);
 	 		double integral = HistoPlot::get_histo_integral(histo, with_cut, var);
@@ -288,25 +290,25 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 	 return total;
 }
 
-const char* DataCard::get_data_card_name(const char* mva_type)
+const char* DataCard::get_data_card_name(TFile* training_output)
 {
-  std::string data_card_name ="data_cards/";
-  std::string mva_str = mva_type;
-if (!strcmp(mva_type, "BDT"))
-  {
-     mva_str = BDTAnalysis::BDT_output_name_str(NTrees[0],BoostType[0],AdaBoostBeta[0],SeparationType[0], nCuts[0]);
-    
-   }
-  if (!strcmp(mva_type, "MLP"))
-  {
-     mva_str = MLPAnalysis::MLP_output_name_str(NeuronType[0],NCycles[0],HiddenLayers[5]);
-  }
-  data_card_name.append(mva_str);
-  data_card_name.append(".txt");
-  
-  std::cout<<data_card_name<<"\n";
-  const char* name_char; name_char = data_card_name.c_str();
-  return name_char;
+	 if (!opendir("data_cards"))
+		{
+		 	mkdir("data_cards", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		}
+	 std::string card_file_name;
+
+	 if (training_output == NULL)
+  	{
+	 		 card_file_name = "preselection_only.txt";
+  	}
+	 else
+	 	{
+	 		std::string output_name = training_output->GetName();
+	 		card_file_name = "data_cards/" + output_name.substr(output_name.find("/") + 1, -1);
+	 	}
+
+	 return card_file_name.c_str();
 }
 
 /*

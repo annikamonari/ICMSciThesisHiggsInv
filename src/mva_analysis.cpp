@@ -2,6 +2,215 @@
 #include "../include/bdt_analysis.h"
 #include "../include/mlp_analysis.h"
 
+void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
+																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
+																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
+																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
+{
+  std::vector<TFile*> files = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name, NTrees, BoostType,
+																																														AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+
+  std::string folder_name = method_name + "_varying_" + dir_name;
+  std::cout << "=> Set Folder Name: " << folder_name << std::endl;
+  std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
+  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name);
+  RocCurves::get_rocs(files, signal_chain, bg_chains[0], super_vars, method_name, folder_name);
+}
+
+TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain,
+																																			SuperVars* super_vars, std::string folder_name, std::string method_name, const char* NTrees,
+																																			const char* BoostType, const char* AdaBoostBeta,const char* SeparationType,const char* nCuts,
+																																			const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+{
+	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
+	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();
+	 std::string selection_str        = super_vars->get_final_cuts_str();
+	 TFile* trained_output;
+
+  if (method_name == "BDT")
+	 {
+  		trained_output = BDTAnalysis::create_BDT(bg_chains[bg_to_train], signal_chain, &vars, folder_name,
+																																													NTrees,BoostType,AdaBoostBeta, SeparationType, nCuts);
+	 }
+  else if (method_name == "MLP")
+  {
+  		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,
+																																													NeuronType, NCycles, HiddenLayers);
+  }
+  std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
+	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name);
+	 std::cout << "=> All background put through BDT" << std::endl;
+	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name);
+	 std::cout << "=> Signal put through BDT" << std::endl;
+  Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
+  std::cout << "=> Declared MVA_Output Variable" << std::endl;
+  std::string output_graph_name            = build_output_graph_name(trained_output);
+
+  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false, output_graph_name);
+  std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
+  return trained_output;
+}
+
+std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars,
+																																																										std::string method_name)
+{
+  std::vector<DataChain*> output_bg_chains;
+
+	 for (int i = 0; i < bg_chains.size(); i++)
+  {
+	 		DataChain* combined_output;
+
+	 		if (method_name == "BDT")
+	 		{
+	 		  combined_output = BDTAnalysis::get_BDT_results(bg_chains[i], &vars);
+	 		}
+	 		else if (method_name == "MLP")
+	 		{
+	 				combined_output = MLPAnalysis::get_MLP_results(bg_chains[i], &vars);
+	 		}
+
+	 		output_bg_chains.push_back(combined_output);
+  }
+
+	 return output_bg_chains;
+}
+
+DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name)
+{
+
+	 if (method_name == "BDT")
+		{
+		  return BDTAnalysis::get_BDT_results(signal_chain, &vars);
+		}
+		else
+		{
+		 	return MLPAnalysis::get_MLP_results(signal_chain, &vars);
+		}
+}
+
+std::string MVAAnalysis::build_output_graph_name(TFile* trained_output)
+{
+  std::string file_name = trained_output->GetName();
+  file_name.insert(file_name.find("/") + 1, "output_");
+
+  return HistoPlot::replace_all(file_name, ".root", ".png");
+}
+
+
+
+std::vector<TFile*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
+																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
+																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
+																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers)
+{
+	 std::string folder_name = method_name + "_varying_" + dir_name;
+  std::vector<TFile*> varying_params;
+
+	 if (method_name == "BDT")
+	 {
+    if (dir_name == "NTrees")
+    	{
+    		TFile* files_arr[NTrees.size()];
+    		for (int i = 0; i < NTrees.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[i],
+      														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+
+      	}
+    		 std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		 return files;
+    	}
+    else if (dir_name == "BoostType")
+    	{
+    		TFile* files_arr[BoostType.size()];
+    		for (int i = 0; i < BoostType.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[i], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+    	}
+    else if (dir_name == "AdaBoostBeta")
+    	{
+    		TFile* files_arr[AdaBoostBeta.size()];
+    		for (int i = 0; i < AdaBoostBeta.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[0], AdaBoostBeta[i], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+    	}
+    else if (dir_name == "SeparationType")
+    	{
+    		TFile* files_arr[SeparationType.size()];
+    		for (int i = 0; i < SeparationType.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[0], AdaBoostBeta[0], SeparationType[i], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+    	}
+    else if (dir_name == "nCuts")
+    	{
+    		TFile* files_arr[nCuts.size()];
+    		for (int i = 0; i < nCuts.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[i], NeuronType[0], NCycles[0], HiddenLayers[0]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+    	}
+	 }
+	 else if (method_name == "MLP")
+	 {
+	 		if (dir_name == "NeuronType")
+	 			{
+	 				TFile* files_arr[NeuronType.size()];
+    		for (int i = 0; i < NeuronType.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[i], NCycles[0], HiddenLayers[0]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+	 			}
+	 		else if (dir_name == "NCycles")
+	 			{
+	 				TFile* files_arr[NCycles.size()];
+    		for (int i = 0; i < NCycles.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[i], HiddenLayers[0]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+	 			}
+	 		else if (dir_name == "HiddenLayers")
+	 			{
+	 				TFile* files_arr[HiddenLayers.size()];
+    		for (int i = 0; i < HiddenLayers.size(); i++)
+      	{
+    				files_arr[i] = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
+      														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[i]);
+      	}
+    		std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		return files;
+	 			}
+	 }
+}
+
 TH1F* MVAAnalysis::plot_output(DataChain* combined_data)
 {
   combined_data->chain->Draw("output>>output_hist(100, -0.8, 0.8)");
@@ -151,8 +360,8 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   style_histo(very_bg);
   style_histo(very_sig);
   TH1F* plot_histos[2] = {very_sig, very_bg};
-
-  TH1F* max_histo = HistoPlot::get_max_histo(plot_histos);
+  std::vector<TH1F*> plot_histos_vector (plot_histos, plot_histos + sizeof(plot_histos) / sizeof(plot_histos[0]));
+  TH1F* max_histo = HistoPlot::get_max_histo(plot_histos_vector);
 
   very_bg->SetMaximum(HistoPlot::get_histo_y_max(max_histo)*1.1);
 
@@ -165,60 +374,6 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   HistoPlot::draw_yline_on_plot(variable, true, 1.0);
   p1->cd();
   HistoPlot::draw_title((combined_output->extra_label).c_str());
-
   c1->SaveAs("output_test.png");
   c1->Close();
-}
-
-void MVAAnalysis::plot_bdt_results(std::vector<DataChain*> bg_chains, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars, const char* NTrees, const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
-{
-	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
-	 std::vector<Variable*> vars2      = super_vars->get_discriminating_vars();
-	 std::string selection_str        = super_vars->get_final_cuts_str();
-	 std::string var_cut_str_tmva     = super_vars->get_cuts_str_for_tmva();
-
-	 BDTAnalysis::create_BDT(bg_chains[0], signal_chain, &vars2, var_cut_str_tmva, NTrees,BoostType,AdaBoostBeta,
-	SeparationType, nCuts);
-
-	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, var_cut_str_tmva);
-	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, var_cut_str_tmva);
-  Variable* mva_output = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
-  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false);
-}
-
-std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string var_cut_str_tmva)
-{
-  std::vector<DataChain*> output_bg_chains;
-
-	 for (int i = 0; i < bg_chains.size(); i++)
-  {
-	 		DataChain* combined_output = BDTAnalysis::get_BDT_results(bg_chains[i], &vars, var_cut_str_tmva);
-	 		output_bg_chains.push_back(combined_output);
-  }
-
-	 return output_bg_chains;
-}
-
-DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva)
-{
-  return BDTAnalysis::get_BDT_results(signal_chain, &vars, var_cut_str_tmva);
-}
-
-void MVAAnalysis::train_and_run_BDT(std::vector<DataChain*> bg_chains, DataChain* signal_chain, std::vector<Variable*> vars, std::string var_cut_str_tmva,const char* mva_type)
-{  
-  if (!strcmp(mva_type, "BDT"))
-  {
-  for (int j=0; j < 1/*bg_chains.size*/; j++)//variable loop
-    {    
-        BDTAnalysis::create_BDT(bg_chains[j], signal_chain, &vars, var_cut_str_tmva,
-        NTrees[0],BoostType[0],AdaBoostBeta[0],SeparationType[0], nCuts[0]);
-	BDTAnalysis::get_BDT_results(bg_chains[j], &vars,var_cut_str_tmva);
-    }
-   }
-  if (!strcmp(mva_type, "MLP"))
-  {
-        MLPAnalysis::create_MLP(bg_chains[0], signal_chain, &vars, var_cut_str_tmva,
-        NeuronType[0],NCycles[0],HiddenLayers[5]);
-        MLPAnalysis::get_MLP_results(bg_chains[0], &vars, var_cut_str_tmva);
-   }
 }

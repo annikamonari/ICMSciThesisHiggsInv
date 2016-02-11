@@ -222,7 +222,7 @@ const char* data_label  = "data_chain";
 const char* data_legend = "data";
 
 /////////////////////// MVA parameters /////////////////////////
-  const char* NTrees_arr[] = {"10", "100"};//, "500", "800", "1000"};
+  const char* NTrees_arr[] = {"10", "100", "500", "800", "1000"};
   std::vector<const char*> NTrees (NTrees_arr, NTrees_arr +
                            sizeof(NTrees_arr)/sizeof(const char*));
 
@@ -230,15 +230,15 @@ const char* data_legend = "data";
   std::vector<const char*> BoostType (BoostType_arr, BoostType_arr +
                              sizeof(BoostType_arr)/sizeof(const char*));
 
-  const char* AdaBoostBeta_arr[] ={"0.5"};
+  const char* AdaBoostBeta_arr[] ={"0.1", "0.2", "0.5", "0.8"};
   std::vector<const char*> AdaBoostBeta (AdaBoostBeta_arr, AdaBoostBeta_arr +
                                sizeof(AdaBoostBeta_arr)/sizeof(const char*));
 
-  const char* SeparationType_arr[] = {"GiniIndex"};
+  const char* SeparationType_arr[] = {"GiniIndex", "CrossEntropy", "MisClassificationError", "SDivSqrtSPlusB"};
   std::vector<const char*> SeparationType (SeparationType_arr, SeparationType_arr +
                                  sizeof(SeparationType_arr)/sizeof(const char*));
 
-  const char* nCuts_arr[] = {"30"};
+  const char* nCuts_arr[] = {"5", "10", "20", "30"};
   std::vector<const char*> nCuts (nCuts_arr, nCuts_arr +
                                    sizeof(nCuts_arr)/sizeof(const char*));
   

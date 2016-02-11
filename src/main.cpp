@@ -13,8 +13,8 @@ void produce_graphs(bool with_cut) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
   const char* mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
-
-  MVAAnalysis::get_plots_varying_params(bg_chains, 0, signal_chain, data_chain, super_vars, "BDT", "NTrees", NTrees, BoostType,
+  int relevant_bgs[] = {0, 1, 2, 3, 6};
+  MVAAnalysis::get_plots_varying_params(bg_chains, 6, signal_chain, data_chain, super_vars, "BDT", "NTrees", NTrees, BoostType,
   																			                   AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
 
 

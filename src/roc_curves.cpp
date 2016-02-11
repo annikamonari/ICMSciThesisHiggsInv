@@ -18,11 +18,12 @@ void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, DataChain
 	 TCanvas* c1     = new TCanvas("c1", plot_name.c_str());
 	 TLegend* legend = new TLegend(0.15, 0.5, 0.65, 0.2);
 	 TGraph* point   = parked_data_point(signal, bg, preselection, var, variables, legend);
-
-	 for (int i = 0; i < 3; i++)
+  std::cout << "=> Parked Data Point done" << std::endl;
+	 for (int i = 0; i < training_outputs.size(); i++)
  	{
     std::string training_name(training_outputs[i]->GetName());
     std::string file_name = training_name.substr(training_name.find("/") + 1 , -1);
+    std::cout << "File name: " << file_name << std::endl;
     std::string legend_str = HistoPlot::replace_all(file_name, ".root", "");
     std::string legend_text = "#splitline{" + legend_str.substr(0, 25) + "}{" + legend_str.substr(26, -1) + "}";
 
@@ -56,14 +57,15 @@ TH1D* RocCurves::plot_rejBvsS(TFile* training_output, std::string method_name)
   std::string file_path;
 	 if (method_name == "MLP")
   	{
-    file_path = "Method_MLP/MLP/MVA_MLP_rejBvsS;1";
+    file_path = "Method_MLP/MLP/MVA_MLP_rejBvsS";
   	}
 	 else if (method_name == "BDT")
 	 	{
-	 		file_path = "Method_BDT/BDT/MVA_BDT_rejBvsS;1";
+	 		file_path = "Method_BDT/BDT/MVA_BDT_rejBvsS";
 	 	}
 	 TH1D* rejBvsS_histo = (TH1D*) training_output->Get(file_path.c_str());
-
+	 std::cout << "Training output name " << training_output->GetName() << std::endl;
+  std::cout << "test " << ", " << (TH2F*) training_output->Get("CorrelationMatrixS;1") << std::endl;
   return rejBvsS_histo;
 }
 
@@ -76,7 +78,7 @@ double RocCurves::get_presel_effy(DataChain* data_chain, std::string preselectio
 }
 
 TGraph* RocCurves::parked_data_point(DataChain* signal, DataChain* bg, std::string preselection, Variable* var,
-																										std::vector<Variable*>* variables, TLegend* legend)
+																										           std::vector<Variable*>* variables, TLegend* legend)
 {
   double rejB = 1 - get_presel_effy(bg, preselection, var, variables);
   double sigeff = get_presel_effy(signal, preselection, var, variables);

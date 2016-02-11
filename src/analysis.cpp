@@ -222,7 +222,7 @@ const char* data_label  = "data_chain";
 const char* data_legend = "data";
 
 /////////////////////// MVA parameters /////////////////////////
-  const char* NTrees_arr[] = {"10", "100", "500", "1000"};
+  const char* NTrees_arr[] = {"10", "100", "500", "800", "1000"};
   std::vector<const char*> NTrees (NTrees_arr, NTrees_arr +
                            sizeof(NTrees_arr)/sizeof(const char*));
 
@@ -242,15 +242,15 @@ const char* data_legend = "data";
   std::vector<const char*> nCuts (nCuts_arr, nCuts_arr +
                                    sizeof(nCuts_arr)/sizeof(const char*));
   
-  const char* NeuronType_arr[2] = {"sigmoid","tanh"};
+  const char* NeuronType_arr[] = {"sigmoid","tanh"};
   std::vector<const char*> NeuronType (NeuronType_arr, NeuronType_arr +
                                      sizeof(NeuronType_arr)/sizeof(const char*));
 
-  const char* NCycles_arr[5] = {"10","100","500","1000","5000"};
+  const char* NCycles_arr[] = {"10","100","500","1000","5000"};
   std::vector<const char*> NCycles (NCycles_arr, NCycles_arr +
                                        sizeof(NCycles_arr)/sizeof(const char*));
 
-  const char* HiddenLayers_arr[8] = {"2","5","10","50","5,5","5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
+  const char* HiddenLayers_arr[] = {"2","5","10","50","5,5","5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
   std::vector<const char*> HiddenLayers (HiddenLayers_arr, HiddenLayers_arr +
                                          sizeof(HiddenLayers_arr)/sizeof(const char*));
 

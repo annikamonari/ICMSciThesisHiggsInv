@@ -51,6 +51,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
   {
   		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,
 																																													NeuronType, NCycles, HiddenLayers);
+				std::cout<<"----------------MLP trained-------------------------"<<"\n";
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
 	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
@@ -73,7 +74,7 @@ std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*
 {
   std::vector<DataChain*> output_bg_chains;
 
-	 for (int i = 0; i < bg_chains.size(); i++)
+	 for (int i = 0; i < 1/*bg_chains.size()*/; i++)
   {
 	 		DataChain* combined_output;
 
@@ -204,7 +205,7 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
 	 			{
 	 				const char* files_arr[NeuronType.size()];
 
-    		for (int i = 0; i < NeuronType.size(); i++)
+    		for (int i = 0; i <1/* NeuronType.size()*/; i++)
       	{
     				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[i], NCycles[0], HiddenLayers[0]);

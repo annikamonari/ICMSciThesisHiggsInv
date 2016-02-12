@@ -112,16 +112,15 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
    std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
 
            // --- Event loop
-	   TTree *theTree = (TTree*)input->Get("TreeS");
-	   //TChain* data = (TChain*) bg_chain->chain->Clone();
+	   TChain* data = (TChain*) bg_chain->chain->Clone();
 
-	   /*data*/theTree->SetBranchAddress("dijet_deta", &dijet_deta);
-	   /*data*/theTree->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
-	   /*data*/theTree->SetBranchAddress("metnomu_significance", &metnomu_significance);
-	   /*data*/theTree->SetBranchAddress("sqrt_ht", &sqrt_ht);
-	   /*data*/theTree->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
-	   /*data*/theTree->SetBranchAddress("dijet_M", &dijet_M);
-	   /*data*/theTree->SetBranchAddress("metnomuons", &metnomuons);
+	   data->SetBranchAddress("dijet_deta", &dijet_deta);
+	   data->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
+	   data->SetBranchAddress("metnomu_significance", &metnomu_significance);
+	   data->SetBranchAddress("sqrt_ht", &sqrt_ht);
+	   data->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
+	   data->SetBranchAddress("dijet_M", &dijet_M);
+	   data->SetBranchAddress("metnomuons", &metnomuons);
 
 	   // Efficiency calculator for cut method
 	   //Int_t    nSelCutsGA = 0;
@@ -129,17 +128,17 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::vector<Float_t> vecVar(9); // vector for EvaluateMVA tests
 
 	   Float_t output;
-	   TTree* output_tree = theTree;//new TTree("MVAtree","Tree with classifier outputs");
+	   TTree* output_tree = new TTree("MVAtree","Tree with classifier outputs");
 	   output_tree->Branch("output", &output, "output");
     output_tree->SetBranchStatus("*",1);
-	   std::cout << "--- Processing: " << /*data*/theTree->GetEntries() << " events" << std::endl;
+	   std::cout << "--- Processing: " << data->GetEntries() << " events" << std::endl;
 	   TStopwatch sw;
 	   sw.Start();
-	   for (Long64_t ievt=0; ievt</*data*/theTree->GetEntries(); ievt++) {
+	   for (Long64_t ievt=0; ievt<data->GetEntries(); ievt++) {
 
 	      if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
 
-	      /*data*/theTree->GetEntry(ievt);
+	      data->GetEntry(ievt);
 	      output = reader->EvaluateMVA( "MLP method");
 
 	      output_tree->Fill();

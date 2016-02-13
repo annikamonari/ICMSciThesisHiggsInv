@@ -61,7 +61,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
   Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
   std::string output_graph_name            = build_output_graph_name(trained_output);
-
+std::cout<<"=> output graph name:" <<output_graph_name<<"\n";
   HistoPlot::draw_plot(mva_output, bg_chains, signal_chain, data_chain, true,&vars,true ,false,output_graph_name);
   std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;

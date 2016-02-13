@@ -94,23 +94,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   // Book output histograms
 	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.25, 1.5 );
 	   
-// Prepare input tree (this must be replaced by your data source)
-   // in this example, there is a toy tree with signal and one with background events
-   // we'll later on use only the "signal" events for the test in this example.
-   //   
-   TFile *input(0);
-   TString fname = "~/TMVA-v4.2.0/test/tmva_example.root";   
-   if (!gSystem->AccessPathName( fname )) 
-      input = TFile::Open( fname ); // check if file in local directory exists
-   else    
-      input = TFile::Open( "http://root.cern.ch/files/tmva_class_example.root" ); // if not: download from ROOT server
-   
-   if (!input) {
-      std::cout << "ERROR: could not open data file" << std::endl;
-      exit(1);
-   }
-   std::cout << "--- TMVAClassificationApp    : Using input file: " << input->GetName() << std::endl;
-
+  
            // --- Event loop
 	   TChain* data = (TChain*) bg_chain->chain->Clone();
 
@@ -123,8 +107,8 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   data->SetBranchAddress("metnomuons", &metnomuons);
 
 	   // Efficiency calculator for cut method
-	   //Int_t    nSelCutsGA = 0;
-	   //Double_t effS       = 0.7;
+	   Int_t    nSelCutsGA = 0;
+	   Double_t effS       = 0.7;
 	   std::vector<Float_t> vecVar(9); // vector for EvaluateMVA tests
 
 	   Float_t output;
@@ -142,7 +126,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	      output = reader->EvaluateMVA( "MLP method");
 
 	      output_tree->Fill();
-	      histNn->Fill( reader->EvaluateMVA( "MLP method" ));
+	      histNn->Fill(output);
 	   }
 
 	   // Get elapsed time
@@ -150,10 +134,10 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::cout << "--- End of event loop: "; sw.Print();
 
 	   // --- Write histograms
-    /*std::string target_name = training_output_name;
+    std::string target_name = training_output_name;
     std::string bg_chain_name = bg_chain->label;
-    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");*/
-	   TFile* target  = new TFile("TMVApp.root","RECREATE" );
+    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");
+	   TFile* target  = new TFile(target_file.c_str(),"RECREATE" );
 	   target->cd();
 	   histNn->Write();
 

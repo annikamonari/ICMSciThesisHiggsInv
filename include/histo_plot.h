@@ -27,7 +27,7 @@ class HistoPlot
 
   static void draw_plot(Variable* var, std::vector<DataChain*> bg_chains,
                         DataChain* signal_chain, DataChain* data, bool with_cut,
-                        std::vector<Variable*>* variables = NULL, bool plot_data = true, bool is_control_region= false, std::string file_name = "",std::string selection="");
+                        std::vector<Variable*>* variables = NULL, bool plot_data = true, bool is_control_region= false, std::string file_name = "",std::string mc_selection="", std::string mva_cut_str ="");
 
   static void draw_yline_on_plot(Variable* var, bool with_cut, double y);
 
@@ -52,22 +52,24 @@ class HistoPlot
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
                                    bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight = 1.0);
 
-  static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight);
+  static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string mc_selection, double mc_weight);
 
-  static std::vector<double> mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,                                 Variable* var, bool with_cut, std::vector<Variable*>* variables);
+
+
+  static std::vector<double> mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str ="");
 
   static double single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, double weight, std::string selection);
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, double weight, std::string mc_selection="", std::string mva_cut_str ="");
 
   static std::vector<double> get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains,
 																	                                 Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																																		std::vector<double> bg_mc_weights, std::string selection);
+																																																		std::vector<double> bg_mc_weights, std::string mc_selection, std::string mva_cut_str ="");
 
   static std::string get_string_from_double(double num);
 
   static THStack draw_stacked_histo(TLegend* legend, Variable* var,
                                     std::vector<DataChain*> bg_chains, bool with_cut,std::vector<double> mc_weights_vector, std::vector<Variable*>* variables = NULL, DataChain* data = NULL,
-				    std::string selection="");
+				    std::string mc_selection="", std::string mva_cut_str ="");
 
   static TH1F* get_max_histo(std::vector<TH1F*> plot_histos);
 
@@ -89,16 +91,16 @@ class HistoPlot
 
   static TH1F* build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, 
                               bool is_signal, const char* option,
-                              std::vector<Variable*>* variables = NULL, std::string selection = "", double mc_weight = 1);
+                              std::vector<Variable*>* variables = NULL, std::string mc_selection = "", std::string mva_cut_str ="", double mc_weight = 1);
 
   static TH1F* draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-                         std::vector<Variable*>* variables = NULL);
+                         std::vector<Variable*>* variables = NULL, std::string mc_selection = "", std::string mva_cut_str ="");
 
   static TH1F* draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,
-                           std::vector<Variable*>* variables = NULL,std::string selection="");
+                           std::vector<Variable*>* variables = NULL, std::string mc_selection = "", std::string mva_cut_str ="");
 
   static TH1F* draw_background(DataChain* data_chain, Variable* variable, int fill_colour, bool with_cut,
-                               std::vector<Variable*>* variables = NULL,std::string selection ="", double mc_weight = 1);
+                               std::vector<Variable*>* variables = NULL, std::string mc_selection = "", std::string mva_cut_str ="", double mc_weight = 1);
 
   static void set_histo_style(bool is_signal, int fill_colour = 0);
   

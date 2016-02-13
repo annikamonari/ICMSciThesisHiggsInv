@@ -8,13 +8,13 @@
 class DataCard
 {
  public:
-  static double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string selection);
+  static double get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str);
 
   static std::vector<double> get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string selection);
+                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string mva_cut_str);
 
   static std::vector<double> get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
-  							                              Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights,std::string selection);
+  							                              Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights,std::string mva_cut_str);
 
   static std::vector<int> process_line_2(int size);
 
@@ -53,16 +53,16 @@ class DataCard
   static std::string get_uncertainties_string(std::vector<std::vector<double> > uncertainty_vectors);
 
   static void create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
-																														Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string selection,
+																														Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str,
 																														TFile* training_output = NULL);
 
   static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, 
 std::vector<Variable*>* variables,
-																																		std::vector<double> bg_mc_weights, std::string selection);
+																																		std::vector<double> bg_mc_weights, std::string mva_cut_str);
 
   static std::string get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,
 																																											DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																											std::vector<double> bg_mc_weights, std::string selection);
+																																											std::vector<double> bg_mc_weights, std::string mva_cut_str);
 
   static std::string no_shape_line();
 

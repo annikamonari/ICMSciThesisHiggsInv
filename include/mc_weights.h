@@ -10,13 +10,13 @@ class MCWeights
   	                                      std::vector<Variable*>* variables);
 
   static double get_nevents(DataChain* chain_of_data, Variable* var, bool with_cut,
-                            std::vector<Variable*>* variables, std::string selection);
+                            std::vector<Variable*>* variables, std::string mc_selection, std::string mva_cut_str="");
 
   static double get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
-                                   std::vector<Variable*>* variables, std::string selection);
+                                   std::vector<Variable*>* variables, std::string mc_selection, std::string mva_cut_str="");
 
   static double calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                               Variable* var, bool with_cut, std::vector<Variable*>* variables);
+                               Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut="");
 
   static double calc_weight_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut="");

@@ -12,7 +12,7 @@ SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT)) # dynamic, includes
 # OBJECTS - build object list based on available sources
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o)) 
 CFLAGS := -g -Wall $(inherited) `root-config --cflags`
-LDFLAGS := $(inherited) `root-config --libs --glibs  --cflags` -L$(TMVASYS)/lib -lTMVA.1 -lMLP -lMinuit -lXMLIO -lTreePlayer  
+LDFLAGS := $(inherited) `root-config --libs --glibs  --cflags` -L$(TMVASYS)/lib -lTMVA -lMLP -lMinuit -lXMLIO -lTreePlayer  
 INC := -I include # ensures all header files are acessible
 
 

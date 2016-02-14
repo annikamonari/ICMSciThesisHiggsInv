@@ -93,8 +93,9 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
  	   reader->BookMVA( "MLP method", "weights/TMVAClassification_MLP.weights.xml" );
 	   // Book output histograms
 	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.25, 1.5 );
-	   // --- Event loop
-
+	   
+  
+           // --- Event loop
 	   TChain* data = (TChain*) bg_chain->chain->Clone();
 
 	   data->SetBranchAddress("dijet_deta", &dijet_deta);
@@ -133,10 +134,10 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::cout << "--- End of event loop: "; sw.Print();
 
 	   // --- Write histograms
-    /*std::string target_name = training_output_name;
+   /* std::string target_name = training_output_name;
     std::string bg_chain_name = bg_chain->label;
     std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");*/
-	   TFile* target  = new TFile("TMVApp.root","RECREATE" );
+	   TFile* target  = new TFile("TMVApp.root"/*target_file.c_str()*/,"RECREATE" );
 	   target->cd();
 	   histNn->Write();
 
@@ -201,4 +202,5 @@ std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char*
 
 	return out_nam;
 }
+
 

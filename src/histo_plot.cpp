@@ -37,14 +37,14 @@ if (is_control_region){
   TH1F* signal_histo = draw_signal(signal_chain, var, with_cut, legend, variables,mc_selection, mva_cut_str);
 std::cout<<"signal done"<<"\n";
   TH1F* data_histo;   
-  data_histo   = draw_data(data, var, with_cut, legend, variables);
-std::cout<<"data drawn"<<"\n";
+  if(plot_data){ data_histo   = draw_data(data, var, with_cut, legend, variables,mc_selection, mva_cut_str);}
 
   if(!plot_data){data_histo = NULL;}
+std::cout<<"data drawn"<<"\n";
 
   stack.Draw();
   signal_histo->Draw("SAME");
-  data_histo->Draw("SAME");
+  if(plot_data){data_histo->Draw("SAME");}
 std::cout<<"data done"<<"\n";
 
   style_stacked_histo(&stack, var->name_styled);
@@ -68,9 +68,9 @@ std::cout<<"style done"<<"\n";
   }
   else
   {
-  		data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[2], plot_histos[0]);
+  		data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos[2], plot_histos[0]);// plot signal to bg
   }
-
+std::cout<<"about to draw ratio histo \n";
   data_bg_ratio_histo->Draw("e1");
   style_ratio_histo(data_bg_ratio_histo, var->name_styled);
   draw_yline_on_plot(var, with_cut, 1.0);
@@ -466,7 +466,7 @@ TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_
   data_chain->chain->SetMarkerColor(1);
   data_chain->chain->SetLineColor(1);
 std::cout<<"HistoPlot::draw_data about to creeat th1d"<<"\n";
-  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1", variables));
+  TH1F* data_histo = set_error_bars(build_1d_histo(data_chain, variable, with_cut, false, "E1", variables,mc_selection,mva_cut_str));
   legend->AddEntry(data_histo, data_chain->legend, "lep");
 
   return data_histo;
@@ -594,7 +594,7 @@ Variable* var, std::vector<Variable*>* variables, std::string mva_cut_str)
   //TLegend* legend = new TLegend(0.0, 0.5, 0.0, 0.88);
   std::string mc_selection = MCWeights::get_mc_selection_str(single_bg_chain, var, variables);
 int b_pos= mc_selection.find("(")+1;
-mc_selection.insert(b_pos,mva_cut_str);
+
 //std::cout<<"selection: "<<mc_selection<<"\n";
 draw_plot(var, bg_chains, signal_chain,  data, with_cut,variables, plot_data,true,"", mc_selection, mva_cut_str);
 

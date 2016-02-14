@@ -134,10 +134,10 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::cout << "--- End of event loop: "; sw.Print();
 
 	   // --- Write histograms
-    std::string target_name = training_output_name;
+   /* std::string target_name = training_output_name;
     std::string bg_chain_name = bg_chain->label;
-    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");
-	   TFile* target  = new TFile(target_file.c_str(),"RECREATE" );
+    std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");*/
+	   TFile* target  = new TFile("TMVApp.root"/*target_file.c_str()*/,"RECREATE" );
 	   target->cd();
 	   histNn->Write();
 

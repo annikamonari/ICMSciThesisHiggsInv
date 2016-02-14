@@ -21,7 +21,7 @@ std::cout<<"bg chains size"<<bg_chains.size()<<"\n";
 std::string mva_cut_str="";
 //HistoPlot::plot_control_region(data_chain, signal_chain, bg_chains[0], bg_chains, 
 // cut_vars[0],&cut_vars,mva_cut_str);
-  for (int i = 0; i < 1/*4*/; i++)
+  for (int i = 0; i < 4; i++)
   {
   		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;
@@ -29,7 +29,7 @@ std::string mva_cut_str="";
 																																										AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
   }
 
-  //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars,mva_type);
+  //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars,"");
 
   for (int i = 0; i < 1; i++)
   {

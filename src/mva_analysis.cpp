@@ -9,7 +9,13 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 {
   std::vector<const char*> file_paths = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name,
 																																															   NTrees, BoostType, AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers);
+//to check if non vary parameter functions are working
+/*TFile* file1 = TFile::Open("MLP_varying_NeuronType/MLP-bg_zll-NeuronType=sigmoid-NCycles=10-HiddenLayers=2.root");
+TFile* file2 = TFile::Open("MLP_varying_NeuronType/MLP-bg_zll-NeuronType=tanh-NCycles=10-HiddenLayers=2.root");
+TFile* files_arr[] = {file1, file2};
+std::vector<TFile*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));*/
 
+std::cout<<"========================= parameters vary fine ================\n";
   std::vector<TFile*> files = get_files_from_paths(file_paths);
   std::string folder_name = method_name + "_varying_" + dir_name;
   std::cout << "=> Set Folder Name: " << folder_name << std::endl;
@@ -37,6 +43,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 																																			const char* BoostType, const char* AdaBoostBeta,const char* SeparationType,const char* nCuts,
 																																			const char* NeuronType, const char* NCycles, const char* HiddenLayers)
 {
+std::cout<<"in get mva_results \n";
 	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
 	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();
 	 std::string selection_str        = super_vars->get_final_cuts_str();
@@ -49,6 +56,8 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 	 }
   else if (method_name == "MLP")
   {
+std::cout<<"in get loop mlp \n";
+
   		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,
 																																													NeuronType, NCycles, HiddenLayers);
 				std::cout<<"----------------MLP trained-------------------------"<<"\n";
@@ -62,7 +71,21 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
   std::string output_graph_name            = build_output_graph_name(trained_output);
 std::cout<<"=> output graph name:" <<output_graph_name<<"\n";
-  HistoPlot::draw_plot(mva_output, bg_chains, signal_chain, data_chain, true,&vars,true ,false,output_graph_name);
+// PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1 plot data bool set to false in desperate attempt to fix it
+  HistoPlot::draw_plot(mva_output, bg_chains, signal_chain, data_chain, true,&vars,false ,false,output_graph_name,"","");
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!1
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!
+//PROBLEM AREA!!!!!!!!!!!!!!!!!!!!
+
   std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
@@ -203,7 +226,7 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
 	 {
 	 		if (dir_name == "NeuronType")
 	 			{
-	 				const char* files_arr[NeuronType.size()];
+	 				const char* files_arr[1/*NeuronType.size()*/];
 
     		for (int i = 0; i <1/* NeuronType.size()*/; i++)
       	{

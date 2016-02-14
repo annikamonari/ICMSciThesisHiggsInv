@@ -1,4 +1,5 @@
 #include "../include/classifier_outputs.h"
+#include <sstream>
 
 void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir,
 																																																							const char* bg_label)
@@ -62,6 +63,14 @@ std::vector<TH1D*> ClassifierOutputs::normalise_histos(std::vector<TH1D*> histos
   return histos;
 }
 
+std::string ClassifierOutputs::double_to_str(double sint)
+{
+	 std::ostringstream ss;
+	 ss << sint;
+  std::string str(ss.str());
+  return str;
+}
+
 void ClassifierOutputs::plot_histos(std::vector<TH1D*> histos, TFile* file)
 {
 	 std::string file_name(file->GetName());
@@ -76,7 +85,7 @@ void ClassifierOutputs::plot_histos(std::vector<TH1D*> histos, TFile* file)
 	 {
 	 		style_histo(histos[i], colours[i], i, file_name_parsed, plot_max);
 				std::string leg_entry = "#splitline{" + HistoPlot::replace_all(histos[i]->GetName(), "_", " ") + "}";
-				leg_entry += "{(" + DataCard::double_to_str(histos[i]->GetEntries()) + " Entries)}";
+				leg_entry += "{(" + double_to_str(histos[i]->GetEntries()) + " Entries)}";
 	 		legend->AddEntry(histos[i], leg_entry.c_str(), "lep");
 
 	 		if(i == 0||i == 2){
@@ -97,7 +106,7 @@ void ClassifierOutputs::draw_ktest(std::vector<TH1D*> normalised_histos)
 {
 	 double ktest_sig = normalised_histos[0]->KolmogorovTest(normalised_histos[1]);
 		double ktest_bg  = normalised_histos[2]->KolmogorovTest(normalised_histos[3]);
-		std::string text = "Kolmogorov Test - signal: " + DataCard::double_to_str(ktest_sig) + "; background: " + DataCard::double_to_str(ktest_bg);
+		std::string text = "Kolmogorov Test - signal: " + double_to_str(ktest_sig) + "; background: " + double_to_str(ktest_bg);
 		TPaveText* pt = new TPaveText(0.4, 0.9, 0.9, 0.85, "blNDC");
 		pt->SetBorderSize(0);
 		pt->SetFillStyle(0);

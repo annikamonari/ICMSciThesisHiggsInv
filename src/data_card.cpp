@@ -3,7 +3,7 @@
 #include "../include/bdt_analysis.h"
 #include <sstream>
 #include <string>
-
+/*
 double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables)
 {
   TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables);
@@ -309,7 +309,7 @@ const char* DataCard::get_data_card_name(TFile* training_output)
 
 	 return card_file_name.c_str();
 }
-
+*/
 /*
 int imax = 1;//bin number
 int jmax = bg_chains.size(); //number of backgrounds

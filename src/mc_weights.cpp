@@ -19,44 +19,45 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
 }
 
 double MCWeights::get_nevents(DataChain* data_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, 
-                              std::string selection)
+                              std::string mc_selection, std::string mva_cut_str)
 {
 
-  return HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(data_chain, var, with_cut, false, "goff", variables, 
-                                                                 selection), with_cut, var);
+  return HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(data_chain, var, with_cut, false, "goff", 
+variables, mc_selection, mva_cut_str), with_cut, var);
 }
 
 double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
-                                     std::vector<Variable*>* variables, std::string selection)
+                                     std::vector<Variable*>* variables, std::string mc_selection, std::string mva_cut_str)
 {
   double total_integral = 0.0;
 
   for (int i = 0; i < bg_chains.size(); i++)
   {
-    total_integral += get_nevents(bg_chains[i], var, with_cut, variables, selection);
+    total_integral += get_nevents(bg_chains[i], var, with_cut, variables, mc_selection, mva_cut_str);
   }
 
   return total_integral;
 }
 
 double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables)
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables,std::string mva_cut)
 {
-  std::string selection   = get_mc_selection_str(bg_chain, var, variables);
-  double data_in_ctrl     = get_nevents(data, var, with_cut, variables, selection);
-  double ctrl_mc_in_ctrl  = get_nevents(bg_chain, var, with_cut, variables, selection);
-  double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - ctrl_mc_in_ctrl;
+  std::string mc_selection  = get_mc_selection_str(bg_chain, var, variables);
+  double data_in_ctrl     = get_nevents(data, var, with_cut, variables, mc_selection, mva_cut);
+  double ctrl_mc_in_ctrl  = get_nevents(bg_chain, var, with_cut, variables, mc_selection, mva_cut);
+  double other_bg_in_ctrl = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, mc_selection, mva_cut) - ctrl_mc_in_ctrl;
 
   return (data_in_ctrl - other_bg_in_ctrl) / ctrl_mc_in_ctrl;
 }
 
 double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
-                                 Variable* var, bool with_cut, std::vector<Variable*>* variables)
+                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut)
 {
-  std::string selection = get_mc_selection_str(bg_chain, var, variables);
-  double data_N_C       = get_nevents(data, var, with_cut, variables, selection);
-  double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, selection);
-  double bg_N_C         = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, selection) - MC_N_C;
+  std::string mc_selection = get_mc_selection_str(bg_chain, var, variables);
+  mc_selection.insert(mc_selection.find("(")+1, mva_cut);
+  double data_N_C       = get_nevents(data, var, with_cut, variables, mc_selection, mva_cut);
+  double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, mc_selection, mva_cut);
+  double bg_N_C         = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, mc_selection, mva_cut) - MC_N_C;
   double sigma_data_N_C = std::pow(data_N_C, 0.5);
   double sigma_MC_N_C   = std::pow(MC_N_C, 0.5);
   double sigma_bg_N_C   = std::pow(bg_N_C, 0.5);
@@ -69,4 +70,5 @@ double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_
   return weight_error;
 
 }
+
 

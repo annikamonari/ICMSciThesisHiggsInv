@@ -15,7 +15,7 @@ void produce_graphs(bool with_cut) {
   const char* mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
   int relevant_bgs[] = {0, 1, 2, 3};//, 6};
 
-  for (int i = 0; i <1/* 4*/; i++)
+  for (int i = 0; i < 4; i++)
   {
   		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;
@@ -25,7 +25,7 @@ void produce_graphs(bool with_cut) {
 
 
 
-  //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars,mva_type);
+  //DataCard::create_datacard(data_chain, signal_chain, bg_chains, cut_vars[0], true, &cut_vars);
 
   for (int i = 0; i < 1; i++)
   {

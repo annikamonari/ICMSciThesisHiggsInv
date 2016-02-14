@@ -12,9 +12,12 @@ class ClassifierOutputs
 
   static std::vector<TH1D*> normalise_histos(std::vector<TH1D*> histos);
 
+  static std::string double_to_str(double sint);
+
   static void plot_histos(std::vector<TH1D*> histos, TFile* file);
 
   static void draw_ktest(std::vector<TH1D*> normalised_histos);
+
 
   static void draw_classifier_outputs(TFile* file, std::string method_name);
 
@@ -27,6 +30,8 @@ class ClassifierOutputs
   static double get_plot_max(std::vector<TH1D*> histos);
 
   static void draw_title(std::string title);
+
+  
 };
 
 

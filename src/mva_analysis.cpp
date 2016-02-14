@@ -61,7 +61,8 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
   std::string output_graph_name            = build_output_graph_name(trained_output);
 
-  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, true, &vars, false, output_graph_name);
+  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain, 
+					                 true, &vars, false, false, output_graph_name);
   std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;

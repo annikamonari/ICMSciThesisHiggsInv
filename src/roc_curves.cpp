@@ -72,7 +72,7 @@ TH1D* RocCurves::plot_rejBvsS(TFile* training_output, std::string method_name)
 double RocCurves::get_presel_effy(DataChain* data_chain, std::string preselection, Variable* var, std::vector<Variable*>* variables)
 {
 	 TH1F* remaining_histo = histo(data_chain, var, preselection);
-  TH1F* total_histo = HistoPlot::build_1d_histo(data_chain, var, false, false, "goff", variables, "total_weight_lepveto");
+  TH1F* total_histo = HistoPlot::build_1d_histo(data_chain, var, true, false, "goff", variables,"");
 
   return remaining_histo->GetEntries() / total_histo->GetEntries();
 }

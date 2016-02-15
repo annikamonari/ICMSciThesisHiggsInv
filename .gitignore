@@ -18,19 +18,17 @@ bin/*
 .DS_Store
 Debug
 
-setup.sh
+
 TMVAClassification.C
-tmvaglob.C
-TMVAGui.C
-TMVAlogon.C
-TMVARegGui.C
+
 weights/*
 weights
-libTMVA.rootmap
+
 Makefile.arch
 MakefileOriginial
 effciencies.C
 bg_zll/*
 bg_zll
-TMVApp.root
+
+
 

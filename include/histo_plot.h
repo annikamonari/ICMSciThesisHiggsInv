@@ -31,6 +31,7 @@ class HistoPlot
 			bool is_control_region= false, std::string file_name = "",
 			std::string mc_selection="", std::string mva_cut_str ="");
 
+
   static void draw_yline_on_plot(Variable* var, bool with_cut, double y);
 
   static TH1F* data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo);

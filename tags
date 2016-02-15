@@ -1,0 +1,512 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ASM_SRCS	Debug/sources.mk	/^ASM_SRCS := $/;"	m
+ActionButton	TMVAGui.C	/^void ActionButton( TControlBar* cbar, $/;"	f
+ActionButton	TMVARegGui.C	/^void ActionButton( TControlBar* cbar, $/;"	f
+ActivationFnc	weights/TMVAClassification_MLP.class.C	/^double ReadMLP::ActivationFnc(double x) const {$/;"	f	class:ReadMLP
+AdaBoostBeta_arr	src/analysis.cpp	/^  const char* AdaBoostBeta_arr[] ={"0.5"};$/;"	v
+Analysis_h	include/analysis.h	2;"	d
+BDTAnalysis	include/bdt_analysis.h	/^class BDTAnalysis$/;"	c
+BDT_options_str	src/bdt_analysis.cpp	/^std::string BDTAnalysis::BDT_options_str(const char* NTrees, const char* BoostType,$/;"	f	class:BDTAnalysis
+BDT_output_name_str	src/bdt_analysis.cpp	/^std::string BDTAnalysis::BDT_output_name_str(const char* NTrees, const char* BoostType,const char* AdaBoostBeta,$/;"	f	class:BDTAnalysis
+BUILDDIR	Makefile	/^BUILDDIR := build$/;"	m
+Bdt_Analysis_h	include/bdt_analysis.h	2;"	d
+BoostType_arr	src/analysis.cpp	/^  const char* BoostType_arr[] = {"AdaBoost"};$/;"	v
+CC	Makefile	/^CC := g++ # Main compiler$/;"	m
+CC_DEPS	Debug/sources.mk	/^CC_DEPS := $/;"	m
+CC_SRCS	Debug/sources.mk	/^CC_SRCS := $/;"	m
+CFLAGS	Makefile	/^CFLAGS := -g -Wall $(inherited) `root-config --cflags`$/;"	m
+CPP_DEPS	Debug/sources.mk	/^CPP_DEPS := $/;"	m
+CPP_SRCS	Debug/sources.mk	/^CPP_SRCS := $/;"	m
+CXX_DEPS	Debug/sources.mk	/^CXX_DEPS := $/;"	m
+CXX_SRCS	Debug/sources.mk	/^CXX_SRCS := $/;"	m
+C_DEPS	Debug/sources.mk	/^C_DEPS := $/;"	m
+C_SRCS	Debug/sources.mk	/^C_SRCS := $/;"	m
+C_UPPER_DEPS	Debug/sources.mk	/^C_UPPER_DEPS := $/;"	m
+C_UPPER_SRCS	Debug/sources.mk	/^C_UPPER_SRCS := $/;"	m
+ClassifierOutputs	include/classifier_outputs.h	/^class ClassifierOutputs$/;"	c
+Classifier_Outputs_h	include/classifier_outputs.h	2;"	d
+Clear	weights/TMVAClassification_MLP.class.C	/^inline void ReadMLP::Clear() $/;"	f	class:ReadMLP
+DYLD_LIBRARY_PATH	Makefile	/^DYLD_LIBRARY_PATH := $ROOTSYS\/lib\/home\/hep\/dsg12\/TMVA-v4.2.0\/$/;"	m
+DataCard	include/data_card.h	/^class DataCard$/;"	c
+DataChain	include/data_chain.h	/^class DataChain $/;"	c
+DataChain	src/data_chain.cpp	/^DataChain::DataChain(std::vector<const char*> file_paths, const char* data_label, const char* data_legend, std::string lep_selection,$/;"	f	class:DataChain
+Data_Chain_h	include/data_chain.h	2;"	d
+DestroyCanvases	tmvaglob.C	/^   void DestroyCanvases()$/;"	f	namespace:TMVAGlob
+EXECUTABLES	Debug/sources.mk	/^EXECUTABLES := $/;"	m
+ExistMethodName	tmvaglob.C	/^   Bool_t ExistMethodName( TString name, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+FindMethod	tmvaglob.C	/^   TKey* FindMethod( TString name, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+GetClassNames	tmvaglob.C	/^   std::vector<TString> GetClassNames(TDirectory *dir )$/;"	f	namespace:TMVAGlob
+GetCorrelationPlotsDir	tmvaglob.C	/^   TDirectory *GetCorrelationPlotsDir( TMVAGlob::TypeOfPlot type, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+GetInputVariableNames	tmvaglob.C	/^   std::vector<TString> GetInputVariableNames(TDirectory *dir )$/;"	f	namespace:TMVAGlob
+GetInputVariablesDir	tmvaglob.C	/^   TDirectory *GetInputVariablesDir( TMVAGlob::TypeOfPlot type, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+GetKeyList	TMVAGui.C	/^TList* GetKeyList( const TString& pattern )$/;"	f
+GetKeyList	TMVARegGui.C	/^TList* GetKeyList( const TString& pattern )$/;"	f
+GetListOfJobs	tmvaglob.C	/^   UInt_t GetListOfJobs( TFile* file, TList& jobdirs)$/;"	f	namespace:TMVAGlob
+GetListOfKeys	tmvaglob.C	/^   UInt_t GetListOfKeys( TList& keys, TString inherits, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+GetListOfMethods	tmvaglob.C	/^   UInt_t GetListOfMethods( TList & methods, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+GetListOfTitles	tmvaglob.C	/^   UInt_t GetListOfTitles( TDirectory *rfdir, TList & titles )$/;"	f	namespace:TMVAGlob
+GetListOfTitles	tmvaglob.C	/^   UInt_t GetListOfTitles( TString & methodName, TList & titles, TDirectory *dir=0 )$/;"	f	namespace:TMVAGlob
+GetMethodName	tmvaglob.C	/^   void GetMethodName( TString & name, TDirectory * mdir ) {$/;"	f	namespace:TMVAGlob
+GetMethodName	tmvaglob.C	/^   void GetMethodName( TString & name, TKey * mkey ) {$/;"	f	namespace:TMVAGlob
+GetMethodTitle	tmvaglob.C	/^   void GetMethodTitle( TString & name, TDirectory * idir ) {$/;"	f	namespace:TMVAGlob
+GetMethodTitle	tmvaglob.C	/^   void GetMethodTitle( TString & name, TKey * ikey ) {$/;"	f	namespace:TMVAGlob
+GetMvaValue	weights/TMVAClassification_MLP.class.C	/^   inline double ReadMLP::GetMvaValue( const std::vector<double>& inputValues ) const$/;"	f	class:ReadMLP
+GetMvaValue__	weights/TMVAClassification_MLP.class.C	/^inline double ReadMLP::GetMvaValue__( const std::vector<double>& inputValues ) const$/;"	f	class:ReadMLP
+GetNodeType	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   int    GetNodeType( void ) const { return fNodeType; }$/;"	f	class:H
+GetNumberOfInputVariables	tmvaglob.C	/^   Int_t GetNumberOfInputVariables( TDirectory *dir )$/;"	f	namespace:TMVAGlob
+GetNumberOfInputVariablesMultiClass	tmvaglob.C	/^   Int_t GetNumberOfInputVariablesMultiClass( TDirectory *dir ){$/;"	f	namespace:TMVAGlob
+GetNumberOfTargets	tmvaglob.C	/^   Int_t GetNumberOfTargets( TDirectory *dir )$/;"	f	namespace:TMVAGlob
+GetNvar	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   size_t GetNvar()           const { return fNvars; }$/;"	f	class:H	file:
+GetNvar	weights/TMVAClassification_MLP.class.C	/^   size_t GetNvar()           const { return fNvars; }$/;"	f	class:ReadMLP	file:
+GetPurity	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double GetPurity( void ) const { return fPurity; } $/;"	f	class:H
+GetResponse	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double GetResponse(void) const {return fResponse;}$/;"	f	class:H
+GetType	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   char   GetType( int ivar ) const { return fType[ivar]; }$/;"	f	class:H	file:
+GetType	weights/TMVAClassification_MLP.class.C	/^   char   GetType( int ivar ) const { return fType[ivar]; }$/;"	f	class:ReadMLP	file:
+H	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^class !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node {$/;"	c	file:
+H	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^class Read!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30 : public IClassifierReader {$/;"	c	file:
+HiddenLayers_arr	src/analysis.cpp	/^  const char* HiddenLayers_arr[8] = {"2","5","10","50","5,5","5,5,5","5,5,5,5","5,5,5,5,5"} ;\/\/number of neurons in each hidden layer$/;"	v
+HistoPlot	include/histo_plot.h	/^class HistoPlot $/;"	c
+Histo_Plot_h	include/histo_plot.h	2;"	d
+IClassifierReader	weights/TMVAClassification_MLP.class.C	/^   IClassifierReader() : fStatusIsClean( true ) {}$/;"	f	class:IClassifierReader
+IClassifierReader	weights/TMVAClassification_MLP.class.C	/^class IClassifierReader {$/;"	c	file:
+IClassifierReader__def	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	166;"	d	file:
+IClassifierReader__def	weights/TMVAClassification_MLP.class.C	78;"	d	file:
+INC	Makefile	/^INC := -I include # ensures all header files are acessible$/;"	m
+InitTransform	weights/TMVAClassification_MLP.class.C	/^inline void ReadMLP::InitTransform()$/;"	f	class:ReadMLP
+InitTransform_1	weights/TMVAClassification_MLP.class.C	/^inline void ReadMLP::InitTransform_1()$/;"	f	class:ReadMLP
+Initialize	tmvaglob.C	/^   void Initialize( Bool_t useTMVAStyle = kTRUE )$/;"	f	namespace:TMVAGlob
+Initialize	weights/TMVAClassification_MLP.class.C	/^inline void ReadMLP::Initialize()$/;"	f	class:ReadMLP
+IsNormalised	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   bool IsNormalised() const { return fIsNormalised; }$/;"	f	class:H	file:
+IsNormalised	weights/TMVAClassification_MLP.class.C	/^   bool IsNormalised() const { return fIsNormalised; }$/;"	f	class:ReadMLP	file:
+IsStatusClean	weights/TMVAClassification_MLP.class.C	/^   bool IsStatusClean() const { return fStatusIsClean; }$/;"	f	class:IClassifierReader
+LDFLAGS	Makefile	/^LDFLAGS := $(inherited) `root-config --libs --glibs  --cflags` -L$(TMVASYS)\/lib -lTMVA.1 -lMLP -lMinuit -lXMLIO -lTreePlayer  $/;"	m
+MCWeights	include/mc_weights.h	/^class MCWeights$/;"	c
+MLPAnalysis	include/mlp_analysis.h	/^class MLPAnalysis$/;"	c
+MLP_options_str	src/mlp_analysis.cpp	/^std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers)$/;"	f	class:MLPAnalysis
+MLP_output_name_str	src/mlp_analysis.cpp	/^std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* bg_chain_label)$/;"	f	class:MLPAnalysis
+MVAAnalysis	include/mva_analysis.h	/^class MVAAnalysis$/;"	c
+Mc_Weights_h	include/mc_weights.h	2;"	d
+Mlp_Analysis_h	include/mlp_analysis.h	2;"	d
+Mva_Analysis_h	include/mva_analysis.h	2;"	d
+NCycles_arr	src/analysis.cpp	/^  const char* NCycles_arr[5] = {"10","100","500","1000","5000"};$/;"	v
+NN	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	86;"	d	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node ( !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node* left,!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node* right,$/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node*   fLeft;     \/\/ pointer to the left daughter node$/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node*   fRight;    \/\/ pointer to the right daughter node$/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node* GetLeft( void ) { return fLeft; };   $/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node* GetRight( void )  {return fRight; };$/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node::~!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node()$/;"	v
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   Read!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30( std::vector<std::string>& theInputVars ) $/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   virtual ~!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node();$/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   virtual ~Read!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30() {$/;"	m	class:H	file:
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^bool !H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node::GoesRight( const std::vector<double>& inputValues ) const$/;"	v
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^double Read!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30::GetMvaValue__( const std::vector<double>& inputValues ) const$/;"	v
+NTrees	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^void Read!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30::Initialize()$/;"	v
+NTrees_arr	src/analysis.cpp	/^  const char* NTrees_arr[] = {"10", "100", "500", "1000"};$/;"	v
+NeuronType_arr	src/analysis.cpp	/^  const char* NeuronType_arr[2] = {"sigmoid","tanh"};$/;"	v
+NextKey	tmvaglob.C	/^   TKey *NextKey( TIter & keyIter, TString className) {$/;"	f	namespace:TMVAGlob
+NormVariable	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double NormVariable( double x, double xmin, double xmax ) const {$/;"	f	class:H	file:
+NormVariable	weights/TMVAClassification_MLP.class.C	/^   double NormVariable( double x, double xmin, double xmax ) const {$/;"	f	class:ReadMLP	file:
+NormalizeHist	tmvaglob.C	/^   void NormalizeHist( TH1* h ) $/;"	f	namespace:TMVAGlob
+NormalizeHists	tmvaglob.C	/^   void NormalizeHists( TH1* sig, TH1* bkg = 0 ) $/;"	f	namespace:TMVAGlob
+OBJECTS	Makefile	/^OBJECTS := $(patsubst $(SRCDIR)\/%,$(BUILDDIR)\/%,$(SOURCES:.$(SRCEXT)=.o)) $/;"	m
+OBJS	Debug/sources.mk	/^OBJS := $/;"	m
+OBJ_SRCS	Debug/sources.mk	/^OBJ_SRCS := $/;"	m
+O_SRCS	Debug/sources.mk	/^O_SRCS := $/;"	m
+OpenFile	tmvaglob.C	/^   TFile* OpenFile( const TString& fin )$/;"	f	namespace:TMVAGlob
+OutputActivationFnc	weights/TMVAClassification_MLP.class.C	/^double ReadMLP::OutputActivationFnc(double x) const {$/;"	f	class:ReadMLP
+RM	Debug/makefile	/^RM := rm -rf$/;"	m
+ROOTSYS	Makefile	/^ROOTSYS := \/Applications\/root_v5.34.34\/$/;"	m
+ReadMLP	weights/TMVAClassification_MLP.class.C	/^   ReadMLP( std::vector<std::string>& theInputVars ) $/;"	f	class:ReadMLP
+ReadMLP	weights/TMVAClassification_MLP.class.C	/^class ReadMLP : public IClassifierReader {$/;"	c	file:
+RocCurves	include/roc_curves.h	/^class RocCurves$/;"	c
+Roc_Curves_h	include/roc_curves.h	2;"	d
+SOURCES	Makefile	/^SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT)) # dynamic, includes any file with .cpp extension$/;"	m
+SRCDIR	Makefile	/^SRCDIR := src$/;"	m
+SRCEXT	Makefile	/^SRCEXT := cpp$/;"	m
+SUBDIRS	Debug/sources.mk	/^SUBDIRS := \\$/;"	m
+S_UPPER_SRCS	Debug/sources.mk	/^S_UPPER_SRCS := $/;"	m
+SeparationType_arr	src/analysis.cpp	/^  const char* SeparationType_arr[] = {"GiniIndex"};$/;"	v
+SetFrameStyle	tmvaglob.C	/^   void SetFrameStyle( TH1* frame, Float_t scale = 1.0 )$/;"	f	namespace:TMVAGlob
+SetMultiClassStyle	tmvaglob.C	/^   void SetMultiClassStyle( TObjArray* hists ) $/;"	f	namespace:TMVAGlob
+SetSignalAndBackgroundStyle	tmvaglob.C	/^   void SetSignalAndBackgroundStyle( TH1* sig, TH1* bkg, TH1* all = 0 ) $/;"	f	namespace:TMVAGlob
+SetTMVAStyle	tmvaglob.C	/^   void SetTMVAStyle() {$/;"	f	namespace:TMVAGlob
+SuperChains	include/super_chains.h	/^class SuperChains $/;"	c
+SuperChains	src/super_chains.cpp	/^SuperChains::SuperChains()$/;"	f	class:SuperChains
+SuperVars	include/super_vars.h	/^class SuperVars $/;"	c
+SuperVars	src/super_vars.cpp	/^SuperVars::SuperVars()$/;"	f	class:SuperVars
+Super_Chains_h	include/super_chains.h	2;"	d
+Super_Vars_h	include/super_vars.h	2;"	d
+TARGET	Makefile	/^TARGET := bin\/main # Main executable of project-- type 'make' and this gets built.$/;"	m
+TMVAGlob	tmvaglob.C	/^namespace TMVAGlob {$/;"	n	file:
+TMVAGui	TMVAGui.C	/^void TMVAGui( const char* fName = "bg_zll\/BDT-NTrees=800-BoostType=AdaBoost-AdaBoostBeta=0.5-SeparationType=GiniIndex-nCuts=0.root" ) $/;"	f
+TMVAGui_inactiveButtons	TMVAGui.C	/^static std::vector<TString> TMVAGui_inactiveButtons;$/;"	v	file:
+TMVAGui_inactiveButtons	TMVARegGui.C	/^static std::vector<TString> TMVAGui_inactiveButtons;$/;"	v	file:
+TMVAGui_keyContent	TMVAGui.C	/^static TList*               TMVAGui_keyContent;$/;"	v	file:
+TMVAGui_keyContent	TMVARegGui.C	/^static TList*               TMVAGui_keyContent;$/;"	v	file:
+TMVARegGui	TMVARegGui.C	/^void TMVARegGui( const char* fName = "TMVAReg.root" ) $/;"	f
+TMVASYS	Makefile	/^TMVASYS := \/home\/hep\/dsg12\/TMVA-v4.2.0$/;"	m
+TMVA_TMVAGLOB	tmvaglob.C	3;"	d	file:
+TREE_LEAVES_H_	include/tree_leaves.h	2;"	d
+Transform	weights/TMVAClassification_MLP.class.C	/^inline void ReadMLP::Transform( std::vector<double>& iv, int sigOrBgd ) const$/;"	f	class:ReadMLP
+Transform_1	weights/TMVAClassification_MLP.class.C	/^inline void ReadMLP::Transform_1( std::vector<double>& iv, int cls) const$/;"	f	class:ReadMLP
+TreeLeaves	include/tree_leaves.h	/^class TreeLeaves $/;"	c
+TypeOfPlot	tmvaglob.C	/^   enum TypeOfPlot { kId = 0,$/;"	g	namespace:TMVAGlob	file:
+UsePaperStyle	tmvaglob.C	/^   static Bool_t UsePaperStyle = 0;$/;"	m	namespace:TMVAGlob	file:
+Variable	include/variable.h	/^class Variable $/;"	c
+Variable	src/variable.cpp	/^Variable::Variable(const char* var_name, const char* var_name_styled, const char* x_min,$/;"	f	class:Variable
+Variable_h	include/variable.h	2;"	d
+abs_for_cut	include/variable.h	/^  bool abs_for_cut;$/;"	m	class:Variable
+add_mc_to_selection	src/histo_plot.cpp	/^std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight)$/;"	f	class:HistoPlot
+alljetsmet_mindphi	include/tree_leaves.h	/^  Double_t alljetsmet_mindphi;$/;"	m	class:TreeLeaves
+alljetsmetnomu_mindphi	include/super_vars.h	/^  Variable* alljetsmetnomu_mindphi;$/;"	m	class:SuperVars
+alljetsmetnomu_mindphi	include/tree_leaves.h	/^  Double_t alljetsmetnomu_mindphi;$/;"	m	class:TreeLeaves
+bg_qcd	include/super_chains.h	/^  DataChain* bg_qcd;$/;"	m	class:SuperChains
+bg_top	include/super_chains.h	/^  DataChain* bg_top;$/;"	m	class:SuperChains
+bg_vv	include/super_chains.h	/^  DataChain* bg_vv;$/;"	m	class:SuperChains
+bg_wjets_ev	include/super_chains.h	/^  DataChain* bg_wjets_ev;$/;"	m	class:SuperChains
+bg_wjets_muv	include/super_chains.h	/^  DataChain* bg_wjets_muv;$/;"	m	class:SuperChains
+bg_wjets_tauv	include/super_chains.h	/^  DataChain* bg_wjets_tauv;$/;"	m	class:SuperChains
+bg_zjets_vv	include/super_chains.h	/^  DataChain* bg_zjets_vv;$/;"	m	class:SuperChains
+bg_zll	include/super_chains.h	/^  DataChain* bg_zll;$/;"	m	class:SuperChains
+bin_grid_line	src/data_card.cpp	/^std::string DataCard::bin_grid_line(int cols)$/;"	f	class:DataCard
+bin_header_string	src/data_card.cpp	/^std::string DataCard::bin_header_string()$/;"	f	class:DataCard
+bin_observation_string	src/data_card.cpp	/^std::string DataCard::bin_observation_string(int nbins)$/;"	f	class:DataCard
+bins_cut	include/variable.h	/^  std::string bins_cut;$/;"	m	class:Variable
+bins_nocut	include/variable.h	/^  const char* bins_nocut;$/;"	m	class:Variable
+build_1d_histo	src/histo_plot.cpp	/^TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool with_cut, bool is_signal,$/;"	f	class:HistoPlot
+build_file_name	src/histo_plot.cpp	/^std::string HistoPlot::build_file_name(Variable* variable, bool with_cut) $/;"	f	class:HistoPlot
+build_histo	src/mva_analysis.cpp	/^TH1F* MVAAnalysis::build_histo(DataChain* combined_output, std::string selection_str, Variable* variable, std::string histo_label)$/;"	f	class:MVAAnalysis
+build_legend	src/histo_plot.cpp	/^void HistoPlot::build_legend(TLegend* legend, TH1F* max_histo, Variable* var, bool with_cut)$/;"	f	class:HistoPlot
+build_multicut_selection	src/variable.cpp	/^std::string Variable::build_multicut_selection(bool is_signal, std::vector<Variable*>* variables)$/;"	f	class:Variable
+build_output_graph_name	src/mva_analysis.cpp	/^std::string MVAAnalysis::build_output_graph_name(TFile* trained_output)$/;"	f	class:MVAAnalysis
+build_output_sel_str	src/mva_analysis.cpp	/^std::string MVAAnalysis::build_output_sel_str(std::string category, std::string final_cuts)$/;"	f	class:MVAAnalysis
+build_selection	src/variable.cpp	/^std::string Variable::build_selection(const char* var_name, const char* x_min_cut,$/;"	f	class:Variable
+build_selection_string	src/variable.cpp	/^std::string Variable::build_selection_string(bool with_cut, bool is_signal) $/;"	f	class:Variable
+build_signal_leg_entry	src/histo_plot.cpp	/^std::string HistoPlot::build_signal_leg_entry(Variable* var, DataChain* signal_chain)$/;"	f	class:HistoPlot
+build_var_string	src/variable.cpp	/^std::string Variable::build_var_string(const char* label, bool with_cut) $/;"	f	class:Variable
+c_BackgroundFill	tmvaglob.C	/^   static Int_t c_BackgroundFill = TColor::GetColor( "#ff0000" );$/;"	m	namespace:TMVAGlob	file:
+c_BackgroundLine	tmvaglob.C	/^   static Int_t c_BackgroundLine = TColor::GetColor( "#ff0000" );$/;"	m	namespace:TMVAGlob	file:
+c_Canvas	tmvaglob.C	/^   static Int_t c_Canvas         = TColor::GetColor( "#f0f0f0" );$/;"	m	namespace:TMVAGlob	file:
+c_FrameFill	tmvaglob.C	/^   static Int_t c_FrameFill      = TColor::GetColor( "#fffffd" );$/;"	m	namespace:TMVAGlob	file:
+c_NovelBlue	tmvaglob.C	/^   static Int_t c_NovelBlue      = TColor::GetColor( "#2244a5" );$/;"	m	namespace:TMVAGlob	file:
+c_SignalFill	tmvaglob.C	/^   static Int_t c_SignalFill     = TColor::GetColor( "#7d99d1" );$/;"	m	namespace:TMVAGlob	file:
+c_SignalLine	tmvaglob.C	/^   static Int_t c_SignalLine     = TColor::GetColor( "#0000ee" );$/;"	m	namespace:TMVAGlob	file:
+c_TitleBorder	tmvaglob.C	/^   static Int_t c_TitleBorder    = TColor::GetColor( "#7D8B9D" );$/;"	m	namespace:TMVAGlob	file:
+c_TitleBox	tmvaglob.C	/^   static Int_t c_TitleBox       = TColor::GetColor( "#5D6B7D" );$/;"	m	namespace:TMVAGlob	file:
+c_TitleText	tmvaglob.C	/^   static Int_t c_TitleText      = TColor::GetColor( "#FFFFFF" );$/;"	m	namespace:TMVAGlob	file:
+calc_mc_weight	src/mc_weights.cpp	/^double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,$/;"	f	class:MCWeights
+calc_weight_error	src/mc_weights.cpp	/^double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,$/;"	f	class:MCWeights
+central_tag_eta	include/tree_leaves.h	/^  Double_t central_tag_eta;$/;"	m	class:TreeLeaves
+chain	include/data_chain.h	/^  TChain* chain;$/;"	m	class:DataChain
+cjvjetpt	include/tree_leaves.h	/^  Double_t cjvjetpt;$/;"	m	class:TreeLeaves
+colours	include/histo_plot.h	/^  static const int* colours() { $/;"	f	class:HistoPlot
+create_BDT	src/bdt_analysis.cpp	/^TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables,$/;"	f	class:BDTAnalysis
+create_MLP	src/mlp_analysis.cpp	/^TFile* MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string folder_name,$/;"	f	class:MLPAnalysis
+create_datacard	src/data_card.cpp	/^void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,$/;"	f	class:DataCard
+dashed_line	src/data_card.cpp	/^std::string DataCard::dashed_line()$/;"	f	class:DataCard
+data_arr	src/analysis.cpp	/^const char* data_arr[] = {$/;"	v
+data_card_h	include/data_card.h	2;"	d
+data_chain	include/super_chains.h	/^  DataChain* data_chain;$/;"	m	class:SuperChains
+data_label	src/analysis.cpp	/^const char* data_label  = "data_chain";$/;"	v
+data_legend	src/analysis.cpp	/^const char* data_legend = "data";$/;"	v
+data_to_bg_ratio_histo	src/histo_plot.cpp	/^TH1F* HistoPlot::data_to_bg_ratio_histo(TH1F* data_histo, TH1F* bg_histo)$/;"	f	class:HistoPlot
+dijet_M	include/super_vars.h	/^  Variable* dijet_M;$/;"	m	class:SuperVars
+dijet_M	include/tree_leaves.h	/^  Double_t dijet_M;$/;"	m	class:TreeLeaves
+dijet_deta	include/super_vars.h	/^  Variable* dijet_deta;$/;"	m	class:SuperVars
+dijet_deta	include/tree_leaves.h	/^  Double_t dijet_deta;$/;"	m	class:TreeLeaves
+dijet_dphi	include/tree_leaves.h	/^  Double_t dijet_dphi;$/;"	m	class:TreeLeaves
+dijet_sumeta	include/tree_leaves.h	/^  Double_t dijet_sumeta;$/;"	m	class:TreeLeaves
+dijetmet_ptfraction	include/tree_leaves.h	/^  Double_t dijetmet_ptfraction;$/;"	m	class:TreeLeaves
+dijetmet_scalarSum_pt	include/tree_leaves.h	/^  Double_t dijetmet_scalarSum_pt;$/;"	m	class:TreeLeaves
+dijetmet_vectorialSum_pt	include/tree_leaves.h	/^  Double_t dijetmet_vectorialSum_pt;$/;"	m	class:TreeLeaves
+dijetmetnomu_ptfraction	include/tree_leaves.h	/^  Double_t dijetmetnomu_ptfraction;$/;"	m	class:TreeLeaves
+dijetmetnomu_scalarSum_pt	include/tree_leaves.h	/^  Double_t dijetmetnomu_scalarSum_pt;$/;"	m	class:TreeLeaves
+dijetmetnomu_vectorialSum_pt	include/tree_leaves.h	/^  Double_t dijetmetnomu_vectorialSum_pt;$/;"	m	class:TreeLeaves
+double_to_str	src/data_card.cpp	/^std::string DataCard::double_to_str(double sint)$/;"	f	class:DataCard
+draw_background	src/histo_plot.cpp	/^TH1F* HistoPlot::draw_background(DataChain* data_chain, Variable* variable, $/;"	f	class:HistoPlot
+draw_background	src/mva_analysis.cpp	/^TH1F* MVAAnalysis::draw_background(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable)$/;"	f	class:MVAAnalysis
+draw_classifier_outputs	src/classifier_outputs.cpp	/^void ClassifierOutputs::draw_classifier_outputs(TFile* file, std::string method_name)$/;"	f	class:ClassifierOutputs
+draw_data	src/histo_plot.cpp	/^TH1F* HistoPlot::draw_data(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,$/;"	f	class:HistoPlot
+draw_histo	src/mva_analysis.cpp	/^void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts, Variable* variable)$/;"	f	class:MVAAnalysis
+draw_ktest	src/classifier_outputs.cpp	/^void ClassifierOutputs::draw_ktest(std::vector<TH1D*> normalised_histos)$/;"	f	class:ClassifierOutputs
+draw_plot	src/histo_plot.cpp	/^void HistoPlot::draw_plot(Variable* var, std::vector<DataChain*> bg_chains,$/;"	f	class:HistoPlot
+draw_signal	src/histo_plot.cpp	/^TH1F* HistoPlot::draw_signal(DataChain* data_chain, Variable* variable, bool with_cut, TLegend* legend,$/;"	f	class:HistoPlot
+draw_signal	src/mva_analysis.cpp	/^TH1F* MVAAnalysis::draw_signal(DataChain* combined_output, std::string category, std::string final_cuts, Variable* variable)$/;"	f	class:MVAAnalysis
+draw_stacked_histo	src/histo_plot.cpp	/^THStack HistoPlot::draw_stacked_histo(TLegend* legend, Variable* var, std::vector<DataChain*> bg_chains,$/;"	f	class:HistoPlot
+draw_subtitle	src/histo_plot.cpp	/^void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,$/;"	f	class:HistoPlot
+draw_title	src/classifier_outputs.cpp	/^void ClassifierOutputs::draw_title(std::string title)$/;"	f	class:ClassifierOutputs
+draw_title	src/histo_plot.cpp	/^void HistoPlot::draw_title(const char* title)$/;"	f	class:HistoPlot
+draw_yline_on_plot	src/histo_plot.cpp	/^void HistoPlot::draw_yline_on_plot(Variable* var, bool with_cut, double y)$/;"	f	class:HistoPlot
+ele1_eta	include/tree_leaves.h	/^  Double_t ele1_eta;$/;"	m	class:TreeLeaves
+ele1_phi	include/tree_leaves.h	/^  Double_t ele1_phi;$/;"	m	class:TreeLeaves
+ele1_pt	include/tree_leaves.h	/^  Double_t ele1_pt;$/;"	m	class:TreeLeaves
+evaluate_BDT	src/bdt_analysis.cpp	/^TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables)$/;"	f	class:BDTAnalysis
+evaluate_MLP	src/mlp_analysis.cpp	/^TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* variables)$/;"	f	class:MLPAnalysis
+event	include/tree_leaves.h	/^  UInt_t event;$/;"	m	class:TreeLeaves
+extra_label	include/data_chain.h	/^  std::string extra_label;$/;"	m	class:DataChain
+fBoostWeights	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   std::vector<double>                fBoostWeights; \/\/ the weights applied in the individual boosts$/;"	m	class:H	file:
+fClassName	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   const char* fClassName;$/;"	m	class:H	file:
+fClassName	weights/TMVAClassification_MLP.class.C	/^   const char* fClassName;$/;"	m	class:ReadMLP	file:
+fCutType	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   bool                    fCutType;  \/\/ true: if event variable > cutValue ==> signal , false otherwise$/;"	m	class:H	file:
+fCutValue	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double                  fCutValue; \/\/ cut value appplied on this node to discriminate bkg against sig$/;"	m	class:H	file:
+fForest	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   std::vector<!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30Node*> fForest;       \/\/ i.e. root nodes of decision trees$/;"	m	class:H	file:
+fIsNormalised	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^        fIsNormalised( false )$/;"	f	class:H
+fIsNormalised	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   const bool fIsNormalised;$/;"	m	class:H	file:
+fIsNormalised	weights/TMVAClassification_MLP.class.C	/^   const bool fIsNormalised;$/;"	m	class:ReadMLP	file:
+fLayerSize	weights/TMVAClassification_MLP.class.C	/^   int fLayerSize[5];$/;"	m	class:ReadMLP	file:
+fLayers	weights/TMVAClassification_MLP.class.C	/^   int fLayers;$/;"	m	class:ReadMLP	file:
+fMax_1	weights/TMVAClassification_MLP.class.C	/^   double fMax_1[3][5];$/;"	m	class:ReadMLP	file:
+fMin_1	weights/TMVAClassification_MLP.class.C	/^   double fMin_1[3][5];$/;"	m	class:ReadMLP	file:
+fNodeType	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   int                     fNodeType; \/\/ Type of node: -1 == Bkg-leaf, 1 == Signal-leaf, 0 = internal $/;"	m	class:H	file:
+fNvars	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   const size_t fNvars;$/;"	m	class:H	file:
+fNvars	weights/TMVAClassification_MLP.class.C	/^   const size_t fNvars;$/;"	m	class:ReadMLP	file:
+fPurity	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double                  fPurity;   \/\/ Purity of node from training$/;"	m	class:H	file:
+fResponse	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double                  fResponse; \/\/ Regression response value of node$/;"	m	class:H	file:
+fResponse	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   fResponse     ( response     ){$/;"	f	class:H
+fSelector	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   int                     fSelector; \/\/ index of variable used in node selection (decision tree)   $/;"	m	class:H	file:
+fStatusIsClean	weights/TMVAClassification_MLP.class.C	/^   bool fStatusIsClean;$/;"	m	class:IClassifierReader	file:
+fType	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   char   fType[5];$/;"	m	class:H	file:
+fType	weights/TMVAClassification_MLP.class.C	/^   char   fType[5];$/;"	m	class:ReadMLP	file:
+fVmax	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double fVmax[5];$/;"	m	class:H	file:
+fVmax	weights/TMVAClassification_MLP.class.C	/^   double fVmax[5];$/;"	m	class:ReadMLP	file:
+fVmin	weights/TMVAClassification_!H:!V:NTrees=10:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30.class.C	/^   double fVmin[5];$/;"	m	class:H	file:
+fVmin	weights/TMVAClassification_MLP.class.C	/^   double fVmin[5];$/;"	m	class:ReadMLP	file:
+fWeightMatrix0to1	weights/TMVAClassification_MLP.class.C	/^   double fWeightMatrix0to1[6][6];   \/\/ weight matrix from layer 0 to 1$/;"	m	class:ReadMLP	file:
+fWeightMatrix1to2	weights/TMVAClassification_MLP.class.C	/^   double fWeightMatrix1to2[6][6];   \/\/ weight matrix from layer 1 to 2$/;"	m	class:ReadMLP	file:
+fWeightMatrix2to3	weights/TMVAClassification_MLP.class.C	/^   double fWeightMatrix2to3[6][6];   \/\/ weight matrix from layer 2 to 3$/;"	m	class:ReadMLP	file:
+fWeightMatrix3to4	weights/TMVAClassification_MLP.class.C	/^   double fWeightMatrix3to4[1][6];   \/\/ weight matrix from layer 3 to 4$/;"	m	class:ReadMLP	file:
+fWeights	weights/TMVAClassification_MLP.class.C	/^   double * fWeights[5];$/;"	m	class:ReadMLP	file:
+findImage	tmvaglob.C	/^   TImage * findImage(const char * imageName) $/;"	f	namespace:TMVAGlob
+forward_tag_eta	include/super_vars.h	/^  Variable* forward_tag_eta;$/;"	m	class:SuperVars
+forward_tag_eta	include/tree_leaves.h	/^  Double_t forward_tag_eta;$/;"	m	class:TreeLeaves
+genlep1_eta	include/tree_leaves.h	/^  UInt_t genlep1_eta;$/;"	m	class:TreeLeaves
+genlep1_id	include/tree_leaves.h	/^  UInt_t genlep1_id;$/;"	m	class:TreeLeaves
+genlep1_phi	include/tree_leaves.h	/^  UInt_t genlep1_phi;$/;"	m	class:TreeLeaves
+genlep1_pt	include/tree_leaves.h	/^  UInt_t genlep1_pt;$/;"	m	class:TreeLeaves
+genlep2_eta	include/tree_leaves.h	/^  UInt_t genlep2_eta;$/;"	m	class:TreeLeaves
+genlep2_id	include/tree_leaves.h	/^  UInt_t genlep2_id;$/;"	m	class:TreeLeaves
+genlep2_phi	include/tree_leaves.h	/^  UInt_t genlep2_phi;$/;"	m	class:TreeLeaves
+genlep2_pt	include/tree_leaves.h	/^  UInt_t genlep2_pt;$/;"	m	class:TreeLeaves
+get_BDT_results	src/bdt_analysis.cpp	/^DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables)$/;"	f	class:BDTAnalysis
+get_MLP_results	src/mlp_analysis.cpp	/^DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variable*>* variables)$/;"	f	class:MLPAnalysis
+get_all_bg_in_ctrl	src/mc_weights.cpp	/^double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,$/;"	f	class:MCWeights
+get_bg_chains	src/super_chains.cpp	/^std::vector<DataChain*> SuperChains::get_bg_chains()$/;"	f	class:SuperChains
+get_bg_errors	src/data_card.cpp	/^std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,$/;"	f	class:DataCard
+get_bins	src/variable.cpp	/^double Variable::get_bins(bool with_cut)$/;"	f	class:Variable
+get_categories	src/mva_analysis.cpp	/^std::vector<double> MVAAnalysis::get_categories(TH1F* output_histo)$/;"	f	class:MVAAnalysis
+get_category_strs	src/mva_analysis.cpp	/^std::vector<std::string> MVAAnalysis::get_category_strs(std::vector<double> categories)$/;"	f	class:MVAAnalysis
+get_classifier_histos	src/classifier_outputs.cpp	/^std::vector<TH1D*> ClassifierOutputs::get_classifier_histos(TFile* classifier_output, std::string method_name)$/;"	f	class:ClassifierOutputs
+get_cuts_str_for_tmva	src/super_vars.cpp	/^std::string SuperVars::get_cuts_str_for_tmva()$/;"	f	class:SuperVars
+get_data	src/data_chain.cpp	/^void DataChain::get_data() {$/;"	f	class:DataChain
+get_data_error	src/histo_plot.cpp	/^float HistoPlot::get_data_error(TH1F* histo, int bin) $/;"	f	class:HistoPlot
+get_discriminating_vars	src/super_vars.cpp	/^std::vector<Variable*> SuperVars::get_discriminating_vars()$/;"	f	class:SuperVars
+get_final_cuts_str	src/super_vars.cpp	/^std::string SuperVars::get_final_cuts_str()$/;"	f	class:SuperVars
+get_graph_dx	src/variable.cpp	/^double Variable::get_graph_dx(bool with_cut)$/;"	f	class:Variable
+get_histo_from_output	src/classifier_outputs.cpp	/^TH1D* ClassifierOutputs::get_histo_from_output(TFile* file, std::string histo_path)$/;"	f	class:ClassifierOutputs
+get_histo_integral	src/histo_plot.cpp	/^double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)$/;"	f	class:HistoPlot
+get_histo_y_max	src/histo_plot.cpp	/^double HistoPlot::get_histo_y_max(TH1F* histo)$/;"	f	class:HistoPlot
+get_max_histo	src/histo_plot.cpp	/^TH1F* HistoPlot::get_max_histo(std::vector<TH1F*> plot_histos)$/;"	f	class:HistoPlot
+get_mc_selection_str	src/mc_weights.cpp	/^std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* variable, $/;"	f	class:MCWeights
+get_mc_weight_errors	src/histo_plot.cpp	/^std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,$/;"	f	class:HistoPlot
+get_mva_results	src/mva_analysis.cpp	/^TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain,$/;"	f	class:MVAAnalysis
+get_nevents	src/mc_weights.cpp	/^double MCWeights::get_nevents(DataChain* data_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, $/;"	f	class:MCWeights
+get_npads	src/classifier_outputs.cpp	/^std::vector<int> ClassifierOutputs::get_npads(int nfiles)$/;"	f	class:ClassifierOutputs
+get_output_bg_chains	src/mva_analysis.cpp	/^std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars,$/;"	f	class:MVAAnalysis
+get_output_signal_chain	src/mva_analysis.cpp	/^DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name)$/;"	f	class:MVAAnalysis
+get_plot_max	src/classifier_outputs.cpp	/^double ClassifierOutputs::get_plot_max(std::vector<TH1D*> histos)$/;"	f	class:ClassifierOutputs
+get_plots_varying_params	src/mva_analysis.cpp	/^void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,$/;"	f	class:MVAAnalysis
+get_presel_effy	src/roc_curves.cpp	/^double RocCurves::get_presel_effy(DataChain* data_chain, std::string preselection, Variable* var, std::vector<Variable*>* variables)$/;"	f	class:RocCurves
+get_rates	src/data_card.cpp	/^std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,$/;"	f	class:DataCard
+get_rocs	src/roc_curves.cpp	/^void RocCurves::get_rocs(std::vector<TFile*> training_outputs, DataChain* signal,$/;"	f	class:RocCurves
+get_selection	src/histo_plot.cpp	/^std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,$/;"	f	class:HistoPlot
+get_signal_cut_vars	src/super_vars.cpp	/^std::vector<Variable*> SuperVars::get_signal_cut_vars()$/;"	f	class:SuperVars
+get_signal_error	src/data_card.cpp	/^double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables)$/;"	f	class:DataCard
+get_single_uncertainty_str	src/data_card.cpp	/^std::string DataCard::get_single_uncertainty_str(std::vector<double> single_uncertainty_vector)$/;"	f	class:DataCard
+get_string_from_double	src/histo_plot.cpp	/^std::string HistoPlot::get_string_from_double(double num)$/;"	f	class:HistoPlot
+get_systematic_string	src/data_card.cpp	/^std::string DataCard::get_systematic_string(DataChain* data, std::vector<DataChain*> bg_chains,$/;"	f	class:DataCard
+get_th1d_data_error	src/histo_plot.cpp	/^double HistoPlot::get_th1d_data_error(TH1D* histo, int bin)$/;"	f	class:HistoPlot
+get_total_nevents	src/data_card.cpp	/^double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, std::vector<Variable*>* variables,std::vector<double> bg_mc_weights)$/;"	f	class:DataCard
+get_uncertainties_string	src/data_card.cpp	/^std::string DataCard::get_uncertainties_string(std::vector<std::vector<double> > uncertainty_vectors)$/;"	f	class:DataCard
+get_uncertainty_vectors	src/data_card.cpp	/^std::vector<std::vector<double> > DataCard::get_uncertainty_vectors(double signal_error, std::vector<double> bg_errors)$/;"	f	class:DataCard
+get_x1_from_bin	src/histo_plot.cpp	/^double HistoPlot::get_x1_from_bin(double max_bin, double nbins)$/;"	f	class:HistoPlot
+get_x_max	src/variable.cpp	/^double Variable::get_x_max(bool with_cut)$/;"	f	class:Variable
+get_x_max_cut	src/variable.cpp	/^const char* Variable::get_x_max_cut(const char* x_max_c, const char* x_max)$/;"	f	class:Variable
+get_x_min	src/variable.cpp	/^double Variable::get_x_min(bool with_cut)$/;"	f	class:Variable
+get_zeros	src/data_card.cpp	/^std::vector<double> DataCard::get_zeros(int size)$/;"	f	class:DataCard
+histo	src/roc_curves.cpp	/^TH1F* RocCurves::histo(DataChain* data, Variable* variable, std::string preselection)$/;"	f	class:RocCurves
+ht	include/tree_leaves.h	/^  Double_t ht;$/;"	m	class:TreeLeaves
+ht30	include/tree_leaves.h	/^  Double_t ht30;$/;"	m	class:TreeLeaves
+imax_string	src/data_card.cpp	/^std::string DataCard::imax_string()$/;"	f	class:DataCard
+imgconv	tmvaglob.C	/^   void imgconv( TCanvas* c, const TString & fname )$/;"	f	namespace:TMVAGlob
+jet1_E	include/super_vars.h	/^  Variable* jet1_E;$/;"	m	class:SuperVars
+jet1_E	include/tree_leaves.h	/^  Double_t jet1_E;$/;"	m	class:TreeLeaves
+jet1_eta	include/tree_leaves.h	/^  Double_t jet1_eta;$/;"	m	class:TreeLeaves
+jet1_phi	include/tree_leaves.h	/^  Double_t jet1_phi;$/;"	m	class:TreeLeaves
+jet1_pt	include/tree_leaves.h	/^  Double_t jet1_pt;$/;"	m	class:TreeLeaves
+jet1met_dphi	include/tree_leaves.h	/^  Double_t jet1met_dphi;$/;"	m	class:TreeLeaves
+jet1met_scalarprod	include/tree_leaves.h	/^  Double_t jet1met_scalarprod;$/;"	m	class:TreeLeaves
+jet1metnomu_dphi	include/tree_leaves.h	/^  Double_t jet1metnomu_dphi;$/;"	m	class:TreeLeaves
+jet1metnomu_scalarprod	include/tree_leaves.h	/^  Double_t jet1metnomu_scalarprod;$/;"	m	class:TreeLeaves
+jet2_E	include/super_vars.h	/^  Variable* jet2_E;$/;"	m	class:SuperVars
+jet2_E	include/tree_leaves.h	/^  Double_t jet2_E;$/;"	m	class:TreeLeaves
+jet2_eta	include/tree_leaves.h	/^  Double_t jet2_eta;$/;"	m	class:TreeLeaves
+jet2_phi	include/tree_leaves.h	/^  Double_t jet2_phi;$/;"	m	class:TreeLeaves
+jet2_pt	include/tree_leaves.h	/^  Double_t jet2_pt;$/;"	m	class:TreeLeaves
+jet2met_dphi	include/tree_leaves.h	/^  Double_t jet2met_dphi;$/;"	m	class:TreeLeaves
+jet2met_scalarprod	include/tree_leaves.h	/^  Double_t jet2met_scalarprod;$/;"	m	class:TreeLeaves
+jet2metnomu_dphi	include/tree_leaves.h	/^  Double_t jet2metnomu_dphi;$/;"	m	class:TreeLeaves
+jet2metnomu_scalarprod	include/tree_leaves.h	/^  Double_t jet2metnomu_scalarprod;$/;"	m	class:TreeLeaves
+jet3_E	include/tree_leaves.h	/^  Double_t jet3_E;$/;"	m	class:TreeLeaves
+jet3_eta	include/tree_leaves.h	/^  Double_t jet3_eta;$/;"	m	class:TreeLeaves
+jet3_phi	include/tree_leaves.h	/^  Double_t jet3_phi;$/;"	m	class:TreeLeaves
+jet3_pt	include/tree_leaves.h	/^  Double_t jet3_pt;$/;"	m	class:TreeLeaves
+jet_csv1	include/tree_leaves.h	/^  Double_t jet_csv1;$/;"	m	class:TreeLeaves
+jet_csv2	include/tree_leaves.h	/^  Double_t jet_csv2;$/;"	m	class:TreeLeaves
+jet_csv3	include/tree_leaves.h	/^  Double_t jet_csv3;$/;"	m	class:TreeLeaves
+jetmet_mindphi	include/tree_leaves.h	/^  Double_t jetmet_mindphi;$/;"	m	class:TreeLeaves
+jetmetnomu_mindphi	include/tree_leaves.h	/^  Double_t jetmetnomu_mindphi;$/;"	m	class:TreeLeaves
+jetunclet_mindphi	include/tree_leaves.h	/^  Double_t jetunclet_mindphi;$/;"	m	class:TreeLeaves
+jmax_string	src/data_card.cpp	/^std::string DataCard::jmax_string(int jmax)$/;"	f	class:DataCard
+kDecorrelated	tmvaglob.C	/^                     kDecorrelated,$/;"	e	enum:TMVAGlob::TypeOfPlot	file:
+kGaussDecorr	tmvaglob.C	/^                     kGaussDecorr,$/;"	e	enum:TMVAGlob::TypeOfPlot	file:
+kId	tmvaglob.C	/^   enum TypeOfPlot { kId = 0,$/;"	e	enum:TMVAGlob::TypeOfPlot	file:
+kNorm	tmvaglob.C	/^                     kNorm,$/;"	e	enum:TMVAGlob::TypeOfPlot	file:
+kNumOfMethods	tmvaglob.C	/^                     kNumOfMethods };$/;"	e	enum:TMVAGlob::TypeOfPlot	file:
+kPCA	tmvaglob.C	/^                     kPCA,$/;"	e	enum:TMVAGlob::TypeOfPlot	file:
+kmax_string	src/data_card.cpp	/^std::string DataCard::kmax_string(int kmax)$/;"	f	class:DataCard
+l1met	include/tree_leaves.h	/^  UInt_t l1met;$/;"	m	class:TreeLeaves
+label	include/data_chain.h	/^  const char* label;$/;"	m	class:DataChain
+leaves	include/data_chain.h	/^  TreeLeaves* leaves;$/;"	m	class:DataChain
+legend	include/data_chain.h	/^  const char* legend;$/;"	m	class:DataChain
+lep_mt	include/tree_leaves.h	/^  Double_t lep_mt;$/;"	m	class:TreeLeaves
+lep_sel	include/data_chain.h	/^  std::string lep_sel;$/;"	m	class:DataChain
+lep_sel_default	include/histo_plot.h	/^  static std::string lep_sel_default()$/;"	f	class:HistoPlot
+lumi	include/tree_leaves.h	/^  UInt_t lumi;$/;"	m	class:TreeLeaves
+m_ee	include/tree_leaves.h	/^  UInt_t m_ee;$/;"	m	class:TreeLeaves
+m_mumu	include/tree_leaves.h	/^  UInt_t m_mumu;$/;"	m	class:TreeLeaves
+m_mumu_gen	include/tree_leaves.h	/^  UInt_t m_mumu_gen;$/;"	m	class:TreeLeaves
+main	src/main.cpp	/^int main(int argc, char** argv) {$/;"	f
+mc_signal_data_arr	src/analysis.cpp	/^const char* mc_signal_data_arr[] = {$/;"	v
+mc_signal_label	src/analysis.cpp	/^const char* mc_signal_label  = "signal_chain";$/;"	v
+mc_signal_legend	src/analysis.cpp	/^const char* mc_signal_legend = "signal";$/;"	v
+mc_weights	src/histo_plot.cpp	/^std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,$/;"	f	class:HistoPlot
+met	include/tree_leaves.h	/^  Double_t met;$/;"	m	class:TreeLeaves
+met_significance	include/tree_leaves.h	/^  Double_t met_significance;$/;"	m	class:TreeLeaves
+met_x	include/tree_leaves.h	/^  Double_t met_x;$/;"	m	class:TreeLeaves
+met_y	include/tree_leaves.h	/^  Double_t met_y;$/;"	m	class:TreeLeaves
+metnomu_significance	include/super_vars.h	/^  Variable* metnomu_significance;$/;"	m	class:SuperVars
+metnomu_significance	include/tree_leaves.h	/^  Double_t metnomu_significance;$/;"	m	class:TreeLeaves
+metnomu_x	include/tree_leaves.h	/^  Double_t metnomu_x;$/;"	m	class:TreeLeaves
+metnomu_y	include/tree_leaves.h	/^  Double_t metnomu_y;$/;"	m	class:TreeLeaves
+metnomuons	include/super_vars.h	/^  Variable* metnomuons;$/;"	m	class:SuperVars
+metnomuons	include/tree_leaves.h	/^  Double_t metnomuons;$/;"	m	class:TreeLeaves
+metnomuunclet_dphi	include/tree_leaves.h	/^  Double_t metnomuunclet_dphi;$/;"	m	class:TreeLeaves
+metunclet_dphi	include/tree_leaves.h	/^  Double_t metunclet_dphi;$/;"	m	class:TreeLeaves
+mht	include/tree_leaves.h	/^  Double_t mht;$/;"	m	class:TreeLeaves
+mu1_eta	include/tree_leaves.h	/^  Double_t mu1_eta;$/;"	m	class:TreeLeaves
+mu1_phi	include/tree_leaves.h	/^  Double_t mu1_phi;$/;"	m	class:TreeLeaves
+mu1_pt	include/tree_leaves.h	/^  UInt_t mu1_pt;$/;"	m	class:TreeLeaves
+mu2_eta	include/tree_leaves.h	/^  Double_t mu2_eta;$/;"	m	class:TreeLeaves
+mu2_phi	include/tree_leaves.h	/^  Double_t mu2_phi;$/;"	m	class:TreeLeaves
+mu2_pt	include/tree_leaves.h	/^  Double_t mu2_pt;$/;"	m	class:TreeLeaves
+nCuts_arr	src/analysis.cpp	/^  const char* nCuts_arr[] = {"30"};$/;"	v
+n_jets_15	include/tree_leaves.h	/^  UInt_t n_jets_15;$/;"	m	class:TreeLeaves
+n_jets_30	include/tree_leaves.h	/^  Double_t n_jets_30;$/;"	m	class:TreeLeaves
+n_jets_cjv_20EB_30EE	include/tree_leaves.h	/^  UInt_t n_jets_cjv_20EB_30EE;$/;"	m	class:TreeLeaves
+n_jets_cjv_30	include/tree_leaves.h	/^  UInt_t n_jets_cjv_30;$/;"	m	class:TreeLeaves
+n_vertices	include/tree_leaves.h	/^  UInt_t n_vertices;$/;"	m	class:TreeLeaves
+name	include/variable.h	/^  const char* name;$/;"	m	class:Variable
+name_styled	include/variable.h	/^  const char* name_styled;$/;"	m	class:Variable
+no_shape_line	src/data_card.cpp	/^std::string DataCard::no_shape_line()$/;"	f	class:DataCard
+normalise_histos	src/classifier_outputs.cpp	/^std::vector<TH1D*> ClassifierOutputs::normalise_histos(std::vector<TH1D*> histos)$/;"	f	class:ClassifierOutputs
+nselelectrons	include/tree_leaves.h	/^  UInt_t nselelectrons;$/;"	m	class:TreeLeaves
+nselmuons	include/tree_leaves.h	/^  UInt_t nselmuons;$/;"	m	class:TreeLeaves
+ntaus	include/tree_leaves.h	/^  UInt_t ntaus;$/;"	m	class:TreeLeaves
+nvetoelectrons	include/tree_leaves.h	/^  UInt_t nvetoelectrons;$/;"	m	class:TreeLeaves
+nvetomuons	include/tree_leaves.h	/^  UInt_t nvetomuons;$/;"	m	class:TreeLeaves
+parked_data_point	src/roc_curves.cpp	/^TGraph* RocCurves::parked_data_point(DataChain* signal, DataChain* bg, std::string preselection, Variable* var,$/;"	f	class:RocCurves
+passparkedtrigger1	include/tree_leaves.h	/^  UInt_t passparkedtrigger1;$/;"	m	class:TreeLeaves
+passparkedtrigger2	include/tree_leaves.h	/^  UInt_t passparkedtrigger2;$/;"	m	class:TreeLeaves
+passtrigger	include/tree_leaves.h	/^  UInt_t passtrigger;$/;"	m	class:TreeLeaves
+plot_all_rejBvsS	src/roc_curves.cpp	/^void RocCurves::plot_all_rejBvsS(std::vector<TFile*> training_outputs, DataChain* signal,$/;"	f	class:RocCurves
+plot_classifiers_for_all_files	src/classifier_outputs.cpp	/^void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir)$/;"	f	class:ClassifierOutputs
+plot_histos	src/classifier_outputs.cpp	/^void ClassifierOutputs::plot_histos(std::vector<TH1D*> histos, TFile* file)$/;"	f	class:ClassifierOutputs
+plot_logo	tmvaglob.C	/^   void plot_logo( Float_t v_scale = 1.0, Float_t skew = 1.0 )$/;"	f	namespace:TMVAGlob
+plot_output	src/mva_analysis.cpp	/^TH1F* MVAAnalysis::plot_output(DataChain* combined_data)$/;"	f	class:MVAAnalysis
+plot_rejBvsS	src/roc_curves.cpp	/^TH1D* RocCurves::plot_rejBvsS(TFile* training_output, std::string method_name)$/;"	f	class:RocCurves
+position_legend_x1	src/histo_plot.cpp	/^double HistoPlot::position_legend_x1(TH1F* max_histo, Variable* var, bool with_cut)$/;"	f	class:HistoPlot
+process_2_string	src/data_card.cpp	/^std::string DataCard::process_2_string(std::vector<int> line_2_vals)$/;"	f	class:DataCard
+process_labels	src/data_card.cpp	/^std::string DataCard::process_labels(std::vector<DataChain*> bg_chains, DataChain* signal_chain)$/;"	f	class:DataCard
+process_line_2	src/data_card.cpp	/^std::vector<int> DataCard::process_line_2(int size)$/;"	f	class:DataCard
+produce_graphs	src/main.cpp	/^void produce_graphs(bool with_cut) {$/;"	f
+puweight_down_scale	include/tree_leaves.h	/^  UInt_t puweight_down_scale;$/;"	m	class:TreeLeaves
+puweight_up_scale	include/tree_leaves.h	/^  UInt_t puweight_up_scale;$/;"	m	class:TreeLeaves
+qcd_arr	src/analysis.cpp	/^const char* qcd_arr[] = {$/;"	v
+qcd_label	src/analysis.cpp	/^const char* qcd_label  = "bg_qcd";$/;"	v
+qcd_legend	src/analysis.cpp	/^const char* qcd_legend = "QCD";$/;"	v
+rate_string	src/data_card.cpp	/^std::string DataCard::rate_string(std::vector<double> rates)$/;"	f	class:DataCard
+replace_all	src/histo_plot.cpp	/^std::string HistoPlot::replace_all(std::string str, const std::string& from, const std::string& to)$/;"	f	class:HistoPlot
+run	include/tree_leaves.h	/^  UInt_t run;$/;"	m	class:TreeLeaves
+scale_bins_for_cut	src/variable.cpp	/^std::string Variable::scale_bins_for_cut()$/;"	f	class:Variable
+set_branch_addresses	src/tree_leaves.cpp	/^void TreeLeaves::set_branch_addresses(TChain* chain) {$/;"	f	class:TreeLeaves
+set_error_bars	src/histo_plot.cpp	/^TH1F* HistoPlot::set_error_bars(TH1F* histo) $/;"	f	class:HistoPlot
+set_ratio_error_bars	src/histo_plot.cpp	/^TH1F* HistoPlot::set_ratio_error_bars(TH1F* ratio_histo, TH1F* data_histo, TH1F* bg_histo)$/;"	f	class:HistoPlot
+set_th1d_error_bars	src/histo_plot.cpp	/^void HistoPlot::set_th1d_error_bars(TH1D* histo)$/;"	f	class:HistoPlot
+sig_to_bg_ratio	src/histo_plot.cpp	/^double HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,$/;"	f	class:HistoPlot
+signal_chain	include/super_chains.h	/^  DataChain* signal_chain;$/;"	m	class:SuperChains
+signal_multiplier	include/variable.h	/^  const char* signal_multiplier;$/;"	m	class:Variable
+single_bg_error	src/histo_plot.cpp	/^double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,$/;"	f	class:HistoPlot
+sqrt_ht	include/super_vars.h	/^  Variable* sqrt_ht;$/;"	m	class:SuperVars
+sqrt_ht	include/tree_leaves.h	/^  Double_t sqrt_ht;$/;"	m	class:TreeLeaves
+style_histo	src/classifier_outputs.cpp	/^void ClassifierOutputs::style_histo(TH1D* histo, int colour, int hist_no, std::string tfile_name, double plot_max)$/;"	f	class:ClassifierOutputs
+style_histo	src/mva_analysis.cpp	/^void MVAAnalysis::style_histo(TH1F* histo)$/;"	f	class:MVAAnalysis
+style_legend	src/histo_plot.cpp	/^void HistoPlot::style_legend(TLegend* legend)$/;"	f	class:HistoPlot
+style_legend	src/roc_curves.cpp	/^void RocCurves::style_legend(TLegend* legend)$/;"	f	class:RocCurves
+style_ratio_histo	src/histo_plot.cpp	/^void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label)$/;"	f	class:HistoPlot
+style_selection	src/histo_plot.cpp	/^std::string HistoPlot::style_selection(std::string selection)$/;"	f	class:HistoPlot
+style_stacked_histo	src/histo_plot.cpp	/^void HistoPlot::style_stacked_histo(THStack* hs, const char* x_label)$/;"	f	class:HistoPlot
+sumet	include/tree_leaves.h	/^  Double_t sumet;$/;"	m	class:TreeLeaves
+tau1_eta	include/tree_leaves.h	/^  Double_t tau1_eta;$/;"	m	class:TreeLeaves
+tau1_phi	include/tree_leaves.h	/^  Double_t tau1_phi;$/;"	m	class:TreeLeaves
+tau1_pt	include/tree_leaves.h	/^  Double_t tau1_pt;$/;"	m	class:TreeLeaves
+top_arr	src/analysis.cpp	/^const char* top_arr[] = {$/;"	v
+top_label	src/analysis.cpp	/^const char* top_label  = "bg_top";$/;"	v
+top_legend	src/analysis.cpp	/^const char* top_legend = "TT";$/;"	v
+topweight_down_scale	include/tree_leaves.h	/^  UInt_t topweight_down_scale;$/;"	m	class:TreeLeaves
+topweight_up_scale	include/tree_leaves.h	/^  UInt_t topweight_up_scale;$/;"	m	class:TreeLeaves
+total_weight_leptight	include/tree_leaves.h	/^  UInt_t total_weight_leptight;$/;"	m	class:TreeLeaves
+total_weight_lepveto	include/tree_leaves.h	/^  UInt_t total_weight_lepveto;$/;"	m	class:TreeLeaves
+unclustered_et	include/tree_leaves.h	/^  Double_t unclustered_et;$/;"	m	class:TreeLeaves
+units	include/variable.h	/^  const char* units;$/;"	m	class:Variable
+vary_parameters	src/mva_analysis.cpp	/^std::vector<TFile*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,$/;"	f	class:MVAAnalysis
+vv_arr	src/analysis.cpp	/^const char* vv_arr[] = {$/;"	v
+vv_label	src/analysis.cpp	/^const char* vv_label  = "bg_vv";$/;"	v
+vv_legend	src/analysis.cpp	/^const char* vv_legend = "VV";$/;"	v
+weight_nolep	include/tree_leaves.h	/^  UInt_t weight_nolep;$/;"	m	class:TreeLeaves
+wjets_ev_arr	src/analysis.cpp	/^const char* wjets_ev_arr[] = {$/;"	v
+wjets_ev_label	src/analysis.cpp	/^const char* wjets_ev_label  = "bg_wjets_ev";$/;"	v
+wjets_ev_legend	src/analysis.cpp	/^const char* wjets_ev_legend = "W+jets #rightarrow e#nu";$/;"	v
+wjets_muv_arr	src/analysis.cpp	/^const char* wjets_muv_arr[] = {$/;"	v
+wjets_muv_label	src/analysis.cpp	/^const char* wjets_muv_label  = "bg_wjets_muv";$/;"	v
+wjets_muv_legend	src/analysis.cpp	/^const char* wjets_muv_legend = "W+jets #rightarrow #mu#nu";$/;"	v
+wjets_tauv_arr	src/analysis.cpp	/^const char* wjets_tauv_arr[] = {$/;"	v
+wjets_tauv_label	src/analysis.cpp	/^const char* wjets_tauv_label  = "bg_wjets_tauv";$/;"	v
+wjets_tauv_legend	src/analysis.cpp	/^const char* wjets_tauv_legend = "W+jets #rightarrow #tau#nu";$/;"	v
+x_max_cut	include/variable.h	/^  const char* x_max_cut;$/;"	m	class:Variable
+x_max_nocut	include/variable.h	/^  const char* x_max_nocut;$/;"	m	class:Variable
+x_min_cut	include/variable.h	/^  const char* x_min_cut;$/;"	m	class:Variable
+x_min_nocut	include/variable.h	/^  const char* x_min_nocut;$/;"	m	class:Variable
+z_ll_arr	src/analysis.cpp	/^const char* z_ll_arr[] = {$/;"	v
+z_ll_label	src/analysis.cpp	/^const char* z_ll_label  = "bg_zll";$/;"	v
+z_ll_legend	src/analysis.cpp	/^const char* z_ll_legend = "Z #rightarrow ll";$/;"	v
+zjets_vv_arr	src/analysis.cpp	/^const char* zjets_vv_arr[] = {$/;"	v
+zjets_vv_label	src/analysis.cpp	/^const char* zjets_vv_label  = "bg_zjets_vv";$/;"	v
+zjets_vv_legend	src/analysis.cpp	/^const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";$/;"	v
+~IClassifierReader	weights/TMVAClassification_MLP.class.C	/^   virtual ~IClassifierReader() {}$/;"	f	class:IClassifierReader
+~ReadMLP	weights/TMVAClassification_MLP.class.C	/^   virtual ~ReadMLP() {$/;"	f	class:ReadMLP

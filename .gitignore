@@ -18,7 +18,7 @@ bin/*
 .DS_Store
 Debug
 
-Makefile
+#Makefile
 setup.sh
 TMVAClassification.C
 tmvaglob.C

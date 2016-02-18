@@ -14,6 +14,7 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
   	{
   		 selection_str.erase(1, 2);
   	}
+//if (variable->name_styled = "MVA Output"){std::cout<<"mc selection string : "<<selection_str<<"\n";}
 
   return selection_str;
 }
@@ -21,9 +22,15 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
 double MCWeights::get_nevents(DataChain* data_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, 
                               std::string mc_selection, std::string mva_cut_str)
 {
+if (var->name_styled = "MVA Output"){std::cout<<"about to get histo integral in get_nevents\n";}
+  TH1F* histo = HistoPlot::build_1d_histo(data_chain, var, with_cut, false, "goff", 
+variables, mc_selection, mva_cut_str);
+if (var->name_styled = "MVA Output"){std::cout<<"buile histo  in get_nevents\n";}
 
-  return HistoPlot::get_histo_integral(HistoPlot::build_1d_histo(data_chain, var, with_cut, false, "goff", 
-variables, mc_selection, mva_cut_str), with_cut, var);
+int total = HistoPlot::get_histo_integral(histo, with_cut, var);
+if (var->name_styled = "MVA Output"){std::cout<<"got histo integral in get_nevents\n";}
+
+  return total;
 }
 
 double MCWeights::get_all_bg_in_ctrl(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
@@ -56,7 +63,12 @@ double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_
   std::string mc_selection = get_mc_selection_str(bg_chain, var, variables);
 
   double data_N_C       = get_nevents(data, var, with_cut, variables, mc_selection, mva_cut);
-  double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, mc_selection, mva_cut);
+if (var->name_styled = "MVA Output"){std::cout<<"data gen fine for output\n";}
+
+  double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, mc_selection, mva_cut); 
+
+if (var->name_styled = "MVA Output"){std::cout<<"mc selection gen fine for output\n";}
+
   double bg_N_C         = get_all_bg_in_ctrl(bg_chains, var, with_cut, variables, mc_selection, mva_cut) - MC_N_C;
   double sigma_data_N_C = std::pow(data_N_C, 0.5);
   double sigma_MC_N_C   = std::pow(MC_N_C, 0.5);

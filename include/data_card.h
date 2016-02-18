@@ -54,7 +54,7 @@ class DataCard
 
   static void create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
 																														Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str="",
-																														TFile* training_output = NULL);
+																														std::string training_output_name = "");
 
   static double get_total_nevents(std::vector<DataChain*> bg_chains, Variable* var, bool with_cut, 
 std::vector<Variable*>* variables,
@@ -66,7 +66,7 @@ std::vector<Variable*>* variables,
 
   static std::string no_shape_line();
 
-  static const char* get_data_card_name(TFile* training_output);
+  static const char* get_data_card_name(std::string training_output);
 };
 
 #endif

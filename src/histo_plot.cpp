@@ -150,7 +150,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
   selection_with_mc = add_mc_to_selection(bg_chain, variable, selection, mc_weight);
   std::string selection_with_mva;
   selection_with_mva = add_mva_cut_to_selection(selection_with_mc, mva_cut_str);
-
+//if (variable->name_styled = "MVA Output"){std::cout<<"HistoPlot selection string : "<<selection_with_mva<<"\n";}
   return selection_with_mva;
 }
 
@@ -207,20 +207,32 @@ variables, mva_cut_str);
 // new function written ust like the one above: HistoPlot::mc_weights, which calculates the right error for the bgs without a control
 // region (its just sqrt(unweighted mc events in signal) / unweighted mc events in signal)
 std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
-																																																				std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string mc_selection, std::string mva_cut_str)
+																																																				std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string mva_cut_str)
 {
+std::string mc_selection;
   double mc_weight_errors[bg_chains.size()];
 	 double zll_weight_error;
+if (var->name_styled = "MVA Output"){std::cout<<"created var \n";}
 
 	 for(int i = 0; i < bg_chains.size();i++)
 	 {
+ 		mc_selection= MCWeights::get_mc_selection_str(bg_chains[i], var, variables);
+		if (var->name_styled = "MVA Output"){std::cout<<"got mc selection str\n";}
+
 	   TH1F* histo = build_1d_histo(bg_chains[i], var,with_cut, false, "goff", variables, mc_selection, mva_cut_str);
+		if (var->name_styled = "MVA Output"){std::cout<<"got histo\n";}
+
 	   double integral = get_histo_integral(histo, with_cut, var);
+if (var->name_styled = "MVA Output"){std::cout<<"got integral\n";}
+
 	 		mc_weight_errors[i] = std::pow(integral, 0.5);
+if (var->name_styled = "MVA Output"){std::cout<<"prelim mc weight errors\n";}
 
 	   if (bg_chains[i]->lep_sel != "")
 	   {
 	     mc_weight_errors[i] = single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables, bg_mc_weights[i], mc_selection, mva_cut_str);
+if (var->name_styled = "MVA Output"){std::cout<<"got single bg errors\n";}
+
 		    if(!strcmp(bg_chains[i]->label, "bg_zll"))
 		    {
 		     	zll_weight_error = mc_weight_errors[i];
@@ -231,8 +243,12 @@ std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector
 	   {
 	     mc_weight_errors[i] = zll_weight_error * 5.651 * 1.513;
 	   }
+	if (var->name_styled = "MVA Output"){std::cout<<"created mc_weight error for :"<<bg_chains[i]->label<<"\n";}
+
 	 }
 	 std::vector<double> mc_weights_vector (mc_weight_errors, mc_weight_errors + sizeof(mc_weight_errors) / sizeof(mc_weight_errors[0]));
+if (var->name_styled = "MVA Output"){std::cout<<"created mc_weight error vector \n";}
+
 
 	 return mc_weights_vector;
 }
@@ -242,10 +258,18 @@ std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector
 double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* bg_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, double weight, std::string mc_selection, std::string mva_cut_str)
 {
+if (var->name_styled = "MVA Output"){std::cout<<"in single bg error\n";}
+
   TH1F* bg = build_1d_histo(bg_chain, var, with_cut, false, "goff", variables, mc_selection, mva_cut_str);
+if (var->name_styled = "MVA Output"){std::cout<<"got histo\n";}
+
   double MC_N_S = get_histo_integral(bg, with_cut, var);
+if (var->name_styled = "MVA Output"){std::cout<<"got histo integral\n";}
+
   double sigma_N = std::pow(MC_N_S, 0.5);
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables, mva_cut_str);
+if (var->name_styled = "MVA Output"){std::cout<<"got mc weight error\n";}
+
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);
   double sigma_total = std::pow(sigma_total_sq,0.5);
   //std::cout << bg_chain->label << " - single bg error: " << sigma_total << std::endl;
@@ -274,17 +298,19 @@ double HistoPlot::sig_to_bg_ratio(Variable* var, TH1F* bg,
 
 double HistoPlot::get_histo_integral(TH1F* histo, bool with_cut, Variable* var)
 {
+std::cout<<var->name_styled<<"\n";
   int nbins;
   if (with_cut)
   {
     nbins = (int) (atof(var->bins_cut.c_str()) + 0.5);
+if (var->name_styled = "MVA Output"){std::cout<<"got nbins\n";}
   }
   else
   {
     nbins = (int) (atof(var->bins_nocut) + 0.5);
   }
   double integral = histo->Integral(0, nbins + 1);
-
+std::cout<<"got integral\n";
   return integral;
 }
 

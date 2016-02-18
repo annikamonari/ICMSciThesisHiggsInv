@@ -18,15 +18,23 @@ std::vector<double> DataCard::get_bg_errors(DataChain* data, std::vector<DataCha
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string mva_cut_str)
 {
 	 double bg_errors_parsed[bg_chains.size()];
+if (var->name_styled = "MVA Output"){std::cout<<"gto gbg errors parsed\n";}
 
-	 std::vector<double> bg_errors = HistoPlot::get_mc_weight_errors(data, bg_chains, var, with_cut, variables, bg_mc_weights, "", mva_cut_str);
+	 std::vector<double> bg_errors = HistoPlot::get_mc_weight_errors(data, bg_chains, var, with_cut, variables, bg_mc_weights, mva_cut_str);
+if (var->name_styled = "MVA Output"){std::cout<<"got mc weight errors parsed: \n";}
+
   std::vector<double> rates = get_rates(data, bg_chains, signal_chain, var,with_cut, variables, bg_mc_weights, mva_cut_str);
+if (var->name_styled = "MVA Output"){std::cout<<"got rates\n";}
 
   for(int i = 0; i < bg_chains.size(); i++)
   {
     bg_errors_parsed[i] = 1 + (bg_errors[i] / rates[i+1]);
   }
+if (var->name_styled = "MVA Output"){std::cout<<"got gbg errors parsed\n";}
+
   std::vector<double> bg_error_vector (bg_errors_parsed, bg_errors_parsed + sizeof(bg_errors_parsed) / sizeof(bg_errors_parsed[0]));
+if (var->name_styled = "MVA Output"){std::cout<<"got gbg errors vector\n";}
+
 
   return bg_error_vector;
 }
@@ -203,9 +211,15 @@ std::string DataCard::get_systematic_string(DataChain* data, std::vector<DataCha
 																																												DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables,
 																																												std::vector<double> bg_mc_weights, std::string mva_cut_str)
 {
+std::cout<<"about to get signal error\n";
   double signal_error = get_signal_error(signal_chain, var, with_cut, variables,mva_cut_str);
+std::cout<<"got signal error\n";
+
   std::vector<double> bg_errors = get_bg_errors(data, bg_chains, signal_chain, var, with_cut, variables, bg_mc_weights, mva_cut_str);
+std::cout<<"got bg errors\n";
+
   std::vector<std::vector<double> > uncertainty_vectors = DataCard::get_uncertainty_vectors(signal_error, bg_errors);
+std::cout<<"about to get uncert string\n";
 
   return get_uncertainties_string(uncertainty_vectors);
 }
@@ -265,11 +279,18 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
   fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables, mc_weights,mva_cut_str));
   fs << dashed_line();
   fs << bin_grid_line(size);
+std::cout<<"made grid line";
   fs << process_labels(bg_chains, signal_chain);
+std::cout<<"made  process_labels";
   fs << process_2_string(process_line_2(size));
+std::cout<<"made process_2_string ";
   fs << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,mva_cut_str));
+std::cout<<"made rate_string ";
+
   fs << dashed_line();
   fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,mva_cut_str);
+std::cout<<"made syst_string ";
+
 	 fs.close();
 std::cout<<"data card created with name: "<<data_card_name<<"\n";
 for (int i=0; i< 10;i++){

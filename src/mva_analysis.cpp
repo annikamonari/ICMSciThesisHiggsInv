@@ -60,6 +60,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
   Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
   std::string output_graph_name            = build_output_graph_name(trained_output);
+//  output_bg_chains[0]->chain->Draw("met", "output>0.1");
 
   if (mva_cut_str!=""){
 
@@ -67,11 +68,11 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
                                             mva_cut_str);//sets name for out put graph plot with mva cut
    std::string ajmd_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,vars2[0]->name, mva_cut_str);
                                     //sets name for ajmd plot
-       HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
+       //HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
     //plots all-jets-met-min d phi
        HistoPlot::draw_plot(vars[0],    output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, ajmd_name_mva_cut,"",mva_cut_str);
 
-    DataCard::create_datacard(data_chain, output_signal_chain, output_bg_chains, mva_output, true, &vars,mva_cut_str, ajmd_name_mva_cut);
+    //DataCard::create_datacard(data_chain, output_signal_chain, output_bg_chains, mva_output, true, &vars,mva_cut_str, ajmd_name_mva_cut);
     std::cout<<"=> DataCard created\n";
     std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   }

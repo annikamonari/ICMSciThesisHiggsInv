@@ -117,7 +117,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   std::cout << "--- Processing: " << data->GetEntries() << " events" << std::endl;
 	   TStopwatch sw;
 	   sw.Start();
-	   for (Long64_t ievt=0; ievt<data->GetEntries(); ievt++) {
+	   for (Long64_t ievt=0; ievt<5000/*data->GetEntries()*/; ievt++) {
 
 	      if (ievt%1000 == 0) std::cout << "--- ... Processing event: " << ievt << std::endl;
 

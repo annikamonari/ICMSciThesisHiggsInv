@@ -15,9 +15,14 @@ void produce_graphs(bool with_cut) {
   std::string mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
   std::string varying_param = "SeparationType";
   int relevant_bgs[] = {0, 1, 2, 3};//, 6};
-std::string mva_cut_str = "output>0.1";//must be in format "output>0" 
+std::string mva_cut_str = "output>-0.2";//must be in format "output>0" 
 std::string ajmd_name_mva_cut="BDT_varying_SeparationType/output_BDT-bg_zll-NTrees=10-BoostType=AdaBoost-AdaBoostBeta=0.1-SeparationType=GiniIndex-nCuts=5alljetsmetnomu_mindphioutput>0.0.png";
-  for (int i = 0; i < 1; i++)
+MVAAnalysis::get_mva_results(bg_chains, 0, signal_chain, data_chain, super_vars, "bg_zll", 
+"BDT", NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0],mva_cut_str);
+
+
+
+/*for (int i = 0; i < 1; i++)
   {
   		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;
@@ -27,7 +32,7 @@ std::string ajmd_name_mva_cut="BDT_varying_SeparationType/output_BDT-bg_zll-NTre
                                      mva_type, varying_param, NTrees, BoostType,AdaBoostBeta, SeparationType,
                                       nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str);
   }
-/*std::string datac;
+std::string datac;
 datac = DataCard::create_datacard(data_chain, signal_chain, bg_chains, vars[0], true, &vars,mva_cut_str, ajmd_name_mva_cut);*/
 
   for (int i = 0; i < 1; i++)

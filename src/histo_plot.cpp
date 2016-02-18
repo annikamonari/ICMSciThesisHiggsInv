@@ -150,7 +150,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
   selection_with_mc = add_mc_to_selection(bg_chain, variable, selection, mc_weight);
   std::string selection_with_mva;
   selection_with_mva = add_mva_cut_to_selection(selection_with_mc, mva_cut_str);
-//if (variable->name_styled = "MVA Output"){std::cout<<"HistoPlot selection string : "<<selection_with_mva<<"\n";}
+if (variable->name_styled = "MVA Output"){std::cout<<"HistoPlot selection string : "<<selection_with_mva<<"\n";}
   return selection_with_mva;
 }
 

@@ -36,5 +36,9 @@ effciencies.C
 bg_zll/*
 bg_zll
 
+setup.sh
+libTMVA.rootmap
+Makefile
+
 
 

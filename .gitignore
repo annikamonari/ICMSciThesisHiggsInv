@@ -21,6 +21,11 @@ BDT_varying_SeparationType/*
 BDT_varying_SeparationType
 
 TMVAClassification.C
+TMVAGui.C
+TMVARegGui.C
+TMVAlogon.C
+TMVApp.root
+tmvaglob.C
 
 weights/*
 weights

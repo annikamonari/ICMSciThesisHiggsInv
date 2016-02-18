@@ -22,10 +22,10 @@ std::string MCWeights::get_mc_selection_str(DataChain* bg_chain, Variable* varia
 double MCWeights::get_nevents(DataChain* data_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, 
                               std::string mc_selection, std::string mva_cut_str)
 {
-if (var->name_styled = "MVA Output"){std::cout<<"about to get histo integral in get_nevents\n";}
+if (var->name_styled = "MVA Output"){std::cout<<"about to get histo integral in get_nevents\n"<<"mva cut str: "<<mva_cut_str<<"\n";}
   TH1F* histo = HistoPlot::build_1d_histo(data_chain, var, with_cut, false, "goff", 
 variables, mc_selection, mva_cut_str);
-if (var->name_styled = "MVA Output"){std::cout<<"buile histo  in get_nevents\n";}
+if (var->name_styled = "MVA Output"){std::cout<<"built histo  in get_nevents\n";}
 
 int total = HistoPlot::get_histo_integral(histo, with_cut, var);
 if (var->name_styled = "MVA Output"){std::cout<<"got histo integral in get_nevents\n";}

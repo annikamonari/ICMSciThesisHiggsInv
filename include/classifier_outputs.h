@@ -18,7 +18,6 @@ class ClassifierOutputs
 
   static void draw_ktest(std::vector<TH1D*> normalised_histos);
 
-
   static void draw_classifier_outputs(TFile* file, std::string method_name);
 
   static void style_histo(TH1D* histo, int colour, int hist_no, std::string tfile_name, double plot_max);

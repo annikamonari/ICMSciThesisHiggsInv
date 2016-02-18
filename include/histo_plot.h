@@ -31,6 +31,7 @@ class HistoPlot
 			bool is_control_region= false, std::string file_name = "",
 			std::string mc_selection="", std::string mva_cut_str ="");
 
+  static std::string get_mva_name(std::string img_name, std::string var_name, std::string mva_cut_str);
 
   static void draw_yline_on_plot(Variable* var, bool with_cut, double y);
 
@@ -43,7 +44,7 @@ class HistoPlot
   static double get_histo_integral(TH1F* histo, bool with_cut, Variable* var);
 
   static void draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-                            bool with_cut, DataChain* data, std::string supervar_selection = "");
+                            bool with_cut, DataChain* data, std::string supervar_selection = "",std::string mva_cut_str="");
 
   static std::string style_selection(std::string selection);
 
@@ -53,11 +54,11 @@ class HistoPlot
                                      bool with_cut);
 
   static std::string get_selection(Variable* variable, std::vector<Variable*>* variables,
-                                   bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight = 1.0);
+                                   bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight = 1.0, std::string mva_cut_str="");
 
   static std::string add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string mc_selection, double mc_weight);
 
-
+  static std::string add_mva_cut_to_selection(std::string selection, std::string mva_cut_str);
 
   static std::vector<double> mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,                                 Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str ="");
 

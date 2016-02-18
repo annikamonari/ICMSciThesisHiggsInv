@@ -58,7 +58,7 @@ std::cout<<"style done"<<"\n";
 
   build_legend(legend, max_histo, var, with_cut);
 
-  draw_subtitle(var, variables, with_cut, data);
+  draw_subtitle(var, variables, with_cut, data,mva_cut_str);
 
   p3->cd();
   TH1F* data_bg_ratio_histo;
@@ -84,11 +84,18 @@ std::cout<<"about to draw ratio histo \n";
   {
   		img_name = file_name;
   }
-
   p1->cd();
   draw_title(var->name_styled);
   c1->SaveAs(img_name.c_str());
   c1->Close();
+
+}
+
+std::string HistoPlot::get_mva_name(std::string img_name, std::string var_name, std::string mva_cut_str)
+{
+  var_name.append(mva_cut_str);
+  img_name.insert(img_name.find(".png"), var_name);
+  return img_name;
 }
 
 void HistoPlot::draw_yline_on_plot(Variable* var, bool with_cut, double y)
@@ -124,7 +131,7 @@ void HistoPlot::draw_title(const char* title)
 }
 
 std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>* variables,
-                                     bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight)
+                                     bool with_cut, bool is_signal, DataChain* bg_chain, double mc_weight, std::string mva_cut_str)
 {
   std::string selection;
 
@@ -141,11 +148,10 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
   std::string selection_with_mc;
  
   selection_with_mc = add_mc_to_selection(bg_chain, variable, selection, mc_weight);
-  
- /* std::string selection_with_mva_cut;
-  selection_with_mva_cut = add_mva_cut_to_selection(mva_cut_str,selection_with_mc);*/
+  std::string selection_with_mva;
+  selection_with_mva = add_mva_cut_to_selection(selection_with_mc, mva_cut_str);
 
-  return selection_with_mc;
+  return selection_with_mva;
 }
 
 std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variable, std::string selection, double mc_weight)
@@ -154,6 +160,18 @@ std::string HistoPlot::add_mc_to_selection(DataChain* bg_chain, Variable* variab
   std::string sel_new = selection += "*" + mc_weight_str; //selection.insert(selection.find("*") + 1, mc_weight_str + "*");
   //std::cout << sel_new << std::endl;
   return sel_new;
+}
+
+std::string HistoPlot::add_mva_cut_to_selection(std::string selection, std::string mva_cut_str)
+{
+  if(mva_cut_str!=""){
+    std::string mva_cut = "(";
+    mva_cut.append(mva_cut_str);
+    mva_cut.append(")&&");
+    //std::cout<<"mva cut in add_mva_cut_to_selection: "<<mva_cut<<"\n";
+    selection.insert(selection.find("(") + 1, mva_cut);
+  }
+  return selection;
 }
 std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain*> bg_chains,
                                           Variable* var, bool with_cut, std::vector<Variable*>* variables,std::string mva_cut_str)
@@ -291,7 +309,7 @@ std::string HistoPlot::style_selection(std::string selection)
 }
 
 void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variables,
-                              bool with_cut, DataChain* data, std::string supervar_selection)
+                              bool with_cut, DataChain* data, std::string supervar_selection,std::string mva_cut_str)
 {
   std::string sel;
 	 if (variables == NULL)
@@ -301,13 +319,14 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
 	 else
 	 {
 
-			 sel = style_selection(get_selection(variable, variables, with_cut, false, data));
+			 sel = style_selection(get_selection(variable, variables, with_cut, false, data,1.0,mva_cut_str));
 	 }
 
 	 std::string selection = "Selection:" + sel;
   std::string l1        = "#font[12]{" + selection.substr(0, 90) + "-}";
   std::string l2        = "#font[12]{" + selection.substr(88, 90) + "-}";
   std::string l3        = "#font[12]{" + selection.substr(178, 88) + "}";
+  std::string l4        = "#font[12]{" + selection.substr(266, selection.length()-266) + "}";
 
   TPaveText* pts        = new TPaveText(0.1, 1.0, 0.9, 0.9, "blNDC");
 
@@ -316,9 +335,14 @@ void HistoPlot::draw_subtitle(Variable* variable, std::vector<Variable*>* variab
   pts->AddText(l1.c_str());
   pts->AddText(l2.c_str());
   pts->AddText(l3.c_str());
+  pts->AddText(l4.c_str());
+
+
   pts->SetAllWith(l1.c_str(), "size", 0.03);
   pts->SetAllWith(l2.c_str(), "size", 0.03);
   pts->SetAllWith(l3.c_str(), "size", 0.03);
+  pts->SetAllWith(l4.c_str(), "size", 0.03);
+
   pts->Draw();
 }
 
@@ -444,7 +468,7 @@ TH1F* HistoPlot::build_1d_histo(DataChain* data_chain, Variable* variable, bool 
   if (mc_selection == "")
   {
 
-    selection_str = get_selection(variable, variables, with_cut, is_signal, data_chain, mc_weight);
+    selection_str = get_selection(variable, variables, with_cut, is_signal, data_chain, mc_weight, mva_cut_str);
   }
   else
   {

@@ -4,8 +4,7 @@
 void ClassifierOutputs::plot_classifiers_for_all_files(std::vector<TFile*> files, std::string method_name, std::string dir,
 																																																							const char* bg_label)
 {
-	std::cout<<"im in plot classifier outputs"<<"\n"; 
-	TCanvas* c1 = new TCanvas("c1", "OverTraining Check", 800, 800);
+	 TCanvas* c1 = new TCanvas("c1", "OverTraining Check", 800, 800);
 	 std::vector<int> npads = get_npads(files.size());
 	 c1->Divide(npads[0], npads[1], 0.00001, 0.005);
   std::cout << "=> Divided Canvas..." << " Files size: " << files.size() << "num pads "<< npads[0] << "," << npads[1] << std::endl;

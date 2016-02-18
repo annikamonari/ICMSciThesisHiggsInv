@@ -248,11 +248,11 @@ std::string DataCard::no_shape_line()
 
 void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
                                Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str,
-																															TFile* training_output)
+																															std::string training_output_name)
 {
 	 std::vector<double> mc_weights = HistoPlot::mc_weights(data_chain, bg_chains, var, with_cut, variables,mva_cut_str);
 	 std::fstream fs;
-	 const char* data_card_name = get_data_card_name(training_output);
+	 const char* data_card_name = get_data_card_name(training_output_name);
 	 fs.open (data_card_name, std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 
@@ -271,6 +271,7 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
   fs << dashed_line();
   fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,mva_cut_str);
 	 fs.close();
+std::cout<<"data card created with name: "<<data_card_name<<"\n";
 for (int i=0; i< 10;i++){
 }
 
@@ -290,24 +291,26 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 	 return total;
 }
 
-const char* DataCard::get_data_card_name(TFile* training_output)
+const char* DataCard::get_data_card_name(std::string output)
 {
-	 if (!opendir("data_cards"))
+	 /*if (!opendir("data_cards"))
 		{
 		 	mkdir("data_cards", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		}
+		}*/
 	 std::string card_file_name;
 
-	 if (training_output == NULL)
+	 if (output == "")
   	{
 	 		 card_file_name = "preselection_only.txt";
   	}
 	 else
 	 	{
-	 		std::string output_name = training_output->GetName();
-	 		card_file_name = "data_cards/" + output_name.substr(output_name.find("/") + 1, -1);
+	 		std::string out_name = output.substr(output.find("/") + 1, -1);
+                        card_file_name = "~/mproject/ICMSciThesisHiggsInv/data_cards/";
+			card_file_name  = out_name.substr(0, out_name.find(".png"));
+	 		card_file_name  += ".txt";
 	 	}
-
+std::cout<<"=======>Data card file path: "<<card_file_name<<"\n";
 	 return card_file_name.c_str();
 }
 

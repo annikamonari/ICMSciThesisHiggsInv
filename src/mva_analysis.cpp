@@ -117,7 +117,7 @@ std::string var_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,v
 ////////////////////////////////////////////////////////////////////////////
   //HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
 //vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
-      HistoPlot::draw_plot(vars[0],    output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, var_graph_name_mva_cut,"",mva_cut_str);
+   //   HistoPlot::draw_plot(vars[0],    output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, var_graph_name_mva_cut,"",mva_cut_str);
 
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////

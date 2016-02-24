@@ -272,7 +272,7 @@ std::cout<<"started create datacard";
 	 std::fstream fs;
 	 const char* data_card_name = get_data_card_name(training_output_name);
          std::cout<<"=======>Data card name outside fun: "<<*data_card_name<<"\n";
-	 fs.open (data_card_name, std::fstream::in | std::fstream::out | std::fstream::app);
+	 fs.open ("output>-0.2", std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 
   fs << imax_string();
@@ -300,8 +300,6 @@ std::cout<<"made syst_string ";
 
 	 fs.close();
 std::cout<<"data card created with name: "<<data_card_name<<"\n";
-for (int i=0; i< 10;i++){
-}
 
 }
 
@@ -338,7 +336,7 @@ const char* DataCard::get_data_card_name(std::string output)
 			card_file_name  = out_name.substr(0, out_name.find(".png"));
 	 		card_file_name  += ".txt";
 	 	}
-std::cout<<"=======>Data card file path: "<<card_file_name<<"\n";
+std::cout<<"=======>Data card file path: "<<card_file_name.c_str()<<"\n";
 	 return card_file_name.c_str();
 }
 

@@ -70,6 +70,7 @@ std::cout<<"data drawn"<<"\n";
   stack.Draw();
   signal_histo->Draw("SAME");
   if(plot_data){data_histo->Draw("SAME");}
+std::cout<<"data done"<<"\n";
 
   style_stacked_histo(&stack, var->name_styled);
 std::cout<<"style done"<<"\n";
@@ -130,7 +131,7 @@ HistoPlot::draw_title(var->name_styled);
   }
   p1->cd();
   c1->SaveAs(img_name.c_str());
-  //c1->Close();
+  c1->Close();
 
 }
 
@@ -198,7 +199,7 @@ std::string HistoPlot::get_selection(Variable* variable, std::vector<Variable*>*
   selection_with_mc = add_mc_to_selection(bg_chain, variable, selection, mc_weight);
   std::string selection_with_mva;
   selection_with_mva = add_mva_cut_to_selection(selection_with_mc, mva_cut_str);
-//if (variable->name_styled = "MVA Output"){std::cout<<"HistoPlot selection string : "<<selection_with_mva<<"\n";}
+
   return selection_with_mva;
 }
 
@@ -233,7 +234,7 @@ std::vector<double> HistoPlot::mc_weights(DataChain* data, std::vector<DataChain
 
     if (bg_chains[i]->lep_sel != "")
     {
-     std::cout<<"about to call calc_mc_Weight\n";
+
       mc_weight[i] = MCWeights::calc_mc_weight(data, bg_chains, bg_chains[i], (*variables)[0], with_cut, 
 variables, mva_cut_str);
 	     if(!strcmp(bg_chains[i]->label, "bg_zll"))
@@ -257,6 +258,7 @@ variables, mva_cut_str);
 // region (its just sqrt(unweighted mc events in signal) / unweighted mc events in signal)
 std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
 																																																				std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string mva_cut_str)
+
 {
 std::string mc_selection;
   double mc_weight_errors[bg_chains.size()];
@@ -280,8 +282,8 @@ std::string mc_selection;
 	   if (bg_chains[i]->lep_sel != "")
 	   {
 	     mc_weight_errors[i] = single_bg_error(data, bg_chains, bg_chains[i], var, with_cut, variables, bg_mc_weights[i], mc_selection, mva_cut_str);
-//if (var->name_styled = "MVA Output"){std::cout<<"got single bg errors\n";}
 
+//if (var->name_styled = "MVA Output"){std::cout<<"got single bg errors\n";}
 		    if(!strcmp(bg_chains[i]->label, "bg_zll"))
 		    {
 		     	zll_weight_error = mc_weight_errors[i];
@@ -317,6 +319,7 @@ double HistoPlot::single_bg_error(DataChain* data, std::vector<DataChain*> bg_ch
 
   double sigma_N = std::pow(MC_N_S, 0.5);
   double sigma_w = MCWeights::calc_weight_error(data, bg_chains, bg_chain, var, with_cut, variables, mva_cut_str);
+
 //if (var->name_styled = "MVA Output"){std::cout<<"got mc weight error\n";}
 
   double sigma_total_sq = std::pow(sigma_w*MC_N_S,2)+std::pow(sigma_N*weight,2);

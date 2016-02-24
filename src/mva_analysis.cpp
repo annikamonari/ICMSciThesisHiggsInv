@@ -103,6 +103,7 @@ std::cout << "=> Signal put through BDT" << std::endl;
 
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
+if (mva_cut_str!=""){
 
 std::string output_graph_name            = build_output_graph_name(trained_output);
 
@@ -137,7 +138,7 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
     std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
-  
+  }
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
   return trained_output;

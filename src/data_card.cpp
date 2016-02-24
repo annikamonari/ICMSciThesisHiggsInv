@@ -260,6 +260,7 @@ std::string DataCard::no_shape_line()
   return "shapes *    c1  FAKE \n";
 }
 
+
 void DataCard::create_datacard(std::vector<double> mc_weights, DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
                                Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str,
 																															std::string training_output_name)

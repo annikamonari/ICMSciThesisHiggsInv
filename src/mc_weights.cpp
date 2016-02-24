@@ -59,7 +59,7 @@ double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_cha
 //std::cout<<"other BGs in control region: "<<other_bg_in_ctrl<<"\n";
 
   if(ctrl_mc_in_ctrl!=0){ mc_weight = (data_in_ctrl - other_bg_in_ctrl) / ctrl_mc_in_ctrl;}
-  else{mc_weight = 0.0;}
+  else{mc_weight = 1;}
   
   if (mc_weight<0) {std::cout<<" other bg in control bigger than data -> negative MC weight\n";} 
 

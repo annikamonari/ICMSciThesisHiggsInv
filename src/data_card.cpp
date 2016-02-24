@@ -271,8 +271,8 @@ std::cout<<"started create datacard";
 
 	 std::fstream fs;
 	 const char* data_card_name = get_data_card_name(training_output_name);
-         std::cout<<"=======>Data card name outside fun: "<<*data_card_name<<"\n";
-	 fs.open ("output>-0.2", std::fstream::in | std::fstream::out | std::fstream::app);
+         //std::cout<<"=======>Data card name outside fun: "<<*data_card_name<<"\n";
+	 fs.open (data_card_name, std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 
   fs << imax_string();
@@ -332,8 +332,8 @@ const char* DataCard::get_data_card_name(std::string output)
 	 else
 	 	{
 	 		std::string out_name = output.substr(output.find("/") + 1, -1);
-                        card_file_name = "~/mproject/ICMSciThesisHiggsInv/data_cards/";
-			card_file_name  = out_name.substr(0, out_name.find(".png"));
+                        //card_file_name = "cards/";
+			card_file_name  += out_name.substr(0, out_name.find(".png"));
 	 		card_file_name  += ".txt";
 	 	}
 std::cout<<"=======>Data card file path: "<<card_file_name.c_str()<<"\n";

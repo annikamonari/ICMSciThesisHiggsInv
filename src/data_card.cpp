@@ -260,13 +260,17 @@ std::string DataCard::no_shape_line()
   return "shapes *    c1  FAKE \n";
 }
 
-void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
+void DataCard::create_datacard(std::vector<double> mc_weights, DataChain* data_chain, DataChain* signal_chain, std::vector<DataChain*> bg_chains,
                                Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str,
 																															std::string training_output_name)
 {
-	 std::vector<double> mc_weights = HistoPlot::mc_weights(data_chain, bg_chains, var, with_cut, variables,mva_cut_str);
+std::cout<<"started create datacard";
+
+	 //std::vector<double> mc_weights = HistoPlot::mc_weights(data_chain, bg_chains, var, with_cut, variables,mva_cut_str);
+
 	 std::fstream fs;
 	 const char* data_card_name = get_data_card_name(training_output_name);
+         std::cout<<"=======>Data card name outside fun: "<<*data_card_name<<"\n";
 	 fs.open (data_card_name, std::fstream::in | std::fstream::out | std::fstream::app);
   int size = 1 + bg_chains.size();
 
@@ -277,6 +281,8 @@ void DataCard::create_datacard(DataChain* data_chain, DataChain* signal_chain, s
   fs << dashed_line();
   fs << bin_header_string();
   fs << bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables, mc_weights,mva_cut_str));
+  std::cout<<"made observation string: "<<bin_observation_string(get_total_nevents(bg_chains, var, with_cut, variables, mc_weights,mva_cut_str));
+
   fs << dashed_line();
   fs << bin_grid_line(size);
 std::cout<<"made grid line";
@@ -285,7 +291,7 @@ std::cout<<"made  process_labels";
   fs << process_2_string(process_line_2(size));
 std::cout<<"made process_2_string ";
   fs << rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,mva_cut_str));
-std::cout<<"made rate_string ";
+std::cout<<"made rate_string: "<<rate_string(get_rates(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,mva_cut_str))<<"\n";
 
   fs << dashed_line();
   fs << get_systematic_string(data_chain, bg_chains, signal_chain, var, with_cut, variables, mc_weights,mva_cut_str);
@@ -314,9 +320,9 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 
 const char* DataCard::get_data_card_name(std::string output)
 {
-	 /*if (!opendir("data_cards"))
+	 /*if (!opendir("cards"))
 		{
-		 	mkdir("data_cards", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		 	mkdir("cards", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		}*/
 	 std::string card_file_name;
 

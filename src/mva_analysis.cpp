@@ -1,22 +1,50 @@
 #include "../include/mva_analysis.h"
 #include "../include/bdt_analysis.h"
 #include "../include/mlp_analysis.h"
+#include "../include/histo_plot.h"
+#include <algorithm>
+
 
 void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train, DataChain* signal_chain, DataChain* data_chain, SuperVars* super_vars,
 																					std::string method_name, std::string dir_name, std::vector<const char*> NTrees, std::vector<const char*> BoostType,
 																					std::vector<const char*> AdaBoostBeta, std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
 																					std::vector<const char*> NeuronType, std::vector<const char*> NCycles, std::vector<const char*> HiddenLayers, std::string mva_cut_str)
 {
+// PRODUCES PLOTS WITH AN MVA PARAMTER VARIED SUCH AS NUMBER OF TREES IN A BDT ANALYSIS
+
+//STEP 1 get mva output Tfile with given parameter varied.
+////////////////////////////////////////////////////////////////////////////
+
   std::vector<const char*> file_paths = vary_parameters(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, method_name, dir_name,
 																																															   NTrees, BoostType, AdaBoostBeta, SeparationType, nCuts, NeuronType, NCycles, HiddenLayers, mva_cut_str);
+
+//STEP 2 create a vector of Tfiles and save it in a folder directory
+////////////////////////////////////////////////////////////////////////////
+
 
   std::vector<TFile*> files = get_files_from_paths(file_paths);
   std::string folder_name = method_name + "_varying_" + dir_name;
   std::cout << "=> Set Folder Name: " << folder_name << std::endl;
+
+//STEP 3 initialise variables
+////////////////////////////////////////////////////////////////////////////
+
   std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
+
+//STEP 4 plot overtraining check i.e. classifier outputs
+////////////////////////////////////////////////////////////////////////////
+
   //ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
+  //
+//STEP 5 plots roc cruves
+////////////////////////////////////////////////////////////////////////////
+
   //RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
 }
+
+//END
+////////////////////////////////////////////////////////////////////////////
+
 
 std::vector<TFile*> MVAAnalysis::get_files_from_paths(std::vector<const char*> file_paths)
 {
@@ -37,10 +65,16 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 																																			const char* BoostType, const char* AdaBoostBeta,const char* SeparationType,const char* nCuts,
 																																			const char* NeuronType, const char* NCycles, const char* HiddenLayers, std::string mva_cut_str)
 {
-	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();
-	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();
+//STEP 1 initialize variables
+////////////////////////////////////////////////////////////////////////////
+
+	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();// variables upon which the preselection cuts are applied
+	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();// variable which the mva cuts on
 	 std::string selection_str        = super_vars->get_final_cuts_str();
-	 TFile* trained_output = NULL;
+	 TFile* trained_output;
+//STEP 2 train MVA type
+//////////////////////////////////////////////////////////////////////////////
+
 
   if (method_name == "BDT")
 	 {
@@ -53,29 +87,57 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 																																													NeuronType, NCycles, HiddenLayers);
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
-	 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
-	 std::cout << "=> All background put through BDT" << std::endl;
-	 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name, trained_output);
-	 std::cout << "=> Signal put through BDT" << std::endl;
+	 
+
+//STEP 3 get data, signal and background chains with output friend tree attached
+//////////////////////////////////////////////////////////////////////////////
+std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
+std::cout << "=> All background put through BDT" << std::endl;
+
+DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name, trained_output);
+DataChain* output_data_chain = get_output_data_chain(data_chain, vars, method_name, trained_output);
+std::cout << "=> Signal put through BDT" << std::endl;
+//output_signal_chain->chain->Write();
   Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
-  std::string output_graph_name            = build_output_graph_name(trained_output);
-//  output_bg_chains[0]->chain->Draw("met", "output>0.1");
 
-  if (mva_cut_str!=""){
+//STEP 4 get output and variable plot names
+////////////////////////////////////////////////////////////////////////////
 
-    std::string output_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,mva_output->name, 
+std::string output_graph_name            = build_output_graph_name(trained_output);
+
+  
+std::string output_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,mva_output->name, 
                                             mva_cut_str);//sets name for out put graph plot with mva cut
-   std::string ajmd_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,vars2[0]->name, mva_cut_str);
-                                    //sets name for ajmd plot
-       //HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
-    //plots all-jets-met-min d phi
-       HistoPlot::draw_plot(vars[0],    output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, ajmd_name_mva_cut,"",mva_cut_str);
 
-    //DataCard::create_datacard(data_chain, output_signal_chain, output_bg_chains, mva_output, true, &vars,mva_cut_str, ajmd_name_mva_cut);
+std::string var_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,vars[1]->name, mva_cut_str);
+
+//STEP 5 draw output and variables plots
+////////////////////////////////////////////////////////////////////////////
+  //HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
+//vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
+      HistoPlot::draw_plot(vars[0],    output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, var_graph_name_mva_cut,"",mva_cut_str);
+
+//STEP 6 create datacard
+////////////////////////////////////////////////////////////////////////////
+bool with_cut = true;
+/*std::string mc_selection  = MCWeights::get_mc_selection_str(output_bg_chains[1], vars[1], &vars, mva_cut_str);
+std::cout<<"mc selection: "<<mc_selection<<"\n";
+TH1F* histo = HistoPlot::build_1d_histo(output_data_chain, vars[1], true, false, "goff", &vars, mc_selection, mva_cut_str);
+int total = HistoPlot::get_histo_integral(histo, with_cut, vars[1]);
+std::cout<<"total: "<<total<<"\n";
+*/
+ double arr[bg_chains.size()];
+  std::fill_n(arr, bg_chains.size(), 1);
+  std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+
+mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, vars[0], true, &vars,mva_cut_str);
+
+
+    DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
     std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
-  }
+  
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
   return trained_output;
@@ -118,6 +180,21 @@ DataChain* MVAAnalysis::get_output_signal_chain(DataChain* signal_chain, std::ve
 		 	return MLPAnalysis::get_MLP_results(signal_chain, &vars, training_output->GetName());
 		}
 }
+
+DataChain* MVAAnalysis::get_output_data_chain(DataChain* data_chain, std::vector<Variable*> vars, std::string method_name,
+																																																TFile* training_output)
+{
+
+	 if (method_name == "BDT")
+		{
+		  return BDTAnalysis::get_BDT_results(data_chain, &vars, training_output->GetName());
+		}
+		else
+		{
+		 	return MLPAnalysis::get_MLP_results(data_chain, &vars, training_output->GetName());
+		}
+}
+
 
 std::string MVAAnalysis::build_output_graph_name(TFile* trained_output)
 {
@@ -421,7 +498,7 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   p3->cd();
   TH1F* data_bg_ratio_histo = HistoPlot::data_to_bg_ratio_histo(plot_histos[0], plot_histos[1]);
   data_bg_ratio_histo->Draw("e1");
-  HistoPlot::style_ratio_histo(data_bg_ratio_histo, variable->name_styled);
+  HistoPlot::style_ratio_histo(data_bg_ratio_histo, variable->name_styled, false);
   HistoPlot::draw_yline_on_plot(variable, true, 1.0);
   p1->cd();
   HistoPlot::draw_title((combined_output->extra_label).c_str());

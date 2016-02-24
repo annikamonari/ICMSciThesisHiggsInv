@@ -1,9 +1,0 @@
-Error: /undefinedfilename in (METoutput)
-Operand stack:
-
-Execution stack:
-   %interp_exit   .runexec2   --nostringval--   --nostringval--   --nostringval--   2   %stopped_push   --nostringval--   --nostringval--   --nostringval--   false   1   %stopped_push
-Dictionary stack:
-   --dict:1150/1684(ro)(G)--   --dict:0/20(G)--   --dict:70/200(L)--
-Current allocation mode is local
-Last OS error: 2

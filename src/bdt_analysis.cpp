@@ -137,7 +137,7 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
     std::string target_name = training_output_name;
     std::string bg_chain_name = bg_chain->label;
     std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");
-const char* tar_fil = target_file.c_str();	   
+    const char* tar_fil = target_file.c_str();	   
 TFile* target  = new TFile(tar_fil,"RECREATE" );
 	   target->cd();
 	   data->CloneTree()->Write();
@@ -157,7 +157,8 @@ TFile* target  = new TFile(tar_fil,"RECREATE" );
 //note before calling this method you must call create_bdt to update the xml weight file:
 DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name)
 {
-	 TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables, training_output_name);
+TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables, training_output_name);
+
 	 TTree* output_weight_clone = (TTree*) output_weight->Clone();
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();
 

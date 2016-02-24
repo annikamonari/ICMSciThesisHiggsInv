@@ -59,6 +59,8 @@ class MVAAnalysis
 
   static DataChain* get_output_signal_chain(DataChain* signal_chain, std::vector<Variable*> vars, std::string method_name, TFile* training_output);
 
+  static DataChain* get_output_data_chain(DataChain* data_chain, std::vector<Variable*> vars, std::string method_name,TFile* training_output);
+
   static std::string build_output_graph_name(TFile* trained_output);
 
 };

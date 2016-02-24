@@ -87,7 +87,7 @@ class HistoPlot
 
   static void style_stacked_histo(THStack* hs, const char* x_label);
 
-  static void style_ratio_histo(TH1F* single_histo, const char* x_label);
+  static void style_ratio_histo(TH1F* single_histo, const char* x_label, bool plot_data);
 
   static void style_legend(TLegend* legend);
   

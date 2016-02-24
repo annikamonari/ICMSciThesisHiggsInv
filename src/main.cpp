@@ -37,7 +37,7 @@ datac = DataCard::create_datacard(data_chain, signal_chain, bg_chains, vars[0], 
 
   for (int i = 0; i < 1; i++)
   {
-     //HistoPlot::draw_plot(vars[i], bg_chains, signal_chain, data_chain, true, &cut_vars, false);
+    // HistoPlot::draw_plot(vars[4], bg_chains, signal_chain, data_chain, true, &cut_vars, true,false,"outline.png");
   }
 }
 

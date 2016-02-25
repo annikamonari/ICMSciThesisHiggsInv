@@ -61,7 +61,8 @@ double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_cha
   if(ctrl_mc_in_ctrl!=0){ mc_weight = (data_in_ctrl - other_bg_in_ctrl) / ctrl_mc_in_ctrl;}
   else{mc_weight = 1;}
   
-  if (mc_weight<0) {std::cout<<" other bg in control bigger than data -> negative MC weight\n";} 
+  if (mc_weight<0) {mc_weight=1;
+std::cout<<" other bg in control bigger than data -> negative MC weight\n";} 
 
   return mc_weight;
 }
@@ -73,8 +74,8 @@ double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_
 
   double data_N_C       = get_nevents(data, var, with_cut, variables, mc_selection, mva_cut);
 //if (var->name_styled = "MVA Output"){std::cout<<"data gen fine for output\n";}
-
   double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, mc_selection, mva_cut); 
+if(MC_N_C!=0){
 
 //if (var->name_styled = "MVA Output"){std::cout<<"mc selection gen fine for output\n";}
 
@@ -87,7 +88,8 @@ double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_
   double err3           = (data_N_C- bg_N_C)/(pow(MC_N_C,1.5));
   double error_sq       = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
   double weight_error   = std::pow(error_sq, 0.5);
-
+}
+elseif(MC_N_C!=0){weight_error=1};
   return weight_error;
 
 }

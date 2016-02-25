@@ -77,7 +77,7 @@ std::cout<<"style done"<<"\n";
 
 //step 6 find maximum histogram height and set legend position away from maximum-checked and draw subtitles
 /////////////////////////////////////////
-TH1F* plot_histos_no_data[2] = {(TH1F*)(stack.GetStack()->Last()), signal_histo};
+/*TH1F* plot_histos_no_data[2] = {(TH1F*)(stack.GetStack()->Last()), signal_histo};
 TH1F* plot_histos_with_data[3] = {(TH1F*)(stack.GetStack()->Last()), signal_histo, data_histo};
 TH1F* max_histo;
 if (plot_data)
@@ -90,25 +90,28 @@ else
   std::vector<TH1F*> plot_histos_vector (plot_histos_no_data, plot_histos_no_data + sizeof(plot_histos_no_data) / sizeof(plot_histos_no_data[0]));
   max_histo      = HistoPlot::get_max_histo(plot_histos_vector);
 }
+std::cout<<"got max histo"<<"\n";
+//std::cout<<"set max histo:"<<get_histo_y_max(max_histo)<<"\n";
 
-  stack.SetMaximum(get_histo_y_max(max_histo)*1.15);
+//  stack.SetMaximum(get_histo_y_max(max_histo)*1.15);
 
   build_legend(legend, max_histo, var, with_cut);
-
+std::cout<<"about to call subtitles"<<"\n";
   draw_subtitle(var, variables, with_cut, data,mva_cut_str);
-
+*/
 //step 7 draw ratio of signal/background or signal/data histogram -testing...
 /////////////////////////////////////////
+std::cout<<"about o call ratio histo func"<<"\n";
 
   p3->cd();
   TH1F* data_bg_ratio_histo;
   if (plot_data)
   {
-    data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos_with_data[2], plot_histos_with_data[0]);// plot signal to bg
+    data_bg_ratio_histo = data_to_bg_ratio_histo(data_histo, (TH1F*)(stack.GetStack()->Last())/*plot_histos_with_data[0]*/);// plot signal to bg
   }
   else
   {
-    data_bg_ratio_histo = data_to_bg_ratio_histo(plot_histos_no_data[1], plot_histos_no_data[0]);
+    data_bg_ratio_histo = data_to_bg_ratio_histo(signal_histo, (TH1F*)(stack.GetStack()->Last())/*plot_histos_no_data[0]*/);
   }
 std::cout<<"about to draw ratio histo \n";
   data_bg_ratio_histo->Draw("e1");
@@ -469,6 +472,7 @@ TH1F* HistoPlot::get_max_histo(std::vector<TH1F*> plot_histos)
 
 double HistoPlot::get_histo_y_max(TH1F* histo)
 {
+std::cout<<"max bin: "<< histo->GetMaximumBin()<<"\n";
   return histo->GetBinContent(histo->GetMaximumBin());
 }
 

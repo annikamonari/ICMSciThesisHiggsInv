@@ -34,14 +34,14 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 //STEP 4 plot overtraining check i.e. classifier outputs
 ////////////////////////////////////////////////////////////////////////////
 
-  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
+  //ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
   
 //STEP 5 plots roc cruves
 ////////////////////////////////////////////////////////////////////////////
 
-  RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
-}
+ // RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
 
+}
 //END
 ////////////////////////////////////////////////////////////////////////////
 
@@ -103,7 +103,7 @@ std::cout << "=> Signal put through MVA" << std::endl;
 
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
-//if (mva_cut_str!=""){
+if (mva_cut_str!=""){
 
 std::string output_graph_name            = build_output_graph_name(trained_output);
 
@@ -121,7 +121,7 @@ std::string var_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,v
 
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-/*bool with_cut = true;
+bool with_cut = true;
 
  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
@@ -131,8 +131,8 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
-    std::cout<<"=> DataCard created\n";*/
-    
+    std::cout<<"=> DataCard created\n";
+    }
 std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;

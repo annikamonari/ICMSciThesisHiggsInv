@@ -19,18 +19,17 @@ bin/*
 Debug
 BDT_varying_SeparationType/*
 BDT_varying_SeparationType
+MLP_varying_NeuronType/*
+MLP_varying_NeuronType
 
-<<<<<<< HEAD
+
 TMVAClassification.C
 TMVAGui.C
 TMVARegGui.C
 TMVAlogon.C
 TMVApp.root
 tmvaglob.C
-=======
 
-TMVAClassification.C
->>>>>>> 4b0f3350b95d62293fa14767fe6e78135c0e8185
 
 weights/*
 weights

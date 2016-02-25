@@ -3,6 +3,7 @@
 void RocCurves::get_rocs(std::vector<TFile*> training_outputs, DataChain* signal,
 																									DataChain* bg, SuperVars* super_vars, std::string method_name, std::string dir)
 {
+std::cout<<"Started get_rocs\n";
 	 std::vector<Variable*> vars      = super_vars->get_discriminating_vars();
 	 std::string preselection         = super_vars->get_final_cuts_str();
 	 std::string var_cut_str_tmva     = super_vars->get_cuts_str_for_tmva();

@@ -203,4 +203,3 @@ std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char*
 	return out_nam;
 }
 
-

@@ -34,12 +34,12 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 //STEP 4 plot overtraining check i.e. classifier outputs
 ////////////////////////////////////////////////////////////////////////////
 
-  //ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
-  //
+  ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
+  
 //STEP 5 plots roc cruves
 ////////////////////////////////////////////////////////////////////////////
 
-  //RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
+  RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
 }
 
 //END
@@ -92,18 +92,18 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 //STEP 3 get data, signal and background chains with output friend tree attached
 //////////////////////////////////////////////////////////////////////////////
 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
-std::cout << "=> All background put through BDT" << std::endl;
+std::cout << "=> All background put through MVA" << std::endl;
 
 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name, trained_output);
 DataChain* output_data_chain = get_output_data_chain(data_chain, vars, method_name, trained_output);
-std::cout << "=> Signal put through BDT" << std::endl;
-//output_signal_chain->chain->Write();
+std::cout << "=> Signal put through MVA" << std::endl;
+
   Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
 
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
-if (mva_cut_str!=""){
+//if (mva_cut_str!=""){
 
 std::string output_graph_name            = build_output_graph_name(trained_output);
 
@@ -121,13 +121,8 @@ std::string var_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,v
 
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-bool with_cut = true;
-/*std::string mc_selection  = MCWeights::get_mc_selection_str(output_bg_chains[1], vars[1], &vars, mva_cut_str);
-std::cout<<"mc selection: "<<mc_selection<<"\n";
-TH1F* histo = HistoPlot::build_1d_histo(output_data_chain, vars[1], true, false, "goff", &vars, mc_selection, mva_cut_str);
-int total = HistoPlot::get_histo_integral(histo, with_cut, vars[1]);
-std::cout<<"total: "<<total<<"\n";
-*/
+/*bool with_cut = true;
+
  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
@@ -136,9 +131,10 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
-    std::cout<<"=> DataCard created\n";
-    std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
-  }
+    std::cout<<"=> DataCard created\n";*/
+    
+std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
+  
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
   return trained_output;
@@ -161,7 +157,7 @@ std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*
 	 		{
 	 				combined_output = MLPAnalysis::get_MLP_results(bg_chains[i], &vars, training_output->GetName());
 	 		}
-
+   			
 	 		output_bg_chains.push_back(combined_output);
   }
 
@@ -295,14 +291,14 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
 	 			{
 	 				const char* files_arr[NeuronType.size()];
 
-    		for (int i = 0; i < NeuronType.size(); i++)
+    		for (int i = 0; i < 1/*NeuronType.size()*/; i++)
       	{
     				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[i], NCycles[0], HiddenLayers[0], mva_cut_str);
     				const char* file_path = file->GetName();
-    				std::cout << file_path << std::endl;
+    				//std::cout << file_path << std::endl;
     				files_arr[i] = file_path;
-    				std::cout << files_arr[i] << std::endl;
+    				//std::cout << files_arr[i] << std::endl;
       	}
 
     		std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));

@@ -75,6 +75,7 @@ double MCWeights::calc_weight_error(DataChain* data, std::vector<DataChain*> bg_
   double data_N_C       = get_nevents(data, var, with_cut, variables, mc_selection, mva_cut);
 //if (var->name_styled = "MVA Output"){std::cout<<"data gen fine for output\n";}
   double MC_N_C         = get_nevents(bg_chain, var, with_cut, variables, mc_selection, mva_cut); 
+double weight_error;
 if(MC_N_C!=0){
 
 //if (var->name_styled = "MVA Output"){std::cout<<"mc selection gen fine for output\n";}
@@ -87,9 +88,9 @@ if(MC_N_C!=0){
   double err2           = sigma_bg_N_C/MC_N_C;
   double err3           = (data_N_C- bg_N_C)/(pow(MC_N_C,1.5));
   double error_sq       = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
-  double weight_error   = std::pow(error_sq, 0.5);
+  weight_error   = std::pow(error_sq, 0.5);
 }
-elseif(MC_N_C!=0){weight_error=1};
+else if (MC_N_C!=0){weight_error=1;}
   return weight_error;
 
 }

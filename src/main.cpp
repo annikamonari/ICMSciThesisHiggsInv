@@ -25,8 +25,8 @@ std::string mva_cut_str = "output>0.0";//"output>0.1";//must be in format "outpu
 
 //                  0         1             2            3            4         5      6            7
 //int array of bgs {bg_zll, bg_wjets_ev, bg_wjets_muv,bg_wjets_tauv, bg_top, bg_vv,bg_zjets_vv, bg_qcd};
-MVAAnalysis::get_mva_results(bg_chains, 2, signal_chain, data_chain, super_vars, "bg_zll", 
-"BDT", NTrees[4], BoostType[0],AdaBoostBeta[1], SeparationType[0], nCuts[3], NeuronType[0], NCycles[0], HiddenLayers[0],mva_cut_str);
+MVAAnalysis::get_mva_results(bg_chains, 6, signal_chain, data_chain, super_vars, "bg_zll", 
+"BDT", NTrees[4], BoostType[0],AdaBoostBeta[1], SeparationType[0], nCuts[2], NeuronType[0], NCycles[0], HiddenLayers[0],mva_cut_str);
 
 
 

@@ -258,8 +258,8 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
     	}
     else if (dir_name == "SeparationType")
     	{
-    		const char* files_arr[1/*SeparationType.size()*/];
-    		for (int i = 0; i < 1/*SeparationType.size()*/; i++)
+    		const char* files_arr[SeparationType.size()];
+    		for (int i = 0; i < SeparationType.size(); i++)
       	{
     				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[i], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0], mva_cut_str);
@@ -291,7 +291,7 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
 	 			{
 	 				const char* files_arr[NeuronType.size()];
 
-    		for (int i = 0; i < 1/*NeuronType.size()*/; i++)
+    		for (int i = 0; i < NeuronType.size(); i++)
       	{
     				TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       														BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[i], NCycles[0], HiddenLayers[0], mva_cut_str);

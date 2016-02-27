@@ -88,16 +88,58 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   reader->AddVariable("sqrt_ht", &sqrt_ht);
 	   reader->AddVariable("dijet_M", &dijet_M);
 	   reader->AddVariable("metnomuons", &metnomuons);
-
+           /*
+           reader->AddVariable("jet1_pt", &jet1_pt);
+           reader->AddVariable("jet2_pt", &jet2_pt);
+           reader->AddVariable("jet1_eta", &jet1_eta);
+           reader->AddVariable("jet2_eta", &jet2_eta);
+           reader->AddVariable("jet1_phi", &jet1_phi);
+           reader->AddVariable("jet2_phi", &jet2_phi);
+           reader->AddVariable("jet_csv1", &jet_csv1);
+           reader->AddVariable("jet_csv2", &jet_csv2);
+           reader->AddVariable("dijet_dphi", &dijet_dphi);
+           reader->AddVariable("metnomu_x", &metnomu_x);
+           reader->AddVariable("metnomu_y", &metnomu_y);
+           reader->AddVariable("sumet", &sumet);
+           reader->AddVariable("ht", &ht);
+           reader->AddVariable("ht30", &ht30);
+           reader->AddVariable("mht", &mht);
+           reader->AddVariable("unclustered_et", &unclustered_et);
+           reader->AddVariable("jet1metnomu_dphi", &jet1metnomu_dphi);
+           reader->AddVariable("jet2metnomu_dphi", &jet2metnomu_dphi);
+           reader->AddVariable("jetmet_mindphi", &jetmet_mindphi);
+           reader->AddVariable("jetmetnomu_mindphi", &jetmetnomu_mindphi);
+           reader->AddVariable("jetunclet_mindphi", &jetunclet_mindphi);
+           reader->AddVariable("metnomuunclet_dphi", &metnomuunclet_dphi);
+           reader->AddVariable("dijetmetnomu_scalarSum_pt", &dijetmetnomu_scalarSum_pt);
+           reader->AddVariable("dijetmetnomu_vectorialSum_pt", &dijetmetnomu_vectorialSum_pt);
+           reader->AddVariable("dijetmetnomu_ptfraction", &dijetmetnomu_ptfraction);
+           reader->AddVariable("jet1metnomu_scalarprod", &jet1metnomu_scalarprod);
+           reader->AddVariable("jet2metnomu_scalarprod", &jet2metnomu_scalarprod);
+           reader->AddVariable("n_jets_cjv_30", &n_jets_cjv_30);
+           reader->AddVariable("n_jets_cjv_20EB_30EE", &n_jets_cjv_20EB_30EE);
+           reader->AddVariable("n_jets_15", &n_jets_15);
+           reader->AddVariable("n_jets_30", &n_jets_30);
+           reader->AddVariable("cjvjetpt", &cjvjetpt);
+           reader->AddVariable("l1met", &l1met);
+           reader->AddVariable("nvetomuons", &nvetomuons);
+           reader->AddVariable("nselmuons", &nselmuons);
+           reader->AddVariable("nvetoelectrons", &nvetoelectrons);
+           reader->AddVariable("nselelectrons", &nselelectrons);
+           reader->AddVariable("ntaus", &ntaus);
+           reader->AddVariable("m_mumu", &m_mumu);
+           reader->AddVariable("m_mumu_gen", &m_mumu_gen);
+           reader->AddVariable("n_vertices", &n_vertices);
+*/
 	   // Book method(s)
  	   reader->BookMVA( "MLP method", "weights/TMVAClassification_MLP.weights.xml" );
 	   // Book output histograms
-	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.25, 1.5 );
+	   TH1F* histNn     = new TH1F( "MVA_MLP", "MVA_MLP", 100, -1.0, 1.0 );
 	   
   
            // --- Event loop
 	   TChain* data = (TChain*) bg_chain->chain->Clone();
-
+           
 	   data->SetBranchAddress("dijet_deta", &dijet_deta);
 	   data->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
 	   data->SetBranchAddress("metnomu_significance", &metnomu_significance);
@@ -105,6 +147,51 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   data->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
 	   data->SetBranchAddress("dijet_M", &dijet_M);
 	   data->SetBranchAddress("metnomuons", &metnomuons);
+/*
+           data->SetBranchAddress("jet1_pt", &jet1_pt);
+           data->SetBranchAddress("jet2_pt", &jet2_pt);
+           data->SetBranchAddress("jet1_eta", &jet1_eta);
+           data->SetBranchAddress("jet2_eta", &jet2_eta);
+           data->SetBranchAddress("jet1_phi", &jet1_phi);
+           data->SetBranchAddress("jet2_phi", &jet2_phi);
+           data->SetBranchAddress("jet_csv1", &jet_csv1);
+           data->SetBranchAddress("jet_csv2", &jet_csv2);
+           data->SetBranchAddress("dijet_dphi", &dijet_dphi);
+           data->SetBranchAddress("metnomu_x", &metnomu_x);
+           data->SetBranchAddress("metnomu_y", &metnomu_y);
+           data->SetBranchAddress("sumet", &sumet);
+           data->SetBranchAddress("ht", &ht);
+           data->SetBranchAddress("ht30", &ht30);
+           data->SetBranchAddress("mht", &mht);
+           data->SetBranchAddress("unclustered_et", &unclustered_et);
+           data->SetBranchAddress("jet1metnomu_dphi", &jet1metnomu_dphi);
+           data->SetBranchAddress("jet2metnomu_dphi", &jet2metnomu_dphi);
+           data->SetBranchAddress("jetmet_mindphi", &jetmet_mindphi);
+           data->SetBranchAddress("jetmetnomu_mindphi", &jetmetnomu_mindphi);
+           data->SetBranchAddress("jetunclet_mindphi", &jetunclet_mindphi);
+           data->SetBranchAddress("metnomuunclet_dphi", &metnomuunclet_dphi);
+           data->SetBranchAddress("dijetmetnomu_scalarSum_pt", &dijetmetnomu_scalarSum_pt);
+           data->SetBranchAddress("dijetmetnomu_vectorialSum_pt", &dijetmetnomu_vectorialSum_pt);
+           data->SetBranchAddress("dijetmetnomu_ptfraction", &dijetmetnomu_ptfraction);
+           data->SetBranchAddress("jet1metnomu_scalarprod", &jet1metnomu_scalarprod);
+           data->SetBranchAddress("jet2metnomu_scalarprod", &jet2metnomu_scalarprod);
+           data->SetBranchAddress("n_jets_cjv_30", &n_jets_cjv_30);
+           data->SetBranchAddress("n_jets_cjv_20EB_30EE", &n_jets_cjv_20EB_30EE);
+           data->SetBranchAddress("n_jets_15", &n_jets_15);
+           data->SetBranchAddress("n_jets_30", &n_jets_30);
+           data->SetBranchAddress("cjvjetpt", &cjvjetpt);
+           data->SetBranchAddress("l1met", &l1met);
+           data->SetBranchAddress("nvetomuons", &nvetomuons);
+           data->SetBranchAddress("nselmuons", &nselmuons);
+           data->SetBranchAddress("nvetoelectrons", &nvetoelectrons);
+           data->SetBranchAddress("nselelectrons", &nselelectrons);
+           data->SetBranchAddress("ntaus", &ntaus);
+           data->SetBranchAddress("m_mumu", &m_mumu);
+           data->SetBranchAddress("m_mumu_gen", &m_mumu_gen);
+           data->SetBranchAddress("n_vertices", &n_vertices);
+
+*/
+
 
 	   // Efficiency calculator for cut method
 	   Int_t    nSelCutsGA = 0;
@@ -137,7 +224,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
    /* std::string target_name = training_output_name;
     std::string bg_chain_name = bg_chain->label;
     std::string target_file = target_name.insert(target_name.find("/") + 1, bg_chain_name + "App_");*/
-	   TFile* target  = new TFile("TMVApp.root"/*target_file.c_str()*/,"RECREATE" );
+	   TFile* target  = new TFile("TMVApp1.root"/*target_file.c_str()*/,"RECREATE" );
 	   target->cd();
 	   histNn->Write();
 
@@ -202,4 +289,3 @@ std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char*
 
 	return out_nam;
 }
-

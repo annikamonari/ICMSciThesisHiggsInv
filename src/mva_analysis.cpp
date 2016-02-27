@@ -39,7 +39,7 @@ void MVAAnalysis::get_plots_varying_params(std::vector<DataChain*> bg_chains, in
 //STEP 5 plots roc cruves
 ////////////////////////////////////////////////////////////////////////////
 
- // RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
+  RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
 
 }
 //END
@@ -87,7 +87,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 																																													NeuronType, NCycles, HiddenLayers);
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
-	 
+  std::cout << "=> In folder: " << folder_name << std::endl;	 
 
 //STEP 3 get data, signal and background chains with output friend tree attached
 //////////////////////////////////////////////////////////////////////////////
@@ -95,12 +95,13 @@ std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars,
 std::cout << "=> All background put through MVA" << std::endl;
 
 DataChain* output_signal_chain           = get_output_signal_chain(signal_chain, vars, method_name, trained_output);
-DataChain* output_data_chain = get_output_data_chain(data_chain, vars, method_name, trained_output);
 std::cout << "=> Signal put through MVA" << std::endl;
 
-  Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
-  std::cout << "=> Declared MVA_Output Variable" << std::endl;
+DataChain* output_data_chain = get_output_data_chain(data_chain, vars, method_name, trained_output);
+std::cout << "=> Data put through MVA" << std::endl;
 
+  Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.1","0.1","100","1", "", false);
+  std::cout << "=> Declared MVA_Output Variable" << std::endl;
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
 if (mva_cut_str!=""){
@@ -115,13 +116,25 @@ std::string var_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,v
 
 //STEP 5 draw output and variables plots
 ////////////////////////////////////////////////////////////////////////////
-  HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
-//vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
-   //   HistoPlot::draw_plot(vars[0],    output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, var_graph_name_mva_cut,"",mva_cut_str);
+bool with_cut = true;
 
+TH1F* sig_histo = HistoPlot::build_1d_histo(output_signal_chain, vars[0], with_cut, true, "goff", &vars,"", mva_cut_str);
+std::cout << "=> plotted signal fine" << std::endl;
+
+TH1F* data_histo = HistoPlot::build_1d_histo(output_data_chain, vars[0], with_cut, true, "goff", &vars,"", mva_cut_str);
+std::cout << "=> plotted data fine" << std::endl;
+
+TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cut, true, "goff", &vars,"", mva_cut_str);std::cout << "=> plotted background fine" << std::endl;
+
+
+
+/* HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);*/
+//vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
+   //   HistoPlot::draw_plot(vars[0],output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
+   													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-bool with_cut = true;
+/*bool with_cut = true;
 
  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
@@ -131,13 +144,15 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
-    std::cout<<"=> DataCard created\n";
+    std::cout<<"=> DataCard created\n";*/
     }
 std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
   return trained_output;
+
+
 }
 
 std::vector<DataChain*> MVAAnalysis::get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars,
@@ -502,3 +517,54 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   c1->SaveAs("output_test.png");
   c1->Close();
 }
+/*
+TFile* MVAAnalysis::get_mva_results( DataChain* signal_chain, DataChain* data_chain,SuperVars* super_vars, std::string folder_name, std::string method_name, std::string mva_cut_str)
+
+void MVAAnalysis::multiplot(DataChain* bg_to_train, std::string method_name)
+{
+	 std::string folder_name = method_name + "_varying_" + dir_name;
+//get changing neuron type file vector
+	 if (method_name == "MLP")
+	 {
+    if (dir_name == "NeuronType")
+    	{
+    		const char* files_arr[NeuronType.size()];
+    		for (int i = 0; i < NeuronType.size(); i++)
+      	{
+    				TFile* file = get_mva_results();
+    				const char* file_path = file->GetName();
+    				files_arr[i] = file_path;
+
+      	}
+    		 std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+
+    		 return files;
+
+
+//STEP 2 create a vector of Tfiles and save it in a folder directory
+////////////////////////////////////////////////////////////////////////////
+
+std::vector<const char*> file_paths;
+  std::vector<TFile*> files = get_files_from_paths(file_paths);
+  std::string folder_name = method_name + "_varying_" + dir_name;
+  std::cout << "=> Set Folder Name: " << folder_name << std::endl;
+
+//STEP 3 initialise variables
+////////////////////////////////////////////////////////////////////////////
+
+  std::vector<Variable*> variables = super_vars->get_signal_cut_vars();
+
+//STEP 4 plot overtraining check i.e. classifier outputs
+////////////////////////////////////////////////////////////////////////////
+
+  //ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
+  
+//STEP 5 plots roc cruves
+////////////////////////////////////////////////////////////////////////////
+
+ // RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
+
+}
+//END
+////////////////////////////////////////////////////////////////////////////
+}*/

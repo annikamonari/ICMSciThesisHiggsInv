@@ -66,7 +66,7 @@ for(int i=0; i<files3.size();i++)
 */
 
 
-for (int i = 2; i < 3/*bg_chains.size()*/; i++)
+for (int i = 3; i < 4/*bg_chains.size()*/; i++)
   {
   		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;

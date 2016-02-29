@@ -21,6 +21,13 @@ BDT_varying_SeparationType/*
 BDT_varying_SeparationType
 MLP_varying_NeuronType/*
 MLP_varying_NeuronType
+MLP_varying_HiddenLayers
+MLP_varying_NCycles
+MLP_varying_HiddenLayers/*
+MLP_varying_NCycles/*
+BDT_varying_NTrees/*
+BDT_varying_NTrees
+
 
 
 TMVAClassification.C

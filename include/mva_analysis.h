@@ -51,8 +51,8 @@ class MVAAnalysis
                               std::string method_name, const char* NTrees = "800",
                               const char* BoostType = "AdaBoost", const char* AdaBoostBeta = "0.2", 
                               const char* SeparationType = "GiniIndex",const char* nCuts = "30",  
-                              const char* NeuronType = "sigmoid", const char* NCycles = "500",
-																														const char* HiddenLayers = "5,5,5,5", std::string mva_cut_str="");
+                              const char* NeuronType = "sigmoid", const char* NCycles = "50",
+			      const char* HiddenLayers = "5", std::string mva_cut_str="");
 
   static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string method_name,
 																																																						TFile* training_output);
@@ -62,6 +62,18 @@ class MVAAnalysis
   static DataChain* get_output_data_chain(DataChain* data_chain, std::vector<Variable*> vars, std::string method_name,TFile* training_output);
 
   static std::string build_output_graph_name(TFile* trained_output);
+
+  static std::string neuron_namer(std::string trained_file_path, int neuron_type_id);
+
+  static std::string cycle_namer(std::string trained_file_path, int id);
+
+  static std::string layer_namer(std::string trained_file_path, int id);
+
+  static std::vector<const char*> get_file_vector_for_roc_curves(const char* bg_chain_label,
+std::string mva_type, std::string varying_parameter);
+
+  static void multiplot(DataChain* training_bg_chain, DataChain* signal_chain, SuperVars* super_vars, std::string mva_type, 
+std::string varying_parameter);
 
 };
 

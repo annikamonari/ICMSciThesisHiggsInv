@@ -1,0 +1,44 @@
+imax 1  number of channels 
+jmax 8  number of backgrounds 
+kmax 9  number of nuisance parameters (sources of systematical uncertainties) 
+shapes *    c1  FAKE 
+------------ 
+bin c1 
+observation 18 
+------------ 
+bin   c1   c1   c1   c1   c1   c1   c1   c1   c1 
+process   signal_chain   bg_zll   bg_wjets_ev   bg_wjets_muv   bg_wjets_tauv   bg_top   bg_vv   bg_zjets_vv   bg_qcd 
+process   0   1   2   3   4   5   6   7   8
+rate   37.6302   0.0707554   0.686994   0.497115   1.6416   0.00146931   1.77926   12.707   1.19197 
+------------ 
+uncertainty0 lnN     1.16302   -   -   -   -   -   -   -   -
+uncertainty1 lnN     -   16.1141   -   -   -   -   -   -   -
+uncertainty2 lnN     -   -   3.00393   -   -   -   -   -   -
+uncertainty3 lnN     -   -   -   14.9265   -   -   -   -   -
+uncertainty4 lnN     -   -   -   -   1.20577   -   -   -   -
+uncertainty5 lnN     -   -   -   -   -   75.0909   -   -   -
+uncertainty6 lnN     -   -   -   -   -   -   2.42183   -   -
+uncertainty7 lnN     -   -   -   -   -   -   -   1.71955   -
+uncertainty8 lnN     -   -   -   -   -   -   -   -   2.17646
+imax 1  number of channels 
+jmax 8  number of backgrounds 
+kmax 9  number of nuisance parameters (sources of systematical uncertainties) 
+shapes *    c1  FAKE 
+------------ 
+bin c1 
+observation 18 
+------------ 
+bin   c1   c1   c1   c1   c1   c1   c1   c1   c1 
+process   signal_chain   bg_zll   bg_wjets_ev   bg_wjets_muv   bg_wjets_tauv   bg_top   bg_vv   bg_zjets_vv   bg_qcd 
+process   0   1   2   3   4   5   6   7   8
+rate   37.6302   0.0707554   0.686994   0.497115   1.6416   0.00146931   1.77926   12.707   1.19197 
+------------ 
+uncertainty0 lnN     1.16302   -   -   -   -   -   -   -   -
+uncertainty1 lnN     -   16.1141   -   -   -   -   -   -   -
+uncertainty2 lnN     -   -   3.00393   -   -   -   -   -   -
+uncertainty3 lnN     -   -   -   14.9265   -   -   -   -   -
+uncertainty4 lnN     -   -   -   -   1.20577   -   -   -   -
+uncertainty5 lnN     -   -   -   -   -   75.0909   -   -   -
+uncertainty6 lnN     -   -   -   -   -   -   2.42183   -   -
+uncertainty7 lnN     -   -   -   -   -   -   -   1.71955   -
+uncertainty8 lnN     -   -   -   -   -   -   -   -   2.17646

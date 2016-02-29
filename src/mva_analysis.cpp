@@ -67,13 +67,16 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 {
 //STEP 1 initialize variables
 ////////////////////////////////////////////////////////////////////////////
-
+std::cout<<"in get_mva_results analysis\n";
 	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();// variables upon which the preselection cuts are applied
 	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();// variable which the mva cuts on
 	 std::string selection_str        = super_vars->get_final_cuts_str();
-	 TFile* trained_output;
+	 std::cout<<"above to create tfile\n";
+
+TFile* trained_output;
 //STEP 2 train MVA type
 //////////////////////////////////////////////////////////////////////////////
+	 std::cout<<" created tfile\n";
 
 
   if (method_name == "BDT")
@@ -83,6 +86,7 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 	 }
   else if (method_name == "MLP")
   {
+std::cout<<"about to create mlp\n";
   		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,
 																																													NeuronType, NCycles, HiddenLayers);
   }
@@ -517,36 +521,161 @@ void MVAAnalysis::draw_histo(DataChain* combined_output, std::string final_cuts,
   c1->SaveAs("output_test.png");
   c1->Close();
 }
-/*
-TFile* MVAAnalysis::get_mva_results( DataChain* signal_chain, DataChain* data_chain,SuperVars* super_vars, std::string folder_name, std::string method_name, std::string mva_cut_str)
 
-void MVAAnalysis::multiplot(DataChain* bg_to_train, std::string method_name)
+std::string MVAAnalysis::neuron_namer(std::string trained_file_path, int neuron_type_id)
 {
-	 std::string folder_name = method_name + "_varying_" + dir_name;
-//get changing neuron type file vector
-	 if (method_name == "MLP")
-	 {
-    if (dir_name == "NeuronType")
+  std::string trained_file_name;
+  trained_file_name = trained_file_path;
+  trained_file_name.append("NeuronType=");
+  trained_file_name.append(NeuronType[neuron_type_id]);
+  //std::cout<<"neuron type: "<<NeuronType[neuron_type_id]<<"\n";
+  trained_file_name.append("-");
+  trained_file_name.append( + "NCycles="); 
+  trained_file_name.append(NCycles[0]);
+  trained_file_name.append("-");
+  trained_file_name.append( + "HiddenLayers=");
+  trained_file_name.append(HiddenLayers[0]);
+  trained_file_name.append(".root");
+  return trained_file_name;
+}
+
+std::string MVAAnalysis::cycle_namer(std::string trained_file_path, int id)
+{
+  std::string trained_file_name;
+  trained_file_name = trained_file_path;
+  trained_file_name.append("NeuronType=");
+  trained_file_name.append(NeuronType[0]);
+  //std::cout<<"neuron type: "<<NeuronType[neuron_type_id]<<"\n";
+  trained_file_name.append("-");
+  trained_file_name.append( + "NCycles="); 
+  trained_file_name.append(NCycles[id]);
+  trained_file_name.append("-");
+  trained_file_name.append( + "HiddenLayers=");
+  trained_file_name.append(HiddenLayers[0]);
+  trained_file_name.append(".root");
+  return trained_file_name;
+}
+
+std::string MVAAnalysis::layer_namer(std::string trained_file_path, int id)
+{
+  std::string trained_file_name;
+  trained_file_name = trained_file_path;
+  trained_file_name.append("NeuronType=");
+  trained_file_name.append(NeuronType[0]);
+  //std::cout<<"neuron type: "<<NeuronType[neuron_type_id]<<"\n";
+  trained_file_name.append("-");
+  trained_file_name.append( + "NCycles="); 
+  trained_file_name.append(NCycles[0]);
+  trained_file_name.append("-");
+  trained_file_name.append( + "HiddenLayers=");
+  trained_file_name.append(HiddenLayers[id]);
+  trained_file_name.append(".root");
+  
+  return trained_file_name;
+}
+
+
+std::vector<const char*> MVAAnalysis::get_file_vector_for_roc_curves(const char* bg_chain_label,
+std::string mva_type, std::string varying_parameter)
+{
+  std::cout<<"in get file vector, varying paramter: "<<varying_parameter<<"\n";
+  std::string trained_file_path; 
+  std::string trained_file_name;
+  if (mva_type == "MLP")
+  {
+  const char* current_NeuronType = NeuronType[0];
+  const char* current_NCycles = NCycles[0];
+  const char* current_HiddenLayers = HiddenLayers[0];
+  if (varying_parameter == "NeuronType")
+    	{ 
+          const char* files_arr[NeuronType.size()];
+          for (int i = 0; i < NeuronType.size(); i++)
+      	    {
+              current_NeuronType= NeuronType[i];
+              trained_file_name = MLPAnalysis::MLP_output_name_str(current_NeuronType, current_NCycles, 
+                                           current_HiddenLayers,bg_chain_label);
+              const char* file_name = trained_file_name.c_str();
+              files_arr[i] = file_name;
+            }
+           std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+           return files;
+         }
+  if (varying_parameter == "NCycles")
+    	{ 
+          const char* files_arr[NCycles.size()];
+          for (int i = 0; i < NCycles.size(); i++)
+      	    {
+              current_NCycles= NCycles[i];
+              trained_file_name = MLPAnalysis::MLP_output_name_str(current_NeuronType, current_NCycles, 
+                                           current_HiddenLayers,bg_chain_label);
+              const char* file_name = trained_file_name.c_str();
+              files_arr[i] = file_name;
+            }
+           std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+           return files;
+         }
+
+  /*trained_file_path =  "MLP-";
+  trained_file_path.append(bg_chain_label);
+  trained_file_path.append("-");
+
+        if (varying_parameter == "NeuronType")
     	{
-    		const char* files_arr[NeuronType.size()];
-    		for (int i = 0; i < NeuronType.size(); i++)
-      	{
-    				TFile* file = get_mva_results();
-    				const char* file_path = file->GetName();
-    				files_arr[i] = file_path;
+          const char* files_arr[NeuronType.size()];
+          for (int i = 0; i < NeuronType.size(); i++)
+      	    {
+              trained_file_name = neuron_namer(trained_file_path, i);
+              files_arr[i] = trained_file_name.c_str();
+      	    }
+           std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+           return files;
+         }
 
-      	}
-    		 std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+        if (varying_parameter == "NCycles")
+    	{
+          const char* files_arr[NCycles.size()];
+          for (int i = 0; i < NCycles.size(); i++)
+      	    {
+              trained_file_name = cycle_namer(trained_file_path, i);
+              std::cout<<"file name in loop: "<<trained_file_name<<"\n";
+              files_arr[i] =  trained_file_name.c_str();
+      	    }
+           std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+           return files;
+         }
 
-    		 return files;
+        if (varying_parameter == "HiddenLayers")
+    	{
+          const char* files_arr[HiddenLayers.size()];
+          for (int i = 0; i < NCycles.size(); i++)
+      	    {
+              trained_file_name = layer_namer(trained_file_path, i);
+              std::cout<<"file name in loop: "<<trained_file_name<<"\n";
+              files_arr[i] =  trained_file_name.c_str();
+      	    }
+           std::vector<const char*> files (files_arr, files_arr + sizeof(files_arr) / sizeof(files_arr[0]));
+           return files;
+         }*/
+   }
+}
 
+/*
+void MVAAnalysis::multiplot(DataChain* training_bg_chain, DataChain* signal_chain, SuperVars* super_vars, std::string mva_type, std::string varying_parameter)
+{
+//STEP 1 create a vector of files of the trained root files
+//////////////////////////////////////////////////////////////////////////////
 
-//STEP 2 create a vector of Tfiles and save it in a folder directory
-////////////////////////////////////////////////////////////////////////////
+  std::vector<const char*> file_paths = get_file_vector_for_roc_curves(training_bg_chain->label, 
+mva_type,varying_parameter);
+  
 
-std::vector<const char*> file_paths;
-  std::vector<TFile*> files = get_files_from_paths(file_paths);
-  std::string folder_name = method_name + "_varying_" + dir_name;
+//STEP 2 turn file vector in Tfile vector and get folder name
+//////////////////////////////////////////////////////////////////////////////
+
+  std::vector<TFile*> t_files = get_files_from_paths(file_paths);
+  std::string folder_name = mva_type;
+  folder_name.append("_varying_"); 
+  folder_name.append(varying_parameter);
   std::cout << "=> Set Folder Name: " << folder_name << std::endl;
 
 //STEP 3 initialise variables
@@ -557,14 +686,14 @@ std::vector<const char*> file_paths;
 //STEP 4 plot overtraining check i.e. classifier outputs
 ////////////////////////////////////////////////////////////////////////////
 
-  //ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, bg_chains[bg_to_train]->label);
+  //ClassifierOutputs::plot_classifiers_for_all_files(files, method_name, folder_name, training_bg_chain->label);
   
 //STEP 5 plots roc cruves
 ////////////////////////////////////////////////////////////////////////////
 
- // RocCurves::get_rocs(files, signal_chain, bg_chains[bg_to_train], super_vars, method_name, folder_name);
+ // RocCurves::get_rocs(files, signal_chain, training_bg_chain, super_vars, mva_type, folder_name);
 
-}
+}*/
 //END
 ////////////////////////////////////////////////////////////////////////////
-}*/
+

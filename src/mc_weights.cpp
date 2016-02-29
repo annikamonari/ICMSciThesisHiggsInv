@@ -63,7 +63,7 @@ double MCWeights::calc_mc_weight(DataChain* data, std::vector<DataChain*> bg_cha
   
   if (mc_weight<0) {mc_weight=1;
 std::cout<<" other bg in control bigger than data -> negative MC weight\n";} 
-
+std::cout<<"mc weights: "<<mc_weight;
   return mc_weight;
 }
 
@@ -90,7 +90,7 @@ if(MC_N_C!=0){
   double error_sq       = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
   weight_error   = std::pow(error_sq, 0.5);
 }
-else if (MC_N_C!=0){weight_error=1;}
+else if (MC_N_C==0){weight_error=1;}
   return weight_error;
 
 }

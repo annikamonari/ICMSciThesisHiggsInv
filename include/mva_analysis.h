@@ -31,7 +31,7 @@ class MVAAnalysis
                               std::vector<const char*> BoostType,	std::vector<const char*> AdaBoostBeta, 
                               std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
 																														std::vector<const char*> NeuronType, std::vector<const char*> NCycles, 
-                              std::vector<const char*> HiddenLayers, std::string mva_cut_str="");
+                              std::vector<const char*> HiddenLayers, std::string mva_cut_str="", const char* preprocessing_transform ="N");
 //----------------------------------------------------------------------------------------------------
 
   static void get_plots_varying_params(std::vector<DataChain*> bg_chains, int bg_to_train,
@@ -40,7 +40,7 @@ class MVAAnalysis
                              std::vector<const char*> BoostType,	std::vector<const char*> AdaBoostBeta, 
                              std::vector<const char*> SeparationType, std::vector<const char*> nCuts,
 																													std::vector<const char*> NeuronType, std::vector<const char*> NCycles, 
-                             std::vector<const char*> HiddenLayers,std::string mva_cut_str);
+                             std::vector<const char*> HiddenLayers,std::string mva_cut_str, const char* preprocessing_transform ="N");
 //----------------------------------------------------------------------------------------------------
 
   static std::vector<TFile*> get_files_from_paths(std::vector<const char*> file_paths);
@@ -52,7 +52,7 @@ class MVAAnalysis
                               const char* BoostType = "AdaBoost", const char* AdaBoostBeta = "0.2", 
                               const char* SeparationType = "GiniIndex",const char* nCuts = "30",  
                               const char* NeuronType = "sigmoid", const char* NCycles = "50",
-			      const char* HiddenLayers = "5", std::string mva_cut_str="");
+			      const char* HiddenLayers = "5", std::string mva_cut_str="", const char* preprocessing_transform="N");
 
   static std::vector<DataChain*> get_output_bg_chains(std::vector<DataChain*> bg_chains, std::vector<Variable*> vars, std::string method_name,
 																																																						TFile* training_output);
@@ -70,7 +70,7 @@ class MVAAnalysis
   static std::string layer_namer(std::string trained_file_path, int id);
 
   static std::vector<const char*> get_file_vector_for_roc_curves(const char* bg_chain_label,
-std::string mva_type, std::string varying_parameter);
+std::string mva_type, std::string varying_parameter, const char* preprocessing_transform);
 
   static void multiplot(DataChain* training_bg_chain, DataChain* signal_chain, SuperVars* super_vars, std::string mva_type, 
 std::string varying_parameter);

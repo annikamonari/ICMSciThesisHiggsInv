@@ -1,7 +1,7 @@
 #include "../include/mlp_analysis.h"
 //#include "TInterpretor.h"
 TFile* MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string folder_name,
-																													  const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+																													  const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* preprocessing_transform)
 {
 std::cout<<"folder_name: "<<folder_name<<"\n";
 
@@ -11,7 +11,7 @@ std::cout<<"folder_name: "<<folder_name<<"\n";
   }
   std::string output_path(folder_name);
   output_path.append("/");
-  output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label));
+  output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label, preprocessing_transform));
 std::cout<<"output path: "<<output_path<<"\n";
   TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
@@ -39,9 +39,9 @@ std::cout<<"output path: "<<output_path<<"\n";
 
   factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
   				       "SplitMode=Random:NormMode=NumEvents:!V" );
-  std::cout<<"mlp option str: "<<MLP_options_str(NeuronType, NCycles, HiddenLayers)<<"\n";
+  std::cout<<"mlp option str: "<<MLP_options_str(NeuronType, NCycles, HiddenLayers, preprocessing_transform)<<"\n";
   
-  factory->BookMethod(TMVA::Types::kMLP, "MLP", MLP_options_str(NeuronType, NCycles, HiddenLayers) );
+  factory->BookMethod(TMVA::Types::kMLP, "MLP", MLP_options_str(NeuronType, NCycles, HiddenLayers, preprocessing_transform) );
 
 
   // Train MVAs using the set of training events
@@ -268,14 +268,16 @@ DataChain* MLPAnalysis::get_MLP_results(DataChain* bg_chain, std::vector<Variabl
 	 return output_data;
 }
 
-std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers)
+std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* preprocessing_transform)
 {
 	std::string MLP_options = "H:!V:NeuronType=";
 	std::string nt = NeuronType;
 	std::string nc = NCycles;
 	std::string hl = HiddenLayers;
 	MLP_options.append(nt);
-	MLP_options += ":VarTransform=N:NCycles=";
+	MLP_options += ":VarTransform=";
+	MLP_options.append(preprocessing_transform);
+        MLP_options += ":NCycles=";
 	MLP_options.append(nc);
 	MLP_options += ":HiddenLayers=";
 	MLP_options.append(hl);
@@ -283,14 +285,16 @@ std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCy
  return MLP_options;
 }
 
-std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* bg_chain_label)
+std::string MLPAnalysis::MLP_output_name_str(const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* bg_chain_label, const char* preprocessing_transform)
 {
 	std::string nt = NeuronType;
 	std::string nc = NCycles;
 	std::string hl = HiddenLayers;
  std::string bg = bg_chain_label;
 
-	std::string out_nam = "MLP-" + bg + "-NeuronType=";
+	std::string out_nam = "MLP-" + bg + "-preprocessing_transform=";
+	out_nam.append(preprocessing_transform);       
+        out_nam +="-NeuronType=";
 	out_nam.append(nt);
 	out_nam += "-NCycles=";
 	out_nam.append(nc);

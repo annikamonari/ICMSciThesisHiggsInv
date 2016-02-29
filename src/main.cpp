@@ -16,36 +16,38 @@ void produce_graphs(bool with_cut) {
   int bg_id=0;
   int param_id=0;
 
-  const char * vary_param[] = {"NeuronType","NCycles","HiddenLayers"};
+  const char * vary_param[] = {"NeuronType","NCycles","HiddenLayers","preprocessing_transform"};
   /*bg_id = atoi(command_line_integers[2]);
   param_id = atoi(command_line_integers[1]);*/
-  std::string varying_parameter = "HiddenLayers";//vary_param[param_id];
-  
+  std::string varying_parameter = "preprocessing_transform";//vary_param[param_id];
+  const char* preprocessing_transform ="N";
 
-  const std::string bg[8] = {"bg_zll", "bg_wjets_ev", "bg_wjets_muv", "bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
   std::string folder_name = mva_type+ "_varying_" + varying_parameter;
 
   int relevant_bgs[] = {0, 1, 2, 3};//, 6};
   std::string mva_cut_str = "output>0.0";//"output>0.1";//must be in format "output>0"  
 
-//                  0         1             2            3            4         5      6            7
+//             0         1             2            3            4         5      6            7
+//bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
-for(int i =0;i<1/*bg_chains.size()*/; i++){
-  for(int j =0;j<1/*HiddenLayers.size()*/; j++){/*
-    if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
+/*
+for(int i =0;i<bg_chains.size(); i++){
+  for(int j =0;j<HiddenLayers.size(); j++){*/
+   /* if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
 
-    MVAAnalysis::get_mva_results(bg_chains,i, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[1], SeparationType[0], nCuts[2], NeuronType[j],     NCycles[0], HiddenLayers[0],mva_cut_str);
+    MVAAnalysis::get_mva_results(bg_chains,3, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);*/
     //std::cout<<NeuronType[1]<<"\n";*/
-}
+/*}
 }
 
-std::vector<const char*> files = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, mva_type,"NCycles");
-
+std::vector<const char*> files = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, mva_type,"NCycles",preprocessing_transform);*/
+/*
 for(int i=0; i<files.size();i++)
 {
   std::cout<<"file in files vector number "<<i<<":"<<files[i]<<"\n";
-}
+}*/
+
 /*
 std::vector<const char*> files2 = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, 
 mva_type,"NCycles");
@@ -66,7 +68,7 @@ for(int i=0; i<files3.size();i++)
 */
 
 
-for (int i = 3; i < 4/*bg_chains.size()*/; i++)
+for (int i = 1; i < 2/*bg_chains.size()*/; i++)
   {
   		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;
@@ -75,7 +77,7 @@ for (int i = 3; i < 4/*bg_chains.size()*/; i++)
 	
   MVAAnalysis::get_plots_varying_params(bg_chains, relevant_bgs[i], signal_chain, data_chain, super_vars,
                                      mva_type, varying_parameter, NTrees, BoostType,AdaBoostBeta, SeparationType,
-                                      nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str);
+                                      nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str,"N");
 
   }
 //void DataCard::create_datacard(mc_weights, data_chain, signal_chain, bg_chains, var,true, variables)

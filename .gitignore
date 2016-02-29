@@ -27,8 +27,8 @@ MLP_varying_HiddenLayers/*
 MLP_varying_NCycles/*
 BDT_varying_NTrees/*
 BDT_varying_NTrees
-
-
+MLP_varying_preprocessing_transform
+MLP_varying_preprocessing_transform/*
 
 TMVAClassification.C
 TMVAGui.C

@@ -102,7 +102,7 @@ std::cout << "=> Signal put through MVA" << std::endl;
 DataChain* output_data_chain = get_output_data_chain(data_chain, vars, method_name, trained_output);
 std::cout << "=> Data put through MVA" << std::endl;
 
-  Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.1","0.1","100","1", "", false);
+  Variable* mva_output                     = new Variable("output","MVA Output","0.0","1.5","0.0","1.5","100","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
@@ -146,8 +146,8 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
-    }
-std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;*/
+    }*/
+std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
@@ -352,10 +352,10 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
 	 			}
 	 		else if (dir_name == "preprocessing_transform")
 	 			{
-                                  const char* preprocessing_transform_arr[] = {"N", "P", "U" };                                            // Norm,Deco, PCA, Uniform, Gauss          
-	 		          const char* files_arr[3];
+                                  const char* preprocessing_transform_arr[] = {"N","G,N", "G,D,N","U,G,D,N", "G,P,N" };                                            // Normalise the variable(set to between1- and 1) ,D-variable decomposition, PCA, Uniform, Gauss          
+	 		          const char* files_arr[5];
 
-    		                  for (int i = 0; i < 3; i++)
+    		                  for (int i = 0; i < 5; i++)
                                     {
     				    TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       							BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0], mva_cut_str,preprocessing_transform_arr[i]);

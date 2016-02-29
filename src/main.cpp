@@ -30,18 +30,18 @@ void produce_graphs(bool with_cut) {
 
 //             0         1             2            3            4         5      6            7
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
-
 /*
-for(int i =0;i<bg_chains.size(); i++){
-  for(int j =0;j<HiddenLayers.size(); j++){*/
-   /* if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
+const char* mva_cut_arr[]={"output>0.1","output>0.2"};
+for(int i =0;i<1; i++){
+    if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
 
-    MVAAnalysis::get_mva_results(bg_chains,3, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);*/
-    //std::cout<<NeuronType[1]<<"\n";*/
-/*}
+    MVAAnalysis::get_mva_results(bg_chains,0, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);
+    //std::cout<<NeuronType[1]<<"\n";
+    
 }
 
-std::vector<const char*> files = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, mva_type,"NCycles",preprocessing_transform);*/
+*/
+//std::vector<const char*> files = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, mva_type,"NCycles",preprocessing_transform);
 /*
 for(int i=0; i<files.size();i++)
 {
@@ -80,7 +80,6 @@ for (int i = 1; i < 2/*bg_chains.size()*/; i++)
                                       nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str,"N");
 
   }
-//void DataCard::create_datacard(mc_weights, data_chain, signal_chain, bg_chains, var,true, variables)
 
   for (int i = 0; i < 1; i++)
   {

@@ -30,16 +30,16 @@ void produce_graphs(bool with_cut) {
 
 //             0         1             2            3            4         5      6            7
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
-/*
-const char* mva_cut_arr[]={"output>0.1","output>0.2"};
-for(int i =0;i<1; i++){
-    if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
 
-    MVAAnalysis::get_mva_results(bg_chains,3, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);
+//const char* mva_cut_arr[]={"output>0.2","output>0.4","output>0.6","output>0.8"};
+for(int i =7;i<8; i++){
+    if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
+    //mva_cut_str = mva_cut_arr[i];
+    MVAAnalysis::get_mva_results(bg_chains,i, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);
     //std::cout<<NeuronType[1]<<"\n";
     
 }
-*/
+
 
 //std::vector<const char*> files = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, mva_type,"NCycles",preprocessing_transform);
 /*
@@ -70,7 +70,7 @@ for(int i=0; i<files3.size();i++)
 
 for (int i = 1; i < 2/*bg_chains.size()*/; i++)
   {
-  		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
+  /*		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;
    	
  if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
@@ -79,7 +79,7 @@ for (int i = 1; i < 2/*bg_chains.size()*/; i++)
                                      mva_type, varying_parameter, NTrees, BoostType,AdaBoostBeta, SeparationType,
                                       nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str,"N");
 
-  }
+  */}
 
   for (int i = 0; i < 1; i++)
   {

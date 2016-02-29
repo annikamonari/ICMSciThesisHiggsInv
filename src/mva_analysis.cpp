@@ -90,7 +90,7 @@ std::cout<<"about to create mlp\n";
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
   std::cout << "=> In folder: " << folder_name << std::endl;	 
-/*
+
 //STEP 3 get data, signal and background chains with output friend tree attached
 //////////////////////////////////////////////////////////////////////////////
 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
@@ -147,7 +147,7 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
     }
-std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;*/
+std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
@@ -352,10 +352,10 @@ std::vector<const char*> MVAAnalysis::vary_parameters(std::vector<DataChain*> bg
 	 			}
 	 		else if (dir_name == "preprocessing_transform")
 	 			{
-                                  const char* preprocessing_transform_arr[] = {/*"N","G,N", "G,D,N","U,G,D,N", */"G,P,N","U,G,P,N" };                                            // Normalise the variable(set to between1- and 1) ,D-variable decomposition, PCA, Uniform, Gauss          
-	 		          const char* files_arr[2];
+                                  const char* preprocessing_transform_arr[] = {"N", "G,D,N","U,D,N", "G,P,N","U,P,N"};                                            // Normalise the variable(set to between1- and 1) ,D-variable decomposition, PCA, Uniform, Gauss          
+	 		          const char* files_arr[5];
 
-    		                  for (int i = 0; i < 2; i++)
+    		                  for (int i = 0; i < 5; i++)
                                     {
     				    TFile* file = get_mva_results(bg_chains, bg_to_train, signal_chain, data_chain, super_vars, folder_name, method_name, NTrees[0],
       							BoostType[0], AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0], NCycles[0], HiddenLayers[0], mva_cut_str,preprocessing_transform_arr[i]);

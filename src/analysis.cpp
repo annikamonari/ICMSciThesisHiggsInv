@@ -167,6 +167,7 @@ const char* zjets_vv_label  = "bg_zjets_vv";
 const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
 
 ///////////////////////////  background file paths  ///////////////////////////////////////
+/*
 const char* all_arr[] = {
                          "data/background/MC_QCD-Pt-1000to1400-pythia6.root",
                          "data/background/MC_QCD-Pt-120to170-pythia6.root",
@@ -238,7 +239,7 @@ std::vector<const char*> allbg (all_arr, all_arr +
 const char* all_label  = "all_bg";
 const char* all_legend = "All the MC backgrounds combined";
 
-
+*/
 /*
 std::vector<const char*>* fp_array[] = {z_ll,wjets_ev,wjets_muv,wjets_tauv, top,vv,zjets_vv,qcd};
 
@@ -322,7 +323,7 @@ const char* data_legend = "data";
   std::vector<const char*> NCycles (NCycles_arr, NCycles_arr +
                                        sizeof(NCycles_arr)/sizeof(const char*));
 
-  const char* HiddenLayers_arr[] = {"10,10,10,10","10","20","10,10","10,10,10"} ;//number of neurons in each hidden layer
+  const char* HiddenLayers_arr[] = {"10,10,10,10","10","20","36"} ;//number of neurons in each hidden layer
   std::vector<const char*> HiddenLayers (HiddenLayers_arr, HiddenLayers_arr +
                                          sizeof(HiddenLayers_arr)/sizeof(const char*));
 

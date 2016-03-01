@@ -90,7 +90,8 @@ std::cout<<"about to create mlp\n";
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
   std::cout << "=> In folder: " << folder_name << std::endl;	 
-/*
+//std::cout<<"datachain in out data chains number: "<<i<<" = "<<bg_chains[bg_to_train]->label<<"\n";
+
 //STEP 3 get data, signal and background chains with output friend tree attached
 //////////////////////////////////////////////////////////////////////////////
 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
@@ -106,10 +107,9 @@ std::cout << "=> Data put through MVA" << std::endl;
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
-if (mva_cut_str!=""){
 
 std::string output_graph_name            = build_output_graph_name(trained_output);
-
+std::cout<<"=======>>>output graph name: "<<output_graph_name<<"\n";
   
 std::string output_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,mva_output->name, 
                                             mva_cut_str);//sets name for out put graph plot with mva cut
@@ -136,7 +136,7 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-
+/*
  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
@@ -146,12 +146,12 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
-    }*/
-std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
+    
+std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;*/
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
-  return trained_output;
+    return trained_output;
 
 
 }

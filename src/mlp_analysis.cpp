@@ -11,7 +11,7 @@ std::cout<<"folder_name: "<<folder_name<<"\n";
   }
   std::string output_path(folder_name);
   output_path.append("/");
-  output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, "all_bg"/*bg_chain->label*/, preprocessing_transform));
+  output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label, preprocessing_transform));
 std::cout<<"output path: "<<output_path<<"\n";
   TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
@@ -210,7 +210,8 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   std::vector<Float_t> vecVar(9); // vector for EvaluateMVA tests
 
 	   Float_t output;
-	   TTree* output_tree = new TTree("MVAtree","Tree with classifier outputs");
+	   TTree* output_tree = new TTree("MVAtree","Tree with classifier outputs");//both MVAtree and output neednames needs changing for recursive MLP's
+
 	   output_tree->Branch("output", &output, "output");
     output_tree->SetBranchStatus("*",1);
 	   std::cout << "--- Processing: " << data->GetEntries() << " events" << std::endl;

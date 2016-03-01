@@ -36,14 +36,18 @@ std::cout<<"creating mc weights vector"<<"\n";
  
   double arr[bg_chains.size()];
 
-if (is_control_region){
-  std::fill_n(arr, bg_chains.size(), 1);
-  std::cout<<"we better not be in the control region loop- oh dear we are...\n";
-}
 
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
 
    mc_weights_vector = mc_weights(data, bg_chains, var, with_cut, variables, mva_cut_str);
+
+if (is_control_region){
+  std::fill_n(arr, bg_chains.size(), 1);
+  std::cout<<"we better not be in the control region loop- oh dear we are...\n";
+  std::vector<double> mc_weights_vector2 (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+  mc_weights_vector = mc_weights_vector2;
+}
+
 
 for (int i=0;i<bg_chains.size();i++)
 {

@@ -1,6 +1,6 @@
 #include "../include/mlp_analysis.h"
 //#include "TInterpretor.h"
-TFile* MLPAnalysis::create_MLP(std::vector<DataChain*> bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string folder_name,
+TFile* MLPAnalysis::create_MLP(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables, std::string folder_name,
 																													  const char* NeuronType, const char* NCycles, const char* HiddenLayers, const char* preprocessing_transform)
 {
 std::cout<<"folder_name: "<<folder_name<<"\n";
@@ -25,11 +25,9 @@ std::cout<<"output path: "<<output_path<<"\n";
 
   // Background
   double background_weight = 1.0;
-  for(int i=0;i<bg_chains.size();i++){
-  {
-    factory->AddBackgroundTree(bg_chain->chain,background_weight);
-    factory->SetBackgroundWeightExpression("total_weight_lepveto");
-  }
+  factory->AddBackgroundTree(bg_chain->chain,background_weight);
+  factory->SetBackgroundWeightExpression("total_weight_lepveto");
+  
   // Signal
   double signal_weight = 1.0;
   factory->AddSignalTree(signal_chain->chain, signal_weight);

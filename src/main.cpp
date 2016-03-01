@@ -12,6 +12,7 @@ void produce_graphs(bool with_cut) {
   std::vector<DataChain*> bg_chains = super_chains->get_bg_chains();
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
+  std::vector<DataChain*> all_bg_chains = super_chains->get_all_bg_chains();
   std::string mva_type = "MLP";  //go into train_and_run_BDT function to change input parameters
   int bg_id=0;
   int param_id=0;
@@ -32,10 +33,10 @@ void produce_graphs(bool with_cut) {
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
 //const char* mva_cut_arr[]={"output>0.2","output>0.4","output>0.6","output>0.8"};
-for(int i =7;i<8; i++){
+for(int i =0;i<1; i++){
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
     //mva_cut_str = mva_cut_arr[i];
-    MVAAnalysis::get_mva_results(bg_chains,i, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);
+    MVAAnalysis::get_mva_results(all_bg_chains,0, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str);
     //std::cout<<NeuronType[1]<<"\n";
     
 }

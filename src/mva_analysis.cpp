@@ -90,7 +90,7 @@ std::cout<<"about to create mlp\n";
   }
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
   std::cout << "=> In folder: " << folder_name << std::endl;	 
-
+/*
 //STEP 3 get data, signal and background chains with output friend tree attached
 //////////////////////////////////////////////////////////////////////////////
 std::vector<DataChain*> output_bg_chains = get_output_bg_chains(bg_chains, vars, method_name, trained_output);
@@ -146,7 +146,7 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
-    }
+    }*/
 std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;

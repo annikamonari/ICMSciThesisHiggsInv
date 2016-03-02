@@ -33,13 +33,14 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
 //const char* mva_cut_arr[]={"output>0.0","output<0.6"}; //VV cuts
-//const char* mva_cut_arr[]={"output>0.0","output>0.6&&output<0.93"}; //bg_wjets_ev cuts
+const char* mva_cut_arr[]={"output>0.0","output>0.6"}; //bg_wjets_ev cuts
 //const char* mva_cut_arr[]={"output>0.0","output>0.5","output>0.52"};  //bg_zjets_vv cuts
-const char* mva_cut_arr[]={"output>0.0","output>0.8","output>0.3"};  //bg_zll
+//const char* mva_cut_arr[]={"output>0.0","output>0.8","output>0.3"};  //bg_zll
 for(int i =0;i<1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/; i++){
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
-    mva_cut_str = mva_cut_arr[i];
-    MVAAnalysis::get_mva_results(bg_chains,bg_id, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str,"G,D,N");
+    if(std::ifstream("TMVApp.root")){remove("TMVApp.root");} 
+    mva_cut_str = mva_cut_arr[1];
+    MVAAnalysis::get_mva_results(bg_chains,1, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str,"G,D,N");
     //std::cout<<NeuronType[1]<<"\n";
     
 }

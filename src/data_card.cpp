@@ -7,7 +7,7 @@
 double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str)
 {
   TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables,"", mva_cut_str);
-  double total_signal = HistoPlot::get_histo_integral(signalh, with_cut, var);
+  int total_signal = HistoPlot::get_histo_integral(signalh, with_cut, var);
 
   double sig_sqrt = std::pow(total_signal,0.5);
 
@@ -42,7 +42,7 @@ if (var->name_styled = "MVA Output"){std::cout<<"got gbg errors vector\n";}
 std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights,std::string mva_cut_str)
 {
-  double rates[bg_chains.size() + 1];
+  int rates[bg_chains.size() + 1];
   TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables,"", mva_cut_str);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);
 
@@ -50,7 +50,7 @@ std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*>
   {
     std::cout << bg_mc_weights[i] << std::endl;
   		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "", mva_cut_str, bg_mc_weights[i]);
-    double N = HistoPlot::get_histo_integral(histo, with_cut, var); //integral of single bg
+    int N = HistoPlot::get_histo_integral(histo, with_cut, var); //integral of single bg
     rates[i + 1]= N;
     std::cout << bg_chains[i]->label << " - " << N << std::endl;
   }
@@ -312,7 +312,7 @@ double DataCard::get_total_nevents(std::vector<DataChain*> bg_chains, Variable* 
 	 for (int i = 0; i < bg_chains.size(); i++)
 	 	{
 	 		TH1F* histo = HistoPlot::build_1d_histo(bg_chains[i], var, with_cut, false, "goff", variables, "",mva_cut_str, bg_mc_weights[i]);
-	 		double integral = HistoPlot::get_histo_integral(histo, with_cut, var);
+	 		int integral = HistoPlot::get_histo_integral(histo, with_cut, var);
 	 		total += integral;
 	 	}
 

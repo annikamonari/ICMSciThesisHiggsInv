@@ -86,8 +86,12 @@ if(MC_N_C!=0){
   double sigma_MC_N_C   = std::pow(MC_N_C, 0.5);
   double sigma_bg_N_C   = std::pow(bg_N_C, 0.5);
   double err1           = sigma_data_N_C/MC_N_C;
+std::cout<<"err1 :"<<err1<<"\n";
   double err2           = sigma_bg_N_C/MC_N_C;
+std::cout<<"err2 :"<<err2<<"\n";
   double err3           = (data_N_C- bg_N_C)/(pow(MC_N_C,1.5));
+std::cout<<"err3 :"<<err3<<"\n";
+
   double error_sq       = std::pow(err1,2) + std::pow(err2,2) + std::pow(err3,2);
   weight_error   = std::pow(error_sq, 0.5);
 }

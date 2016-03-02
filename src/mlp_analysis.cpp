@@ -21,6 +21,8 @@ std::cout<<"output path: "<<output_path<<"\n";
   for (int i = 0; i < variables->size(); i++)
   {
     factory->AddVariable((*variables)[i]->name, (*variables)[i]->name_styled, (*variables)[i]->units, 'F');
+//std::cout<<"added variable:"<<(*variables)[i]->name<<"\n";
+
   }
 
   // Background
@@ -32,9 +34,11 @@ std::cout<<"output path: "<<output_path<<"\n";
   double signal_weight = 1.0;
   factory->AddSignalTree(signal_chain->chain, signal_weight);
   factory->SetSignalWeightExpression("total_weight_lepveto");
-
+//std::cout<<"about to add cuts\n";
   // Apply additional cuts on the signal and background samples (can be different)
-  TCut signal_cuts = "alljetsmetnomu_mindphi>2.0 && alljetsmetnomu_mindphi<3.0 && jet1_E>50.0 && jet2_E>45.0 && metnomu_significance>3.5 && dijet_deta>4.2 && dijet_deta<8.0 && nvetomuons==0 && nvetoelectrons==0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+  TCut signal_cuts = "alljetsmetnomu_mindphi>2.0 && alljetsmetnomu_mindphi<3.0 && jet1_pt>50.0 && jet2_pt>45.0 && metnomu_significance>3.5 && dijet_deta>4.2 && dijet_deta<8.0 && nvetomuons==0 && nvetoelectrons==0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+//std::cout<<"added cuts\n";
+
   TCut bg_cuts = signal_cuts; // for example: TCut mycutb = "abs(var1)<0.5";
 
   factory->PrepareTrainingAndTestTree(signal_cuts, bg_cuts,
@@ -82,11 +86,12 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   Float_t alljetsmetnomu_mindphi;
 	   Float_t dijet_M;
 	   Float_t metnomuons;
+           Float_t jet1_pt;
+           Float_t jet2_pt;
 
            Float_t jet1_E;
            Float_t jet2_E;           
-           Float_t jet1_pt;
-           Float_t jet2_pt;
+
            Float_t jet1_eta;
            Float_t jet2_eta;
            Float_t jet1_phi;
@@ -123,10 +128,12 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   reader->AddVariable("dijet_M", &dijet_M);
 	   reader->AddVariable("metnomuons", &metnomuons);
 
-           reader->AddVariable("jet1_E", &jet1_E);
-           reader->AddVariable("jet2_E", &jet2_E);
            reader->AddVariable("jet1_pt", &jet1_pt);
            reader->AddVariable("jet2_pt", &jet2_pt);
+
+           reader->AddVariable("jet1_E", &jet1_E);
+           reader->AddVariable("jet2_E", &jet2_E);
+
            reader->AddVariable("jet1_eta", &jet1_eta);
            reader->AddVariable("jet2_eta", &jet2_eta);
            reader->AddVariable("jet1_phi", &jet1_phi);
@@ -172,10 +179,12 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   data->SetBranchAddress("dijet_M", &dijet_M);
 	   data->SetBranchAddress("metnomuons", &metnomuons);
 
-           data->SetBranchAddress("jet1_E", &jet1_E);
-           data->SetBranchAddress("jet2_E", &jet2_E);            
            data->SetBranchAddress("jet1_pt", &jet1_pt);
            data->SetBranchAddress("jet2_pt", &jet2_pt);
+
+           data->SetBranchAddress("jet1_E", &jet1_E);
+           data->SetBranchAddress("jet2_E", &jet2_E);
+            
            data->SetBranchAddress("jet1_eta", &jet1_eta);
            data->SetBranchAddress("jet2_eta", &jet2_eta);
            data->SetBranchAddress("jet1_phi", &jet1_phi);
@@ -242,7 +251,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 
 	   target->Close();
 
-	   std::cout << "--- Created root file: \"TMVApp.root\" containing the MVA output histograms" << std::endl;
+	   std::cout << "--- Created root file: \"TMVApp1.root\" containing the MVA output histograms" << std::endl;
 
 	   delete reader;
 

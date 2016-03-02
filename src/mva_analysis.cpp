@@ -69,7 +69,9 @@ TFile* MVAAnalysis::get_mva_results(std::vector<DataChain*> bg_chains, int bg_to
 ////////////////////////////////////////////////////////////////////////////
 std::cout<<"in get_mva_results analysis\n";
 	 std::vector<Variable*> vars      = super_vars->get_signal_cut_vars();// variables upon which the preselection cuts are applied
+std::cout<<"got signal cut vars\n";
 	 std::vector<Variable*> vars2     = super_vars->get_discriminating_vars();// variable which the mva cuts on
+std::cout<<"in get_mva_results analysis\n";
 	 std::string selection_str        = super_vars->get_final_cuts_str();
 	 std::cout<<"above to create tfile\n";
 
@@ -136,7 +138,7 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-/*
+
  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
@@ -145,7 +147,7 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, output_graph_name_mva_cut);
-    std::cout<<"=> DataCard created\n";*/
+    std::cout<<"=> DataCard created\n";
     
 std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   

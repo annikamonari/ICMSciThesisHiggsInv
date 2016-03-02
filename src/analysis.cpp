@@ -323,7 +323,7 @@ const char* data_legend = "data";
   std::vector<const char*> NCycles (NCycles_arr, NCycles_arr +
                                        sizeof(NCycles_arr)/sizeof(const char*));
 
-  const char* HiddenLayers_arr[] = {"10,10,10,10","10","20","36"} ;//number of neurons in each hidden layer
+  const char* HiddenLayers_arr[] = {"10,10,10,10","10","100","500"} ;//number of neurons in each hidden layer
   std::vector<const char*> HiddenLayers (HiddenLayers_arr, HiddenLayers_arr +
                                          sizeof(HiddenLayers_arr)/sizeof(const char*));
 

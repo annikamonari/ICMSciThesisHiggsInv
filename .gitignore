@@ -17,8 +17,15 @@ bin/*
 # Ignore Mac specific files
 .DS_Store
 Debug
+BDT_varying_AdaBoostBeta
+BDT_varying_AdaBoostBeta/*
 BDT_varying_SeparationType/*
 BDT_varying_SeparationType
+BDT_varying_NTrees/*
+BDT_varying_NTrees
+
+
+
 MLP_varying_NeuronType/*
 MLP_varying_NeuronType
 MLP_varying_HiddenLayers

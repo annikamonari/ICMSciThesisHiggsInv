@@ -262,7 +262,7 @@ variables, mva_cut_str);
 }
 
 // new function written ust like the one above: HistoPlot::mc_weights, which calculates the right error for the bgs without a control
-// region (its just sqrt(unweighted mc events in signal) / unweighted mc events in signal)
+// region. Calls single bg error for bgs with an mc weight
 std::vector<double> HistoPlot::get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains, Variable* var, bool with_cut,
 																																																				std::vector<Variable*>* variables, std::vector<double> bg_mc_weights, std::string mva_cut_str)
 

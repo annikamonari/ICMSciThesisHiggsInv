@@ -4,7 +4,7 @@
 #include <iostream> 
 //#include "../include/mlp_analysis.h"
 
-void produce_graphs(bool with_cut) {
+void produce_graphs(bool with_cut, const char* command_line_integer) {
   SuperVars* super_vars             = new SuperVars();
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
@@ -18,8 +18,8 @@ void produce_graphs(bool with_cut) {
   int param_id=0;
 
   const char * vary_param[] = {"NeuronType","NCycles","HiddenLayers","preprocessing_transform"};
-  /*bg_id = atoi(command_line_integers[2]);
-  param_id = atoi(command_line_integers[1]);*/
+  bg_id = atoi(command_line_integer);/*
+  param_id = atoi(command_line_integers);*/
   std::string varying_parameter = "HiddenLayers";//vary_param[param_id];
   const char* preprocessing_transform ="N";
 
@@ -36,10 +36,10 @@ void produce_graphs(bool with_cut) {
 //const char* mva_cut_arr[]={"output>0.0","output>0.6&&output<0.93"}; //bg_wjets_ev cuts
 //const char* mva_cut_arr[]={"output>0.0","output>0.5","output>0.52"};  //bg_zjets_vv cuts
 const char* mva_cut_arr[]={"output>0.0","output>0.8","output>0.3"};  //bg_zll
-for(int i =0;i<sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0]); i++){
+for(int i =0;i<1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/; i++){
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
     mva_cut_str = mva_cut_arr[i];
-    MVAAnalysis::get_mva_results(bg_chains,0, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str,/*G,D,*/"N");
+    MVAAnalysis::get_mva_results(bg_chains,bg_id, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str,"G,D,N");
     //std::cout<<NeuronType[1]<<"\n";
     
 }
@@ -93,7 +93,7 @@ for (int i = 0; i < 1/*bg_chains.size()*/; i++)
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  produce_graphs(true);
+  produce_graphs(true, argv[1]);
   theApp.Run();
   return 0;
 }

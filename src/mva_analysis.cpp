@@ -136,7 +136,7 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-/*
+
  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
@@ -144,10 +144,10 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
 mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, vars[0], true, &vars,mva_cut_str);
 
 
-    DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, var_graph_name_mva_cut);
+    DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, output_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";
     
-std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;*/
+std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;

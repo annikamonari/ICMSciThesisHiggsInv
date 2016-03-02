@@ -12,6 +12,7 @@ SuperChains::SuperChains()
   bg_qcd        = new DataChain(qcd, qcd_label, qcd_legend, "");
   signal_chain  = new DataChain(mc_signal_data, mc_signal_label, mc_signal_legend, "");
   data_chain    = new DataChain(data, data_label, data_legend, "");
+  //all_bg        = new DataChain(allbg, all_label, all_legend, "");
 }
 
 std::vector<DataChain*> SuperChains::get_bg_chains()
@@ -21,8 +22,18 @@ std::vector<DataChain*> SuperChains::get_bg_chains()
                                bg_wjets_tauv, bg_top, bg_vv,
                                bg_zjets_vv, bg_qcd
                               };
+  
 
   std::vector<DataChain*> bg_chains (bg_chain_arr, bg_chain_arr + sizeof(bg_chain_arr) / sizeof(bg_chain_arr[0]));
 
   return bg_chains;
+}
+
+std::vector<DataChain*> SuperChains::get_all_bg_chains()
+{/*
+  DataChain* all_bg_chain_arr[] = {all_bg};
+  std::vector<DataChain*> all_bg_chains (all_bg_chain_arr, all_bg_chain_arr + sizeof(all_bg_chain_arr) / sizeof(all_bg_chain_arr[0]));  
+
+  return all_bg_chains;
+*/
 }

@@ -67,7 +67,7 @@ class HistoPlot
 
   static std::vector<double> get_mc_weight_errors(DataChain* data, std::vector<DataChain*> bg_chains,
 																	                                 Variable* var, bool with_cut, std::vector<Variable*>* variables,
-																																																		std::vector<double> bg_mc_weights, std::string mc_selection, std::string mva_cut_str ="");
+																																																		std::vector<double> bg_mc_weights, std::string mva_cut_str ="");
 
   static std::string get_string_from_double(double num);
 
@@ -87,7 +87,7 @@ class HistoPlot
 
   static void style_stacked_histo(THStack* hs, const char* x_label);
 
-  static void style_ratio_histo(TH1F* single_histo, const char* x_label);
+  static void style_ratio_histo(TH1F* single_histo, const char* x_label, bool plot_data);
 
   static void style_legend(TLegend* legend);
   

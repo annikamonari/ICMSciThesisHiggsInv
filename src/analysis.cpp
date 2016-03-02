@@ -168,6 +168,79 @@ const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
 
 ///////////////////////////  background file paths  ///////////////////////////////////////
 /*
+const char* all_arr[] = {
+                         "data/background/MC_QCD-Pt-1000to1400-pythia6.root",
+                         "data/background/MC_QCD-Pt-120to170-pythia6.root",
+                         "data/background/MC_QCD-Pt-120to170_VBF-MET40.root",
+                         "data/background/MC_QCD-Pt-1400to1800-pythia6.root",
+                         "data/background/MC_QCD-Pt-170to300-pythia6.root",
+                         "data/background/MC_QCD-Pt-170to300_VBF-MET40.root",
+                         "data/background/MC_QCD-Pt-1800-pythia6.root",
+                         "data/background/MC_QCD-Pt-300to470-pythia6.root",
+                         "data/background/MC_QCD-Pt-300to470_VBF-MET40.root",
+                         "data/background/MC_QCD-Pt-30to50-pythia6.root",
+                         "data/background/MC_QCD-Pt-470to600-pythia6.root",
+                         "data/background/MC_QCD-Pt-470to600_VBF-MET40.root",
+                         "data/background/MC_QCD-Pt-50to80-pythia6.root",
+                         "data/background/MC_QCD-Pt-600to800-pythia6.root",
+                         "data/background/MC_QCD-Pt-800to1000-pythia6.root",
+                         "data/background/MC_QCD-Pt-80to120-pythia6.root",
+                         "data/background/MC_QCD-Pt-80to120_VBF-MET40.root",
+
+                          "data/background/MC_DY1JetsToLL.root",
+                          "data/background/MC_DY2JetsToLL.root",
+                          "data/background/MC_DY3JetsToLL.root",
+                          "data/background/MC_DY4JetsToLL.root",
+                          "data/background/MC_DYJetsToLL_PtZ-100-madgraph.root",
+                          "data/background/MC_DYJetsToLL.root",
+
+                              "data/background/MC_EWK-W2jminus_enu.root",
+                              "data/background/MC_EWK-W2jplus_enu.root",
+                              "data/background/MC_W1JetsToLNu_enu.root",
+                              "data/background/MC_W2JetsToLNu_enu.root",
+                              "data/background/MC_W3JetsToLNu_enu.root",
+                              "data/background/MC_W4JetsToLNu_enu.root",
+                              "data/background/MC_WJetsToLNu-v1_enu.root",
+                              "data/background/MC_WJetsToLNu-v2_enu.root",
+
+                               "data/background/MC_EWK-W2jminus_munu.root",
+                               "data/background/MC_EWK-W2jplus_munu.root",
+                               "data/background/MC_W1JetsToLNu_munu.root",
+                               "data/background/MC_W2JetsToLNu_munu.root",
+                               "data/background/MC_W3JetsToLNu_munu.root",
+                               "data/background/MC_W4JetsToLNu_munu.root",
+                               "data/background/MC_WJetsToLNu-v1_munu.root",
+                               "data/background/MC_WJetsToLNu-v2_munu.root",
+
+                                "data/background/MC_EWK-W2jminus_taunu.root",
+                                "data/background/MC_EWK-W2jplus_taunu.root",
+                                "data/background/MC_W1JetsToLNu_taunu.root",
+                                "data/background/MC_W2JetsToLNu_taunu.root",
+                                "data/background/MC_W3JetsToLNu_taunu.root",
+                                "data/background/MC_W4JetsToLNu_taunu.root",
+                                "data/background/MC_WJetsToLNu-v1_taunu.root",
+                                "data/background/MC_WJetsToLNu-v2_taunu.root",
+                         "data/background/MC_T-tW.root",
+                         "data/background/MC_Tbar-tW.root",
+                        "data/background/MC_WGamma.root",
+                        "data/background/MC_WW-pythia6-tauola.root",
+                        "data/background/MC_WZ-pythia6-tauola.root",
+                        "data/background/MC_ZZ-pythia6-tauola.root",
+                              "data/background/MC_ZJetsToNuNu_50_HT_100.root",
+                              "data/background/MC_ZJetsToNuNu_100_HT_200.root",
+                              "data/background/MC_ZJetsToNuNu_200_HT_400.root",
+                              "data/background/MC_ZJetsToNuNu_400_HT_inf.root"
+                     };
+
+
+std::vector<const char*> allbg (all_arr, all_arr +
+                         sizeof(all_arr)/sizeof(const char*));
+
+const char* all_label  = "all_bg";
+const char* all_legend = "All the MC backgrounds combined";
+
+*/
+/*
 std::vector<const char*>* fp_array[] = {z_ll,wjets_ev,wjets_muv,wjets_tauv, top,vv,zjets_vv,qcd};
 
 std::vector< const char*> file_paths (fp_array, fp_array+sizeof(vv_arr)/sizeof(const char*));
@@ -246,11 +319,11 @@ const char* data_legend = "data";
   std::vector<const char*> NeuronType (NeuronType_arr, NeuronType_arr +
                                      sizeof(NeuronType_arr)/sizeof(const char*));
 
-  const char* NCycles_arr[] = {"10","100","500","1000","5000"};
+  const char* NCycles_arr[] = {"50","10","20","30","40"};//,"60","70"};
   std::vector<const char*> NCycles (NCycles_arr, NCycles_arr +
                                        sizeof(NCycles_arr)/sizeof(const char*));
 
-  const char* HiddenLayers_arr[] = {"2","5","10","50","5,5","5,5,5","5,5,5,5","5,5,5,5,5"} ;//number of neurons in each hidden layer
+  const char* HiddenLayers_arr[] = {"10,10,10,10","10","20","36"} ;//number of neurons in each hidden layer
   std::vector<const char*> HiddenLayers (HiddenLayers_arr, HiddenLayers_arr +
                                          sizeof(HiddenLayers_arr)/sizeof(const char*));
 

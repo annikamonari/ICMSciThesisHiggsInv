@@ -11,9 +11,11 @@ std::cout<<"folder_name: "<<folder_name<<"\n";
   }
   std::string output_path(folder_name);
   output_path.append("/");
+//output_path.append("3");
+
   output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label, preprocessing_transform));
 std::cout<<"output path: "<<output_path<<"\n";
-  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
+  TFile* output_tmva = TFile::Open("TMVA.root"/*output_path.c_str()*/,"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -240,6 +242,7 @@ TTree* MLPAnalysis::evaluate_MLP(DataChain* bg_chain,std::vector<Variable*>* var
 	   // Get elapsed time
 	   sw.Stop();
 	   std::cout << "--- End of event loop: "; sw.Print();
+           //Convergence Test
 
 	   // --- Write histograms
    /* std::string target_name = training_output_name;

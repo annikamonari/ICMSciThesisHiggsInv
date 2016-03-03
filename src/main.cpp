@@ -21,7 +21,7 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
   bg_id = atoi(command_line_integer);/*
   param_id = atoi(command_line_integers);*/
   std::string varying_parameter = "HiddenLayers";//vary_param[param_id];
-  const char* preprocessing_transform ="N";
+  const char* preprocessing_transform[] ={"N","G,D,N"};
 
 
   std::string folder_name = "mva_output_plots";
@@ -29,19 +29,19 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
   int relevant_bgs[] = {0, 1, 2, 3,4,5,6,7};//, 6};
   std::string mva_cut_str = "output>0.0";//"output>0.1";//must be in format "output>0"  
 
-//             0         1             2            3            4         5      6            7
+//             0         1             2                3           4          5           6            7
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
-//const char* mva_cut_arr[]={"output>0.0","output<0.6"}; //VV cuts
-const char* mva_cut_arr[]={"output>0.0","output>0.6"}; //bg_wjets_ev cuts
-//const char* mva_cut_arr[]={"output>0.0","output>0.5","output>0.52"};  //bg_zjets_vv cuts
-//const char* mva_cut_arr[]={"output>0.0","output>0.8","output>0.3"};  //bg_zll
+const char* mva_cut_arr[]={"output>0.0","output>0.8"}; //qcd
+//const char* mva_cut_arr[]={"output>0.0","output<0.4"}; //top cuts
+//const char* mva_cut_arr[]={"output>0.0","output<0.1"};  //bg_zjets_vv cuts
+//const char* mva_cut_arr[]={"output>0.0","output>0.5"};  //bg_zll
 for(int i =0;i<1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/; i++){
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
     if(std::ifstream("TMVApp.root")){remove("TMVApp.root");} 
-    mva_cut_str = mva_cut_arr[1];
-    MVAAnalysis::get_mva_results(bg_chains,1, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[0],mva_cut_str,"G,D,N");
-    //std::cout<<NeuronType[1]<<"\n";
+    mva_cut_str = mva_cut_arr[0];
+    MVAAnalysis::get_mva_results(bg_chains, 1, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[3], HiddenLayers[0],mva_cut_str,preprocessing_transform[0]);
+    //std::cout<<NeuronType[1]<<"\n"; GDN
     
 }
 
@@ -73,18 +73,18 @@ for(int i=0; i<files3.size();i++)
 */
 
 
-for (int i = 0; i < 1/*bg_chains.size()*/; i++)
+for (int i = 4; i < 5/*bg_chains.size()*/; i++)
   {/*
   		std::cout << "============== FOR BG  " << i << "  ==============" << std::endl;
   		std::cout << "=================================================" << std::endl;
    	
  if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted
 	
-  MVAAnalysis::get_plots_varying_params(all_bg_chains, 0, signal_chain, data_chain, super_vars,
+  MVAAnalysis::get_plots_varying_params(bg_chains, bg_id, signal_chain, data_chain, super_vars,
                                      mva_type, varying_parameter, NTrees, BoostType,AdaBoostBeta, SeparationType,
-                                      nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str,"G,D,N");*/
+                                      nCuts, NeuronType, NCycles, HiddenLayers,mva_cut_str,"N");
 
-  }
+  */}
 
   for (int i = 0; i < 1; i++)
   {

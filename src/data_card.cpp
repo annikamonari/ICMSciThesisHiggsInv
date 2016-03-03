@@ -28,9 +28,11 @@ if (var->name_styled = "MVA Output"){std::cout<<"got rates\n";}
 
   for(int i = 0; i < bg_chains.size(); i++)
   {
-    bg_errors_parsed[i] = 1 + (bg_errors[i] / rates[i+1]);
+    if (rates[i+1] != 0){
+    bg_errors_parsed[i] = 1 + (bg_errors[i] / rates[i+1]);}
+    else{bg_errors_parsed[i] = 2;}
   }
-if (var->name_styled = "MVA Output"){std::cout<<"got gbg errors parsed\n";}
+if (var->name_styled = "MVA Output"){std::cout<<"got bg errors parsed\n";}
 
   std::vector<double> bg_error_vector (bg_errors_parsed, bg_errors_parsed + sizeof(bg_errors_parsed) / sizeof(bg_errors_parsed[0]));
 if (var->name_styled = "MVA Output"){std::cout<<"got gbg errors vector\n";}

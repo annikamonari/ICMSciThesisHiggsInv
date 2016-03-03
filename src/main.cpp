@@ -40,7 +40,7 @@ for(int i =0;i<1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/; i++){
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
     if(std::ifstream("TMVApp.root")){remove("TMVApp.root");} 
     mva_cut_str = mva_cut_arr[0];
-    MVAAnalysis::get_mva_results(bg_chains, 1, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[3], HiddenLayers[0],mva_cut_str,preprocessing_transform[0]);
+    MVAAnalysis::get_mva_results(bg_chains, 7, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[3], HiddenLayers[0],mva_cut_str,preprocessing_transform[0]);
     //std::cout<<NeuronType[1]<<"\n"; GDN
     
 }

@@ -15,7 +15,7 @@ std::cout<<"folder_name: "<<folder_name<<"\n";
 
   output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label, preprocessing_transform));
 std::cout<<"output path: "<<output_path<<"\n";
-  TFile* output_tmva = TFile::Open("TMVA.root"/*output_path.c_str()*/,"RECREATE");
+  TFile* output_tmva = TFile::Open("TMVA7.root"/*output_path.c_str()*/,"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");

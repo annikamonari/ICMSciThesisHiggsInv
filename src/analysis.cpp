@@ -167,7 +167,7 @@ const char* zjets_vv_label  = "bg_zjets_vv";
 const char* zjets_vv_legend = "Z+jets #rightarrow #nu#nu";
 
 ///////////////////////////  background file paths  ///////////////////////////////////////
-/*
+
 const char* all_arr[] = {
                          "data/background/MC_QCD-Pt-1000to1400-pythia6.root",
                          "data/background/MC_QCD-Pt-120to170-pythia6.root",
@@ -239,7 +239,7 @@ std::vector<const char*> allbg (all_arr, all_arr +
 const char* all_label  = "all_bg";
 const char* all_legend = "All the MC backgrounds combined";
 
-*/
+
 /*
 std::vector<const char*>* fp_array[] = {z_ll,wjets_ev,wjets_muv,wjets_tauv, top,vv,zjets_vv,qcd};
 

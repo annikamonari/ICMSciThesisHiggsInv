@@ -17,7 +17,7 @@ class SuperChains
   DataChain* bg_qcd;
   DataChain* signal_chain;
   DataChain* data_chain;
-  //DataChain* all_bg;
+  DataChain* all_bg;
 
   SuperChains();
 

@@ -32,18 +32,19 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
 //             0         1             2                3           4          5           6            7
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
-const char* mva_cut_arr[]={"output>0.0","output>0.8"}; //qcd
+//const char* mva_cut_arr[]={"output>0.0","output>0.8"}; //qcd
 //const char* mva_cut_arr[]={"output>0.0","output<0.4"}; //top cuts
 //const char* mva_cut_arr[]={"output>0.0","output<0.1"};  //bg_zjets_vv cuts
-//const char* mva_cut_arr[]={"output>0.0","output>0.5"};  //bg_zll
-for(int i =0;i<1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/; i++){
+const char* mva_cut_arr[]={"output>0.0","output>0.8"};  //bg_zll
+//for(int i =0;i<8; i++){
+int i =bg_id;
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
     if(std::ifstream("TMVApp.root")){remove("TMVApp.root");} 
     mva_cut_str = mva_cut_arr[0];
-    MVAAnalysis::get_mva_results(all_bg_chains, 0, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[3], HiddenLayers[0],mva_cut_str,preprocessing_transform[1]);
+    MVAAnalysis::get_mva_results(bg_chains, i, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[i], HiddenLayers[0],mva_cut_str,preprocessing_transform[0]);
     //std::cout<<NeuronType[1]<<"\n"; GDN
     
-}
+//}
 
 
 //std::vector<const char*> files = MVAAnalysis::get_file_vector_for_roc_curves(bg_chains[0]->label, mva_type,"NCycles",preprocessing_transform);

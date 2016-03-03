@@ -11,11 +11,10 @@ std::cout<<"folder_name: "<<folder_name<<"\n";
   }
   std::string output_path(folder_name);
   output_path.append("/");
-//output_path.append("3");
 
   output_path.append(MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chain->label, preprocessing_transform));
 std::cout<<"output path: "<<output_path<<"\n";
-  TFile* output_tmva = TFile::Open("TMVA_all_D.root"/*output_path.c_str()*/,"RECREATE");
+  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
   TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
                                              "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
@@ -294,7 +293,7 @@ std::string MLPAnalysis::MLP_options_str(const char* NeuronType, const char* NCy
 	MLP_options.append(nc);
 	MLP_options += ":HiddenLayers=";
 	MLP_options.append(hl);
-	MLP_options += ":TestRate=5:!UseRegulator";
+	MLP_options += ":TestRate=5:!UseRegulator:EstimatorType=CE";
  return MLP_options;
 }
 

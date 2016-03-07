@@ -78,26 +78,40 @@ std::cout<<"in get_mva_results analysis\n";
   std::string output_path(folder_name);
   output_path.append("/");
 
-  output_path.append(MLPAnalysis::MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chains[bg_to_train]->label, preprocessing_transform, LearningRate));
-std::cout<<"output path: "<<output_path<<"\n";
-
-//
-TFile* trained_output;// = new TFile(output_path.c_str());
-
 //STEP 2 train MVA type
 //////////////////////////////////////////////////////////////////////////////
+bool train_mva=true;
+
+TFile* trained_output;// = new TFile(output_path.c_str());
 	 std::cout<<" created tfile\n";
 
-
+if (!train_mva)// if mv already trained then trained output is just the file path
+{
   if (method_name == "BDT")
-	 {
-  		trained_output = BDTAnalysis::create_BDT(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,NTrees,BoostType,AdaBoostBeta, SeparationType, nCuts, console_number);
-	 }
+  {
+    output_path.append(BDTAnalysis::BDT_output_name_str(NTrees, BoostType, AdaBoostBeta,SeparationType,  nCuts, bg_chains[bg_to_train]->label));
+  }
   else if (method_name == "MLP")
   {
-std::cout<<"about to create mlp\n";
-  		trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,NeuronType, NCycles, HiddenLayers, preprocessing_transform, LearningRate, console_number);
+    output_path.append(MLPAnalysis::MLP_output_name_str(NeuronType, NCycles, HiddenLayers, bg_chains[bg_to_train]->label, preprocessing_transform, LearningRate));
   }
+std::cout<<"output path: "<<output_path<<"\n";
+trained_output = new TFile(output_path.c_str());
+}
+
+
+else if (train_mva)
+{
+  if (method_name == "BDT")
+  {
+    trained_output = BDTAnalysis::create_BDT(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,NTrees,BoostType,AdaBoostBeta, SeparationType, nCuts, console_number);
+  }
+  else if (method_name == "MLP")
+  {
+    std::cout<<"about to create mlp\n";
+    trained_output = MLPAnalysis::create_MLP(bg_chains[bg_to_train], signal_chain, &vars2, folder_name,NeuronType, NCycles, HiddenLayers, preprocessing_transform, LearningRate, console_number);
+  }
+}
   std::cout << "=> Trained method " << method_name << ", output file: " << trained_output->GetName() << std::endl;
   std::cout << "=> In folder: " << folder_name << std::endl;	 
 //std::cout<<"datachain in out data chains number: "<<i<<" = "<<bg_chains[bg_to_train]->label<<"\n";

@@ -37,7 +37,7 @@ BDT_varying_NTrees
 MLP_varying_preprocessing_transform
 MLP_varying_preprocessing_transform/*
 
-<<<<<<< HEAD
+
 #Makefile
 setup.sh
 TMVAClassification.C
@@ -46,7 +46,7 @@ weights
 effciencies.C
 bg_zll/*
 bg_zll
-=======
+
 TMVAClassification.C
 TMVAGui.C
 TMVARegGui.C
@@ -59,18 +59,12 @@ weights/*
 weights
 
 Makefile.arch
-MakefileOriginial
-effciencies.C
-bg_zll/*
-bg_zll
 
-<<<<<<< HEAD
-setup.sh
+
+
+
 libTMVA.rootmap
 Makefile
 
-=======
->>>>>>> 4b0f3350b95d62293fa14767fe6e78135c0e8185
 
->>>>>>> debug
 

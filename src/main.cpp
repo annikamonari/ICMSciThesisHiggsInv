@@ -4,7 +4,7 @@
 #include <iostream> 
 //#include "../include/mlp_analysis.h"
 
-void produce_graphs(bool with_cut/*, const char* command_line_integer*/) {
+void produce_graphs(bool with_cut, const char* command_line_integer) {
   SuperVars* super_vars             = new SuperVars();
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
@@ -16,13 +16,13 @@ void produce_graphs(bool with_cut/*, const char* command_line_integer*/) {
   std::string mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
   int bg_id=0;
   int param_id=0;
-
+   
   const char * vary_param[] = {"NeuronType","NCycles","HiddenLayers","preprocessing_transform","learning_rate"};
-  //bg_id = atoi(command_line_integer);
-  
+  bg_id = atoi(command_line_integer);/*
+  param_id = atoi(command_line_integers);*/
   std::string varying_parameter = "HiddenLayers";//vary_param[param_id];
   const char* preprocessing_transform[] ={"N","G,D,N"};
-  const char* console_number = "1";//command_line_integer;
+  const char* console_number = command_line_integer;
 
   std::string folder_name = "mva_output_plots";
 
@@ -32,9 +32,6 @@ void produce_graphs(bool with_cut/*, const char* command_line_integer*/) {
 //             0         1             2                3           4          5           6            7
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
 
-//const char* mva_cut_arr[]={"output>0.0","output>0.8"}; //qcd
-//const char* mva_cut_arr[]={"output>0.0","output<0.4"}; //top cuts
-//const char* mva_cut_arr[]={"output>0.0","output<0.1"};  //bg_zjets_vv cuts
 const char* mva_cut_arr[]={"output> -1.1.","output> -1.0","output> -0.9","output> -0.8","output>-0.7"
 ,"output>-0.6","output>-0.5","output>-0.4","output>-0.3","output>-0.2","output>-0.1","output>0.0"
 ,"output>0.1","output>0.2","output>0.3","output>0.4","output>0.5","output>0.6","output>0.7"
@@ -69,7 +66,7 @@ for (int i = 6; i < 7/*bg_chains.size()*/; i++)
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  produce_graphs(true/*, argv[1]*/);
+  produce_graphs(true, argv[1]);
   theApp.Run();
   return 0;
 }

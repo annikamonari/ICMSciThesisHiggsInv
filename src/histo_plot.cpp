@@ -39,7 +39,7 @@ std::cout<<"creating mc weights vector"<<"\n";
 
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
 
-   mc_weights_vector = mc_weights(data, bg_chains, var, with_cut, variables, mva_cut_str);
+   mc_weights_vector = mc_weights(data, bg_chains, var, with_cut, variables,""/*mva_cut_str*/);
 
 if (is_control_region){
   std::fill_n(arr, bg_chains.size(), 1);
@@ -542,6 +542,7 @@ void HistoPlot::style_ratio_histo(TH1F* single_histo, const char* x_label, bool 
   single_histo->SetTitle("");
   single_histo->SetStats(false);
   single_histo->GetYaxis()->SetNdivisions(5, 5, 0);
+  single_histo->SetMaximum(get_histo_y_max(single_histo)*1.15);
 }
 
 void HistoPlot::style_legend(TLegend* legend)

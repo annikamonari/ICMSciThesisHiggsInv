@@ -28,7 +28,7 @@ class BDTAnalysis
  public:
 	 
 
-	 static DataChain* get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name);
+	 static DataChain* get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name, const char* console_number);
 
 
 	static std::string BDT_options_str(const char* NTrees,const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char*nCuts);
@@ -37,9 +37,9 @@ class BDTAnalysis
 																																								const char* SeparationType,const char*nCuts, const char* bg_chain_label);
 
  static TFile* create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables,std::string folder_name, const char* NTrees,
-                        const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts);
+                        const char* BoostType,const char* AdaBoostBeta,const char* SeparationType,const char* nCuts, const char* console_number);
 
-	 static TTree* evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name);
+	 static TTree* evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name, const char* console_number);
 
 };
 

@@ -2,7 +2,7 @@
 
 TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std::vector<Variable*>* variables,
 																															std::string folder_name, const char* NTrees,const char* BoostType,
-																															const char* AdaBoostBeta,const char* SeparationType,const char* nCuts)
+																															const char* AdaBoostBeta,const char* SeparationType,const char* nCuts, const char* console_number)
 {
 	  if (!opendir(folder_name.c_str()))
 	  {
@@ -14,8 +14,11 @@ TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std
 	  output_path.append(BDT_output_name_str(NTrees,BoostType,AdaBoostBeta,SeparationType,nCuts, bg_chain->label));
 	  TFile* output_tmva = TFile::Open(output_path.c_str(),"RECREATE");
 
-	  TMVA::Factory* factory = new TMVA::Factory("TMVAClassification", output_tmva,
-	                                             "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
+          std::string cn = console_number;
+          std::string TMVAClassification_str = "TMVAClassification" + cn;
+          const char* TMVAClassification_id = TMVAClassification_str.c_str();
+          TMVA::Factory* factory = new TMVA::Factory(TMVAClassification_id, output_tmva,
+                                             "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification");
 
 	  for (int i = 0; i < variables->size(); i++)
 	  {
@@ -66,7 +69,7 @@ TFile* BDTAnalysis::create_BDT(DataChain* bg_chain, DataChain* signal_chain, std
   return output_tmva;
 }
 
-TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name)
+TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name,const char* console_number)
 {
 	   TMVA::Reader* reader = new TMVA::Reader( "!Color:!Silent" );
 
@@ -78,10 +81,11 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   Float_t dijet_M;
 	   Float_t metnomuons;
 
-           Float_t jet1_E;
-           Float_t jet2_E;           
            Float_t jet1_pt;
            Float_t jet2_pt;
+
+           Float_t jet1_E;
+           Float_t jet2_E;   
            Float_t jet1_eta;
            Float_t jet2_eta;
            Float_t jet1_phi;
@@ -118,10 +122,11 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   reader->AddVariable("dijet_M", &dijet_M);
 	   reader->AddVariable("metnomuons", &metnomuons);
 
-           reader->AddVariable("jet1_E", &jet1_E);
-           reader->AddVariable("jet2_E", &jet2_E);
            reader->AddVariable("jet1_pt", &jet1_pt);
            reader->AddVariable("jet2_pt", &jet2_pt);
+
+           reader->AddVariable("jet1_E", &jet1_E);
+           reader->AddVariable("jet2_E", &jet2_E);
            reader->AddVariable("jet1_eta", &jet1_eta);
            reader->AddVariable("jet2_eta", &jet2_eta);
            reader->AddVariable("jet1_phi", &jet1_phi);
@@ -150,7 +155,11 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
            reader->AddVariable("l1met", &l1met);
            reader->AddVariable("n_vertices", &n_vertices);
 	   // Book method(s)
-	   reader->BookMVA( "BDT method", "weights/TMVAClassification_BDT.weights.xml" );
+	   std::string cn = console_number;
+           std::string weight_path_str = "weights/TMVAClassification" + cn + "_BDT.weights.xml";
+           const char* weight_path = weight_path_str.c_str();
+
+	   reader->BookMVA( "BDT method", weight_path );
 
 	   // Book output histograms
 	   TH1F* histBdt     = new TH1F( "MVA_BDT", "MVA_BDT", 100, -0.8, 0.8 );
@@ -167,10 +176,11 @@ TTree* BDTAnalysis::evaluate_BDT(DataChain* bg_chain, std::vector<Variable*>* va
 	   data->SetBranchAddress("dijet_M", &dijet_M);
 	   data->SetBranchAddress("metnomuons", &metnomuons);
 
-           data->SetBranchAddress("jet1_E", &jet1_E);
-           data->SetBranchAddress("jet2_E", &jet2_E);            
            data->SetBranchAddress("jet1_pt", &jet1_pt);
            data->SetBranchAddress("jet2_pt", &jet2_pt);
+
+           data->SetBranchAddress("jet1_E", &jet1_E);
+           data->SetBranchAddress("jet2_E", &jet2_E);
            data->SetBranchAddress("jet1_eta", &jet1_eta);
            data->SetBranchAddress("jet2_eta", &jet2_eta);
            data->SetBranchAddress("jet1_phi", &jet1_phi);
@@ -252,9 +262,9 @@ TFile* target  = new TFile(tar_fil,"RECREATE" );
 }
 
 //note before calling this method you must call create_bdt to update the xml weight file:
-DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name)
+DataChain* BDTAnalysis::get_BDT_results(DataChain* bg_chain, std::vector<Variable*>* variables, const char* training_output_name, const char* console_number)
 {
-         TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables, training_output_name);
+         TTree* output_weight = BDTAnalysis::evaluate_BDT(bg_chain, variables, training_output_name, console_number);
 
 	 TTree* output_weight_clone = (TTree*) output_weight->Clone();
 	 TChain* bg_clone     = (TChain*) bg_chain->chain->Clone();

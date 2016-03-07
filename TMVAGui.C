@@ -47,7 +47,7 @@ void ActionButton( TControlBar* cbar,
 }
 
 // main GUI
-void TMVAGui( const char* fName = "TMVA.root" ) 
+void TMVAGui( const char* fName = "MLP-bg_vv-NeuronType=sigmoid-NCycles=500-HiddenLayers=2.root" ) 
 {   
    // Use this script in order to run the various individual macros
    // that plot the output of TMVA (e.g. running TMVAClassification.C),

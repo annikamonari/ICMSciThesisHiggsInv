@@ -4,7 +4,7 @@
 #include <iostream> 
 //#include "../include/mlp_analysis.h"
 
-void produce_graphs(bool with_cut, const char* command_line_integer) {
+void produce_graphs(bool with_cut/*, const char* command_line_integer*/) {
   SuperVars* super_vars             = new SuperVars();
   std::vector<Variable*> vars       = super_vars->get_discriminating_vars();
   std::vector<Variable*> cut_vars   = super_vars->get_signal_cut_vars();
@@ -18,11 +18,11 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
   int param_id=0;
 
   const char * vary_param[] = {"NeuronType","NCycles","HiddenLayers","preprocessing_transform","learning_rate"};
-  bg_id = atoi(command_line_integer);/*
-  param_id = atoi(command_line_integers);*/
+  //bg_id = atoi(command_line_integer);
+  
   std::string varying_parameter = "HiddenLayers";//vary_param[param_id];
   const char* preprocessing_transform[] ={"N","G,D,N"};
-  const char* console_number = command_line_integer;
+  const char* console_number = "1";//command_line_integer;
 
   std::string folder_name = "mva_output_plots";
 
@@ -69,7 +69,7 @@ for (int i = 6; i < 7/*bg_chains.size()*/; i++)
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  produce_graphs(true, argv[1]);
+  produce_graphs(true/*, argv[1]*/);
   theApp.Run();
   return 0;
 }

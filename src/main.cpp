@@ -13,7 +13,7 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
   DataChain* signal_chain           = super_chains->signal_chain;
   DataChain* data_chain             = super_chains->data_chain;
   std::vector<DataChain*> all_bg_chains = super_chains->get_all_bg_chains();
-  std::string mva_type = "MLP";  //go into train_and_run_BDT function to change input parameters
+  std::string mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
   int bg_id=0;
   int param_id=0;
    

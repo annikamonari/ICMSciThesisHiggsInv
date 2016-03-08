@@ -158,13 +158,13 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
 */
 
 
- HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,false, &vars, true, false, output_graph_name_mva_cut,"");
+ HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,true, &vars,false, false, output_graph_name_mva_cut,"");
 //vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
    //   HistoPlot::draw_plot(vars[0],output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-bool make_datacard = true;
+bool make_datacard = false;
 if(make_datacard)
 { 
   double arr[bg_chains.size()];

@@ -61,7 +61,7 @@ Makefile.arch
 
 libTMVA.rootmap
 Makefile
-annconvergencetest*
+annconvergencetest.C
 
 
 

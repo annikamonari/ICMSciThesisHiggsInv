@@ -54,17 +54,15 @@ TMVAlogon.C
 TMVApp.root
 tmvaglob.C
 
-
 weights/*
 weights
 
 Makefile.arch
 
-
-
-
 libTMVA.rootmap
 Makefile
+annconvergencetest*
+
 
 
 

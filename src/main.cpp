@@ -14,12 +14,8 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
   DataChain* data_chain             = super_chains->data_chain;
   std::vector<DataChain*> all_bg_chains = super_chains->get_all_bg_chains();
   std::string mva_type = "BDT";  //go into train_and_run_BDT function to change input parameters
-  int bg_id=0;
-  int param_id=0;
    
   const char * vary_param[] = {"NeuronType","NCycles","HiddenLayers","preprocessing_transform","learning_rate"};
-  bg_id = atoi(command_line_integer);/*
-  param_id = atoi(command_line_integers);*/
   std::string varying_parameter = "HiddenLayers";//vary_param[param_id];
   const char* preprocessing_transform[] ={"N","G,D,N","G,P,N"};
   const char* console_number = command_line_integer;
@@ -70,14 +66,4 @@ int main(int argc, char** argv) {
   return 0;
 }
 
-/*
-#include <iostream> 
-#include <cstdlib> 
-using namespace std;
 
-int main(int argc, char* argv[]) { 
-   for(int i = 1; i < argc; i++) 
-      cout << atoi(argv[i]) << endl; 
-   return 0; 
-}
-*/

@@ -158,13 +158,16 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
 */
 
 
- HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, output_graph_name_mva_cut,"");
+ HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,false, &vars, true, false, output_graph_name_mva_cut,"");
 //vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
    //   HistoPlot::draw_plot(vars[0],output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
- /*double arr[bg_chains.size()];
+bool make_datacard = true;
+if(make_datacard)
+{ 
+  double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
 
@@ -173,8 +176,9 @@ mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, v
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, output_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";   
+}
 std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
-  */
+  
   std::cout << "Trained output name: "<< trained_output->GetName() << " " << trained_output << std::endl;
   std::cout << "test mva results " << ", " << (TH2F*) trained_output->Get("CorrelationMatrixS;1") << std::endl;
     return trained_output;

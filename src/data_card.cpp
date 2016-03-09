@@ -335,8 +335,9 @@ const char* DataCard::get_data_card_name(std::string output)
   	}
 	 else
 	 	{
+    //card_file_name = "cards/";
 	 		std::string out_name = output.substr(output.find("/") + 1, -1);
-                        //card_file_name = "cards/";
+                       
 			card_file_name  += out_name.substr(0, out_name.find(".png"));
 	 		card_file_name  += ".txt";
 	 	}

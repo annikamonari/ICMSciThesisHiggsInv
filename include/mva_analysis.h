@@ -52,7 +52,7 @@ class MVAAnalysis
                               const char* BoostType = "AdaBoost", const char* AdaBoostBeta = "0.2", 
                               const char* SeparationType = "GiniIndex",const char* nCuts = "30",  
                               const char* NeuronType = "sigmoid", const char* NCycles = "50",
-			      const char* HiddenLayers = "5", std::string mva_cut_str="", 
+			                           const char* HiddenLayers = "5", std::string mva_cut_str="", 
                               const char* preprocessing_transform="G,D,N", const char* LearningRate="0.02",
                               const char* console_number="1");
 

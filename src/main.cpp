@@ -23,7 +23,7 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
   std::string folder_name = "mva_output_plots";
 
   int relevant_bgs[] = {0, 1, 2, 3,4,5,6,7};//, 6};
-  std::string mva_cut_str = "output>0.0";//"output>0.1";//must be in format "output>0"  
+  std::string mva_cut_str = "output>-1.1";//"output>0.1";//must be in format "output>0"  
 
 //             0         1             2                3           4          5           6            7
 //bg[8] = {"bg_zll","bg_wjets_ev","bg_wjets_muv","bg_wjets_tauv", "bg_top", "bg_vv", "bg_zjets_vv", "bg_qcd"};
@@ -58,7 +58,8 @@ int i = atoi(command_line_integer);
 
 int main(int argc, char** argv) {
   TApplication theApp("tapp", &argc, argv);
-  produce_graphs(true, argv[1]);
+  //produce_graphs(true, argv[1]);
+  //PCA::principal();
   theApp.Run();
   return 0;
 }

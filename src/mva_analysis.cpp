@@ -131,7 +131,7 @@ std::cout << "=> Signal put through MVA" << std::endl;
 DataChain* output_data_chain = get_output_data_chain(data_chain, vars, method_name, trained_output, console_number);
 std::cout << "=> Data put through MVA" << std::endl;
 
-  Variable* mva_output                     = new Variable("output","MVA Output","-1.25","1.5","-1.25","1.5","100","1", "", false);
+  Variable* mva_output                     = new Variable("output","MVA Output","-1.0","1.0","-0.8","0.8","125","1", "", false);
   std::cout << "=> Declared MVA_Output Variable" << std::endl;
 //STEP 4 get output and variable plot names
 ////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-bool make_datacard = true;
+bool make_datacard = false;
 
 
 if(make_datacard)

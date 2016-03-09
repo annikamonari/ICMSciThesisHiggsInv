@@ -47,7 +47,7 @@ void ActionButton( TControlBar* cbar,
 }
 
 // main GUI
-void TMVAGui( const char* fName = "MLP-bg_vv-NeuronType=sigmoid-NCycles=500-HiddenLayers=2.root" ) 
+void TMVAGui( const char* fName = "mva_output_plots/BDT-bg_top-NTrees=10-BoostType=AdaBoost-AdaBoostBeta=0.1-SeparationType=GiniIndex-nCuts=5.root" ) 
 {   
    // Use this script in order to run the various individual macros
    // that plot the output of TMVA (e.g. running TMVAClassification.C),

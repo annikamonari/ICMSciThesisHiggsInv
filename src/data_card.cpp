@@ -336,10 +336,9 @@ const char* DataCard::get_data_card_name(std::string output)
 	 else
 	 	{
     //card_file_name = "cards/";
-	 		std::string out_name = output.substr(output.find("/") + 1, -1);
+	 		std::string out_name = "cards/" + output.substr(output.find("/") + 1, -1);
                        
-			card_file_name  += out_name.substr(0, out_name.find(".png"));
-	 		card_file_name  += ".txt";
+			card_file_name  += HistoPlot::replace_all(out_name, ".png", ".txt");
 	 	}
 std::cout<<"=======>Data card file path: "<<card_file_name.c_str()<<"\n";
 

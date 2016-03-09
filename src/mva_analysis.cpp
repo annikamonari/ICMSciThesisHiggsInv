@@ -162,7 +162,7 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
-bool make_datacard = true;
+bool make_datacard = false;
 
 
 if(make_datacard)

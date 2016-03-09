@@ -1,7 +1,7 @@
 CC := g++ # Main compiler
 ROOTSYS := /Applications/root_v5.34.34/
-DYLD_LIBRARY_PATH := $ROOTSYS/lib/home/hep/dsg12/TMVA-v4.2.0/
-TMVASYS := /home/hep/dsg12/TMVA-v4.2.0
+DYLD_LIBRARY_PATH := $ROOTSYS/lib/home/hep/am2612/TMVA-v4.2.0/
+TMVASYS := /home/hep/am2612/TMVA-v4.2.0
 SRCDIR := src
 BUILDDIR := build
 TARGET := bin/main # Main executable of project-- type 'make' and this gets built.

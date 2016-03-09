@@ -32,8 +32,8 @@ void produce_graphs(bool with_cut, const char* command_line_integer) {
 /*for(int i =sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0]);i>0; i--){*/
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
     if(std::ifstream("TMVApp.root")){remove("TMVApp.root");} 
-
-    MVAAnalysis::get_mva_results(bg_chains, 4, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[2],mva_cut_str,preprocessing_transform[2],"0.02", console_number);
+  int i = atoi(command_line_integer);
+    MVAAnalysis::get_mva_results(bg_chains, i, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[2],mva_cut_str,preprocessing_transform[2],"0.02", console_number);
     //std::cout<<NeuronType[1]<<"\n"; GDN
 //}
 

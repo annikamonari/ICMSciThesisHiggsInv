@@ -36,13 +36,13 @@ const char* mva_cut_arr[]={"output>-1.1","output>-1.0","output>-0.9","output>-0.
 ,"output>-0.6","output>-0.5","output>-0.4","output>-0.3","output>-0.2","output>-0.1","output>0.0"
 ,"output>0.1","output>0.2","output>0.3","output>0.4","output>0.5","output>0.6","output>0.7"
 ,"output>0.8","output>0.9","output>1.0"};  //bg_zll
-for(int i =1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/;i>0; i--){
+//for(int i =1/*sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0])*/;i>0; i--){
     if(std::ifstream("TMVApp1.root")){remove("TMVApp1.root");} // very important otherwise doesnt get deleted and seg faults
     if(std::ifstream("TMVApp.root")){remove("TMVApp.root");} 
-    mva_cut_str = mva_cut_arr[i];
+    //mva_cut_str = mva_cut_arr[];
     MVAAnalysis::get_mva_results(bg_chains, 4, signal_chain, data_chain, super_vars, folder_name, mva_type, NTrees[0], BoostType[0],AdaBoostBeta[0], SeparationType[0], nCuts[0], NeuronType[0],NCycles[0], HiddenLayers[2],mva_cut_str,preprocessing_transform[2],"0.02", console_number);
     //std::cout<<NeuronType[1]<<"\n"; GDN
-}
+//}
 
 for (int i = 6; i < 7/*bg_chains.size()*/; i++)
   {/*

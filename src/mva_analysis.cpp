@@ -80,7 +80,7 @@ std::cout<<"in get_mva_results analysis\n";
 
 //STEP 2 train MVA type
 //////////////////////////////////////////////////////////////////////////////
-bool train_mva=true;
+bool train_mva=false;
 
 TFile* trained_output;// = new TFile(output_path.c_str());
 	 std::cout<<" created tfile\n";
@@ -158,24 +158,42 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
 */
 
 
- HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,true, &vars,false, false, output_graph_name_mva_cut,"");
+ HistoPlot::draw_plot(mva_output, output_bg_chains, output_signal_chain, output_data_chain,true, &vars,false, false, output_graph_name,"");
 //vars ={alljetsmetnomu_mindphi, metnomu_significance, dijet_deta, jet1_E, jet2_E}
    //   HistoPlot::draw_plot(vars[0],output_bg_chains, output_signal_chain, output_data_chain,true, &vars, false, false, output_graph_name_mva_cut,"",mva_cut_str);
    													
 //STEP 6 create datacard
 ////////////////////////////////////////////////////////////////////////////
 bool make_datacard = false;
+
 if(make_datacard)
 { 
+  if(train_mva=true){
+  std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"<<
+             "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"<<
+             "******   train_mva set to true so can't create datacard   ******\n"
+             "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"<<
+             "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+  }
+
+else{
   double arr[bg_chains.size()];
   std::fill_n(arr, bg_chains.size(), 1);
   std::vector<double> mc_weights_vector (arr, arr + sizeof(arr) / sizeof(arr[0]) );
-
-mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, vars[0], true, &vars,mva_cut_str);
+  const char* mva_cut_arr[]={"output>0.0","output>0.1","output>0.2","output>0.3","output>0.4","output>0.5","output>0.6","output>0.7"
+ ,"output>0.8","output>0.9","output>1.0"};
+  for(int i =0;i<sizeof(mva_cut_arr)/sizeof(mva_cut_arr[0]); i++)
+  {
+    mva_cut_str=mva_cut_arr[i];
+    std::string output_graph_name_mva_cut = HistoPlot::get_mva_name(output_graph_name,mva_output->name, 
+                                             mva_cut_str);
+   mc_weights_vector = HistoPlot::mc_weights(output_data_chain, output_bg_chains, vars[0], true, &vars,mva_cut_str);
 
 
     DataCard::create_datacard(mc_weights_vector,output_data_chain, output_signal_chain, output_bg_chains, vars[1], true, &vars,mva_cut_str, output_graph_name_mva_cut);
     std::cout<<"=> DataCard created\n";   
+  }
+  }
 }
 std::cout << "=> Drew MVA Output plot for all backgrounds and signal" << std::endl;
   

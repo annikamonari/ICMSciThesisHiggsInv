@@ -6,10 +6,17 @@
 
 double DataCard::get_signal_error(DataChain* signal_chain, Variable* var, bool with_cut, std::vector<Variable*>* variables, std::string mva_cut_str)
 {
+  std::cout<<"in get signal error\n";
+  std::cout<<"mva_cut_str: "<<mva_cut_str<<"\n";
+
   TH1F* signalh = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables,"", mva_cut_str);
+  std::cout<<"got signal histo\n";
+
   int total_signal = HistoPlot::get_histo_integral(signalh, with_cut, var);
+  std::cout<<"integrated signal histo\n";
 
   double sig_sqrt = std::pow(total_signal,0.5);
+  std::cout<<"got signal error\n";
 
   return 1+(sig_sqrt/total_signal);
 }
@@ -44,6 +51,7 @@ if (var->name_styled = "MVA Output"){std::cout<<"got gbg errors vector\n";}
 std::vector<double> DataCard::get_rates(DataChain* data, std::vector<DataChain*> bg_chains, DataChain* signal_chain,
                                  Variable* var, bool with_cut, std::vector<Variable*>* variables, std::vector<double> bg_mc_weights,std::string mva_cut_str)
 {
+std::cout<<"mva_cut_str: "<<mva_cut_str<<"\n";
   int rates[bg_chains.size() + 1];
   TH1F* signal_histo = HistoPlot::build_1d_histo(signal_chain, var, with_cut, false, "goff", variables,"", mva_cut_str);
   rates[0] = HistoPlot::get_histo_integral(signal_histo, with_cut, var);

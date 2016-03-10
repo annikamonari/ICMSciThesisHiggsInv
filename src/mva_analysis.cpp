@@ -164,7 +164,6 @@ TH1F* gb_histo = HistoPlot::build_1d_histo(output_bg_chains[0], vars[0], with_cu
 ////////////////////////////////////////////////////////////////////////////
 bool make_datacard = false;
 
-
 if(make_datacard)
 { 
   const char* mva_cut_arr[]={"output>-1.1","output>-1.0","output>-0.9","output>-0.8","output>-0.7"

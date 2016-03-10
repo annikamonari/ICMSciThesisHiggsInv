@@ -5,7 +5,9 @@
 
 class PCA 
 {
-  static void principal(Int_t n=10, Int_t m=10000);
+  public:
+
+  static void principal(Int_t n, Int_t m, DataChain* d_chain);
 };
 
 #endif

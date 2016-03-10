@@ -1,11 +1,41 @@
+#include <initializer_list>
+#include <cmath>
 
+#include <cstdlib>
 #include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+#include <typeinfo>
 
-#include <TPrincipal.h>
+#include "TChain.h"
+#include "TFile.h"
+#include "TTree.h"
+#include "TString.h"
+#include "TObjString.h"
+#include "TSystem.h"
+#include "TROOT.h"
+#include "TRandom.h"
+#include "TPrincipal.h"
+
+#include "../include/mva_analysis.h"
+#include "../include/PCA.h"
 
 using namespace std;
-void principal(Int_t n=10, Int_t m=10000)
+void PCA::principal(Int_t n, Int_t m, DataChain* d_chain)
 {
+//________________________________________________________________________________________________
+  TChain* data_chain = d_chain->chain; 
+  TObjArray* branches_list  = data_chain->GetListOfBranches();
+  Int_t nBranches = branches_list->GetEntries();
+  cout<<"number of events"<<data_chain->GetEntriesFast()<<"\n";
+
+  Double_t val;
+  TBranch* branch;
+  TLeaf* leaf;
+
+  //n = nBranches;
+
   //
   // Principal Components Analysis (PCA) example
   //
@@ -17,8 +47,7 @@ void principal(Int_t n=10, Int_t m=10000)
   // End_Html
   //Authors: Rene Brun, Christian Holm Christensen
 
-  Int_t c = n / 5 + 1;
-
+  
   cout << "*************************************************" << endl;
   cout << "*         Principal Component Analysis          *" << endl;
   cout << "*                                               *" << endl;
@@ -26,8 +55,6 @@ void principal(Int_t n=10, Int_t m=10000)
        << "          *" << endl;
   cout << "*  Number of data points:         " << m
        << "      *" << endl;
-  cout << "*  Number of dependent variables: " << c
-       << "          *" << endl;
   cout << "*                                               *" << endl;
   cout << "*************************************************" << endl;
 
@@ -44,80 +71,23 @@ void principal(Int_t n=10, Int_t m=10000)
   // Make the m data-points
   // Make a variable to hold our data
   // Allocate memory for the data point
-  Double_t* data = new Double_t[n];
+  Double_t* data = new Double_t[nBranches];
 //________________________________________________________________________________________________
-  TChain* data_chain = bg_chain->chain; 
-/*
-  data_chain->SetBranchAddress("dijet_deta", &dijet_deta);
-  data_chain->SetBranchAddress("forward_tag_eta", &forward_tag_eta);
-  data_chain->SetBranchAddress("metnomu_significance", &metnomu_significance);
-  data_chain->SetBranchAddress("sqrt_ht", &sqrt_ht);
-  data_chain->SetBranchAddress("alljetsmetnomu_mindphi", &alljetsmetnomu_mindphi);
-  data_chain->SetBranchAddress("dijet_M", &dijet_M);
-  data_chain->SetBranchAddress("metnomuons", &metnomuons);
-  data_chain->SetBranchAddress("jet1_pt", &jet1_pt);
-  data_chain->SetBranchAddress("jet2_pt", &jet2_pt);
-  data_chain->SetBranchAddress("jet1_E", &jet1_E);
-  data_chain->SetBranchAddress("jet2_E", &jet2_E);
-  data_chain->SetBranchAddress("jet1_eta", &jet1_eta);
-  data_chain->SetBranchAddress("jet2_eta", &jet2_eta);
-  data_chain->SetBranchAddress("jet1_phi", &jet1_phi);
-  data_chain->SetBranchAddress("jet2_phi", &jet2_phi);
-  data_chain->SetBranchAddress("jet_csv1", &jet_csv1);
-  data_chain->SetBranchAddress("jet_csv2", &jet_csv2);
-  data_chain->SetBranchAddress("dijet_dphi", &dijet_dphi);
-  data_chain->SetBranchAddress("metnomu_x", &metnomu_x);
-  data_chain->SetBranchAddress("metnomu_y", &metnomu_y);
-  data_chain->SetBranchAddress("sumet", &sumet);
-  data_chain->SetBranchAddress("mht", &mht);
-  data_chain->SetBranchAddress("unclustered_et", &unclustered_et);
-  data_chain->SetBranchAddress("jetmet_mindphi", &jetmet_mindphi);
-  data_chain->SetBranchAddress("jetmetnomu_mindphi", &jetmetnomu_mindphi);
-  data_chain->SetBranchAddress("jetunclet_mindphi", &jetunclet_mindphi);
-  data_chain->SetBranchAddress("metnomuunclet_dphi", &metnomuunclet_dphi);
-  data_chain->SetBranchAddress("dijetmetnomu_vectorialSum_pt", &dijetmetnomu_vectorialSum_pt);
-  data_chain->SetBranchAddress("dijetmetnomu_ptfraction", &dijetmetnomu_ptfraction);
-  data_chain->SetBranchAddress("jet1metnomu_scalarprod", &jet1metnomu_scalarprod);
-  data_chain->SetBranchAddress("jet2metnomu_scalarprod", &jet2metnomu_scalarprod);
-  data_chain->SetBranchAddress("n_jets_cjv_30", &n_jets_cjv_30);
-  data_chain->SetBranchAddress("n_jets_cjv_20EB_30EE", &n_jets_cjv_20EB_30EE);
-  data_chain->SetBranchAddress("n_jets_15", &n_jets_15);
-  data_chain->SetBranchAddress("n_jets_30", &n_jets_30);
-  data_chain->SetBranchAddress("cjvjetpt", &cjvjetpt);
-  data_chain->SetBranchAddress("l1met", &l1met);
-  data_chain->SetBranchAddress("n_vertices", &n_vertices);
-*/
-//________________________________________________________________________________________________
+//
 
-
-TObjArray* leaves  = data_chain->GetListOfLeaves();
-Int_t nleaves = leaves->GetEntriesFast();
-TLeaf* leaf;
-Int_t ret;
   for (Int_t i = 0; i < m; i++) {
-    ret = LoadTree(m);
-    if (ret == -2) 
-    {
-      Error("Show()", "Cannot read entry %lld (entry does not exist)", entry);
-      return;
-    } else if (ret == -1) 
-    {
-      Error("Show()", "Cannot read entry %lld (I/O error)", entry);
-      return;
-    }
-    ret = GetEntry(entry);
-    if (ret == -1) {
-      Error("Show()", "Cannot read entry %lld (I/O error)", entry);
-      return;
-     } else if (ret == 0) {
-      Error("Show()", "Cannot read entry %lld (no data read)", entry);
-      return;
-     }
-    // First we create the un-correlated, random variables, according
-    // to one of three distributions
-    for (Int_t j = 0; j < n ; j++) {
-      leaf = (TLeaf*) leaves->UncheckedAt(j);
-      data[j] = leaf->GetValue(i);//return value of variable j in event i  
+
+    for (Int_t j = 0; j < nBranches-50 ; j++) {
+      const char* branch_name = branches_list->At(j+10)->GetName();
+
+      branch = data_chain->GetBranch(branch_name);
+      //leaf = branch->GetLeaf(branch_name);
+      branch->GetEntry(i);
+      //val=leaf->GetValue();
+      //val = branch->GetLeaf(branch_name)->GetValue(i); 
+      cout<<"value at entry: "<<i<<", variable number: "<<j<<" = "<<val<<"\n";
+      data[j] = val;//return value of variable j in event i
+
     }
 
     // Finally we're ready to add this datapoint to the PCA
@@ -144,7 +114,7 @@ Int_t ret;
 
   // Start a browser, so that we may browse the histograms generated
   // above
-  TBrowser* b = new TBrowser("principalBrowser", principal);
+  //TBrowser* b = new TBrowser("principalBrowser", principal);
 
 }
 
